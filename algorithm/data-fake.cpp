@@ -4,8 +4,9 @@
 using namespace std;
 
 const char * first_line =
-	"\"ENZYME\"	\"Substrate\"	\"Substrate_Name\"	\
-	\"Product\"	\"Product_Name\"	\"Organism_id\"";
+	"\"ENZYME\"	\"Substrate\"	\"Substrate_Name\"\
+	\"Product\"	\"Product_Name\"	\"Organism_id\"\
+	\"Substrate_Coef\"	\"Product_Coef\"";
 
 void add_comm(string & x) {
 	x = "\"" + x + "\"";
@@ -26,7 +27,7 @@ void print_line(string ec,
 	add_comm(org_id);
 
 	cout << ec << "\t" << sub << "\t" << sub_name << "\t" << pdt << "\t"
-		<< pdt_name << "\t" << org_id << endl;
+		<< pdt_name << "\t" << org_id << "\t" << (rand() % 5) + 1 << "\t" << (rand() % 5) + 1 << endl;
 }
 
 void manual() {
