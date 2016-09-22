@@ -20,15 +20,16 @@ using std :: map;
 using std :: vector;
 using std :: ifstream;
 using std :: ios;
+using std :: make_pair;
 
 //#define input_debug
 //#define size_output_debug
 #define timer_check
-//#define LINUX
+#define LINUX
 //#define WINDOWS
 //#define sub_list
 //#define stress_test
-#define MAC
+//#define MAC
 
 #ifndef WINDOWS
 //

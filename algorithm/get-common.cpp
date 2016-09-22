@@ -213,15 +213,15 @@ void graph_migrate() {
 }
 
 vector <string> current_solution;
-vector < vector <string> > solution;
+map < int, vector < vector <string> > > solution;
 
-void mark_solution() {
-	solution.push_back(current_solution);
+void mark_solution(int target) {
+	solution[target].push_back(current_solution);
 }
 
 void dfs_res_print(int x, int dep, const int & target) {
 	if (x == target) {
-		mark_solution();
+		mark_solution(target);
 		return;
 	}
 	for (set < ec_path_result > :: iterator i =
@@ -279,7 +279,6 @@ void ec_path_bfs(string x) {
 		sub_inque[x] = false;
 	}
 
-	solution.clear();
 	current_solution.clear();
 
 	for (int x = 0; x < sub_size; ++ x) if (sub_flag[x]) {
@@ -291,15 +290,102 @@ void ec_path_bfs(string x) {
 
 }
 
-void match() {
-	cout << solution.size() << " ec-solution(s) FOUND" << endl;
+void greedy_match() {
+	set <string> basic;
+	map <int, bool> mark;
+	
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
-		for (auto j = i -> begin(); j != i -> end(); ++ j)
-			cout << (* j) << ' ';
+		if (1 != i -> second.size()) {
+			mark.insert(make_pair(i -> first, false)) ;
+			continue;
+		}
+		mark.insert(make_pair(i -> first, true));
+		for (auto k = i -> second.at(0).begin();
+			k != i -> second.at(0).end(); ++ k)
+			basic.insert(* k);
+	}
+	
+	set <string> more = basic;
+	set <string> less = basic;
+
+	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		if (mark[i -> first])
+			continue;
+
+		auto res_less = i -> second.end();
+		auto res_more = i -> second.end();
+		int res_count_less = -1;
+		int res_count_more = 99999;
+
+		for (auto j = i -> second.begin(); j != i -> second.end(); ++ j) {
+			int count_less = 0;
+			int count_more = 0;
+			for (auto k = j -> begin(); k != j -> end(); ++ k) {
+				if (less.count(* k))
+					++ count_less;
+				if (more.count(* k))
+					++ count_more;
+			}
+			
+			if (count_less > res_count_less) {
+				res_count_less = count_less;
+				res_less = j;
+			}
+			
+			if (count_more < res_count_more) {
+				res_count_more = count_more;
+				res_more = j;
+			}
+		}
+		
+		for (auto k = res_more -> begin(); k != res_more -> end(); ++ k)
+			more.insert(* k);
+		for (auto k = res_less -> begin(); k != res_less -> end(); ++ k)
+			less.insert(* k);
+	}
+	
+	cout << "LESS METHOD " << less.size() << endl;
+	for (auto k = less.begin(); k != less.end(); ++ k)
+		cout << ' ' << (* k);
+	cout << endl;
+
+	cout << "MORE METHOD " << more.size() << endl;
+	for (auto k = more.begin(); k != more.end(); ++ k)
+		cout << ' ' << (* k);
+	cout << endl;
+}
+
+void match() {
+	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		cout << "NAME = " << sub_vec[i -> first] << endl;
+		for (size_t j = 0; j < i -> second.size(); ++ j) {
+			cout << " SOLUTION " << j << endl;
+			cout << "  ";
+			for (auto k = i -> second.at(j).begin();
+				k != i -> second.at(j).end(); ++ k)
+				cout << " " << (* k) ;
+			cout << endl;
+		}
 		cout << endl;
 	}
 	
+	unsigned long long count = 1;
+	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		count *= i -> second.size();
+		if (count > (1 << 10))
+			break;
+	}
 	
+	cout << "POSSIBLE SOULTIONS = " << count << endl;
+
+	if (count > (1 << 10)) {
+		greedy_match();
+		return;
+	}
+	
+	//for testing
+
+	greedy_match();
 }
 
 void search() {
@@ -311,7 +397,9 @@ void search() {
 
 	for (int i = 0; i < n; ++ i) {
 		string sub_id;
+#ifndef stress_test
 		qin >> sub_id;
+#endif
 #ifdef stress_test
 		sub_id = sub_vec[i];
 #endif
@@ -320,7 +408,6 @@ void search() {
 			sub_res[j].clear();
 		
 		ec_path_bfs(sub_id);
-		match();
 	}
 
 	cout << endl;
@@ -380,6 +467,13 @@ int main() {
 
 #ifdef timer_check
 	cout << "SEARCH " << t.stop() << " sec" << endl;
+	t.start();
+#endif
+
+	match();
+
+#ifdef timer_check
+	cout << "MATCH " << t.stop() << " sec" << endl;
 #endif
 
 	free_alloc();
