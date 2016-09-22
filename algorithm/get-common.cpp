@@ -290,7 +290,7 @@ void ec_path_bfs(string x) {
 
 }
 
-void greedy_match() {
+set < set <string> > greedy_match() {
 	set <string> basic;
 	map <int, bool> mark;
 	
@@ -353,39 +353,56 @@ void greedy_match() {
 	for (auto k = more.begin(); k != more.end(); ++ k)
 		cout << ' ' << (* k);
 	cout << endl;
+
+	set < set <string> > ret;
+	ret.insert(less);
+	ret.insert(more);
+
+	return ret;
 }
 
-void match() {
-	for (auto i = solution.begin(); i != solution.end(); ++ i) {
-		cout << "NAME = " << sub_vec[i -> first] << endl;
-		for (size_t j = 0; j < i -> second.size(); ++ j) {
-			cout << " SOLUTION " << j << endl;
-			cout << "  ";
-			for (auto k = i -> second.at(j).begin();
-				k != i -> second.at(j).end(); ++ k)
-				cout << " " << (* k) ;
-			cout << endl;
-		}
-		cout << endl;
+void dfs_match(const map < int, vector < vector <string> > > :: iterator it,
+	const set <string> current_solution,
+	set < set <string> > & ret) {
+
+	if (it == solution.end()) {
+		ret.insert(current_solution);
+		return;
 	}
+
+	auto next = it; ++ next;
+	for (size_t i = 0; i < it -> second.size(); ++ i) {
+		set <string> next_solution = current_solution;
+
+		for (auto j = it -> second[i].begin();
+			j != it -> second[i].end(); ++ j)
+			next_solution.insert(* j);
+
+		dfs_match(next, next_solution, ret);
+	}
+}
+
+set < set <string> > dfs_match_init() {
+	set < set <string> > ret;
+	set <string> start;
+
+	dfs_match(solution.begin(), start, ret);
 	
+	return ret;
+}
+
+set < set <string> > match() {
 	unsigned long long count = 1;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		count *= i -> second.size();
 		if (count > (1 << 10))
 			break;
 	}
-	
-	cout << "POSSIBLE SOULTIONS = " << count << endl;
 
-	if (count > (1 << 10)) {
-		greedy_match();
-		return;
-	}
-	
-	//for testing
+	if (count > (1 << 10))
+		return greedy_match();
 
-	greedy_match();
+	return dfs_match_init();
 }
 
 void search() {
@@ -470,7 +487,14 @@ int main() {
 	t.start();
 #endif
 
-	match();
+	set < set <string> > match_res = match();
+	int solution_count = 0;
+	for (auto i = match_res.begin(); i != match_res.end(); ++ i) {
+		cout << "SOLUTION " << (solution_count ++) << endl << ' ';
+		for (auto j = i -> begin(); j != i -> end(); ++ j)
+			cout << ' ' << (* j);
+		cout << endl;
+	}
 
 #ifdef timer_check
 	cout << "MATCH " << t.stop() << " sec" << endl;
