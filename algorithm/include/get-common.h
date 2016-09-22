@@ -21,6 +21,7 @@ using std :: vector;
 using std :: ifstream;
 using std :: ios;
 using std :: make_pair;
+using std :: pair;
 
 //#define input_debug
 //#define size_output_debug

@@ -15,11 +15,7 @@ void current_memory() {
 }
 #endif
 
-#ifdef timer_check
-
 #include "timer.h"
-
-#endif
 
 ifstream fin("data-fake.txt");
 ifstream qin("query-fake.txt");
@@ -177,16 +173,12 @@ void graph_migrate() {
 		sub_vec[tmp] = k -> first;
 		sub_flag[tmp] = k -> second.circle_flag;
 		sub_index.insert(make_pair(k -> first, tmp));
-		//if (sub_flag[tmp])
-		//	cout << "FLAG " << sub_vec[tmp] << endl;
 		++ tmp;
 	}
 
 	//
 	// construct the graph
 	//
-	
-	//cout << sub_vec[575] << ' ' << sub_vec[1452] << endl;
 
 	tmp = 1;
 	for (k = sub_map.begin(); k != sub_map.end(); ++ k) {
@@ -343,16 +335,6 @@ set < set <string> > greedy_match() {
 		for (auto k = res_less -> begin(); k != res_less -> end(); ++ k)
 			less.insert(* k);
 	}
-	
-	cout << "LESS METHOD " << less.size() << endl;
-	for (auto k = less.begin(); k != less.end(); ++ k)
-		cout << ' ' << (* k);
-	cout << endl;
-
-	cout << "MORE METHOD " << more.size() << endl;
-	for (auto k = more.begin(); k != more.end(); ++ k)
-		cout << ' ' << (* k);
-	cout << endl;
 
 	set < set <string> > ret;
 	ret.insert(less);
@@ -361,32 +343,55 @@ set < set <string> > greedy_match() {
 	return ret;
 }
 
-void dfs_match(const map < int, vector < vector <string> > > :: iterator it,
-	const set <string> current_solution,
+void bfs_match(set <string> current_solution,
 	set < set <string> > & ret) {
 
-	if (it == solution.end()) {
-		ret.insert(current_solution);
-		return;
+	timer t; t.start();
+	set < pair < int, set <string> > > visit;
+	queue < pair < map < int, vector < vector <string> > > :: iterator, 
+		set <string> > > q;
+
+	for (q.push(make_pair(solution.begin(), current_solution));
+		q.size(); q.pop()) {
+
+		if (t.stop() > 10.0) {
+			ret = greedy_match();
+			return;
+		}
+		auto it = q.front().first;
+		auto sol = q.front().second;
+
+		if (it == solution.end()) {
+			ret.insert(sol);
+			continue;
+		}
+
+		auto next = it; ++ next;
+		for (size_t i = 0; i < it -> second.size(); ++ i) {
+			set <string> next_solution = sol;
+
+			for (auto j = it -> second[i].begin();
+				j != it -> second[i].end(); ++ j)
+				next_solution.insert(* j);
+
+				int tmp = -1;
+				if (next != solution.end())
+					tmp = next -> first;
+
+			if (false == visit.count(make_pair(tmp, next_solution))) {
+				q.push(make_pair(next, next_solution));
+				visit.insert(make_pair(tmp, next_solution));
+			}
+		}
 	}
 
-	auto next = it; ++ next;
-	for (size_t i = 0; i < it -> second.size(); ++ i) {
-		set <string> next_solution = current_solution;
-
-		for (auto j = it -> second[i].begin();
-			j != it -> second[i].end(); ++ j)
-			next_solution.insert(* j);
-
-		dfs_match(next, next_solution, ret);
-	}
 }
 
-set < set <string> > dfs_match_init() {
+set < set <string> > bfs_match_init() {
 	set < set <string> > ret;
 	set <string> start;
 
-	dfs_match(solution.begin(), start, ret);
+	bfs_match(start, ret);
 	
 	return ret;
 }
@@ -402,7 +407,7 @@ set < set <string> > match() {
 	if (count > (1 << 10))
 		return greedy_match();
 
-	return dfs_match_init();
+	return bfs_match_init();
 }
 
 void search() {
