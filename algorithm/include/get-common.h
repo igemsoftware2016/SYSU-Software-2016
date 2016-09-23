@@ -10,6 +10,7 @@
 #include <utility>
 #include <sstream>
 #include <queue>
+#include <algorithm>
 
 using std :: string;
 using std :: cout;
@@ -22,6 +23,7 @@ using std :: ifstream;
 using std :: ios;
 using std :: make_pair;
 using std :: pair;
+using std :: sort;
 
 //#define input_debug
 //#define size_output_debug
@@ -45,27 +47,27 @@ using std :: pair;
 #endif
 
 struct edge {
-	std :: string ec;
+	string ec;
 	//
 	// how to achieve, the name of that ec
 	//
-	std :: string sub;
+	string sub;
 	//
 	// where if from, the name of substrate
 	//
-	edge(std :: string _sub, std :: string _ec) {
+	edge(string _sub, string _ec) {
 		ec = _ec; sub = _sub;
 	}
 };
 
 struct sub_data {
-	std :: vector <edge> net;
-	std :: set <std :: string> org;
-	std :: string name;
+	vector <edge> net;
+	set <string> org;
+	string name;
 	
 	bool circle_flag;
 	
-	sub_data(std :: string _name) {
+	sub_data(string _name) {
 		name = _name;
 		circle_flag = false;
 	}
@@ -79,14 +81,26 @@ struct sub_data {
 };
 
 struct org_data{
-	std :: set < std :: string> ec_list;
+	set < string> ec_list;
+	set < string > t_sub_list;
+	string name;
+	bool usable;
+	org_data() {usable = false;}
+	
+	bool operator < (const org_data & b) const {
+		if (ec_list.size() != b.ec_list.size())
+			return ec_list.size() > b.ec_list.size();
+		return t_sub_list.size() > b.t_sub_list.size();
+	}
+
 	//
 	// list of ecs, that org got.
 	//
 };
 
 struct ec_data{
-	std :: set < std :: string> org_list;
+	set < string > org_list;
+	string begin, end;
 	//
 	// orgs that have this ec.
 	//
@@ -94,9 +108,9 @@ struct ec_data{
 
 struct ec_path_result {
 	int depth, from;
-	std :: string ec;
+	string ec;
 	ec_path_result() {}
-	ec_path_result(int _depth, int _from, std :: string _ec) {
+	ec_path_result(int _depth, int _from, string _ec) {
 		depth = _depth;
 		from = _from;
 		ec = _ec;
@@ -111,9 +125,9 @@ struct ec_path_result {
 };
 
 struct ec_path_results {
-	std :: set < ec_path_result > results;
+	set < ec_path_result > results;
 	bool push_result(ec_path_result x) {
-		std :: set < ec_path_result > :: iterator k;
+		set < ec_path_result > :: iterator k;
 
 		if (results.size() > 0) {
 			k = results.end();
@@ -135,9 +149,22 @@ struct ec_path_results {
 	}
 	void clear() {
 		while (false == results.empty()) {
-			std :: set < ec_path_result > :: iterator k = results.end();
+			set < ec_path_result > :: iterator k = results.end();
 			results.erase(-- k);
 		}
+	}
+};
+
+struct full_result {
+	set < string > org_list;
+	map < string, set <string> > insert_gene;
+	
+	bool operator < (const full_result & b) const {
+		if (org_list != b.org_list)
+			return org_list < b.org_list;
+		if (insert_gene != b.insert_gene)
+			return insert_gene < b.insert_gene;
+		return false;
 	}
 };
 

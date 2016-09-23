@@ -19,6 +19,7 @@ void current_memory() {
 
 ifstream fin("data-fake.txt");
 ifstream qin("query-fake.txt");
+ifstream oin("org-data-fake.txt");
 
 map < string, ec_data > ec_map;
 map < string, org_data > org_map;
@@ -28,8 +29,13 @@ set < std:: pair <string , string > > __unique__;
 int edge_counter = 0;
 
 void get_elment(string & s, string & x) {
+	if (s.find('\"') == string :: npos) {
+		x = "";
+		return;
+	}
+
 	s.erase(0, s.find('\"') + 1);
-	int pos = s.find('\"');
+	int pos = s.find('\"');	
 	x = s.substr(0, pos);
 	s.erase(0, pos + 1);
 }
@@ -45,8 +51,10 @@ void add_sub(string x, string name) {
 }
 
 void add_org(string x) {
-	if (0 == org_map.count(x))
+	if (0 == org_map.count(x)) {
 		org_map.insert(make_pair(x, org_data()));
+		org_map[x].name = x;
+	}
 }
 
 void add_network_edge(string x, string y, string ec) {
@@ -107,6 +115,8 @@ void input() {
 
 		org_map[org_name].ec_list.insert(ec_name);
 		ec_map[ec_name].org_list.insert(org_name);
+		ec_map[ec_name].begin = pro_id;
+		ec_map[ec_name].end = sub_id;
 
 		sub_map[sub_id].org.insert(org_name);
 		sub_map[pro_id].org.insert(org_name);
@@ -207,13 +217,10 @@ void graph_migrate() {
 vector <string> current_solution;
 map < int, vector < vector <string> > > solution;
 
-void mark_solution(int target) {
-	solution[target].push_back(current_solution);
-}
-
 void dfs_res_print(int x, int dep, const int & target) {
+	//cout << string(dep, ' ') << sub_vec[x] << endl;
 	if (x == target) {
-		mark_solution(target);
+		solution[target].push_back(current_solution);
 		return;
 	}
 	for (set < ec_path_result > :: iterator i =
@@ -296,7 +303,7 @@ set < set <string> > greedy_match() {
 			k != i -> second.at(0).end(); ++ k)
 			basic.insert(* k);
 	}
-	
+
 	set <string> more = basic;
 	set <string> less = basic;
 
@@ -318,7 +325,7 @@ set < set <string> > greedy_match() {
 				if (more.count(* k))
 					++ count_more;
 			}
-			
+
 			if (count_less > res_count_less) {
 				res_count_less = count_less;
 				res_less = j;
@@ -329,7 +336,7 @@ set < set <string> > greedy_match() {
 				res_more = j;
 			}
 		}
-		
+
 		for (auto k = res_more -> begin(); k != res_more -> end(); ++ k)
 			more.insert(* k);
 		for (auto k = res_less -> begin(); k != res_less -> end(); ++ k)
@@ -355,7 +362,15 @@ void bfs_match(set <string> current_solution,
 		q.size(); q.pop()) {
 
 		if (t.stop() > 10.0) {
-			ret = greedy_match();
+
+			visit.clear();
+			while(q.size())
+				q.pop();
+
+			set < set <string> > part = greedy_match();
+			for (auto i = part.begin(); i != part.end(); ++ i)
+				ret.insert(*i);
+
 			return;
 		}
 		auto it = q.front().first;
@@ -400,11 +415,11 @@ set < set <string> > match() {
 	unsigned long long count = 1;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		count *= i -> second.size();
-		if (count > (1 << 10))
+		if (count > (1 << 12))
 			break;
 	}
 
-	if (count > (1 << 10))
+	if (count > (1 << 12))
 		return greedy_match();
 
 	return bfs_match_init();
@@ -428,11 +443,83 @@ void search() {
 
 		for (int j = 0; j < sub_size; ++ j)
 			sub_res[j].clear();
-		
+
 		ec_path_bfs(sub_id);
 	}
 
 	cout << endl;
+}
+
+vector <org_data> pattern_able_org;
+
+void dfs_pattern(int depth, int index, set <string> s,
+	full_result current, set <full_result> & ret) {
+
+	if (ret.size() > 5)
+		return;
+
+	if (s.empty()) {
+		ret.insert(current);
+		return;
+	}
+
+	for (int i = index; i < pattern_able_org; ++ i) {
+		
+	}
+}
+
+set < full_result > dfs_pattern_init(const set <string> & s) {
+	set < full_result > ret;
+	full_result current;
+
+	for (auto i = org_map.begin(); i != org_map.end(); ++ i)
+		if (i -> second.usable)
+			pattern_able_org.push_back(i -> second);
+			
+	sort(pattern_able_org.begin(), pattern_able_org.end());
+
+	dfs_pattern(0, 0, s, current, ret);
+
+	return ret;
+}
+
+void pattern_org(const set < set <string> > & solution) {
+
+	string str, x;
+	getline(oin, str); // useless line;
+
+	getline(oin, str);
+	while (get_elment(str, x), x != "") {
+		org_map[x].usable = true;
+	}
+
+	getline(oin, str); // useless line;
+
+	while (getline(oin, str)) {
+		string o, m;
+		get_elment(str, o); get_elment(str, m);
+		org_map[o].t_sub_list.insert(m);
+	}
+
+	int count = 0;
+	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		set < full_result > ans = dfs_pattern_init(* i);
+		
+		for (auto i = ans.begin(); i != ans.end(); ++ i) {
+			cout << "SOLUTION " << (count ++) << endl;
+			for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
+				++ j) {
+				cout << ' ' << (* j) << endl << ' ';
+				if (false == i -> insert_gene.count(* j))
+					continue;
+				
+				for (auto k = i -> insert_gene.at(* j).begin();
+					k != i -> insert_gene.at(* j).end(); ++ k) {
+					cout << ' ' << (* k) << endl;
+				}
+			}
+		}
+	}
 }
 
 void free_alloc() {
@@ -447,7 +534,8 @@ int main() {
 
 	ios :: sync_with_stdio(false);
 	
-	if (false == fin.is_open() || false == qin.is_open()) {
+	if (false == fin.is_open() || false == qin.is_open() ||
+		false == oin.is_open()) {
 		cout << "ERROR: Fail to open file" << endl;
 		return 0;
 	}
@@ -493,16 +581,16 @@ int main() {
 #endif
 
 	set < set <string> > match_res = match();
-	int solution_count = 0;
-	for (auto i = match_res.begin(); i != match_res.end(); ++ i) {
-		cout << "SOLUTION " << (solution_count ++) << endl << ' ';
-		for (auto j = i -> begin(); j != i -> end(); ++ j)
-			cout << ' ' << (* j);
-		cout << endl;
-	}
 
 #ifdef timer_check
 	cout << "MATCH " << t.stop() << " sec" << endl;
+	t.start();
+#endif
+
+	pattern_org(match_res);
+
+#ifdef timer_check
+	cout << "PATTERN ORG " << t.stop() << " sec" << endl;
 #endif
 
 	free_alloc();

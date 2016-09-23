@@ -1,7 +1,11 @@
 #include <iostream>
+#include <fstream>
 #include <set>
 
 using namespace std;
+
+ofstream dout("data-fake.txt");
+ofstream oout("org-data-fake.txt");
 
 const char * first_line =
 	"\"ENZYME\"	\"Substrate\"	\"Substrate_Name\"\
@@ -26,7 +30,7 @@ void print_line(string ec,
 	magic(pdt_name); add_comm(pdt_name); add_comm(pdt);
 	add_comm(org_id);
 
-	cout << ec << "\t" << sub << "\t" << sub_name << "\t" << pdt << "\t"
+	dout << ec << "\t" << sub << "\t" << sub_name << "\t" << pdt << "\t"
 		<< pdt_name << "\t" << org_id << "\t" << (rand() % 5) + 1 << "\t" << (rand() % 5) + 1 << endl;
 }
 
@@ -72,13 +76,41 @@ void manual() {
 				org + to_string(k));
 		}
 	}
+	
+	oout << "\"usable org\"" << endl;
+	for (int i = 1; i < 10; i += 2) {
+		string str = org + to_string(i);
+		add_comm(str);
+		oout << str << ' ';
+	}
+	oout << endl;
+
+	oout << "\"ORG\" \"MER\"" << endl;
+	for (int i = 1; i <= 10; ++ i) {
+		for (int j = 22; j <= 28; j += 2) {
+			string O = org + to_string(i); add_comm(O);
+			string M = mer + to_string(j); add_comm(M);
+			oout << O << ' ' << M << endl;
+		}
+		string O = org + to_string(i); add_comm(O);
+		string M = mer + to_string(27); add_comm(M);
+		oout << O << ' ' << M << endl;
+	}
+	
+	for (int i = 1; i <= 10; ++ i)
+		for (int j = 10; j < 28; ++ j)
+			if (rand() % 100 < 20) {
+				string O = org + to_string(i); add_comm(O);
+				string M = mer + to_string(j); add_comm(M);
+				oout << O << ' ' << M << endl;
+			}
 }
 
 int main() {
 
 	ios :: sync_with_stdio(false);
 
-	cout << first_line << endl;
+	dout << first_line << endl;
 
 	manual();
 	
