@@ -415,11 +415,11 @@ set < set <string> > match() {
 	unsigned long long count = 1;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		count *= i -> second.size();
-		if (count > (1 << 12))
+		if (count > (1 << 14))
 			break;
 	}
 
-	if (count > (1 << 12))
+	if (count > (1 << 14))
 		return greedy_match();
 
 	return bfs_match_init();
@@ -450,21 +450,74 @@ void search() {
 	cout << endl;
 }
 
+timer dfs_pattern_t;
+
 vector <org_data> pattern_able_org;
 
-void dfs_pattern(int depth, int index, set <string> s,
+void dfs_pattern(int depth, int index, int inserted, set <string> s,
 	full_result current, set <full_result> & ret) {
+
+	if (dfs_pattern_t.stop() > 30.0)
+		return;
 
 	if (ret.size() > 5)
 		return;
 
-	if (s.empty()) {
+//	if (depth > 7)
+//		return;
+
+	if (s.empty() && inserted > 0) {
 		ret.insert(current);
 		return;
 	}
 
-	for (int i = index; i < pattern_able_org; ++ i) {
-		
+	for (size_t i = index; i < pattern_able_org.size(); ++ i) {
+		set <string> proc = s;
+		set <string> i_ec;
+
+		full_result next_res = current;
+		next_res.org_list.insert(pattern_able_org[i].name);
+
+		int counter = 0;
+
+		for (auto j = pattern_able_org[i].ec_list.begin();
+			j != pattern_able_org[i].ec_list.end(); ++ j) {
+			if (proc.count(* j)) {
+				proc.erase(proc.find(* j));
+				i_ec.insert(* j);
+			}
+		}
+
+		bool flag;
+		do {
+			flag = false;
+			set <string> insert_g;
+
+			for (auto j = i_ec.begin(); j != i_ec.end(); ++ j) {
+				string mer = ec_map[* j].begin;
+
+				if (false == pattern_able_org[i].t_sub_list.count(mer))
+					for (auto k = proc.begin(); k != proc.end(); ++ k) {
+						if (ec_map[* k].end ==  mer) {
+							insert_g.insert(* k);
+							++ counter;
+							flag = true;
+						}
+					}
+			}
+
+			for (auto j = insert_g.begin(); j != insert_g.end(); ++ j) {
+				proc.erase(proc.find(* j));
+				i_ec.insert(* j);
+				next_res.insert_gene[pattern_able_org[i].name].insert(* j);
+			}
+
+			if (counter > 7)
+				break;
+		} while (flag);
+
+		if (counter <= 7)
+			dfs_pattern(depth + 1, i + 1, inserted + counter, proc, next_res, ret);
 	}
 }
 
@@ -478,7 +531,9 @@ set < full_result > dfs_pattern_init(const set <string> & s) {
 			
 	sort(pattern_able_org.begin(), pattern_able_org.end());
 
-	dfs_pattern(0, 0, s, current, ret);
+	dfs_pattern_t.start();
+
+	dfs_pattern(0, 0, 0, s, current, ret);
 
 	return ret;
 }
@@ -509,15 +564,18 @@ void pattern_org(const set < set <string> > & solution) {
 			cout << "SOLUTION " << (count ++) << endl;
 			for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
 				++ j) {
-				cout << ' ' << (* j) << endl << ' ';
+				cout << ' ' << (* j) << endl;
 				if (false == i -> insert_gene.count(* j))
 					continue;
-				
+
+				cout << ' ';
 				for (auto k = i -> insert_gene.at(* j).begin();
 					k != i -> insert_gene.at(* j).end(); ++ k) {
-					cout << ' ' << (* k) << endl;
+					cout << ' ' << (* k);
 				}
+				cout << endl;
 			}
+			cout << endl;
 		}
 	}
 }

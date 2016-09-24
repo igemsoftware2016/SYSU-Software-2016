@@ -1,7 +1,7 @@
 #!/bin/bash
 
 make 
-./data-fake > data-fake.txt
+./data-fake
 ./get-common > res.txt
 
 cat res.txt | grep sec

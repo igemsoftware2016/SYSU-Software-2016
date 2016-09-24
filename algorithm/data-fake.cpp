@@ -86,7 +86,7 @@ void manual() {
 	oout << endl;
 
 	oout << "\"ORG\" \"MER\"" << endl;
-	for (int i = 1; i <= 10; ++ i) {
+	for (int i = 1; i <= 3; ++ i) {
 		for (int j = 22; j <= 28; j += 2) {
 			string O = org + to_string(i); add_comm(O);
 			string M = mer + to_string(j); add_comm(M);
