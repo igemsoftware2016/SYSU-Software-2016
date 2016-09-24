@@ -80,16 +80,27 @@ struct sub_data {
 	//
 };
 
+inline double my_abs(double x) {
+	return (x > 0.0) ? (x) : (-x);
+}
+
 struct org_data{
 	set < string> ec_list;
 	set < string > t_sub_list;
+	map < string, double > kcat;
 	string name;
 	bool usable;
+	double avg_kcat, sum_kcat;
+
 	org_data() {usable = false;}
 	
 	bool operator < (const org_data & b) const {
 		if (ec_list.size() != b.ec_list.size())
 			return ec_list.size() > b.ec_list.size();
+
+		if (my_abs(avg_kcat - b.avg_kcat) > 1e-4)
+			return avg_kcat < b.avg_kcat;
+
 		return t_sub_list.size() > b.t_sub_list.size();
 	}
 
@@ -100,7 +111,10 @@ struct org_data{
 
 struct ec_data{
 	set < string > org_list;
-	string begin, end;
+	string begin, end, kcat_org;
+	double kcat;
+	
+	ec_data() {kcat = -99999;}
 	//
 	// orgs that have this ec.
 	//

@@ -6,6 +6,7 @@ using namespace std;
 
 ofstream dout("data-fake.txt");
 ofstream oout("org-data-fake.txt");
+ofstream kout("org-kcat-fake.txt");
 
 const char * first_line =
 	"\"ENZYME\"	\"Substrate\"	\"Substrate_Name\"\
@@ -32,10 +33,17 @@ void print_line(string ec,
 
 	dout << ec << "\t" << sub << "\t" << sub_name << "\t" << pdt << "\t"
 		<< pdt_name << "\t" << org_id << "\t" << (rand() % 5) + 1 << "\t" << (rand() % 5) + 1 << endl;
+	
+	string kcat = to_string((rand() % 50) / 50.0);
+	add_comm(kcat);
+
+	kout << org_id << '\t' << ec << '\t' << kcat << endl;
 }
 
 void manual() {
 	const int org_size = 10;
+
+	kout << "\"ORG\" \"EC\" \"KCAT\"" << endl;
 
 	string org = "O";
 	string ec = "EC";
@@ -83,10 +91,11 @@ void manual() {
 		add_comm(str);
 		oout << str << ' ';
 	}
+	oout << "\"O4\" \"O10\"";
 	oout << endl;
 
 	oout << "\"ORG\" \"MER\"" << endl;
-	for (int i = 1; i <= 3; ++ i) {
+	for (int i = 1; i <= 10; ++ i) {
 		for (int j = 22; j <= 28; j += 2) {
 			string O = org + to_string(i); add_comm(O);
 			string M = mer + to_string(j); add_comm(M);

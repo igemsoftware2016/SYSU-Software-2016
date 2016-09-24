@@ -20,6 +20,7 @@ void current_memory() {
 ifstream fin("data-fake.txt");
 ifstream qin("query-fake.txt");
 ifstream oin("org-data-fake.txt");
+ifstream kin("org-kcat-fake.txt");
 
 map < string, ec_data > ec_map;
 map < string, org_data > org_map;
@@ -457,14 +458,8 @@ vector <org_data> pattern_able_org;
 void dfs_pattern(int depth, int index, int inserted, set <string> s,
 	full_result current, set <full_result> & ret) {
 
-	if (dfs_pattern_t.stop() > 30.0)
+	if (dfs_pattern_t.stop() > 10.0)
 		return;
-
-	if (ret.size() > 5)
-		return;
-
-//	if (depth > 7)
-//		return;
 
 	if (s.empty() && inserted > 0) {
 		ret.insert(current);
@@ -516,6 +511,9 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 				break;
 		} while (flag);
 
+		if (0 == i_ec.size())
+			continue;
+
 		if (counter <= 7)
 			dfs_pattern(depth + 1, i + 1, inserted + counter, proc, next_res, ret);
 	}
@@ -556,6 +554,21 @@ void pattern_org(const set < set <string> > & solution) {
 		org_map[o].t_sub_list.insert(m);
 	}
 
+	getline(kin, str); //useless line;
+	while (getline(kin, str)) {
+		string o, e, k;
+		get_elment(str, o); get_elment(str, e); get_elment(str, k);
+		double kcat = atof(k.c_str());
+		org_map[o].kcat[e] = kcat;
+		org_map[o].sum_kcat += kcat;
+		org_map[o].avg_kcat = org_map[o].sum_kcat / org_map[o].kcat.size();
+		
+		if (kcat > ec_map[e].kcat) {
+			ec_map[e].kcat = kcat;
+			ec_map[e].kcat_org = o;
+		}
+	}
+
 	int count = 0;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		set < full_result > ans = dfs_pattern_init(* i);
@@ -571,7 +584,7 @@ void pattern_org(const set < set <string> > & solution) {
 				cout << ' ';
 				for (auto k = i -> insert_gene.at(* j).begin();
 					k != i -> insert_gene.at(* j).end(); ++ k) {
-					cout << ' ' << (* k);
+					cout << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
 				}
 				cout << endl;
 			}
@@ -593,7 +606,7 @@ int main() {
 	ios :: sync_with_stdio(false);
 	
 	if (false == fin.is_open() || false == qin.is_open() ||
-		false == oin.is_open()) {
+		false == oin.is_open() || false == kin.is_open()) {
 		cout << "ERROR: Fail to open file" << endl;
 		return 0;
 	}
