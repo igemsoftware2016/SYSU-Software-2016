@@ -5,5 +5,5 @@ make
 ./get-common > res.txt
 
 cat res.txt | grep sec
-cat res.txt | grep debug
+cat res.txt | grep SOLUTION
 

@@ -1,5 +1,5 @@
 CC=g++
-CFLAG=-O3 -Wall -std=c++11
+CFLAG=-O3 -Wall -std=c++11 -static
 INCLUDES=-I./include
 
 all: get-common data-fake

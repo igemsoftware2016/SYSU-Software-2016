@@ -64,7 +64,9 @@ struct sub_data {
 	vector <edge> net;
 	set <string> org;
 	string name;
-	
+
+	double g;
+
 	bool circle_flag;
 	
 	sub_data(string _name) {
@@ -99,9 +101,9 @@ struct org_data{
 			return ec_list.size() > b.ec_list.size();
 
 		if (my_abs(avg_kcat - b.avg_kcat) > 1e-4)
-			return avg_kcat < b.avg_kcat;
+			return avg_kcat > b.avg_kcat;
 
-		return t_sub_list.size() > b.t_sub_list.size();
+		return t_sub_list.size() < b.t_sub_list.size();
 	}
 
 	//
@@ -112,7 +114,7 @@ struct org_data{
 struct ec_data{
 	set < string > org_list;
 	string begin, end, kcat_org;
-	double kcat;
+	double kcat, begin_coff, end_coff;
 	
 	ec_data() {kcat = -99999;}
 	//

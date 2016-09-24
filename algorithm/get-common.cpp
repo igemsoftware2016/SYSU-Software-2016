@@ -21,6 +21,7 @@ ifstream fin("data-fake.txt");
 ifstream qin("query-fake.txt");
 ifstream oin("org-data-fake.txt");
 ifstream kin("org-kcat-fake.txt");
+ifstream gin("mer-g-fake.txt");
 
 map < string, ec_data > ec_map;
 map < string, org_data > org_map;
@@ -41,9 +42,16 @@ void get_elment(string & s, string & x) {
 	s.erase(0, pos + 1);
 }
 
-void add_ec(string x) {
-	if (0 == ec_map.count(x))
+void add_ec(string x, string pro_id, string sub_id, string pro_coff,
+	string sub_coff) {
+
+	if (0 == ec_map.count(x)) {
 		ec_map.insert(make_pair(x, ec_data()));
+		ec_map[x].begin = pro_id;
+		ec_map[x].end = sub_id;
+		ec_map[x].begin_coff = atof(pro_coff.c_str());
+		ec_map[x].end_coff = atof(sub_coff.c_str());
+	}
 }
 
 void add_sub(string x, string name) {
@@ -82,7 +90,8 @@ void input() {
 #ifdef timer_check
 		total_read_time += t.stop();
 #endif
-		string ec_name, sub_id, sub_name, pro_id, pro_name, org_name;
+		string ec_name, sub_id, sub_name, pro_id, pro_name, org_name, sub_coff,
+			pro_coff;
 		
 #ifdef input_debug
 		++ input_count;
@@ -96,6 +105,7 @@ void input() {
 		get_elment(s, sub_id); get_elment(s, sub_name);
 		get_elment(s, pro_id); get_elment(s, pro_name);
 		get_elment(s, org_name);
+		get_elment(s, sub_coff); get_elment(s, pro_coff);
 
 #ifdef timer_check
 		get_elment_time += t.stop();
@@ -107,7 +117,7 @@ void input() {
 		<< sub_name << ' ' << pro_id << ' ' << pro_name << endl;
 #endif
 
-		add_ec(ec_name);
+		add_ec(ec_name, pro_id, sub_id, pro_coff, sub_coff);
 		add_sub(sub_id, sub_name);
 		add_sub(pro_id, pro_name);
 		add_org(org_name);
@@ -116,8 +126,6 @@ void input() {
 
 		org_map[org_name].ec_list.insert(ec_name);
 		ec_map[ec_name].org_list.insert(org_name);
-		ec_map[ec_name].begin = pro_id;
-		ec_map[ec_name].end = sub_id;
 
 		sub_map[sub_id].org.insert(org_name);
 		sub_map[pro_id].org.insert(org_name);
@@ -217,6 +225,7 @@ void graph_migrate() {
 
 vector <string> current_solution;
 map < int, vector < vector <string> > > solution;
+map < int, vector <int> > delta_g;
 
 void dfs_res_print(int x, int dep, const int & target) {
 	//cout << string(dep, ' ') << sub_vec[x] << endl;
@@ -413,6 +422,30 @@ set < set <string> > bfs_match_init() {
 }
 
 set < set <string> > match() {
+	string str; getline(gin, str);
+	while (getline(gin, str)) {
+		string mer, g_str;
+		get_elment(str, mer); get_elment(str, g_str);
+		sub_map[mer].g = atof(g_str.c_str());
+	}
+
+	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		if (i -> second.size() <= 1)
+			continue;
+
+		for (auto j = i -> second.begin(); j != i -> second.end(); ++ j) {
+			size_t sol_size = j -> size() - 1;
+			double g = sub_map[ec_map[j -> at(0)].end].g;
+			double origin_g = sub_map[ec_map[j -> at(sol_size)].begin].g;
+			for (int k = (int) sol_size; k >= 0; -- k) {
+				g = g / ec_map[j -> at(k)].begin_coff
+				* ec_map[j -> at(k)].end_coff;
+			}
+
+			delta_g[i -> first].push_back((g - origin_g) / my_abs(g));
+		}
+	}
+
 	unsigned long long count = 1;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		count *= i -> second.size();
@@ -606,7 +639,8 @@ int main() {
 	ios :: sync_with_stdio(false);
 	
 	if (false == fin.is_open() || false == qin.is_open() ||
-		false == oin.is_open() || false == kin.is_open()) {
+		false == oin.is_open() || false == kin.is_open() ||
+		false == gin.is_open()) {
 		cout << "ERROR: Fail to open file" << endl;
 		return 0;
 	}
