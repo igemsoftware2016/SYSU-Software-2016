@@ -5,22 +5,32 @@
 
 #include <set>
 #include <map>
+#include <vector>
 #include <string>
 #include <fstream>
+#include <utility>
+#include <iostream>
 
 using std :: set;
 using std :: map;
 using std :: endl;
+using std :: pair;
+using std :: vector;
 using std :: string;
 using std :: ifstream;
 using std :: ofstream;
+using std :: make_pair;
+using std :: cout;
+using std :: to_string;
 
 using namespace Ipopt;
 
 class opt_com_nlp: public TNLP {
 public:
 
-	opt_com_nlp(set <string>, map < string, set <string> >);
+	opt_com_nlp(set <string>, map < string, set <string> >, map <string, double>, 
+		map <string , double>);
+
 	virtual ~opt_com_nlp();
 
 	virtual bool get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
@@ -59,6 +69,13 @@ public:
 		IpoptCalculatedQuantities* ip_cq);
 
 private:
+
+	map < int, map <int, int> > s_mat;
+	vector < string > s_mat_n_mer;
+
+	vector < map < int, map <int, int> > > s1_mat, s2_mat;
+	vector < int > s1_mat_n, s2_mat_n, s1_mat_m, s2_mat_m;
+	vector < vector <string> > s1_mat_n_mer, s2_mat_n_mer;
 
 	opt_com_nlp(const opt_com_nlp&);
 	opt_com_nlp& operator=(const opt_com_nlp&);

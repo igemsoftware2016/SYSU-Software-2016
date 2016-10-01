@@ -16,13 +16,19 @@ get-common: get-common.cpp
 	$(CC) $(CFLAG) $(INCLUDES) -o $@ $^
 
 opt-test: MyNLP.o opt-test.o
-	g++ $(CFLAG) $(OPTL) -o $@ $^ $(OPTK)
+	$(CC) $(CFLAG) $(OPTL) -o $@ $^ $(OPTK)
 
 OptCom-test: OptCom.o OptCom-test.o
-	g++ $(CFLAG) $(OPTL) -o $@ $^ $(OPTK)
+	$(CC) $(CFLAG) $(OPTL) -o $@ $^ $(OPTK)
+
+OptCom.o: OptCom.cpp ./include/OptCom.h
+	$(CC) $(CFLAG) $(INCLUDES) -c -o $@ $<
+
+./include/*.h: ./include/coin/*.h
+	touch @^
 
 %.o: %.cpp
-	g++ $(CFLAG) $(INCLUDES) -c -o $@ $^
+	$(CC) $(CFLAG) $(INCLUDES) -c -o $@ $^
 
 clean:
 	-rm get-common

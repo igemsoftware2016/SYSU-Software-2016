@@ -2,9 +2,11 @@
 
 using namespace Ipopt;
 
-opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> >) {
+opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
+	map <string, double> u, map <string , double> c) {
+
 	ifstream all("./org_files/all.txt");
-	ofstream res("./org_files/res.txt");
+	ofstream log("./org_files/res.txt");
 
 	int ec_count;
 	all >> ec_count;
@@ -24,13 +26,154 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> >) {
 
 	all.close();
 
+	int n_count = 0, m_count = 0;
+
+	s1_mat_n.resize(orgs.size());
+	s2_mat_n.resize(orgs.size());
+	s1_mat_m.resize(orgs.size());
+	s2_mat_m.resize(orgs.size());
+
+	//cout << 1 << endl;
+
+	int index = 0;
 	for (auto i = orgs.begin(); i != orgs.end(); ++ i) {
 		ifstream org("./org_files/" + (*i) + ".txt");
-		res << "./org_files/" + (*i) + ".txt" << endl;
+
+		map <string, int> s_mer_to_index;
+		map <string, int> s1_mer_to_index;
+		map <string, int> s2_mer_to_index;
+
+		s1_mat_n_mer.push_back(vector <string>());
+		s2_mat_n_mer.push_back(vector <string>());
+
+		s1_mat_n[index] = s1_mat_m[index] = s2_mat_m[index] = s2_mat_n[index] = 0;
+
+		int ec_count; org >> ec_count;
+		
+		map < int , map <int, int> > s1n;
+		map < int , map <int, int> > s2n;
+		
+		bool flag1, flag2;
+		//cout << "ORG" << index << ' ' << ec_count << endl;
+		for (int ec_idx = 0; ec_idx < ec_count; ++ ec_idx) {
+			string ec_name; int mer_size;
+			org >> ec_name >> mer_size;
+
+			set <string> s_list;
+			
+			flag1 = flag2 = false;
+
+			for (int j = 0; j < mer_size; ++ j) {
+				string mer_name; org >> mer_name;
+
+				if (0 == s_mer_to_index.count(mer_name)) {
+					s_mer_to_index.insert(make_pair(mer_name, n_count ++));
+					s_mat_n_mer.push_back(to_string(index) + mer_name);
+				}
+
+				s_list.insert(mer_name);
+			}
+
+			for (auto j = s_list.begin(); j != s_list.end(); ++ j) {
+				int x; org >> x;
+				s_mat[m_count][s_mer_to_index[* j]] = x;
+				if (u.count(* j)) {
+					flag2 = true; //cout << 2 << ' ' << index << endl;
+					if (0 == s2_mer_to_index.count(* j)) {
+						s2_mer_to_index.insert(make_pair(* j, s2_mat_n[index] ++));
+						s2_mat_n_mer[index].push_back(*j);
+					}
+					s2n[s2_mat_m[index]][s2_mer_to_index[* j]] = x;
+				}
+				else {
+					flag1 = true; //cout << 1 << ' ' << index << endl;
+					if (0 == s1_mer_to_index.count(* j)) {
+						s1_mer_to_index.insert(make_pair(* j, s1_mat_n[index] ++));
+						s1_mat_n_mer[index].push_back(*j);
+					}
+					s1n[s1_mat_m[index]][s1_mer_to_index[* j]] = x;
+				}
+			}
+
+			if (flag1)
+				++ s1_mat_m[index];
+			if (flag2)
+				++ s2_mat_m[index];
+
+			++ m_count;
+		}
+
 		org.close();
+
+		for (auto ec_idx = ins[*i].begin(); ec_idx != ins[*i].end(); ++ ec_idx) {
+			string ec_name = * ec_idx;
+			flag1 = flag2 = false;
+
+			for (auto k = ec_list[ec_name].begin(); k != ec_list[ec_name].end(); ++ k) {
+				string mer_name = k -> first;
+				if (0 == s_mer_to_index.count(mer_name)) {
+					s_mer_to_index.insert(make_pair(mer_name, n_count ++));
+					s_mat_n_mer.push_back(to_string(index) + mer_name);
+				}
+				s_mat[m_count][s_mer_to_index[mer_name]] = k -> second;
+				
+				if (u.count(mer_name)) {
+					flag2 = true;
+					if (0 == s2_mer_to_index.count(mer_name)) {
+						s2_mer_to_index.insert(make_pair(mer_name, s2_mat_n[index] ++));
+						s2_mat_n_mer[index].push_back(mer_name);
+					}
+					s2n[s2_mat_m[index]][s2_mer_to_index[mer_name]] = k -> second;
+				}
+				else {
+					flag1 = true;
+					if (0 == s1_mer_to_index.count(mer_name)) {
+						s1_mer_to_index.insert(make_pair(mer_name, s1_mat_n[index] ++));
+						s1_mat_n_mer[index].push_back(mer_name);
+					}
+					s1n[s1_mat_m[index]][s1_mer_to_index[mer_name]] = k -> second;
+				}
+			}
+			
+			if (flag1)
+				++ s1_mat_m[index];
+			if (flag2)
+				++ s2_mat_m[index];
+
+			++ m_count;
+		}
+		s1_mat.push_back(s1n);
+		s2_mat.push_back(s2n);
+		++ index;
 	}
-	
-	res.close();
+
+	for (int i = 0; i < m_count; ++ i) {
+		for (int j = 0; j < n_count; ++ j)
+			log << s_mat[i][j] << ' ';
+		log << endl;
+	}
+
+	log << endl;
+
+	for (size_t i = 0; i < orgs.size(); ++ i) {
+		log << i << ' ' << s1_mat_m[i] << ' ' << s1_mat_n[i] << endl;
+		for (int x = 0; x < s1_mat_m[i]; ++ x) {
+			for (int y = 0; y < s1_mat_n[i]; ++ y)
+				log << s1_mat[i][x][y] << ' ';
+			log << endl;
+		}
+	}
+
+	for (size_t i = 0; i < orgs.size(); ++ i) {
+		log << i << ' ' << s2_mat_m[i] << ' ' << s2_mat_n[i] << endl;
+		for (int x = 0; x < s2_mat_m[i]; ++ x) {
+			for (int y = 0; y < s2_mat_n[i]; ++ y)
+				log << s2_mat[i][x][y] << ' ';
+			log << endl;
+		}
+	}
+
+	log.close();
 };
 
 opt_com_nlp :: ~opt_com_nlp() {};
