@@ -23,6 +23,8 @@ ifstream oin("org-data-fake.txt");
 ifstream kin("org-kcat-fake.txt");
 ifstream gin("mer-g-fake.txt");
 
+string work_type;
+
 set < string > needed;
 map < string, ec_data > ec_map;
 map < string, org_data > org_map;
@@ -76,6 +78,8 @@ void add_network_edge(string x, string y, string ec) {
 }
 
 void input() {
+	qin >> work_type;
+
 #ifdef input_debug
 	int input_count = 0;
 #endif
@@ -108,6 +112,12 @@ void input() {
 		get_elment(s, org_name);
 		get_elment(s, sub_coff); get_elment(s, pro_coff);
 
+		if ("synthetic" != work_type) {
+			swap(sub_id, pro_id);
+			swap(sub_name, pro_name);
+			swap(sub_coff, pro_coff);
+		}
+
 #ifdef timer_check
 		get_elment_time += t.stop();
 		t.start();
@@ -127,6 +137,9 @@ void input() {
 
 		org_map[org_name].ec_list.insert(ec_name);
 		ec_map[ec_name].org_list.insert(org_name);
+
+		ec_map[ec_name].kcat_org = org_name;
+		ec_map[ec_name].kcat = 0.0;
 
 		sub_map[sub_id].org.insert(org_name);
 		sub_map[pro_id].org.insert(org_name);
@@ -155,9 +168,11 @@ void size_output() {
 
 void get_common() {
 	map < string, sub_data > :: iterator k;
-	for (k = sub_map.begin(); k != sub_map.end(); ++ k) {
-		if ( k -> second.org.size() == org_map.size() ) {
-			k -> second.circle_flag = true;
+	if (work_type == "synthetic") {
+		for (k = sub_map.begin(); k != sub_map.end(); ++ k) {
+			if ( k -> second.org.size() == org_map.size() ) {
+				k -> second.circle_flag = true;
+			}
 		}
 	}
 }
@@ -273,6 +288,7 @@ void ec_path_bfs(string x) {
 			cost.from = x;
 			cost.ec = sub_edge_ec[k];
 			
+			//cout << sub_vec[x] << ' ' << sub_vec[y] << endl;
 			for (set < ec_path_result > :: iterator i =
 				 sub_res[x].results.begin();
 				 i != sub_res[x].results.end(); ++ i) {
@@ -292,7 +308,10 @@ void ec_path_bfs(string x) {
 
 	current_solution.clear();
 
+	solution[first];
+
 	for (int x = 0; x < sub_size; ++ x) if (sub_flag[x]) {
+
 		if (sub_res[x].results.empty())
 			continue;
 
@@ -306,10 +325,14 @@ set < set <string> > greedy_match() {
 	map <int, bool> mark;
 	
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		if (0 == i -> second.size())
+			continue;
+
 		if (1 != i -> second.size()) {
 			mark.insert(make_pair(i -> first, false)) ;
 			continue;
 		}
+		
 		mark.insert(make_pair(i -> first, true));
 		for (auto k = i -> second.at(0).begin();
 			k != i -> second.at(0).end(); ++ k)
@@ -321,6 +344,8 @@ set < set <string> > greedy_match() {
 
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
 		if (mark[i -> first])
+			continue;
+		if (i -> second.size() == 0)
 			continue;
 
 		auto res_less = i -> second.end();
@@ -394,6 +419,14 @@ void bfs_match(set <string> current_solution,
 		}
 
 		auto next = it; ++ next;
+		if (0 == it -> second.size()) {
+			q.push(make_pair(next, sol));
+			int tmp = -1;
+			if (next != solution.end())
+				tmp = next -> first;
+			visit.insert(make_pair(tmp, sol));
+		}
+
 		for (size_t i = 0; i < it -> second.size(); ++ i) {
 			set <string> next_solution = sol;
 
@@ -432,10 +465,12 @@ set < set <string> > match() {
 	}
 
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
-		if (i -> second.size() <= 0) {
+		if (work_type == "synthetic" && i -> second.size() <= 0) {
 			cout << "No Solution" << endl;
 			exit(0);
 		}
+
+		cout << i -> second.size() << endl;
 
 		if (i -> second.size() <= 1)
 			continue;
@@ -455,10 +490,14 @@ set < set <string> > match() {
 
 	unsigned long long count = 1;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		if (i -> second.size() == 0)
+			continue;
 		count *= i -> second.size();
 		if (count > (1 << 14))
 			break;
 	}
+
+	cout << count << endl;
 
 	if (count > (1 << 14))
 		return greedy_match();
@@ -481,12 +520,33 @@ void search() {
 #ifdef stress_test
 		sub_id = sub_vec[i];
 #endif
+		needed.insert(sub_id);
+		//ec_path_bfs(sub_id);
+	}
 
+	if (work_type != "synthetic") {
+		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
+			if ( needed.count(k -> first) ) {
+				sub_flag[sub_index[k -> first]] = true;
+			}
+		}
+
+		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
+			if ( false == sub_flag[sub_index[k -> first]] ) {
+				for (int j = 0; j < sub_size; ++ j)
+					sub_res[j].clear();
+				ec_path_bfs(k -> first);
+			}
+		}
+
+		cout << endl;
+		return;
+	}
+
+	for (auto i = needed.begin(); i != needed.end(); ++ i) {
 		for (int j = 0; j < sub_size; ++ j)
 			sub_res[j].clear();
-
-		needed.insert(sub_id);
-		ec_path_bfs(sub_id);
+		ec_path_bfs(* i);
 	}
 
 	cout << endl;
@@ -499,7 +559,7 @@ vector <org_data> pattern_able_org;
 void dfs_pattern(int depth, int index, int inserted, set <string> s,
 	full_result current, set <full_result> & ret) {
 
-	if (dfs_pattern_t.stop() > 10.0)
+	if (dfs_pattern_t.stop() > 30.0)
 		return;
 
 	if (s.empty() && inserted > 0) {
@@ -532,7 +592,7 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 			for (auto j = i_ec.begin(); j != i_ec.end(); ++ j) {
 				string mer = ec_map[* j].begin;
 
-				if (false == pattern_able_org[i].t_sub_list.count(mer))
+				if (false == pattern_able_org[i].t_sub_list.count(mer) && false == needed.count(mer))
 					for (auto k = proc.begin(); k != proc.end(); ++ k) {
 						if (ec_map[* k].end ==  mer) {
 							insert_g.insert(* k);
@@ -569,8 +629,6 @@ set < full_result > dfs_pattern_init(const set <string> & s) {
 			pattern_able_org.push_back(i -> second);
 			
 	sort(pattern_able_org.begin(), pattern_able_org.end());
-
-	dfs_pattern_t.start();
 
 	dfs_pattern(0, 0, 0, s, current, ret);
 
@@ -609,6 +667,8 @@ void pattern_org(const set < set <string> > & solution) {
 			ec_map[e].kcat_org = o;
 		}
 	}
+
+	dfs_pattern_t.start();
 
 	int count = 0;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
