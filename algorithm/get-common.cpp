@@ -23,6 +23,7 @@ ifstream oin("org-data-fake.txt");
 ifstream kin("org-kcat-fake.txt");
 ifstream gin("mer-g-fake.txt");
 
+set < string > needed;
 map < string, ec_data > ec_map;
 map < string, org_data > org_map;
 map < string, sub_data > sub_map;
@@ -247,7 +248,8 @@ void ec_path_bfs(string x) {
 	cout << x << endl;
 	if (0 == sub_index.count(x)) {
 		cout << "ERROR: IT'S NOT EXIST IN THE DATA." << endl;
-		return;
+		cout << "NO Solution" << endl;
+		exit(0);
 	}
 	cout << sub_map[x].name << endl;
 	
@@ -430,6 +432,11 @@ set < set <string> > match() {
 	}
 
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
+		if (i -> second.size() <= 0) {
+			cout << "No Solution" << endl;
+			exit(0);
+		}
+
 		if (i -> second.size() <= 1)
 			continue;
 
@@ -478,6 +485,7 @@ void search() {
 		for (int j = 0; j < sub_size; ++ j)
 			sub_res[j].clear();
 
+		needed.insert(sub_id);
 		ec_path_bfs(sub_id);
 	}
 
