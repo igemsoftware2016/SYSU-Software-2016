@@ -1,5 +1,6 @@
 #include "input_utils.h"
 
+#include <unistd.h>
 #include <algorithm>
 
 using std :: min;
@@ -39,6 +40,13 @@ int get_score(map <string, substance> & substance_list,
 }
 
 int main() {
+	char buffer[256];
+	if (getcwd(buffer, 256) == NULL) {
+		perror("Dude, permitsion denied");
+		return 0;
+	}
+
+	string orgname = buffer;
 
 	vector <reaction> reaction_list;
 	map <string, substance> substance_list;
@@ -48,6 +56,17 @@ int main() {
 
 	ofstream res("pairing_result.txt");
 	ofstream log("log.txt");
+
+	log << orgname << endl;
+
+	string sw = orgname;
+	orgname = "";
+	int sw_l = sw.size() - 1;
+	while (sw[sw_l] != '/') {
+		orgname = sw[sw_l] + orgname;
+		-- sw_l;
+	}
+	log << orgname << endl;
 
 	int ord_size, inord_size;
 	ord_size = inord_size = 0;
@@ -82,26 +101,26 @@ int main() {
 		vector <int> tot = score;
 		sort(tot.begin(), tot.end());
 
-		log << tot.size() << endl;
+		//log << tot.size() << endl;
 		int limit = tot.size() - 1;
 		while (limit > 0 && inf == tot[limit])
 			-- limit;
-		log << '\t' << 1 << limit << endl;
+		//log << '\t' << 1 << limit << endl;
 
 		if (limit >= max(sub_size, pdt_size))
 			limit = min(sub_size * pdt_size - max(sub_size, pdt_size), limit);
 
 		limit = max(limit, 0);
-		log << '\t' << 2 << limit << endl;
+		//log << '\t' << 2 << limit << endl;
 
 		if ((int)tot.size() > limit)
 			limit = tot[limit];
 		else limit = 0;
 
-		log << '\t' << 3 << limit << endl;
+		//log << '\t' << 3 << limit << endl;
 		if (inf == limit)
 			limit --;
-		log << '\t' << 4 << limit << endl;
+		//log << '\t' << 4 << limit << endl;
 
 		sub_index = 0;
 		for (auto j = i -> sub.begin(); j != i -> sub.end(); ++ j) {
@@ -113,6 +132,7 @@ int main() {
 						'\"' << substance_list[j -> first].name << "\"\t" <<
 						'\"' << ((substance_list[k -> first].ID == "") ? (substance_list[k -> first].name) : (substance_list[k -> first].ID)) << "\"\t" <<
 						'\"' << substance_list[k -> first].name << "\"\t" <<
+						'\"' << orgname << "\"\t" <<
 						'\"' << j -> second << "\"\t\"" << k -> second << '\"' << endl;
 
 				++ pdt_index;

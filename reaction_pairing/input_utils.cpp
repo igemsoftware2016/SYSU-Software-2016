@@ -21,7 +21,7 @@ mol_file :: ~mol_file() {
 }
 
 void substance :: clear() {
-	atom.clear(); name = ""; ID="";
+	atom.clear(); name = ""; ID=""; types.clear(); comm.clear();
 }
 
 int to_int(string x) {
@@ -58,7 +58,7 @@ bool drop_test(string x) {
 }
 
 void reaction :: clear() {
-	sub.clear(); pdt.clear();
+	sub.clear(); pdt.clear(); enr.clear();
 	ec_name = "";
 }
 
@@ -68,8 +68,17 @@ string first_useful(ifstream & fin) {
 	return str;
 }
 
+string all_caps(string x) {
+	for (size_t i = 0; i < x.size(); ++ i)
+		if ('a' <= x[i] && x[i] <= 'z')
+			x[i] = x[i] - 'a' + 'A';
+	return x;
+}
+
 bool input_initial(vector <reaction>& reaction_list,
 	map <string, substance>& substance_list) {
+	
+	std :: ios :: sync_with_stdio(false);
 	
 	map <string, int> ec_check;
 
@@ -105,6 +114,16 @@ bool input_initial(vector <reaction>& reaction_list,
 			sin >> current_subs.ID;
 			current_subs.ID.pop_back();
 		}
+	
+		if (check_element(str, "TYPES")) {
+			string s = all_caps(get_element(str, "TYPES"));
+			current_subs.types.insert(s);
+		}
+
+		if (check_element(str, "COMMON-NAME")) {
+			string s = all_caps(get_element(str, "COMMON-NAME"));
+			current_subs.comm.insert(s);
+		}
 
 		if ("//" == str) {
 			if (substance_list.count(current_subs.name))
@@ -131,6 +150,11 @@ bool input_initial(vector <reaction>& reaction_list,
 			if (current_react.ec_name != "")
 				continue;
 			current_react.ec_name = get_element(str, "UNIQUE-ID");
+		}
+
+		if (check_element(str, "ENZYMATIC-REACTION")) {
+			string ecr_sdtr = get_element(str, "ENZYMATIC-REACTION");
+			current_react.enr.insert(ecr_sdtr);
 		}
 
 		if (check_element(str , "LEFT")) {

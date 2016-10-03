@@ -17,10 +17,10 @@ int main() {
 		res << reaction_list[i].sub.size() + reaction_list[i].pdt.size() << '\t';
 		for (auto j = reaction_list[i].sub.begin();
 			j != reaction_list[i].sub.end(); ++ j)
-			res << j -> first << '\t';
+			res << ((substance_list[j -> first].ID == "") ? (substance_list[j -> first].name) : (substance_list[j -> first].ID)) << '\t';
 		for (auto j = reaction_list[i].pdt.begin();
 			j != reaction_list[i].pdt.end(); ++ j)
-			res << j -> first << '\t';
+			res << ((substance_list[j -> first].ID == "") ? (substance_list[j -> first].name) : (substance_list[j -> first].ID)) << '\t';
 		for (auto j = reaction_list[i].sub.begin();
 			j != reaction_list[i].sub.end(); ++ j)
 			res << j -> second << '\t';

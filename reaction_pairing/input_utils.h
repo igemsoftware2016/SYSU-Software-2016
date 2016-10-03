@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <utility>
+#include "unistd.h"
 
 namespace mol {
 
@@ -25,6 +26,7 @@ using std :: make_pair;
 class substance {
 public:
 	map <string, int> atom;
+	set <string> types, comm;
 	string name, ID;
 	substance();
 	~substance();
@@ -38,6 +40,7 @@ private:
 class reaction {
 public:
 	map <string, int> sub, pdt;
+	set <string> enr;
 	string ec_name;
 
 	reaction();
@@ -58,6 +61,7 @@ private:
 	mol_file& operator = (const mol_file&);
 };
 
+string all_caps(string);
 int to_int(string x);
 bool drop_test(string x);
 string get_element(string str, string x);
