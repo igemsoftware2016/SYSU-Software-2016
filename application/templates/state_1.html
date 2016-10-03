@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>State 1</title>
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/menu.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/dropdown.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/search.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/checkbox.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/sticky.min.css">
+  <!-- put css stylesheet down here -->
+  <link rel="stylesheet" type="text/css" href="./static/css/state_1.css">
+  <!-- put css stylesheet down here -->
+</head>
+<body>
+  <!-- <div class="container ui"> </div>  -->
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
+    <div class="ui container">
+      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
+      <div class="item">
+        <div class="ui category search item">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="right menu">
+        <a class="item">Wiki</a>
+        <a class="item">Help</a>
+        <div class="ui dropdown item">
+          My <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item">My Profile</a>
+            <a class="item">Setting</a>
+            <div class="divider"></div>
+            <a class="item">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="ui grey button icon compact" id="to-top">
+    <i class="arrow up icon"></i>
+  </button>
+
+  <div class="ui column fluid" id="top-bg">
+
+    <div class="container ui" id="main-container">
+      <!-- put code here with-->
+      <div class="ui five steps sticky">
+        <a class="step">
+          <i class="green check circle icon"></i>
+          <div class="content">
+            <div class="title">Step 1</div>
+          </div>
+        </a>
+        <a class="step">
+          <i class="green check circle icon"></i>
+          <div class="content">
+            <div class="title">Step 2</div>
+          </div>
+        </a>
+        <a class="active step">
+          <i class="info circle icon"></i>
+          <div class="content">
+            <div class="title">Step 3</div>
+          </div>
+        </a>
+        <a class="disabled step">
+          <i class="help circle icon"></i>
+          <div class="content">
+            <div class="title">Step 4</div>
+          </div>
+        </a>
+        <a class="disabled step">
+          <i class="help circle icon"></i>
+          <div class="content">
+            <div class="title">Step 5</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="ui column grid state">
+        <div class="ui row">
+          <div class="ui column fifteen wide">
+            <h2 class="ui green header">
+              <i class="settings icon default black"></i>
+              <div class="content">产生物质
+                <div class="sub header">sub-title here</div>
+              </div>
+            </h2>
+          </div>
+
+          <div class="ui column one wide">
+            <button class="ui circular plus icon button small green" id="add-make">
+              <i class="plus icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="ui row">
+          <div class="ui column fluid">
+            <table class="ui very basic table">
+              <thead>
+                <tr>
+                  <th class="four wide">物质名称</th>
+                  <th class="two wide">浓度下限</th>
+                  <th class="two wide">浓度上限</th>
+                  <th class="one wide">浓度MAX</th>
+                  <th class="one wide">浓度MIN</th>
+                  <th class="one wide right aligned">删除</th>
+                </tr></thead>
+                <tbody id="make-tbody">
+                  <tr class="make-line">
+                    <td class="center aligned">
+                      <div class="ui input fluid name search">
+                        <input class="prompt" type="text" placeholder="Search matter...">
+                      </div>
+                      <div class="results"></div>
+                    </td>
+                    <td class="center aligned">
+                      <div class="ui right labeled input fluid">
+                        <input type="text" placeholder="Weight..">
+                        <div class="ui basic label">Unit </div>
+                      </div>
+                    </td>
+                    <td class="center aligned">
+                      <div class="ui right labeled input fluid">
+                        <input type="text" placeholder="Weight..">
+                        <div class="ui basic label">Unit </div>
+                      </div>
+                    </td>
+                    <td class="center aligned">
+                      <div class="ui toggle checkbox">
+                        <input type="checkbox">
+                        <label></label>
+                      </div>
+                    </td>
+                    <td class="center aligned">
+                      <div class="ui toggle checkbox">
+                        <input type="checkbox">
+                        <label></label>
+                      </div>
+                    </td>
+                    <td class="right aligned">
+                      <button class="ui circular minus icon button tiny remove-add">
+                        <i class="minus icon"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div> <!-- row 1 make matter -->
+
+          <div class="ui divider"></div>
+
+          <!-- row 2 resolve matter -->
+          <div class="ui row">
+            <div class="ui column fifteen wide">
+              <h2 class="ui yellow header">
+                <i class="settings icon default black"></i>
+                <div class="content">分解物质
+                  <div class="sub header">sub-title here</div>
+                </div>
+              </h2>
+            </div>
+
+            <div class="ui column one wide">
+              <button class="ui circular plus icon button small yellow" id="add-resolve">
+                <i class="plus icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="ui row">
+            <div class="ui column fluid">
+              <table class="ui very basic table collapsing">
+                <thead>
+                  <tr>
+                    <th class="three wide">物质名称</th>
+                    <th class="two wide">开始浓度</th>
+                    <th class="one wide right aligned">删除</th>
+                  </tr></thead>
+                  <tbody id="resolve-tbody">
+                    <tr class="resolve-line">
+                      <td class="center aligned">
+                        <!-- 可以自动补全 -->
+                        <div class="ui input fluid name search">
+                          <input class="prompt" type="text" placeholder="Search matter...">
+                        </div>
+                        <div class="results"></div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <input type="text" placeholder="Weight..">
+                          <div class="ui basic label">Unit </div>
+                        </div>
+                      </td>
+                      <td class="right aligned">
+                        <button class="ui circular minus icon button tiny remove-resolve">
+                          <i class="minus icon"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> <!-- row 2 resolve matter -->
+
+            <div class="ui divider"></div>
+            <!-- row 3 others -->
+            <div class="ui row">
+              <div class="ui column fluid wide">
+                <h2 class="ui violet header">
+                  <i class="settings icon default black"></i>
+                  <div class="content">其他设置
+                    <div class="sub header">sub-title here</div>
+                  </div>
+                </h2>
+              </div>
+            </div>
+
+            <div class="ui row grid divided">
+              <div class="ui column four wide">
+                <label><b>时间</b></label>
+                <div class="ui right labeled left icon input fluid">
+                  <i class="time icon"></i>
+                  <input type="text" placeholder="Enter time">
+                  <div class="ui tag label gray small">Unit</div>
+                </div>
+              </div>
+
+              <div class="ui column four wide">
+                <label><b>培养基</b></label>
+                <div class="ui fluid search dropdown selection">
+                  <select name="card[expire-month]">
+                    <option value="">Month</option>
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6">June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                  </select>
+                  <i class="dropdown icon"></i>
+                  <input class="search" autocomplete="off" tabindex="0">
+                  <div class="default text">Month</div>
+                  <div class="menu transition hidden" tabindex="-1">
+                    <div class="item selected" data-value="1">January</div>
+                    <div class="item" data-value="2">February</div>
+                    <div class="item" data-value="3">March</div>
+                    <div class="item" data-value="4">April</div>
+                    <div class="item" data-value="5">May</div>
+                    <div class="item" data-value="6">June</div>
+                    <div class="item" data-value="7">July</div>
+                    <div class="item" data-value="8">August</div>
+                    <div class="item" data-value="9">September</div>
+                    <div class="item" data-value="10">October</div>
+                    <div class="item" data-value="11">November</div>
+                    <div class="item" data-value="12">December</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui column eight wide form">
+                <label><b>背景菌群</b></label>
+                <div class="two fields">
+                  <div class="field">
+                    <div class="ui search dropdown selection">
+                      <select name="card[expire-month]">
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                      <i class="dropdown icon"></i>
+                      <input class="search" autocomplete="off" tabindex="0">
+                      <div class="default text">Month</div>
+                      <div class="menu transition hidden" tabindex="-1">
+                        <div class="item selected" data-value="1">January</div>
+                        <div class="item" data-value="2">February</div>
+                        <div class="item" data-value="3">March</div>
+                        <div class="item" data-value="4">April</div>
+                        <div class="item" data-value="5">May</div>
+                        <div class="item" data-value="6">June</div>
+                        <div class="item" data-value="7">July</div>
+                        <div class="item" data-value="8">August</div>
+                        <div class="item" data-value="9">September</div>
+                        <div class="item" data-value="10">October</div>
+                        <div class="item" data-value="11">November</div>
+                        <div class="item" data-value="12">December</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui column">
+                      <button class="ui medium button">Upload File</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- 输入框们 -->
+
+            <div class="ui row">
+              <div class="ui column grid centered">
+                <div class="ui five wide column center aligned fluid">
+                  <button class="ui black button big">Upload File</button>
+                </div>
+                <div class="ui five wide column center aligned fluid">
+                  <button class="ui blue button big">Save</button>
+                </div>
+                <div class="ui five wide column center aligned fluid ">
+                  <button class="ui green button big">Next Step</button>
+                </div>
+              </div>
+            </div> <!-- 按钮们 -->
+
+
+            <!-- row 3 others matter -->
+          </div> <!-- state_1 grid -->
+
+        </div> <!-- main-container end -->
+      </div>
+
+      <!-- put code here, without background image -->
+
+      <!-- footer -->
+      <!-- <div class="ui one column grid footer"> -->
+      <div class="ui vertical footer segment column fliud">
+        <div class="ui center aligned container">
+          SYSU-Software 2016
+        </div>
+      </div>
+      <!-- </div> -->
+
+
+      <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
+      <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
+      <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
+      <script type="text/javascript" src="./static/js/base.js"></script>
+      <script type="text/javascript" src="./static/css/semantic/components/dropdown.min.js"></script>
+      <script type="text/javascript" src="./static/css/semantic/components/search.min.js"></script>
+      <script type="text/javascript" src="./static/css/semantic/components/checkbox.min.js"></script>
+      <script type="text/javascript" src="./static/css/semantic/components/sticky.min.js"></script>
+      <!-- put javascript down here -->
+      <script type="text/javascript" src="./static/js/state_1.js"></script>
+      <!-- put javascript down here -->
+      <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+      </script>
+    </body>
+    </html>

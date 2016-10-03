@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>State 3</title>
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/menu.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/dropdown.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/search.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/checkbox.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/sticky.min.css">
+  <!-- put css stylesheet down here -->
+  <link rel="stylesheet" type="text/css" href="./static/css/state_3.css">
+  <!-- put css stylesheet down here -->
+</head>
+<body>
+  <!-- <div class="container ui"> </div>  -->
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
+    <div class="ui container">
+      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
+      <div class="item">
+        <div class="ui category search item">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="right menu">
+        <a class="item">Wiki</a>
+        <a class="item">Help</a>
+        <div class="ui dropdown item">
+          My <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item">My Profile</a>
+            <a class="item">Setting</a>
+            <div class="divider"></div>
+            <a class="item">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="ui grey button icon compact" id="to-top">
+    <i class="arrow up icon"></i>
+  </button>
+
+  <div class="ui column fluid" id="top-bg">
+
+    <div class="container ui" id="main-container">
+      <!-- put code here with-->
+      <div class="ui five steps sticky">
+        <a class="step">
+          <i class="green check circle icon"></i>
+          <div class="content">
+            <div class="title">Step 1</div>
+          </div>
+        </a>
+        <a class="step">
+          <i class="green check circle icon"></i>
+          <div class="content">
+            <div class="title">Step 2</div>
+          </div>
+        </a>
+        <a class="active step">
+          <i class="info circle icon"></i>
+          <div class="content">
+            <div class="title">Step 3</div>
+          </div>
+        </a>
+        <a class="disabled step">
+          <i class="help circle icon"></i>
+          <div class="content">
+            <div class="title">Step 4</div>
+          </div>
+        </a>
+        <a class="disabled step">
+          <i class="help circle icon"></i>
+          <div class="content">
+            <div class="title">Step 5</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="ui column grid state">
+        <div class="ui four wide column">
+          <div class="ui inverted vertical menu fluid" id="state-3-menu">
+            <div class="item title"><b>物质列表（可以多选）</b></div>
+          </div>
+        </div>
+        <div class="twelve wide column fluid">
+          <div class="ui segment" id="state-3-content">
+            <div class="ui grid">
+
+              <div class="ui row equal width">
+                <div class="ui column center aligned">
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+
+              <div class="ui row">
+                <div class="ui column right aligned">
+                  <button class="ui blue button big">Save</button>
+                  <button class="ui green button big">Next Step</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- state grid -->
+
+    </div> <!-- main-container end -->
+  </div>
+
+  <!-- put code here, without background image -->
+
+  <!-- footer -->
+  <!-- <div class="ui one column grid footer"> -->
+  <div class="ui vertical footer segment column fliud">
+    <div class="ui center aligned container">
+      SYSU-Software 2016
+    </div>
+  </div>
+  <!-- </div> -->
+
+
+  <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
+  <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="./static/js/base.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/components/dropdown.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/components/search.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/components/checkbox.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/components/sticky.min.js"></script>
+  <!-- put javascript down here -->
+  <script type="text/javascript" src="./static/js/Chart.min.js"></script>
+  <script type="text/javascript" src="./static/js/state_3.js"></script>
+  <!-- put javascript down here -->
+  <script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+  </script>
+</body>
+</html>

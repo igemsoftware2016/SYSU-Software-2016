@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"> 
+  <title>login</title>
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/sweetalert2.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/login.css">
+  <!-- put css stylesheet down here -->
+</head>
+<body>
+  <!-- <div class="container ui"> </div>  -->
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
+    <div class="ui container">
+      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
+      <div class="item">
+        <div class="ui category search item">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="right menu">
+        <a class="item">Wiki</a>
+        <a class="item">Help</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui column fluid" style="height:100%;" id="top-bg">
+    <div id="shell">
+      <img src="./static/img/fallingStar.png" id="star-1" width="100px" height="20px">
+      <img src="./static/img/fallingStar.png" id="star-2" width="100px" height="20px">
+      <img src="./static/img/fallingStar.png" id="star-3" width="100px" height="20px">
+    </div>
+    <div class="container ui" id="main-container">
+      <!-- put code here with-->
+      
+      <div class="ui grid">
+        <div class="ui ten wide column">
+        </div> <!-- for offset -->
+        <div class="ui five wide column title-img">
+          <img src="./static/img/title_img.png" class="center aligned" />
+        </div>
+        <!-- <div class="row"></div> -->
+        <div class="row">
+          <div class="ui ten wide column">
+          </div> <!-- for offset -->
+          <div class="ui five wide column">
+            <div class="ui inverted secondary pointing menu">
+              <a class="item active" id="sign-up-btn">SIGN UP</a>
+              <a class="item" id="sign-in-btn">LOG IN</a>
+            </div>
+
+            <div class="ui inputs">
+              <div class="ui one column grid" id="sign-up-form">
+                <div class="ui row">
+                  <div class="ui column fluid">
+                    <div class="ui left icon input fluid small">
+                      <input type="text" placeholder="Your Email">
+                      <i class="mail outline icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row">
+                  <div class="ui column fluid">
+                    <div class="ui left icon input fluid small">
+                      <input type="text" placeholder="Your nickname">
+                      <i class="user icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row">
+                  <div class="ui column fluid">
+                    <div class="ui left icon input fluid small">
+                      <input type="password" placeholder="Create Password">
+                      <i class="lock icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row">
+                  <div class="ui column ten wide centered">
+                    <button class="ui inverted button fluid">Commit</button>
+                  </div>
+                </div>
+                <div class="ui or-divider" style="color:white; margin:none;">
+                  OR
+                </div>
+
+                <div class="ui row">
+                  <div class="ui column ten wide centered">
+                    <button class="ui inverted button fluid">Guest Mode</button>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="ui one column grid" id="sign-in-form" style="display: none">
+                <div class="ui row">
+                  <div class="ui column fluid">
+                    <div class="ui left icon input fluid">
+                      <input type="text" placeholder="Your Email">
+                      <i class="mail icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row">
+                  <div class="ui column fluid">
+                    <div class="ui left icon input fluid">
+                      <input type="password" placeholder="Your Password">
+                      <i class="lock icon"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui row">
+                  <div class="ui column ten wide centered">
+                    <button class="ui inverted button fluid">Commit</button>
+                  </div>
+                </div>
+
+                <div class="ui row centered">
+                  <nav class="cl-effect-14">
+                    <a class="forget" data-hover="Forget your password?">Forget your password?</a>
+                  </nav>
+                </div>
+              </div> <!-- form -->
+
+            </div>
+          </div> <!-- form column -->
+        </div>
+      </div>
+
+    </div> <!-- main-container -->
+  </div>
+
+  <!-- put code here, without background image -->
+
+  <!-- footer -->
+  <!-- <div class="ui one column grid footer"> -->
+  <div class="ui vertical footer segment column fliud">
+    <div class="ui center aligned container">
+      SYSU-Software 2016
+    </div>
+  </div>
+  <!-- </div> -->
+
+
+  <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
+  <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="./static/js/base.js"></script>
+  <!-- put javascript down here -->
+  <script type="text/javascript" src="./static/js/login.js"></script>
+  <script type="text/javascript" src="./static/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="./static/js/plax.js"></script>
+  <script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+  </script>
+</body>
+</html>
