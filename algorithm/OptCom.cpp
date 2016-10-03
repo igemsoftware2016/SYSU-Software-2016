@@ -5,6 +5,8 @@ using namespace Ipopt;
 opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 	map <string, double> u, map <string , double> c) {
 
+	feed = u;
+
 	ifstream all("./org_files/all.txt");
 	ofstream log("./org_files/res.txt");
 
@@ -147,8 +149,21 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 		++ index;
 	}
 
-	for (int i = 0; i < m_count; ++ i) {
-		for (int j = 0; j < n_count; ++ j)
+	s_mat_n = s_mat_n_old = n_count;
+	s_mat_m = s_mat_m_old = m_count;
+
+	for (size_t i = 0; i < orgs.size(); ++ i) {
+		for (auto row = s1_mat[i].begin(); row != s1_mat[i].end(); ++ row) {
+			for (auto col = row -> second.begin(); col != row -> second.end(); ++ col) {
+				s_mat[col -> first + s_mat_m][row -> first + s_mat_n] = col -> second;
+			}
+		}
+		s_mat_m += s1_mat_n[i];
+		s_mat_n += s1_mat_m[i];
+	}
+/*
+	for (int i = 0; i < s_mat_m; ++ i) {
+		for (int j = 0; j < s_mat_n; ++ j)
 			log << s_mat[i][j] << ' ';
 		log << endl;
 	}
@@ -172,7 +187,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 			log << endl;
 		}
 	}
-
+*/
 	log.close();
 };
 
@@ -180,11 +195,35 @@ opt_com_nlp :: ~opt_com_nlp() {};
 
 bool opt_com_nlp :: get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
 	Index& nnz_h_lag, IndexStyleEnum& index_style) {
+
+	n = s_mat_n;
+	m = s_mat_m;
+
+	nnz_jac_g = s_mat_m;
+	nnz_h_lag = s_mat_n * s_mat_n;
+
+	index_style = TNLP :: C_STYLE;
 	return true;
 }
 
 bool opt_com_nlp :: get_bounds_info(Index n, Number* x_l, Number* x_u,
 	Index m, Number* g_l, Number* g_u) {
+
+	for (int i = 0; i < s_mat_n_old; ++ i) {
+		x_l[i] = 0.0; x_u[i] = 2e19;
+	}
+
+	for (int i = s_mat_n_old; i < s_mat_n; ++ i) {
+		x_l[i] = -2e19; x_u[i] = 2e19;
+	}
+
+	for (int i = 0; i < s_mat_m_old; ++ i)
+		g_l[i] = g_u[i] = 0.0;
+
+	for (int i = s_mat_m_old; i < s_mat_m; ++ i) {
+		g_u[i] = 2e19; g_l[i] = 1.0;
+	}
+
 	return true;
 }
 
@@ -192,6 +231,11 @@ bool opt_com_nlp :: get_starting_point(Index n, bool init_x, Number* x,
 	bool init_z, Number* z_L, Number* z_U,
 	Index m, bool init_lambda,
 	Number* lambda) {
+
+	assert(init_x == false);
+	assert(init_z == false);
+	assert(init_lambda == false);
+
 	return true;
 }
 
