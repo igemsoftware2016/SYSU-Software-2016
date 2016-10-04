@@ -3,7 +3,8 @@
 using namespace Ipopt;
 
 void opt_com_nlp :: debug_print(ofstream & log) {
-/*
+
+	log << s_mat_m << ' ' << s_mat_n << endl;
 	for (int i = 0; i < s_mat_m; ++ i) {
 		for (int j = 0; j < s_mat_n; ++ j)
 			log << s_mat[i][j] << ' ';
@@ -28,11 +29,14 @@ void opt_com_nlp :: debug_print(ofstream & log) {
 				log << s2_mat[i][x][y] << ' ';
 			log << endl;
 		}
-	}*/
+	}
+	
 	assert(s_mat_n_c.size() == s_mat_n_mer_name.size());
 	assert((int)s_mat_n_c.size() == s_mat_n_s);
-	for (int i = 0; i < org_size; ++ i)
-		assert(s1_mat_m == s2_mat_m);
+	for (int i = 0; i < org_size; ++ i) {
+		log << s1_mat_m[i] << ' ' << s2_mat_m[i] << endl;
+		assert(s1_mat_m[i] == s2_mat_m[i]);
+	}
 
 	for (size_t i = 0; i < s_mat_n_c.size(); ++ i)
 		if (s_mat_n_c[i] > 0.0)
@@ -92,7 +96,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 		map < int , map <int, int> > s1n;
 		map < int , map <int, int> > s2n;
 		
-		bool flag1, flag2;
+		//bool flag1, flag2;
 		//cout << "ORG" << index << ' ' << ec_count << endl;
 		for (int ec_idx = 0; ec_idx < ec_count; ++ ec_idx) {
 			string ec_name; int mer_size;
@@ -100,7 +104,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 
 			set <string> s_list;
 			
-			flag1 = flag2 = false;
+			//flag1 = flag2 = false;
 
 			for (int j = 0; j < mer_size; ++ j) {
 				string mer_name; org >> mer_name;
@@ -125,7 +129,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 				s_mat_n_mer_cnt[s_mer_to_index[* j]] += x;
 
 				if (u.count(* j)) {
-					flag2 = true; //cout << 2 << ' ' << index << endl;
+					//flag2 = true; //cout << 2 << ' ' << index << endl;
 					if (0 == s2_mer_to_index.count(* j)) {
 						s2_mer_to_index.insert(make_pair(* j, s2_mat_n[index] ++));
 						s2_mat_n_mer[index].push_back(*j);
@@ -133,7 +137,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 					s2n[s2_mat_m[index]][s2_mer_to_index[* j]] = x;
 				}
 				else {
-					flag1 = true; //cout << 1 << ' ' << index << endl;
+					//flag1 = true; //cout << 1 << ' ' << index << endl;
 					if (0 == s1_mer_to_index.count(* j)) {
 						s1_mer_to_index.insert(make_pair(* j, s1_mat_n[index] ++));
 						s1_mat_n_mer[index].push_back(*j);
@@ -142,9 +146,9 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 				}
 			}
 
-			if (flag1)
+			//if (flag1)
 				++ s1_mat_m[index];
-			if (flag2)
+			//if (flag2)
 				++ s2_mat_m[index];
 
 			++ m_count;
@@ -154,7 +158,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 
 		for (auto ec_idx = ins[*i].begin(); ec_idx != ins[*i].end(); ++ ec_idx) {
 			string ec_name = * ec_idx;
-			flag1 = flag2 = false;
+			//flag1 = flag2 = false;
 
 			for (auto k = ec_list[ec_name].begin(); k != ec_list[ec_name].end(); ++ k) {
 				string mer_name = k -> first;
@@ -172,7 +176,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 				s_mat_n_mer_cnt[s_mer_to_index[mer_name]] += k -> second;
 				
 				if (u.count(mer_name)) {
-					flag2 = true;
+					//flag2 = true;
 					if (0 == s2_mer_to_index.count(mer_name)) {
 						s2_mer_to_index.insert(make_pair(mer_name, s2_mat_n[index] ++));
 						s2_mat_n_mer[index].push_back(mer_name);
@@ -180,7 +184,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 					s2n[s2_mat_m[index]][s2_mer_to_index[mer_name]] = k -> second;
 				}
 				else {
-					flag1 = true;
+					//flag1 = true;
 					if (0 == s1_mer_to_index.count(mer_name)) {
 						s1_mer_to_index.insert(make_pair(mer_name, s1_mat_n[index] ++));
 						s1_mat_n_mer[index].push_back(mer_name);
@@ -189,9 +193,9 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 				}
 			}
 			
-			if (flag1)
+			//if (flag1)
 				++ s1_mat_m[index];
-			if (flag2)
+			//if (flag2)
 				++ s2_mat_m[index];
 
 			++ m_count;
@@ -244,8 +248,8 @@ bool opt_com_nlp :: get_nlp_info(Index& n, Index& m, Index& nnz_jac_g,
 	n = s_mat_n;
 	m = s_mat_m;
 
-	nnz_jac_g = s_mat_m;
-	nnz_h_lag = s_mat_n * s_mat_n;
+	nnz_jac_g = s_mat_m * s_mat_n;
+	nnz_h_lag = 0;
 
 	index_style = TNLP :: C_STYLE;
 
@@ -270,12 +274,18 @@ bool opt_com_nlp :: get_bounds_info(Index n, Number* x_l, Number* x_u,
 		g_u[i] = 2e19; g_l[i] = 1.0;
 	}
 
+	cout << s_mat_m_s << ' ' << s_mat_m_s1 << '\n';
+
 	auto k = feed.begin();
 	for (int i = s_mat_m_s1; i < s_mat_m; ++ i) {
 		g_l[i] = g_u[i] = (k -> second);
+		cout << g_l[i] << ' ';
 		++ k;
 	}
+	cout << '\n';
 
+//	for (size_t i = 0; i < s_mat_n_c.size(); ++ i)
+//		cout << s_mat_n_c[i] << ' ';
 	return true;
 }
 
@@ -284,9 +294,27 @@ bool opt_com_nlp :: get_starting_point(Index n, bool init_x, Number* x,
 	Index m, bool init_lambda,
 	Number* lambda) {
 
-	assert(init_x == false);
 	assert(init_z == false);
 	assert(init_lambda == false);
+
+	for (int i = 0; i < n; ++ i)
+		x[i] = 0;
+
+//	x[0] = 1; x[1] = x[2] = x[3] = x[4] = x[5] = 2;
+//	x[6] = x[7] = x[8] = x[10] = 0;
+
+
+
+//	int index = 0;
+//	for (auto i = feed.begin(); i != feed.end(); ++ i) {
+//		if (i -> second != 0) {
+//			int pos = s_mat_m_s1 + index;
+//			for (auto j = s_mat[pos].begin(); j != s_mat[pos].end(); ++ j) {
+//				x[j -> first] = j -> second;
+//			}
+//		}
+//		++ index;
+//	}
 
 	return true;
 }
@@ -324,7 +352,7 @@ bool opt_com_nlp :: eval_f(Index n, const Number* x,
 	}
 
 	f += (cv - pepsiw) * inf;
-	
+
 	obj_value = f;
 
 	return true;
@@ -332,27 +360,102 @@ bool opt_com_nlp :: eval_f(Index n, const Number* x,
 
 bool opt_com_nlp :: eval_grad_f(Index n, const Number* x,
 	bool new_x, Number* grad_f) {
-	
+
+//	cout << "WOW \n";
+	for (int i = 0; i < s_mat_n_s; ++ i) {
+		grad_f[i] = s_mat_n_c[i];
+		//cout << grad_f[i] << ' ';
+	}
+	for (int i = s_mat_m_s; i < s_mat_n; ++ i) {
+		grad_f[i] = 0;
+		//cout << grad_f[i] << ' ';
+	}
+//	cout << '\n';
+
+
+	int cnt = 0; int foobar = s_mat_m_s;
+	for (int i = 0; i < org_size; ++ i) {
+		int index = 0;
+
+		vector <double> U;
+		for (int j = 0; j < s1_mat_n[i] + s2_mat_n[i]; ++ j)
+			if (feed.count(s_mat_n_mer_name[j + cnt])) {
+				U.push_back(x[j + foobar]);
+				vector <double> u;
+				for (int k = 0; k < s2_mat_m[i]; ++ k)
+					if (s2_mat[i][index].count(k))
+						u.push_back(s2_mat[i][index][k]);
+					else u.push_back(0);
+				
+				for (int k = 0; k < s2_mat_m[i]; ++ k)
+					grad_f[index + foobar] -= u[k] * x[k + foobar];
+				
+				++ index;
+			}
+
+		for (int j = 0; j < s2_mat_m[i]; ++ j) {
+			for (int k = 0; k < s2_mat_n[i]; ++ k)
+				if (s2_mat[i][j].count(k))
+					grad_f[foobar + j] -= s2_mat[i][j][k] * U[k];
+		}
+
+		foobar += s2_mat_m[i];
+	}
+
 	return true;
 }
 
 bool opt_com_nlp :: eval_g(Index n, const Number* x, bool new_x,
 	Index m, Number* g) {
+
+	for (int i = 0; i < s_mat_m; ++ i) {
+		g[i] = 0.0;
+		for (int j = 0; j < s_mat_n; ++ j)
+			if (s_mat[i].count(j))
+				g[i] += x[j] * s_mat[i][j];
+	}
+
 	return true;
 }
 
 bool opt_com_nlp :: eval_jac_g(Index n, const Number* x, bool new_x,
 	Index m, Index nele_jac, Index* iRow, Index *jCol,
 	Number* values) {
+	
+	if (values == NULL) {
+		int cnt = 0;
+		assert(m == s_mat_m);
+		assert(n == s_mat_n);
+		for (int i = 0; i < m; ++ i)
+			for (int j = 0; j < n; ++ j) {
+				iRow[cnt] = i;
+				jCol[cnt] = j;
+				++ cnt;
+			}
+		return true;
+	}
+	
+	int cnt = 0;
+	for (int i = 0; i < s_mat_m; ++ i) {
+		for (int j = 0; j < s_mat_n; ++ j) {
+			if (s_mat[i].count(j))
+				values[cnt] = s_mat[i][j];
+			else values[cnt] = 0;
+			++ cnt;
+			//cout << values[cnt - 1] << ' ';
+		}
+		//cout << '\n';
+	}
+
 	return true;
 }
 
-bool opt_com_nlp :: eval_h(Index n, const Number* x, bool new_x,
-	Number obj_factor, Index m, const Number* lambda,
-	bool new_lambda, Index nele_hess, Index* iRow,
-	Index* jCol, Number* values) {
-	return true;
-}
+//bool opt_com_nlp :: eval_h(Index n, const Number* x, bool new_x,
+//	Number obj_factor, Index m, const Number* lambda,
+//	bool new_lambda, Index nele_hess, Index* iRow,
+//	Index* jCol, Number* values) {
+//	return true;
+//}
 
 void opt_com_nlp :: finalize_solution(SolverReturn status,
 	Index n, const Number* x, const Number* z_L, const Number* z_U,
