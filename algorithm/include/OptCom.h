@@ -2,6 +2,8 @@
 #define __OPT_COM__
 
 #include "IpTNLP.hpp"
+#include "cblas.h"
+#include <cassert>
 
 #include <set>
 #include <map>
@@ -54,12 +56,10 @@ public:
 		Index m, Index nele_jac, Index* iRow, Index *jCol,
 		Number* values);
 
-/*
 	virtual bool eval_h(Index n, const Number* x, bool new_x,
 		Number obj_factor, Index m, const Number* lambda,
 		bool new_lambda, Index nele_hess, Index* iRow,
 		Index* jCol, Number* values);
-*/
 
 	virtual void finalize_solution(SolverReturn status,
 		Index n, const Number* x, const Number* z_L, const Number* z_U,
@@ -69,12 +69,15 @@ public:
 		IpoptCalculatedQuantities* ip_cq);
 
 private:
+	vector <string> s_mat_n_mer_name;
+	vector <int> s_mat_n_mer_cnt;
+	vector <double> s_mat_n_c;
 	map <string, double> feed;
 
 	map < int, map <int, int> > s_mat;
 	vector < string > s_mat_n_mer;
 	
-	int s_mat_m, s_mat_n, s_mat_m_old, s_mat_n_old;
+	int s_mat_m, s_mat_n, s_mat_m_s, s_mat_n_s, s_mat_m_s1, s_mat_n_s1, org_size;
 
 	vector < map < int, map <int, int> > > s1_mat, s2_mat;
 	vector < int > s1_mat_n, s2_mat_n, s1_mat_m, s2_mat_m;
@@ -82,6 +85,8 @@ private:
 
 	opt_com_nlp(const opt_com_nlp&);
 	opt_com_nlp& operator=(const opt_com_nlp&);
+	
+	void debug_print(ofstream &);
 };
 
 #endif
