@@ -11,4 +11,4 @@ db = SQLAlchemy(app)
 #lm = LoginManager()
 #lm.login_view(app)
 
-from application import router
+from application import router, model
