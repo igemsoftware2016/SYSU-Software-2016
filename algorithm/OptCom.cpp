@@ -274,15 +274,15 @@ bool opt_com_nlp :: get_bounds_info(Index n, Number* x_l, Number* x_u,
 		g_u[i] = 2e19; g_l[i] = 1.0;
 	}
 
-	cout << s_mat_m_s << ' ' << s_mat_m_s1 << '\n';
+	//cout << s_mat_m_s << ' ' << s_mat_m_s1 << '\n';
 
 	auto k = feed.begin();
 	for (int i = s_mat_m_s1; i < s_mat_m; ++ i) {
 		g_l[i] = g_u[i] = (k -> second);
-		cout << g_l[i] << ' ';
+		//cout << g_l[i] << ' ';
 		++ k;
 	}
-	cout << '\n';
+	//cout << '\n';
 
 //	for (size_t i = 0; i < s_mat_n_c.size(); ++ i)
 //		cout << s_mat_n_c[i] << ' ';
@@ -294,27 +294,34 @@ bool opt_com_nlp :: get_starting_point(Index n, bool init_x, Number* x,
 	Index m, bool init_lambda,
 	Number* lambda) {
 
+//	assert(init_x == false);
 	assert(init_z == false);
 	assert(init_lambda == false);
 
-	for (int i = 0; i < n; ++ i)
-		x[i] = 0;
+//	for (int i = 0; i < n; ++ i)
+//		x[i] = 0.0;
 
 //	x[0] = 1; x[1] = x[2] = x[3] = x[4] = x[5] = 2;
 //	x[6] = x[7] = x[8] = x[10] = 0;
-
-
 
 //	int index = 0;
 //	for (auto i = feed.begin(); i != feed.end(); ++ i) {
 //		if (i -> second != 0) {
 //			int pos = s_mat_m_s1 + index;
 //			for (auto j = s_mat[pos].begin(); j != s_mat[pos].end(); ++ j) {
-//				x[j -> first] = j -> second;
+//				if (x[j -> first] == 0) {
+//					x[j -> first] = j -> second;
+//					break;
+//				}
 //			}
 //		}
 //		++ index;
 //	}
+
+	ifstream din("EXsolution.txt");
+	for (int i = 0; i < n; ++ i)
+		din >> x[i];
+	din.close();
 
 	return true;
 }
@@ -324,34 +331,45 @@ bool opt_com_nlp :: eval_f(Index n, const Number* x,
 	Number f = 0.0;
 
 	for (size_t i = 0; i < s_mat_n_c.size(); ++ i)
-		f += -1.0 * s_mat_n_c[i] * x[i];
+		f -= 1.0 * s_mat_n_c[i] * x[i];
 
-	double inf = 1e99; double cv = 0.0;
+	double inf = 200; double cv = 0.0;
 
 	for (int i = 0; i < s_mat_n_s; ++ i)
 		if (false == feed.count(s_mat_n_mer_name[i]))
 			cv += x[i];
 
 	double pepsiw = 0.0;
-	int cnt = 0; int foobar = s_mat_m_s;
+	int cnt = 0; int foobar = s_mat_n_s;
 	for (int i = 0; i < org_size; ++ i) {
 		vector <double> u;
 		for (int j = 0; j < s1_mat_n[i] + s2_mat_n[i]; ++ j)
 			if (feed.count(s_mat_n_mer_name[j + cnt]))
 				u.push_back(x[j + cnt]);
+				
+		assert((int)u.size() == s2_mat_n[i]);
 
 		vector <double> pepsi; pepsi.resize(s2_mat_m[i]);
-		for (int x = 0; x < s2_mat_m[i]; ++ x) if (s2_mat[i].count(x))
+
+		for (int x = 0; x < s2_mat_m[i]; ++ x) //if (s2_mat[i].count(x))
 			for (int y = 0; y < s2_mat_n[i]; ++ y) if (s2_mat[i][x].count(y))
-				pepsi[x] += s2_mat[i][x][y] * u[y];
+				pepsi[x] -= s2_mat[i][x][y] * u[y];
 		
-		for (int j = 0; j < s2_mat_m[i]; ++ i)
+		for (int j = 0; j < s2_mat_m[i]; ++ j) {
 			pepsiw += pepsi[j] * x[foobar + j];
+			//cout << pepsi[j] << ' ' << x[foobar + j] << '\n';
+		}
  
+ 		foobar += s2_mat_m[i];
 		cnt += s1_mat_n[i] + s2_mat_n[i];
 	}
 
+	assert(cnt == s_mat_n_s);
+	assert(foobar == s_mat_n);
+
 	f += (cv - pepsiw) * inf;
+
+	//cout << "CV" << cv << " PEPSI" << pepsiw << " F" << f << '\n';
 
 	obj_value = f;
 
@@ -363,21 +381,21 @@ bool opt_com_nlp :: eval_grad_f(Index n, const Number* x,
 
 //	cout << "WOW \n";
 	for (int i = 0; i < s_mat_n_s; ++ i) {
-		grad_f[i] = s_mat_n_c[i];
+		grad_f[i] = -s_mat_n_c[i];
 		//cout << grad_f[i] << ' ';
 	}
-	for (int i = s_mat_m_s; i < s_mat_n; ++ i) {
+	for (int i = s_mat_n_s; i < s_mat_n; ++ i) {
 		grad_f[i] = 0;
 		//cout << grad_f[i] << ' ';
 	}
 //	cout << '\n';
 
-
-	int cnt = 0; int foobar = s_mat_m_s;
+	int cnt = 0; int foobar = s_mat_n_s; double inf = 200;
 	for (int i = 0; i < org_size; ++ i) {
 		int index = 0;
 
 		vector <double> U;
+
 		for (int j = 0; j < s1_mat_n[i] + s2_mat_n[i]; ++ j)
 			if (feed.count(s_mat_n_mer_name[j + cnt])) {
 				U.push_back(x[j + foobar]);
@@ -388,19 +406,29 @@ bool opt_com_nlp :: eval_grad_f(Index n, const Number* x,
 					else u.push_back(0);
 				
 				for (int k = 0; k < s2_mat_m[i]; ++ k)
-					grad_f[index + foobar] -= u[k] * x[k + foobar];
+					grad_f[cnt + j] -= inf * u[k] * x[k + foobar];
 				
 				++ index;
 			}
 
+		assert(index == (int)U.size());
+		assert(index == s2_mat_n[i]);
+
 		for (int j = 0; j < s2_mat_m[i]; ++ j) {
 			for (int k = 0; k < s2_mat_n[i]; ++ k)
 				if (s2_mat[i][j].count(k))
-					grad_f[foobar + j] -= s2_mat[i][j][k] * U[k];
+					grad_f[foobar + j] += inf * s2_mat[i][j][k] * U[k];
 		}
 
 		foobar += s2_mat_m[i];
+		cnt += s1_mat_n[i] + s2_mat_n[i];
 	}
+
+	assert(foobar == s_mat_n);
+	assert(cnt == s_mat_n_s);
+
+//	for (int i = 0; i < s_mat_n; ++ i)
+//		grad_f[i] *= -1.0;
 
 	return true;
 }
@@ -463,5 +491,8 @@ void opt_com_nlp :: finalize_solution(SolverReturn status,
 	Number obj_value,
 	const IpoptData* ip_data,
 	IpoptCalculatedQuantities* ip_cq) {
-
+	
+	for (int i = 0; i < n ; ++ i)
+		cout << x[i] << ' ';
+	cout << '\n' << -obj_value << '\n';
 }
