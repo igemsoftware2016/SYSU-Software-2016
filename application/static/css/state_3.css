@@ -66,11 +66,11 @@ body {
 }
 
 .ui.vertical.inverted.menu .active.item {
-    border-right: 3px solid white;
+    border-left: 3px solid #bfbfbf;
 }
 
 .ui.vertical.inverted.menu .item {
-    border-right: 3px solid grey;
+    border-left: 3px solid grey;
 }
 
 .ui.column.right.aligned > button {

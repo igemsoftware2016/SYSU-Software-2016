@@ -7,8 +7,6 @@ body {
     height: auto;
     min-height: 40vh;
     position: relative;
-    /*background-image: url("../img/profile_banner.png");
-    background-size: 100% 100%;*/
 }
 
 
@@ -32,4 +30,19 @@ body {
 .ui.secondary.pointing.menu.inverted {
     color: white;
     border: none;
+}
+
+.ui.sticky {
+    margin: 54px 0;
+    z-index: -1;
+    padding-bottom: 67px;
+}
+
+.ui.popup {
+    width: 300px;
+}
+
+/* test */
+.test-height {
+    height: 400px;
 }

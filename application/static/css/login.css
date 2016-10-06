@@ -70,19 +70,28 @@ div#shell {
 }
 img#star-1 {
     position: absolute;
-    z-index: 4;
-    top: 36vh;
-    left: 90vw;
+    top: 18vh;
+    left: 30vw;
 }
 img#star-2 {
+    position: absolute;
+    top: 26vh;
+    left: 46vw;
+}
+img#star-3 {
+    position: absolute;
+    top: 52vh;
+    left: 27vw;
+}
+img#star-4 {
     position: absolute;
     z-index: 2;
     top: 60vh;
     left: 50vw;
 }
-img#star-3 {
+img#star-5 {
     position: absolute;
-    top: 18vh;
-    left: 30vw;
+    top: 26vh;
+    left: 90vw;
     z-index: 1;
 }

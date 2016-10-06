@@ -1,7 +1,8 @@
 $(document).ready(function() {
     $("body").backstretch("./static/img/login_bg.png");
+    // $("body").backstretch("destroy", false);
 
-    $('.ui.dropdown').dropdown();
+    $('.menu > .ui.dropdown').dropdown();
 
     var lastScroll = 0;
     $(window).scroll(function(event) {
@@ -34,4 +35,16 @@ $(document).ready(function() {
             scrollTop: 0
         }, 400);
     });
+
+    $(".vertical.footer").fadeOut("slow");
+
+    // global 
+    window.AjaxFail = function() {
+        swal({
+            title: "Oo..",
+            text: "There seems to be some problem",
+            type: "error",
+            confirmButtonText: "Okay..."
+        });
+    };
 });

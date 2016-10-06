@@ -213,3 +213,19 @@ nav a:focus {
     bottom: 20vh;
     display: none;
 }
+
+#feedback {
+    position: fixed;
+    right: 5vw;
+    bottom: 15vh;
+    display: none;
+    display: inline-block;
+}
+
+
+/* for test */
+.test {
+    border: 3px solid black;
+    /*overflow: hidden;*/
+}
+/* for test */

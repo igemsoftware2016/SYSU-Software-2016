@@ -1,34 +1,76 @@
+
 <!DOCTYPE html>
-	<html>
-		<head>
-			<title>ん？（察し）</title>
-			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
-			<style type="text/css">
-				.Center {
-					text-align:center;
-					margin-top: 5%;
-				}
-				a{
-					text-decoration: none;
-					color: black;
-				}
-				a:hover{
-					text-decoration: underline;
-					color: darkgrey;
-				}
-				.tex{
-					margin-top: 20px;
-					font-family: arial;
-					font-style: normal;
-				}
-			</style>
-		</head>
-		<body>
-			<div class="Center">
-				<img src="./static/img/404.jpg"/>
-				<p class="tex">ないっすね～（４０４）</p>
-				<br />
-				<a href="/" class="tex">Back to Index</a>
-			</div>
-		</body>
-	</html>
+<html>
+<head>
+  <meta charset="UTF-8"> 
+  <title>404 Not Found</title>
+  <link rel="stylesheet" type="text/css" href="./static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/sweetalert2.min.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="./static/css/404.css">
+  <!-- put css stylesheet down here -->
+</head>
+<body>
+  <!-- <div class="container ui"> </div>  -->
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
+    <div class="ui container">
+      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
+      <div class="item">
+        <div class="ui category search item">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="right menu">
+        <a class="item">Wiki</a>
+        <a class="item">Help</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui column fluid" style="height:100%;" id="top-bg">
+    <!-- <div id="shell">
+      <img src="./static/img/404-star-1.png" id="star-1" width="213.4" height="112">
+      <img src="./static/img/404-star-2.png" id="star-2" width="184.4" height="125.6">
+      <img src="./static/img/404-star-3.png" id="star-3" width="349.5" height="181.8">
+    </div> -->
+    <div style="position: absolute; left: 50%;">
+      <div style="position: relative; left: -50%;">
+        <div class="earth"></div>
+      </div>
+    </div>
+    <img src="./static/img/404.png" id="title-404" width="542" height="182">
+
+    <div class="container ui" id="main-container">
+      <!-- put code here with-->
+    </div> <!-- main-container -->
+  </div>
+
+  <!-- put code here, without background image -->
+
+  <!-- footer -->
+  <!-- <div class="ui one column grid footer"> -->
+  <div class="ui vertical footer segment column fliud">
+    <div class="ui center aligned container">
+      SYSU-Software 2016
+    </div>
+  </div>
+  <!-- </div> -->
+
+
+  <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
+  <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="./static/js/base.js"></script>
+  <!-- put javascript down here -->
+  <script type="text/javascript" src="./static/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="./static/js/plax.js"></script>
+  <script type="text/javascript" src="./static/js/jquery.md5.js"></script>
+  <script type="text/javascript" src="./static/js/404.js"></script>
+  <script>
+    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+  </script>
+</body>
+</html>

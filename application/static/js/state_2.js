@@ -43,7 +43,7 @@ $(document).ready(function() {
             fullWidth: false,
             legend: {
                 position: "left",
-                display: false`
+                display: false
             },
             scales: {
                 yAxes: [{
@@ -63,11 +63,83 @@ $(document).ready(function() {
     });
 
     // range item
-    $(document).ready(function() {
-        $('#test-range').range({
-            min: 0,
-            max: 10,
-            start: 5
-        });
+    $('.ui.range').range({
+        min: 0,
+        max: 10,
+        start: 1
+    });
+
+    // plasmid
+    // orange one
+    $($("#marker-1").parent()).click(function() {
+        $("img.promoter").attr("src", "./static/img/promoter-orange.png");
+        $("img.RBS").attr("src", "./static/img/RBS-orange.png");
+        $("img.CDS").attr("src", "./static/img/CDS-orange.png");
+        $("img.teminator").attr("src", "./static/img/teminator-orange.png");
+        $(".ui.row.component").hide();
+        $(".ui.row.component").fadeIn();
+    });
+    // green one
+    $($("#marker-2").parent()).click(function() {
+        $("img.promoter").attr("src", "./static/img/promoter-green.png");
+        $("img.RBS").attr("src", "./static/img/RBS-green.png");
+        $("img.CDS").attr("src", "./static/img/CDS-green.png");
+        $("img.teminator").attr("src", "./static/img/teminator-green.png");
+        $(".ui.row.component").hide();
+        $(".ui.row.component").fadeIn();
+    });
+    // blue one
+    $($("#marker-3").parent()).click(function() {
+        $("img.promoter").attr("src", "./static/img/promoter-blue.png");
+        $("img.RBS").attr("src", "./static/img/RBS-blue.png");
+        $("img.CDS").attr("src", "./static/img/CDS-blue.png");
+        $("img.teminator").attr("src", "./static/img/teminator-blue.png");
+        $(".ui.row.component").hide();
+        $(".ui.row.component").fadeIn();
+    });
+    $("#marker-1").mouseenter(function() {
+        $("#highlight-1").show();
+    }).mouseleave(function() {
+        $("#highlight-1").hide();
+    });
+    $("#marker-2").mouseenter(function() {
+        $("#highlight-2").show();
+    }).mouseleave(function() {
+        $("#highlight-2").hide();
+    });
+    $("#marker-3").mouseenter(function() {
+        $("#highlight-3").show();
+    }).mouseleave(function() {
+        $("#highlight-3").hide();
+    });
+
+    $("#highlight-1").hide();
+    $("#highlight-2").hide();
+    $("#highlight-3").hide();
+
+
+    /* 
+     * select dropdown
+     * define the change callback function
+     * to modify the plasmid
+     */
+    $("#bacteria-slt").dropdown({
+        onChange: function(value, text, $selectedItem) {
+            console.log(value, text, $selectedItem);
+        }
+    });
+    $("#bacteria-slt").dropdown("set selected", 1);
+
+    $("#plasmid-slt").dropdown({
+        onChange: function(value, text, $selectedItem) {
+            console.log(value, text, $selectedItem);
+        }
+    });
+    $("#plasmid-slt").dropdown("set selected", 1);
+
+    /* component popup */
+    $(".ui.row.component img").popup({
+        inline: true,
+        on: "click"
     });
 })

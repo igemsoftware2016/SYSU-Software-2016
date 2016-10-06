@@ -11,6 +11,7 @@
   <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/checkbox.min.css">
   <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/sticky.min.css">
   <!-- put css stylesheet down here -->
+  <link rel="stylesheet" type="text/css" href="./static/css/sweetalert2.min.css">
   <link rel="stylesheet" type="text/css" href="./static/css/state_1.css">
   <!-- put css stylesheet down here -->
 </head>
@@ -43,13 +44,17 @@
       </div>
     </div>
   </div>
-
   <button class="ui grey button icon compact" id="to-top">
     <i class="arrow up icon"></i>
   </button>
-
+  <a class="ui white button icon compact" id="feedback" href="#mailto">
+    <i class="mail icon"></i>
+  </a href="#mailto">
+  <div class="ui page blurring dimmer">
+    <div class="content">
+    </div>
+  </div>
   <div class="ui column fluid" id="top-bg">
-
     <div class="container ui" id="main-container">
       <!-- put code here with-->
       <div class="ui five steps sticky">
@@ -84,109 +89,104 @@
           </div>
         </a>
       </div>
-
       <div class="ui column grid state">
-        <div class="ui row">
-          <div class="ui column fifteen wide">
-            <h2 class="ui green header">
-              <i class="settings icon default black"></i>
-              <div class="content">产生物质
-                <div class="sub header">sub-title here</div>
-              </div>
-            </h2>
-          </div>
-
-          <div class="ui column one wide">
-            <button class="ui circular plus icon button small green" id="add-make">
-              <i class="plus icon"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="ui row">
-          <div class="ui column fluid">
-            <table class="ui very basic table">
-              <thead>
-                <tr>
-                  <th class="four wide">物质名称</th>
-                  <th class="two wide">浓度下限</th>
-                  <th class="two wide">浓度上限</th>
-                  <th class="one wide">浓度MAX</th>
-                  <th class="one wide">浓度MIN</th>
-                  <th class="one wide right aligned">删除</th>
-                </tr></thead>
-                <tbody id="make-tbody">
-                  <tr class="make-line">
-                    <td class="center aligned">
-                      <div class="ui input fluid name search">
-                        <input class="prompt" type="text" placeholder="Search matter...">
-                      </div>
-                      <div class="results"></div>
-                    </td>
-                    <td class="center aligned">
-                      <div class="ui right labeled input fluid">
-                        <input type="text" placeholder="Weight..">
-                        <div class="ui basic label">Unit </div>
-                      </div>
-                    </td>
-                    <td class="center aligned">
-                      <div class="ui right labeled input fluid">
-                        <input type="text" placeholder="Weight..">
-                        <div class="ui basic label">Unit </div>
-                      </div>
-                    </td>
-                    <td class="center aligned">
-                      <div class="ui toggle checkbox">
-                        <input type="checkbox">
-                        <label></label>
-                      </div>
-                    </td>
-                    <td class="center aligned">
-                      <div class="ui toggle checkbox">
-                        <input type="checkbox">
-                        <label></label>
-                      </div>
-                    </td>
-                    <td class="right aligned">
-                      <button class="ui circular minus icon button tiny remove-add">
-                        <i class="minus icon"></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div> <!-- row 1 make matter -->
-
-          <div class="ui divider"></div>
-
-          <!-- row 2 resolve matter -->
-          <div class="ui row">
+        <div class="ui grid">
+          <div class="ui row make-row">
             <div class="ui column fifteen wide">
-              <h2 class="ui yellow header">
+              <h2 class="ui green header">
                 <i class="settings icon default black"></i>
-                <div class="content">分解物质
+                <div class="content">产生物质
                   <div class="sub header">sub-title here</div>
                 </div>
               </h2>
             </div>
-
             <div class="ui column one wide">
-              <button class="ui circular plus icon button small yellow" id="add-resolve">
+              <button class="ui circular plus icon button small green" id="add-make">
                 <i class="plus icon"></i>
               </button>
             </div>
           </div>
-
-          <div class="ui row">
+          <div class="ui row make-row">
             <div class="ui column fluid">
-              <table class="ui very basic table collapsing">
+              <table class="ui very basic table">
                 <thead>
                   <tr>
-                    <th class="three wide">物质名称</th>
-                    <th class="two wide">开始浓度</th>
+                    <th class="four wide">物质名称</th>
+                    <th class="two wide">浓度下限</th>
+                    <th class="two wide">浓度上限</th>
+                    <th class="one wide">浓度MAX</th>
+                    <th class="one wide">浓度MIN</th>
                     <th class="one wide right aligned">删除</th>
                   </tr></thead>
+                  <tbody id="make-tbody">
+                    <tr class="make-line">
+                      <td class="center aligned">
+                        <div class="ui input fluid name search">
+                          <input class="prompt" type="text" placeholder="Search matter...">
+                        </div>
+                        <div class="results"></div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <input type="text" placeholder="Weight..">
+                          <div class="ui basic label">Unit </div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <input type="text" placeholder="Weight..">
+                          <div class="ui basic label">Unit </div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui toggle checkbox max">
+                          <input type="checkbox">
+                          <label></label>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui toggle checkbox min">
+                          <input type="checkbox">
+                          <label></label>
+                        </div>
+                      </td>
+                      <td class="right aligned">
+                        <button class="ui circular minus icon button tiny remove-add">
+                          <i class="minus icon"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> <!-- row 1 make matter -->
+            <div class="ui divider make-row"></div>
+            <!-- row 2 resolve matter -->
+            <div class="ui row resolve-row">
+              <div class="ui column fifteen wide">
+                <h2 class="ui yellow header">
+                  <i class="settings icon default black"></i>
+                  <div class="content">分解物质
+                    <div class="sub header">sub-title here</div>
+                  </div>
+                </h2>
+              </div>
+              <div class="ui column one wide">
+                <button class="ui circular plus icon button small yellow" id="add-resolve">
+                  <i class="plus icon"></i>
+                </button>
+              </div>
+            </div>
+            <div class="ui row resolve-row">
+              <div class="ui column fluid">
+                <table class="ui very basic table collapsing">
+                  <thead>
+                    <tr>
+                      <th class="three wide">物质名称</th>
+                      <th class="two wide">开始浓度</th>
+                      <th class="one wide right aligned">删除</th>
+                    </tr>
+                  </thead>
                   <tbody id="resolve-tbody">
                     <tr class="resolve-line">
                       <td class="center aligned">
@@ -212,21 +212,20 @@
                 </table>
               </div>
             </div> <!-- row 2 resolve matter -->
-
-            <div class="ui divider"></div>
+            <!-- other settings -->
+            <div class="ui divider resolve-row"></div>
             <!-- row 3 others -->
             <div class="ui row">
               <div class="ui column fluid wide">
-                <h2 class="ui violet header">
+                <h3 class="ui header">
                   <i class="settings icon default black"></i>
                   <div class="content">其他设置
                     <div class="sub header">sub-title here</div>
                   </div>
-                </h2>
+                </h3>
               </div>
             </div>
-
-            <div class="ui row grid divided">
+            <div class="ui row divided">
               <div class="ui column four wide">
                 <label><b>时间</b></label>
                 <div class="ui right labeled left icon input fluid">
@@ -235,25 +234,9 @@
                   <div class="ui tag label gray small">Unit</div>
                 </div>
               </div>
-
               <div class="ui column four wide">
                 <label><b>培养基</b></label>
-                <div class="ui fluid search dropdown selection">
-                  <select name="card[expire-month]">
-                    <option value="">Month</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                  </select>
+                <div class="ui fluid search dropdown selection" id="medium-slt">
                   <i class="dropdown icon"></i>
                   <input class="search" autocomplete="off" tabindex="0">
                   <div class="default text">Month</div>
@@ -273,30 +256,14 @@
                   </div>
                 </div>
               </div>
-
               <div class="ui column eight wide form">
                 <label><b>背景菌群</b></label>
                 <div class="two fields">
                   <div class="field">
-                    <div class="ui search dropdown selection">
-                      <select name="card[expire-month]">
-                        <option value="">Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                      </select>
+                    <div class="ui search dropdown selection" id="flora-slt">
                       <i class="dropdown icon"></i>
                       <input class="search" autocomplete="off" tabindex="0">
-                      <div class="default text">Month</div>
+                      <div class="default text">flora</div>
                       <div class="menu transition hidden" tabindex="-1">
                         <div class="item selected" data-value="1">January</div>
                         <div class="item" data-value="2">February</div>
@@ -310,64 +277,74 @@
                         <div class="item" data-value="10">October</div>
                         <div class="item" data-value="11">November</div>
                         <div class="item" data-value="12">December</div>
+                        {% for x in xxx %}
+                        <div class="item" data-value="{{x.id}}" bbb="{{x.bbb}}">{{x.name}}</div>
+                        {% endfor %}
                       </div>
                     </div>
                   </div>
-                  <div class="field">
+                  <!-- <div class="field">
                     <div class="ui column">
-                      <button class="ui medium button">Upload File</button>
+                      <button class="ui medium button flora">Upload File</button>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
-            </div> <!-- 输入框们 -->
-
-            <div class="ui row">
-              <div class="ui column grid centered">
-                <div class="ui five wide column center aligned fluid">
-                  <button class="ui black button big">Upload File</button>
-                </div>
-                <div class="ui five wide column center aligned fluid">
-                  <button class="ui blue button big">Save</button>
-                </div>
-                <div class="ui five wide column center aligned fluid ">
-                  <button class="ui green button big">Next Step</button>
+            </div>
+            <!-- dimmer -->
+            <div class="ui dimmer blurring upload">
+              <div class="content">
+                <div class="center">
+                  <h2 class="ui inverted icon header">
+                    <i class="file icon"></i>
+                    Using file!
+                  </h2>
                 </div>
               </div>
-            </div> <!-- 按钮们 -->
-
-
-            <!-- row 3 others matter -->
-          </div> <!-- state_1 grid -->
-
-        </div> <!-- main-container end -->
+            </div>
+          </div>
+          <!-- 输入框们 -->
+          <div class="ui row">
+            <div class="ui column grid centered">
+              <div class="ui five wide column center aligned fluid">
+                <input type="file" name="all-file" class="hidden" id="upload-all-file">
+                <button class="ui black button big all-file">Upload File</button>
+              </div>
+              <div class="ui five wide column center aligned fluid">
+                <button class="ui blue button big">Save</button>
+              </div>
+              <div class="ui five wide column center aligned fluid ">
+                <button class="ui green button big">Next Step</button>
+              </div>
+            </div>
+          </div> <!-- 按钮们 -->
+          <!-- row 3 others matter -->
+        </div> <!-- state_1 grid -->
+      </div> <!-- main-container end -->
+    </div>
+    <!-- put code here, without background image -->
+    <!-- footer -->
+    <!-- <div class="ui one column grid footer"> -->
+    <div class="ui vertical footer segment column fliud">
+      <div class="ui center aligned container">
+        SYSU-Software 2016
       </div>
-
-      <!-- put code here, without background image -->
-
-      <!-- footer -->
-      <!-- <div class="ui one column grid footer"> -->
-      <div class="ui vertical footer segment column fliud">
-        <div class="ui center aligned container">
-          SYSU-Software 2016
-        </div>
-      </div>
-      <!-- </div> -->
-
-
-      <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
-      <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
-      <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
-      <script type="text/javascript" src="./static/js/base.js"></script>
-      <script type="text/javascript" src="./static/css/semantic/components/dropdown.min.js"></script>
-      <script type="text/javascript" src="./static/css/semantic/components/search.min.js"></script>
-      <script type="text/javascript" src="./static/css/semantic/components/checkbox.min.js"></script>
-      <script type="text/javascript" src="./static/css/semantic/components/sticky.min.js"></script>
-      <!-- put javascript down here -->
-      <script type="text/javascript" src="./static/js/state_1.js"></script>
-      <!-- put javascript down here -->
-      <script>
-        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
-      </script>
-    </body>
-    </html>
+    </div>
+    <!-- </div> -->
+    <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
+    <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
+    <script type="text/javascript" src="./static/js/base.js"></script>
+    <script type="text/javascript" src="./static/css/semantic/components/dropdown.min.js"></script>
+    <script type="text/javascript" src="./static/css/semantic/components/search.min.js"></script>
+    <script type="text/javascript" src="./static/css/semantic/components/checkbox.min.js"></script>
+    <script type="text/javascript" src="./static/css/semantic/components/sticky.min.js"></script>
+    <!-- put javascript down here -->
+    <script type="text/javascript" src="./static/js/state_1.js"></script>
+    <script type="text/javascript" src="./static/js/sweetalert2.min.js"></script>
+    <!-- put javascript down here -->
+    <script>
+      document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+  </body>
+  </html>

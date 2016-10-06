@@ -32,9 +32,11 @@
   </div>
   <div class="ui column fluid" style="height:100%;" id="top-bg">
     <div id="shell">
-      <img src="./static/img/fallingStar.png" id="star-1" width="100px" height="20px">
-      <img src="./static/img/fallingStar.png" id="star-2" width="100px" height="20px">
-      <img src="./static/img/fallingStar.png" id="star-3" width="100px" height="20px">
+      <img src="./static/img/fallingStar.png" id="star-1" width="28.5px" height="19px">
+      <img src="./static/img/fallingStar.png" id="star-2" width="22.8px" height="15.2px">
+      <img src="./static/img/fallingStar.png" id="star-3" width="22.8px" height="15.2px">
+      <img src="./static/img/fallingStar.png" id="star-4" width="57px" height="28px">
+      <img src="./static/img/fallingStar.png" id="star-5" width="39.9px" height="26.59px">
     </div>
     <div class="container ui" id="main-container">
       <!-- put code here with-->
@@ -60,7 +62,7 @@
                 <div class="ui row">
                   <div class="ui column fluid">
                     <div class="ui left icon input fluid small">
-                      <input type="text" placeholder="Your Email">
+                      <input type="text" placeholder="Your Email" name="signup-email">
                       <i class="mail outline icon"></i>
                     </div>
                   </div>
@@ -68,7 +70,7 @@
                 <div class="ui row">
                   <div class="ui column fluid">
                     <div class="ui left icon input fluid small">
-                      <input type="text" placeholder="Your nickname">
+                      <input type="text" placeholder="Your nickname" name="signup-username">
                       <i class="user icon"></i>
                     </div>
                   </div>
@@ -76,14 +78,14 @@
                 <div class="ui row">
                   <div class="ui column fluid">
                     <div class="ui left icon input fluid small">
-                      <input type="password" placeholder="Create Password">
+                      <input type="password" placeholder="Create Password" name="signup-password">
                       <i class="lock icon"></i>
                     </div>
                   </div>
                 </div>
                 <div class="ui row">
                   <div class="ui column ten wide centered">
-                    <button class="ui inverted button fluid">Commit</button>
+                    <button class="ui inverted button fluid" id="signup-btn">Commit</button>
                   </div>
                 </div>
                 <div class="ui or-divider" style="color:white; margin:none;">
@@ -103,7 +105,7 @@
                 <div class="ui row">
                   <div class="ui column fluid">
                     <div class="ui left icon input fluid">
-                      <input type="text" placeholder="Your Email">
+                      <input type="text" placeholder="Your Email" name="login-email">
                       <i class="mail icon"></i>
                     </div>
                   </div>
@@ -111,14 +113,14 @@
                 <div class="ui row">
                   <div class="ui column fluid">
                     <div class="ui left icon input fluid">
-                      <input type="password" placeholder="Your Password">
+                      <input type="password" placeholder="Your Password" name="login-password">
                       <i class="lock icon"></i>
                     </div>
                   </div>
                 </div>
                 <div class="ui row">
                   <div class="ui column ten wide centered">
-                    <button class="ui inverted button fluid">Commit</button>
+                    <button class="ui inverted button fluid" id="login-btn">Commit</button>
                   </div>
                 </div>
 
@@ -157,6 +159,7 @@
   <script type="text/javascript" src="./static/js/login.js"></script>
   <script type="text/javascript" src="./static/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="./static/js/plax.js"></script>
+  <script type="text/javascript" src="./static/js/jquery.md5.js"></script>
   <script>
     document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
   </script>

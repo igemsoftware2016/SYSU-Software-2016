@@ -31,48 +31,38 @@ body {
 .ui.search > .prompt {
     border-radius: .28571429rem;
 }
+/*  begin  from  here  */
 
-.field > label {
-    padding-top: -5px;
+/* plasmid style */
+.plasmid {
+    overflow: hidden;
+}
+.mdlabel {font-size:12px}
+.white {fill:#fff}
+g {cursor: default;}
+#marker-1:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-2:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-3:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
 }
 
-#state-2-menu {
-    height: 80vh;
-    overflow-x: visible;
-    overflow-y: auto;
-    z-index: 3;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+/* componets row */
+.ui.row.component {
+    border: 0.5px solid rgba(156,156,156,0.3);
+    margin-top: 1rem;
 }
 
-#state-2-content {
-    /*border: 3px solid black;*/
-    height: 80vh;
-    padding-left: 3vw;
-    padding-right: 3vw;
-    margin-left: calc(-2rem);
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    z-index: 2;
+.ui.popup.component {
+    min-width: 200px;
 }
 
-.ui.row.equal.width > .ui.column {
-    height: 20vh;
-    border: 3px solid black;
-}
-
-.ui.row.equal.width > .ui.column.pathway {
-    height: 15vh;
-}
-
-.ui.vertical.inverted.menu .active.item {
-    border-right: 3px solid white;
-}
-
-.ui.vertical.inverted.menu .item {
-    border-right: 3px solid grey;
-}
-
-.ui.column.right.aligned > button {
-    margin-left: 20px;
+.info-btns {
+    padding-top: 10px;
 }
