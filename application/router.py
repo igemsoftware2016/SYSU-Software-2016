@@ -4,6 +4,7 @@ from application import app, db
 #from flask.ext.login import logout_user
 #from .forms import LoginForm
 from model import *
+from static_dict import *
 from functools import wraps
 
 def login_required(f):
@@ -68,6 +69,7 @@ def router_state(design_id, state_id):
         return redirect(url_for('router_profile'))
     session['design'] = design_id
     if state_id > cur_design.state:
+        #return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
         state_id = cur_design.state
     if state_id == 1:
         return render_template('state_1.html', matters = dict_matters, medium = dict_medium, flora = dict_flora)
@@ -100,7 +102,7 @@ def router_not_found(error):
 @app.route('/new_design')
 @login_required
 def new_design():
-    new_design = design(session['user'])
+    new_design = design(user.query.filter_by(id = session['user']).first())
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 

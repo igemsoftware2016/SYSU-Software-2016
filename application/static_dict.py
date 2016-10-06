@@ -2,6 +2,11 @@ import os
 nowdir = os.path.abspath(os.path.dirname(__file__))
 
 dict_matters = []
+dict_medium = []
+dict_flora = []
+dict_bacteria = []
+dict_placmid = []
+dict_ylist = []
 
 f = open(os.path.join(nowdir, 'mar_total.txt'), 'r')
 dict_reading_id = 1
