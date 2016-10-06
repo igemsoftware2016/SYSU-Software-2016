@@ -283,7 +283,7 @@ bool opt_com_nlp :: get_bounds_info(Index n, Number* x_l, Number* x_u,
 
 	auto k = feed.begin();
 	for (int i = s_mat_m_s1; i < s_mat_m; ++ i) {
-		g_l[i] = 0.5; g_u[i] = (k -> second);
+		g_l[i] = (k -> second) / 2.0 ; g_u[i] = (k -> second);
 		//cout << g_l[i] << ' ';
 		++ k;
 	}
