@@ -25,7 +25,7 @@ class design(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	design_mode = db.Column(db.String(30))
 	state = db.Column(db.Integer)
-	owner_id = db.Column(db.Integer. db.ForeignKey('owner.id'))
+	owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 	owner = db.relationship('user', backref = db.backref('design_set', lazy = 'dynamic'))
 	md5_state1 = db.Column(db.String(60))
 	md5_state2 = db.Column(db.String(60))

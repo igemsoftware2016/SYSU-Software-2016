@@ -12,4 +12,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
 app.secret_key = SECRET_KEY
 db = SQLAlchemy(app)
 
-from application import router, model, impl
+from application import router, model

@@ -132,7 +132,7 @@ def save_state():
 
 @app.route('/commit_state_<state_id>', methods = ['GET', 'POST'])
 @login_required
-def save_state():
+def commit_state():
 	if method == 'POST':
 		cur_design = design.query.filter_by(id = session['design']).first()
 		if cur_design.owner_id != session['user']:
