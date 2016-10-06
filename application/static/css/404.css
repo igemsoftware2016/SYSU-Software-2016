@@ -59,7 +59,7 @@ img#star-3 {
 }
 
 .earth {
-    background-image: url("../img/404-earth.png");
+    background-image: url("/static/img/404-earth.png");
     background-size: 100% 100%;
     width: 120vh;
     height: 120vh;

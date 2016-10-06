@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("body").backstretch("destroy", false);
-    $("body").backstretch("./static/img/404-bg.png");
+    $("body").backstretch("/static/img/404-bg.png");
     // $('#star-1').plaxify({
     //     "xRange": 7,
     //     "yRange": 13

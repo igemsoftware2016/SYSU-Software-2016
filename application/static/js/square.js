@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // $("body").backstretch("destroy", false);
-    $(".ui.banner").backstretch("./static/img/profile_banner.png");
+    $(".ui.banner").backstretch("/static/img/profile_banner.png");
 
     $(".ui.sticky").sticky({
         context: '#square-context',

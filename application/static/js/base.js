@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("body").backstretch("./static/img/login_bg.png");
+    $("body").backstretch("/static/img/login_bg.png");
     // $("body").backstretch("destroy", false);
 
     $('.menu > .ui.dropdown').dropdown();
