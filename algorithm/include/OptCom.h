@@ -69,13 +69,13 @@ public:
 		IpoptCalculatedQuantities* ip_cq);
 
 private:
-	vector <string> s_mat_n_mer_name;
-	vector <int> s_mat_n_mer_cnt;
-	vector <double> s_mat_n_c;
+	vector <string> s_mat_m_mer_name;
+	vector <int> s_mat_m_mer_cnt;
+	vector <double> s_mat_m_c;
 	map <string, double> feed;
 
 	map < int, map <int, int> > s_mat;
-	vector < string > s_mat_n_mer;
+	//vector < string > s_mat_n_mer;
 	
 	int s_mat_m, s_mat_n, s_mat_m_s, s_mat_n_s, s_mat_m_s1, s_mat_n_s1, org_size;
 

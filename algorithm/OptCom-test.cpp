@@ -10,7 +10,9 @@ int main() {
 	std :: ios :: sync_with_stdio(false);
 
 	set <string> s;
-	s.insert("O3"); s.insert("O4"); s.insert("O5");
+	s.insert("O3");
+	s.insert("O4");
+	s.insert("O5");
 
 	map < string, set <string> > m;
 	map <string, double> u, c;
@@ -29,7 +31,7 @@ int main() {
 
 	SmartPtr <TNLP> nlp = new opt_com_nlp(s, m, u, c);
 	SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
-
+/*
 	app -> Options() -> SetStringValue("hessian_approximation", "limited-memory");
 	app -> Options() -> SetStringValue("jac_c_constant", "yes");
 	app -> Options() -> SetStringValue("jac_d_constant", "yes");
@@ -56,6 +58,6 @@ int main() {
 		Number final_obj = app->Statistics()->FinalObjective();
 		std::cout << std::endl << std::endl << "*** The final value of the objective function is " << final_obj << '.' << std::endl;
 	}
-
+*/
 	return 0;
 }
