@@ -1,26 +1,55 @@
-These instructions are only for UNIX-like systems.
+These instructions are for UNIX-like systems only.
 
-========
+REQUIRED:
+	Memory:		2G
+	CPU:		Intel I5-2500k / AMD Phenom II X4
+	
+HIGHLY RECOMMANDED:
+	Memory:		4G memory
+	CPU:		Intel I7 / AMD Fx8350 or better
 
-sudo apt update
-sudo apt upgrade
-sudo apt-get install gcc g++ gfortran subversion patch wget
-svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
-unzip OpenBLAS-0.2.19.zip
-cd ./CoinIpopt/ThirdParty/Mumps
-./get.Mumps
-cd ../Metis
-./get.Metis
+======== Get All the Code ========
 
-=====
+Open terminal at the working directory.
 
-cd ./OpenBLAS-0.2.19
-make
-make PREFIX=/home/ngzm/2016_SYSU_iGEM/algorithm install
-cd ../CoinIpopt
-./configure --prefix=/home/ngzm/2016_SYSU_iGEM/algorithm -with-blas="-L/home/ngzm/2016_SYSU_iGEM/algorithm/lib -lopenblas"
-make
-make install
-cd ..
-rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
+	sudo apt update
+	sudo apt upgrade
+	sudo apt-get install gcc g++ gfortran subversion patch wget
+	svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
+	unzip OpenBLAS-0.2.19.zip
+	cd ./CoinIpopt/ThirdParty/Mumps
+	./get.Mumps
+	cd ../Metis
+	./get.Metis
+
+======== INSTALL ========
+
+Open terminal at the working directory.
+
+	cd ./OpenBLAS-0.2.19
+	make
+	make PREFIX=/where/to/install install
+	cd ../CoinIpopt
+	./configure --prefix=/where/to/install -with-blas="-L/where/to/install/lib -lopenblas"
+	make
+	make install
+	cd ..
+	rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
+
+======== MAKE ========
+
+Edit Makefile.
+
+Find
+
+/home/ngzm/2016_SYSU_iGEM/algorithm
+
+Replace with
+
+/where/to/install
+
+Open terminal at the working directory.
+
+	make
+
 

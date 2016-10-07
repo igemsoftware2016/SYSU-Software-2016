@@ -26,7 +26,7 @@ using std :: pair;
 using std :: sort;
 
 //#define input_debug
-//#define size_output_debug
+#define size_output_debug
 #define timer_check
 #define LINUX
 //#define WINDOWS
@@ -181,6 +181,11 @@ struct full_result {
 		if (insert_gene != b.insert_gene)
 			return insert_gene < b.insert_gene;
 		return false;
+	}
+	
+	~full_result() {
+		org_list.clear();
+		insert_gene.clear();
 	}
 };
 

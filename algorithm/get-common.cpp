@@ -19,7 +19,7 @@ void current_memory() {
 
 ifstream fin("data.dat");
 ifstream qin("query-fake.txt");
-ifstream oin("org-data-fake.txt");
+ifstream oin("org-data.dat");
 ifstream kin("org-kcat-fake.txt");
 ifstream gin("mer-g-fake.txt");
 
@@ -173,13 +173,14 @@ void size_output() {
 
 void get_common() {
 	map < string, sub_data > :: iterator k;
-	if (work_type == "synthetic") {
+	//if (work_type == "synthetic") {
 		for (k = sub_map.begin(); k != sub_map.end(); ++ k) {
-			if ( k -> second.org.size() == org_map.size() ) {
+			if ( k -> second.org.size() >= (9 * org_map.size() / 10) ) {
 				k -> second.circle_flag = true;
+				cout << k -> first << endl;
 			}
 		}
-	}
+	//}
 }
 
 int sub_size;
@@ -265,20 +266,25 @@ void dfs_res_print(int x, int dep, const int & target) {
 }
 
 void ec_path_bfs(string x) {
-	cout << x << endl;
+
 	if (0 == sub_index.count(x)) {
 		cout << "ERROR: IT'S NOT EXIST IN THE DATA." << endl;
 		cout << "NO Solution" << endl;
 		exit(0);
 	}
-	cout << sub_map[x].name << endl;
+
+	if (work_type == "synthetic") {
+		cout << x << endl;
+		cout << sub_map[x].name << endl;
+	}
 	
 	int first = sub_index[x];
+
 	if (sub_flag[first]) {
 		cout << "ERROR: IT'S IN THAT CIRCUIT." << endl;
 		return;
 	}
-	
+
 	queue <int> q;
 	
 	ec_path_result cost(0, first, "");
@@ -475,7 +481,7 @@ set < set <string> > match() {
 			exit(0);
 		}
 
-		cout << i -> second.size() << endl;
+		//cout << i -> second.size() << endl;
 
 		if (i -> second.size() <= 1)
 			continue;
@@ -528,7 +534,7 @@ void search() {
 		needed.insert(sub_id);
 		//ec_path_bfs(sub_id);
 	}
-
+/*
 	if (work_type != "synthetic") {
 		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
 			if ( needed.count(k -> first) ) {
@@ -536,8 +542,10 @@ void search() {
 			}
 		}
 
+		int ss = (9 * org_map.size() /10);
 		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
-			if ( false == sub_flag[sub_index[k -> first]] ) {
+			if ( false == sub_flag[sub_index[k -> first]] && 
+				(int) sub_map[k -> first].org.size() > ss) {
 				for (int j = 0; j < sub_size; ++ j)
 					sub_res[j].clear();
 				ec_path_bfs(k -> first);
@@ -547,7 +555,7 @@ void search() {
 		cout << endl;
 		return;
 	}
-
+*/
 	for (auto i = needed.begin(); i != needed.end(); ++ i) {
 		for (int j = 0; j < sub_size; ++ j)
 			sub_res[j].clear();
@@ -564,11 +572,21 @@ vector <org_data> pattern_able_org;
 void dfs_pattern(int depth, int index, int inserted, set <string> s,
 	full_result current, set <full_result> & ret) {
 
-	if (dfs_pattern_t.stop() > 30.0)
+	if (ret.size() > 20)
+		return;
+		
+	if (depth > 7)
+		return;
+
+	if (dfs_pattern_t.stop() > 10.0)
 		return;
 
 	if (s.empty() && inserted > 0) {
 		ret.insert(current);
+		return;
+	}
+
+	if (s.empty()) {
 		return;
 	}
 
@@ -578,6 +596,12 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 
 		full_result next_res = current;
 		next_res.org_list.insert(pattern_able_org[i].name);
+
+		if (pattern_able_org[i].ec_list.count(*proc.begin()) == false) {
+			next_res.insert_gene[pattern_able_org[i].name].insert(*proc.begin());
+			i_ec.insert(* proc.begin());
+			proc.erase(proc.begin());
+		}
 
 		int counter = 0;
 
@@ -599,7 +623,7 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 
 				if (false == pattern_able_org[i].t_sub_list.count(mer) && false == needed.count(mer))
 					for (auto k = proc.begin(); k != proc.end(); ++ k) {
-						if (ec_map[* k].end ==  mer) {
+						if (ec_map[* k].end == mer) {
 							insert_g.insert(* k);
 							++ counter;
 							flag = true;
@@ -617,7 +641,7 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 				break;
 		} while (flag);
 
-		if (0 == i_ec.size())
+		if (1 >= i_ec.size())
 			continue;
 
 		if (counter <= 7)
@@ -625,19 +649,11 @@ void dfs_pattern(int depth, int index, int inserted, set <string> s,
 	}
 }
 
-set < full_result > dfs_pattern_init(const set <string> & s) {
-	set < full_result > ret;
+void dfs_pattern_init(const set <string> & s, set < full_result > & ret) {
 	full_result current;
-
-	for (auto i = org_map.begin(); i != org_map.end(); ++ i)
-		if (i -> second.usable)
-			pattern_able_org.push_back(i -> second);
-			
-	sort(pattern_able_org.begin(), pattern_able_org.end());
-
+	
+	dfs_pattern_t.start();
 	dfs_pattern(0, 0, 0, s, current, ret);
-
-	return ret;
 }
 
 void pattern_org(const set < set <string> > & solution) {
@@ -673,30 +689,42 @@ void pattern_org(const set < set <string> > & solution) {
 		}
 	}
 
-	dfs_pattern_t.start();
-
+	pattern_able_org.clear();
+	for (auto i = org_map.begin(); i != org_map.end(); ++ i)
+		if (i -> second.usable)
+			pattern_able_org.push_back(i -> second);
+			
+	sort(pattern_able_org.begin(), pattern_able_org.end());
+	
+	cout << "SS " << solution.size() << endl;
+	
+	set < full_result > ret;
 	int count = 0;
 	for (auto i = solution.begin(); i != solution.end(); ++ i) {
-		set < full_result > ans = dfs_pattern_init(* i);
-		
-		for (auto i = ans.begin(); i != ans.end(); ++ i) {
-			cout << "SOLUTION " << (count ++) << endl;
-			for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
-				++ j) {
-				cout << ' ' << (* j) << endl;
-				if (false == i -> insert_gene.count(* j))
-					continue;
+		//for (auto j = i -> begin(); j != i -> end(); ++ j)
+		//	cout << *j << ' ' << endl;
+		//cout << endl;
+		dfs_pattern_init(* i, ret);
+	}
+	
+	for (auto i = ret.begin(); i != ret.end(); ++ i) {
+		cout << "SOLUTION " << (count ++) << endl;
+		for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
+			++ j) {
+			cout << ' ' << (* j) << endl;
+			if (false == i -> insert_gene.count(* j))
+				continue;
 
-				cout << ' ';
-				for (auto k = i -> insert_gene.at(* j).begin();
-					k != i -> insert_gene.at(* j).end(); ++ k) {
-					cout << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
-				}
-				cout << endl;
+			cout << ' ';
+			for (auto k = i -> insert_gene.at(* j).begin();
+				k != i -> insert_gene.at(* j).end(); ++ k) {
+				cout << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
 			}
 			cout << endl;
 		}
+		cout << endl;
 	}
+
 }
 
 void free_alloc() {
