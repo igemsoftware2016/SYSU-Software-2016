@@ -1,10 +1,14 @@
 from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
 from application import app, db
+from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 #from flask.ext.login import logout_user
 #from .forms import LoginForm
 from model import *
 from functools import wraps
+from werkzeug import secure_filename
+import os
+import urllib
 
 def login_required(f):
     @wraps(f)
@@ -192,3 +196,26 @@ def search_matters_name(matter_name):
                         }
                     }
                     })
+
+#upload file
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods = ['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
