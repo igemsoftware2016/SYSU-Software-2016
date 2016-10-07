@@ -5,16 +5,14 @@ body {
 
 .ui.banner {
     height: auto;
-    min-height: 40vh;
+    min-height: 60vh;
     position: relative;
-    /*background-image: url("../img/profile_banner.png");
-    background-size: 100% 100%;*/
 }
 
 
 .ui.grid.bottom {
     /*height: 40vh;*/
-    margin-top: 25vh;
+    margin-top: 45vh;
     position: relative;
     /*bottom: 30px;*/
 }
@@ -24,12 +22,20 @@ body {
 }*/ 
 
 .ui.grid>.profile-menu.column:not(.row) {
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
+    padding: 0;
 }
 
-.ui.secondary.pointing.menu.inverted {
+.ui.secondary.pointing.menu {
     color: white;
     border: none;
+    margin-bottom: 0;
+}
+
+.profile-menu {
+    background-color: white;
+    margin-bottom: 60px;
+}
+
+.profile-menu > .segment {
+    margin-top: 0;
 }

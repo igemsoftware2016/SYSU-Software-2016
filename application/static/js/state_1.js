@@ -1,56 +1,13 @@
 $(document).ready(function() {
-    var content = [{
-        title: 'Andorra'
-    }, {
-        title: 'United Arab Emirates'
-    }, {
-        title: 'Afghanistan'
-    }, {
-        title: 'Antigua'
-    }, {
-        title: 'Anguilla'
-    }, {
-        title: 'Albania'
-    }, {
-        title: 'Armenia'
-    }, {
-        title: 'Netherlands Antilles'
-    }, {
-        title: 'Angola'
-    }, {
-        title: 'Argentina'
-    }, {
-        title: 'American Samoa'
-    }, {
-        title: 'Austria'
-    }, {
-        title: 'Australia'
-    }, {
-        title: 'Aruba'
-    }, {
-        title: 'Aland Islands'
-    }, {
-        title: 'Azerbaijan'
-    }, {
-        title: 'Bosnia'
-    }, {
-        title: 'Barbados'
-    }, {
-        title: 'Bangladesh'
-    }, {
-        title: 'Belgium'
-    }, {
-        title: 'Burkina Faso'
-    }, {
-        title: 'Bulgaria'
-    }, {
-        title: 'Bahrain'
-    }, {
-        title: 'Burundi'
-    }];
-
-    $('.ui.input.name').search({
-        source: content
+    $('.ui.name.search').search({
+        apiSettings: {
+            url: 'http://api.github.com/search/repositories?q={query}'
+        },
+        fields: {
+            results: 'items',
+            title: 'name'
+        },
+        minCharacters: 3
     });
 
     // Can not fix the flashing problem
@@ -77,12 +34,22 @@ $(document).ready(function() {
     //     }
     // });
 
-    var makeLine = '<tr class="make-line"><td class = "center aligned"><div class = "ui input fluid name search"><input class = "prompt"type = "text"placeholder = "Search matter..."></div><div class = "results"></div></td><td class = "center aligned"><div class = "ui right labeled input fluid"><input type = "text"placeholder = "Weight.."><div class = "ui basic label">Unit </div></div></td><td class = "center aligned"><div class = "ui right labeled input fluid"><input type = "text"placeholder = "Weight.."><div class = "ui basic label">Unit </div></div></td><td class = "center aligned"><div class = "ui toggle checkbox max"><input type = "checkbox"><label></label></div></td><td class = "center aligned"><div class = "ui toggle checkbox min"><input type = "checkbox"><label></label></div></td><td class = "right aligned"><button class = "ui circular minus icon button tiny remove-add"><i class = "minus icon"></i></button></td></tr>'
+    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search animals..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
     var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
 
 
     $(document).on('click', "#add-make", function() {
         $($("#make-tbody")[0]).append(makeLine);
+        $('.ui.name.search').search({
+            apiSettings: {
+                url: 'http://api.github.com/search/repositories?q={query}'
+            },
+            fields: {
+                results: 'items',
+                title: 'name'
+            },
+            minCharacters: 3
+        });
     });
 
     $("#add-resolve").click(function() {
@@ -103,67 +70,81 @@ $(document).ready(function() {
     });
 
     // keep radio of max&min checkbox
-    $(document).on('click', '.checkbox.max', function() {
-        $(this).parents(".make-line").find(".checkbox.min").checkbox('uncheck');
-    });
-    $(document).on('click', '.checkbox.min', function() {
-        $(this).parents(".make-line").find(".checkbox.max").checkbox('uncheck');
-    });
+    // $(document).on('click', '.checkbox.max', function() {
+    //     $(this).parents(".make-line").find(".checkbox.min").checkbox('uncheck');
+    // });
+    // $(document).on('click', '.checkbox.min', function() {
+    //     $(this).parents(".make-line").find(".checkbox.max").checkbox('uncheck');
+    // });
 
     var isMake = true;
     $(".ui.dimmer:not(.upload)").dimmer("show");
     swal({
-        title: 'Select Mode',
-        text: "Which design mode you want to use?",
-        type: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#21BA45',
-        cancelButtonColor: '#FBBD08',
-        confirmButtonText: 'Make Mode',
-        cancelButtonText: 'Resolve Mode',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-    }).then(function() {
-        swal(
-            'Enjoy the design time!',
-            '',
-            'success'
-        );
-        $(".resolve-row").hide();
-        $(".ui.dimmer:not(.upload)").dimmer("hide");
-    }, function(dismiss) {
-        // dismiss can be 'cancel', 'overlay',
-        // 'close', and 'timer'
-        if (dismiss === 'cancel') {
-            swal(
-                'Enjoy the design time!',
-                '',
-                'success'
-            );
+        title: 'Name and select mode',
+        html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
+        '<div class="ui buttons"><button class="ui button mode-btn make">Make</button><div class="or"></div><button class="ui button mode-btn resolve">Resolve</button></div>',
+        preConfirm: function(result) {
+            return new Promise(function(resolve, reject) {
+                var name = $("#design-name-input").val();
+                if (!name.length) {
+                    reject("Enter a name.");
+                }
+                if (!$(".make.mode-btn").hasClass("active") && !$(".resolve.mode-btn").hasClass("active")) {
+                    reject("Select a mode.");
+                }
+                var mode = $(".make.mode-btn").hasClass("active") ? "make" : "resolve";
+                resolve({
+                    "name": name,
+                    "mode": mode
+                });
+            });
+        }
+    }).then(function(result) {
+        console.log(result);
+        if (result.mode === "make") {
+            $(".resolve-row").hide();
+            $(".ui.dimmer:not(.upload)").dimmer("hide");
+        } else {
             $(".make-row").hide();
             $(".ui.dimmer:not(.upload)").dimmer("hide");
             isMake = false;
         }
+
+        swal(
+            'Enjoy the design time!',
+            '',
+            'success'
+            );
     });
+
+    $(document).on('click', '.mode-btn', function() {
+        if ($(this).hasClass("make")) {
+            $(this).addClass("green active");
+            $(".resolve.mode-btn").removeClass("orange active");
+        } else {
+            $(this).addClass("orange active");
+            $(".make.mode-btn").removeClass("green active");
+        }
+    })
 
     /* 
      * select dropdown
      * define the change callback function
      * to modify the package
      */
-    $("#medium-slt").dropdown({
+     $("#medium-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             console.log(value, text, $selectedItem);
         }
     });
-    $("#medium-slt").dropdown("set selected", 1);
+     $("#medium-slt").dropdown("set selected", 1);
 
-    $("#flora-slt").dropdown({
+     $("#flora-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             console.log(value, text, $selectedItem);
         }
     });
-    $("#flora-slt").dropdown("set selected", 1);
+     $("#flora-slt").dropdown("set selected", 1);
 
     // disable select after upload file
     $(".button.flora").click(function() {

@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8"> 
   <title>square</title>
-  <link rel="stylesheet" type="text/css" href="./static/css/semantic/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
   <!-- put css stylesheet down here -->
-  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/menu.min.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/semantic/components/dropdown.min.css">
-  <link rel="stylesheet" type="text/css" href="./static/css/square.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/menu.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/dropdown.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/square.css">
 </head>
 <body>
   <!-- <div class="container ui"> </div>  -->
@@ -44,6 +45,9 @@
   <button class="ui grey button icon compact" id="to-top">
     <i class="arrow up icon"></i>
   </button>
+  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
+    <i class="mail icon"></i>
+  </a>
 
   <div class="ui column fluid" id="top-bg">
     <div class="container ui" id="main-container">
@@ -64,7 +68,7 @@
       <div class="ui column grid">
         <!-- designs -->
         <div class="ui column twelve wide profile-menu" id="square-context">
-          <div class="ui secondary pointing menu inverted">
+          <!-- <div class="ui secondary pointing menu inverted">
             <a class="active item">
               All
             </a>
@@ -76,56 +80,187 @@
             </a>
             <div class="right menu">
               <a class="ui item">
-                Sort by
+                Sort by time
               </a>
             </div>
-          </div>
+          </div> -->
           <div class="ui segment">
-            <div class="ui row">
-              <div class="ui column fliud">
-                <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-              </div>
-            </div>
-            <h4 class="ui horizontal divider header">
-              <i class="tag icon"></i>
-              Divider
-            </h4>
 
-            <div class="ui row">
-              <div class="ui column fliud">
-                <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-              </div>
-            </div>
-            <h4 class="ui horizontal divider header">
-              <i class="tag icon"></i>
-              Divider
-            </h4>
+            <div class="design card">
+              <div class="ui column grid" design-id="id">
+                <div class="ui row">
+                  <div class="eleven wide column">
+                    <h3 class="ui header">
+                      <img src="http://semantic-ui.com/images/avatar2/large/patrick.png" class="ui rounded image mini">&nbsp;
+                      <a href="#user" class="user">Patrick</a> - <a href="#design" class="design-name">XXXX X XXXX XXX DESIGN</a>
+                    </h3>
+                  </div>
 
-            <div class="ui row">
-              <div class="ui column fliud">
-                <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
+                  <div class="five wide column right aligned">
+                    <div class="ui labeled button mini like">
+                      <div class="ui red button">
+                        <i class="empty heart icon"></i>
+                      </div>
+                      <a class="ui basic red left pointing label">
+                        16
+                      </a>
+                    </div>
+                    <button class="ui icon button tiny basic orange mark">
+                      <i class="empty star icon"></i>
+                    </button>
+                    <button class="ui icon button tiny basic black tip-off">
+                      <i class="warning sign icon"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <h4 class="ui horizontal divider header">
-              <i class="tag icon"></i>
-              Divider
-            </h4>
+              <div class="ui divider"></div>
+              <div class="description">
+                <p class="design description">
+                  It's a long long long long long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long long long long description.<br>
+                  <p class="time">05 Feb</p>
+                </p>
+              </div>
+              <div class="ui tiny progress indicating" data-value="3" data-total="5">
+                <div class="bar"></div>
+                <div class="label">Simulation</div>
+              </div>
+            </div> <!-- design card -->
 
-            <div class="ui row">
-              <div class="ui column fliud">
-                <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-              </div>
-            </div>
-            <h4 class="ui horizontal divider header">
-              <i class="tag icon"></i>
-              Divider
-            </h4>
+            <div class="design card">
+              <div class="ui column grid" design-id="id">
+                <div class="ui row">
+                  <div class="eleven wide column">
+                    <h3 class="ui header">
+                      <img src="http://semantic-ui.com/images/avatar2/large/patrick.png" class="ui rounded image mini">&nbsp;
+                      <a href="#user" class="user">Patrick</a> - <a href="#design" class="design-name">XXXX X XXXX XXX DESIGN</a>
+                    </h3>
+                  </div>
 
-            <div class="ui row">
-              <div class="ui column fliud">
-                <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
+                  <div class="five wide column right aligned">
+                    <div class="ui labeled button mini like">
+                      <div class="ui red button">
+                        <i class="empty heart icon"></i>
+                      </div>
+                      <a class="ui basic red left pointing label">
+                        8
+                      </a>
+                    </div>
+                    <button class="ui icon button tiny basic orange mark">
+                      <i class="empty star icon"></i>
+                    </button>
+                    <button class="ui icon button tiny basic black tip-off">
+                      <i class="warning sign icon"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="ui divider"></div>
+              <div class="description">
+                <p class="design description">
+                  It's a long long long long long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long long long long description.<br>
+                  <p class="time">05 Feb</p>
+                </p>
+              </div>
+              <div class="ui tiny progress indicating" data-value="1" data-total="5">
+                <div class="bar"></div>
+                <div class="label">Input</div>
+              </div>
+            </div> <!-- design card -->
+
+            <div class="design card">
+              <div class="ui column grid" design-id="id">
+                <div class="ui row">
+                  <div class="eleven wide column">
+                    <h3 class="ui header">
+                      <img src="http://semantic-ui.com/images/avatar2/large/patrick.png" class="ui rounded image mini">&nbsp;
+                      <a href="#user" class="user">Patrick</a> - <a href="#design" class="design-name">XXXX X XXXX XXX DESIGN</a>
+                    </h3>
+                  </div>
+
+                  <div class="five wide column right aligned">
+                    <div class="ui labeled button mini like">
+                      <div class="ui red button">
+                        <i class="empty heart icon"></i>
+                      </div>
+                      <a class="ui basic red left pointing label">
+                        7
+                      </a>
+                    </div>
+                    <button class="ui icon button tiny basic orange mark">
+                      <i class="empty star icon"></i>
+                    </button>
+                    <button class="ui icon button tiny basic black tip-off">
+                      <i class="warning sign icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="ui divider"></div>
+              <div class="description">
+                <p class="design description">
+                  It's a long long long long long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long long long long description.<br>
+                  <p class="time">05 Feb</p>
+                </p>
+              </div>
+              <div class="ui tiny progress indicating" data-value="2" data-total="5">
+                <div class="bar"></div>
+                <div class="label">Search</div>
+              </div>
+            </div> <!-- design card -->
+
+            <div class="design card">
+              <div class="ui column grid" design-id="id">
+                <div class="ui row">
+                  <div class="eleven wide column">
+                    <h3 class="ui header">
+                      <img src="http://semantic-ui.com/images/avatar2/large/patrick.png" class="ui rounded image mini">&nbsp;
+                      <a href="#user" class="user">Patrick</a> - <a href="#design" class="design-name">XXXX X XXXX XXX DESIGN</a>
+                    </h3>
+                  </div>
+
+                  <div class="five wide column right aligned">
+                    <div class="ui labeled button mini like">
+                      <div class="ui red button">
+                        <i class="empty heart icon"></i>
+                      </div>
+                      <a class="ui basic red left pointing label">
+                        26
+                      </a>
+                    </div>
+                    <button class="ui icon button tiny basic orange mark">
+                      <i class="empty star icon"></i>
+                    </button>
+                    <button class="ui icon button tiny basic black tip-off">
+                      <i class="warning sign icon"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="ui divider"></div>
+              <div class="description">
+                <p class="design description">
+                  It's a long long long long long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long description.<br>
+                  It's a long long long long long long long long long long long long long long long description.<br>
+                  <p class="time">05 Feb</p>
+                </p>
+              </div>
+              <div class="ui tiny progress indicating" data-value="4" data-total="5">
+                <div class="bar"></div>
+                <div class="label">Protocal</div>
+              </div>
+            </div> <!-- design card -->
 
 
           </div>
@@ -133,146 +268,76 @@
         <!-- personal info & help wanted -->
         <div class="ui column four wide">
           <div class="ui row sticky">
-            <div class="ui segment">
-              <div class="card">
-                <div class="content">
-                  <img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
-                  <div class="header">
-                    Elliot Fu
+
+            <div class="ui segment center aligned">
+              <div class="ui tiny circular image">
+                <img src="http://semantic-ui.com/images/avatar2/large/kristy.png">
+              </div>
+              <div class="ui divider"></div>
+              <div class="ui row">
+                <div class="ui mini statistic column">
+                  <div class="value">
+                    22
                   </div>
-                  <div class="meta">
-                    Friends of Veronika
-                  </div>
-                  <div class="description">
-                    Elliot requested permission to view your contact details
+                  <div class="label">
+                    Faves
                   </div>
                 </div>
-                <div class="extra content">
-                  <div class="ui two buttons">
-                    <div class="ui basic green button">Approve</div>
-                    <div class="ui basic red button">Decline</div>
+                <div class="ui mini statistic column">
+                  <div class="value">
+                    22
+                  </div>
+                  <div class="label">
+                    Members
+                  </div>
+                </div>
+                <div class="ui mini statistic column">
+                  <div class="value">
+                    31
+                  </div>
+                  <div class="label">
+                    Views
                   </div>
                 </div>
               </div>
             </div>
             <!-- help wanted -->
             <div class="ui segment">
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
               <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
+                ASK FOR HELP
               </h4>
 
               <div class="ui row">
+                <!-- one asking -->
                 <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
+                  <a href="#help"><span>SB</span> asks for help about simulation!</a> - 05 Feb
                 </div>
-
                 <div class="ui popup">
+                  <h4>Design title!</h4>
+                  Here is a long long long title of biology design.
+                </div>
+                <!-- one asking -->
+                <div class="ui column fliud popup-bro">
+                  <a href="#help"><span>ONE SBB</span> asks for help about search!</a> - 08 Feb
+                </div>
+                <div class="ui popup">
+                  <h4>Design title!</h4>
+                  Here is a long long long title of biology design.
+                </div>
+                <!-- one asking -->
+                <div class="ui column fliud popup-bro">
+                  <a href="#help"><span>SSSSB</span> asks for help about simulation!</a> - 12 Oct
+                </div>
+                <div class="ui popup">
+                  <h4>Design title!</h4>
                   Here is a long long long title of biology design.
                 </div>
               </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Divider
-              </h4>
-
-              <div class="ui row">
-                <div class="ui column fliud popup-bro">
-                  <img src="http://semantic-ui.com/images/wireframe/media-paragraph.png" class="ui wireframe image"/>
-                </div>
-
-                <div class="ui popup">
-                  Here is a long long long title of biology design.
-                </div>
-              </div>
-              <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Last Divider
-              </h4>
 
 
             </div>
           </div>
+
         </div>
       </div>
 
@@ -291,13 +356,14 @@
   <!-- </div> -->
 
 
-  <script type="text/javascript" src="./static/js/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="./static/css/semantic/semantic.min.js"></script>
-  <script type="text/javascript" src="./static/js/jquery.backstretch.min.js"></script>
-  <script type="text/javascript" src="./static/js/base.js"></script>
+  <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="/static/css/semantic/semantic.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="/static/js/base.js"></script>
   <!-- put javascript down here -->
-  <script type="text/javascript" src="./static/js/square.js"></script>
-  <script type="text/javascript" src="./static/css/semantic/components/dropdown.min.js"></script>
+  <script type="text/javascript" src="/static/js/square.js"></script>
+  <script type="text/javascript" src="/static/css/semantic/components/dropdown.min.js"></script>
   <script>
     document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
   </script>

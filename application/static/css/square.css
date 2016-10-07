@@ -5,35 +5,34 @@ body {
 
 .ui.banner {
     height: auto;
-    min-height: 40vh;
+    min-height: 60vh;
     position: relative;
 }
 
 
 .ui.grid.bottom {
     /*height: 40vh;*/
-    margin-top: 25vh;
+    margin-top: 45vh;
     position: relative;
     /*bottom: 30px;*/
 }
-
 /*.ui.grid.bottom > .column {
     position: absolute;
 }*/ 
 
-.ui.grid>.profile-menu.column:not(.row) {
+/*.ui.grid>.profile-menu.column:not(.row) {
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
-}
+}*/
 
-.ui.secondary.pointing.menu.inverted {
+/*.ui.secondary.pointing.menu.inverted {
     color: white;
     border: none;
 }
-
+*/
 .ui.sticky {
-    margin: 54px 0;
+    /*margin: 54px 0;*/
     z-index: -1;
     padding-bottom: 67px;
 }
@@ -45,4 +44,28 @@ body {
 /* test */
 .test-height {
     height: 400px;
+}
+
+/* design card */
+.design.card {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 10px 0;
+}
+
+.popup-bro {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    padding: 3px 5px;
+    margin: 5px 0;
+}
+
+.time {
+    text-align: right;
+    width: 100%;
+}
+
+.description:not(.design) {
+    padding: 0 15px;
 }

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("body").backstretch("/static/img/login_bg.png");
+    $("body").backstretch("./static/img/login_bg.png");
     // $("body").backstretch("destroy", false);
 
     $('.menu > .ui.dropdown').dropdown();
@@ -14,10 +14,10 @@ $(document).ready(function() {
         // } else {
         //     $(".main.menu").fadeOut();
         // }
-        if($(document).scrollTop() == 0 && $("#to-top").hasClass("visibled")) {
+        if ($(document).scrollTop() == 0 && $("#to-top").hasClass("visibled")) {
             $("#to-top").removeClass("visibled");
             $("#to-top").fadeOut("fast");
-        } else if(!$("#to-top").hasClass("visibled")){
+        } else if (!$("#to-top").hasClass("visibled")) {
             $("#to-top").addClass("visibled");
             $("#to-top").show();
         }
@@ -47,4 +47,62 @@ $(document).ready(function() {
             confirmButtonText: "Okay..."
         });
     };
+
+    var steps = $(".ui.five.steps.sticky");
+    var data = {
+        "_id": $("#design-id").text()
+    }
+    if (steps.length) {
+        $.ajax({
+            url: "/get_steps",
+            type: "GET",
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            cache: false,
+            data: data,
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                } else {
+                    r.ret -= 1; /* 1~5 -> 0~4*/
+                    $(steps.find(".step")).each(function(n, el) {
+                        if (n < r.ret) {
+                            $(el).children(".icon").addClass("green check"); /* done */
+                        } else if (n === r.ret) {
+                            $(el).children(".icon").addClass("info"); /* now doing */
+                        } else {
+                            $(el).addClass("disabled");
+                            $(el).children(".icon").addClass("help"); /* todo */
+                        }
+                    });
+                }
+            },
+            error: function() {
+                /* test !!! */
+                ret = 3; /* 1~5 -> 0~4*/
+                ret -= 1;
+                // console.log(steps.find(".step"));
+                $(steps.find(".step")).each(function(n, el) {
+                    console.log(el);
+                    if (n < ret) {
+                        $(el).children(".icon").addClass("green check"); /* done */
+                    } else if (n === ret) {
+                        $(el).children(".icon").addClass("info"); /* now doing */
+                    } else {
+                        $(el).addClass("disabled");
+                        $(el).children(".icon").addClass("help"); /* todo */
+                    }
+                });
+                // AjaxFail();
+            }
+        });
+    } else {
+        console.log("no steps");
+    }
 });

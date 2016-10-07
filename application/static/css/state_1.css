@@ -27,7 +27,7 @@ body {
     padding-bottom: 5vh;
 }
 
-.ui.search > .prompt {
+.ui.search.name .prompt {
     border-radius: .28571429rem;
 }
 

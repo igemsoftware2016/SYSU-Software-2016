@@ -97,6 +97,12 @@ def router_state(design_id, state_id):
 
     return render_template('state_%r.html' % state_id)
 
+@app.route('/square')
+def router_square():
+    if session.get('user'):
+        return render_template('square.html', userid = session['user'])
+    return render_template('square.html')
+
 @app.route('/logout')
 @login_required
 def router_logout():

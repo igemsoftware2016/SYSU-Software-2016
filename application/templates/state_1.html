@@ -44,14 +44,12 @@
       </div>
     </div>
   </div>
-  <!-- back to top -->
   <button class="ui grey button icon compact" id="to-top">
     <i class="arrow up icon"></i>
   </button>
-  <!-- feedback -->
-  <a class="ui white button icon compact" id="feedback" href="#mailto">
+  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
     <i class="mail icon"></i>
-  </a href="#mailto">
+  </a>
   <div class="ui page blurring dimmer">
     <div class="content">
     </div>
@@ -59,33 +57,35 @@
   <div class="ui column fluid" id="top-bg">
     <div class="container ui" id="main-container">
       <!-- put code here with-->
+      <span id="design-id" style="display: none;">26</span> <!-- given by jinja2 -->
+      
       <div class="ui five steps sticky">
-        <a class="step">
-          <i class="green check circle icon"></i>
+        <a class="active step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 1</div>
           </div>
         </a>
         <a class="step">
-          <i class="green check circle icon"></i>
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 2</div>
           </div>
         </a>
-        <a class="active step">
-          <i class="info circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 3</div>
           </div>
         </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 4</div>
           </div>
         </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 5</div>
           </div>
@@ -117,16 +117,18 @@
                     <th class="two wide">浓度下限</th>
                     <th class="two wide">浓度上限</th>
                     <th class="one wide">浓度MAX</th>
-                    <th class="one wide">浓度MIN</th>
                     <th class="one wide right aligned">删除</th>
                   </tr></thead>
                   <tbody id="make-tbody">
                     <tr class="make-line">
                       <td class="center aligned">
-                        <div class="ui input fluid name search">
-                          <input class="prompt" type="text" placeholder="Search matter...">
+                        <div class="ui search name fluid standard">
+                          <div class="ui icon input fluid">
+                            <input class="prompt" type="text" placeholder="Search animals...">
+                            <i class="search icon"></i>
+                          </div>
+                          <div class="results"></div>
                         </div>
-                        <div class="results"></div>
                       </td>
                       <td class="center aligned">
                         <div class="ui right labeled input fluid">
@@ -142,12 +144,6 @@
                       </td>
                       <td class="center aligned">
                         <div class="ui toggle checkbox max">
-                          <input type="checkbox">
-                          <label></label>
-                        </div>
-                      </td>
-                      <td class="center aligned">
-                        <div class="ui toggle checkbox min">
                           <input type="checkbox">
                           <label></label>
                         </div>
@@ -192,21 +188,9 @@
                   <tbody id="resolve-tbody">
                     <tr class="resolve-line">
                       <td class="center aligned">
-                        <!-- 可以自动补全 
+                        <!-- 可以自动补全 -->
                         <div class="ui input fluid name search">
                           <input class="prompt" type="text" placeholder="Search matter...">
-                        </div> 
-                        -->
-                        <div class="ui fluid search dropdown selection" id="medium-slt">
-                          <i class="dropdown icon"></i>
-                          <input class="search" autocomplete="off" tabindex="0">
-                          <div class="default text">Month</div>
-                          <div class="menu transition hidden" tabindex="-1">
-                         <!-- <div class="item selected" data-value="1">January</div>-->
-                            {% for matter in matters -%}
-                              <div class="item" data-value="{{ matter.id }}">{{ matter.name }}</div>
-                            {%- endfor %}
-                          </div>
                         </div>
                         <div class="results"></div>
                       </td>

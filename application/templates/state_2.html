@@ -12,6 +12,7 @@
   <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/sticky.min.css">
   <!-- put css stylesheet down here -->
   <link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/range.css">
   <!-- put css stylesheet down here -->
 </head>
@@ -48,37 +49,41 @@
   <button class="ui grey button icon compact" id="to-top">
     <i class="arrow up icon"></i>
   </button>
+  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
+    <i class="mail icon"></i>
+  </a>
 
   <div class="ui column fluid" id="top-bg">
 
     <div class="container ui" id="main-container">
+      <span id="design-id" style="display: none;">26</span> <!-- given by jinja2 -->
       <div class="ui five steps sticky">
         <a class="step">
-          <i class="green check circle icon"></i>
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 1</div>
           </div>
         </a>
-        <a class="step">
-          <i class="green check circle icon"></i>
+        <a class="active step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 2</div>
           </div>
         </a>
-        <a class="active step">
-          <i class="info circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 3</div>
           </div>
         </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 4</div>
           </div>
         </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
+        <a class="step">
+          <i class="circle icon"></i>
           <div class="content">
             <div class="title">Step 5</div>
           </div>
@@ -87,7 +92,7 @@
       <!-- put code here with-->
       <div class="ui column grid state">
         <div class="ui row">
-          <div class="ui eight wide column">
+          <div class="ui six wide column">
             <div class="ui column">
               <label><b>细菌</b></label>
               <div class="ui fluid search dropdown selection" id="bacteria-slt">
@@ -112,7 +117,7 @@
             </div>
           </div>
 
-          <div class="eight wide column">
+          <div class="six wide column">
             <div class="ui column">
               <label><b>质粒</b></label>
               <div class="ui fluid search dropdown selection" id="plasmid-slt">
@@ -191,7 +196,7 @@
                           Part Infomation
                         </h4>
                         <div class="ui column fliud">
-                        <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                          <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
                         </div>
                         <div class="ui column fliud">
                           <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
@@ -223,7 +228,7 @@
                           Part Infomation
                         </h4>
                         <div class="ui column fliud">
-                        <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                          <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
                         </div>
                         <div class="ui column fliud">
                           <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
@@ -255,7 +260,7 @@
                           Part Infomation
                         </h4>
                         <div class="ui column fliud">
-                        <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                          <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
                         </div>
                         <div class="ui column fliud">
                           <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
@@ -287,7 +292,7 @@
                           Part Infomation
                         </h4>
                         <div class="ui column fliud">
-                        <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                          <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
                         </div>
                         <div class="ui column fliud">
                           <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
@@ -373,6 +378,7 @@
   <script type="text/javascript" src="/static/js/angularplasmid.complete.min.js"></script>
   <script type="text/javascript" src="/static/js/Chart.min.js"></script>
   <script type="text/javascript" src="/static/js/range.js"></script>
+  <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
   <script type="text/javascript" src="/static/js/state_2.js"></script>
   <!-- put javascript up here -->
   <script>

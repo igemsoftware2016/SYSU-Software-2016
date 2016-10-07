@@ -31,6 +31,7 @@ body {
     /*background-color:lightgray;*/
     height:100%;
     position: relative;
+    min-width: 1127px!important;
 }
 
 .footer.segment {
@@ -229,3 +230,9 @@ nav a:focus {
     /*overflow: hidden;*/
 }
 /* for test */
+
+
+.ui.steps.sticky {
+    margin-top: 0;
+}
+
