@@ -1,10 +1,9 @@
-from flask import Flask, render_template, abort, redirect, session, url_for, request, g, jsonify
+from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
 from application import app, db
 #from flask.ext.login import logout_user
 #from .forms import LoginForm
 from model import *
-from static_dict import *
 from functools import wraps
 
 def login_required(f):
@@ -17,6 +16,8 @@ def login_required(f):
 
 @app.route('/')
 def router_index():
+    if session.get('user'):
+        return redirect(url_for('router_profile'))
     return render_template('login.html')
 
 @app.route('/testlogin')
@@ -61,7 +62,7 @@ def router_register():
 def router_profile():
     return render_template('profile.html', user = user.query.filter_by(id = session['user']).first().nickname)
 
-@app.route('/state/<design_id>/<state_id>')
+@app.route('/state/<int:design_id>/<int:state_id>')
 @login_required
 def router_state(design_id, state_id):
     cur_design = design.query.filter_by(id = design_id).first()
@@ -69,22 +70,27 @@ def router_state(design_id, state_id):
         return redirect(url_for('router_profile'))
     session['design'] = design_id
     if state_id > cur_design.state:
-        #return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
-        state_id = cur_design.state
+        return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
+        #state_id = cur_design.state
+
     if state_id == 1:
-        return render_template('state_1.html', matters = dict_matters, medium = dict_medium, flora = dict_flora)
+        return render_template('state_1.html')#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
+
     elif state_id == 2:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
         if cur_calculator.ans == -1:
             return render_template('pending.html')
-        return render_template('state_2.html', bacteria = dict_bacteria, plasmid = dict_placmid)
+        return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_placmid)
+
     elif state_id == 3:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state2).first()
         if cur_calculator.ans == -1:
             return render_template('pending.html')
-        return render_template('state_3.html', y_list = dict_ylist)
+        return render_template('state_3.html')#, y_list = dict_ylist)
+
     elif state_id == 4:
-        return render_template('state_4.html', pdf_pos = where_is_the_pdf)
+        return render_template('state_4.html')#, pdf_pos = where_is_the_pdf)
+
     return render_template('state_%r.html' % state_id)
 
 @app.route('/logout')
@@ -106,7 +112,7 @@ def new_design():
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 
-@app.route('/get_steps', methods = ['GET', 'POST'])
+@app.route('/get_steps', methods = ['GET'])
 @login_required
 def get_steps():
     if request.method == "GET":
@@ -124,9 +130,9 @@ def get_steps():
                         'ret': return_state
                         })
 
-@app.route('/save_state_<state_id>', methods = ['GET', 'POST'])
+@app.route('/save_state_<state_id>', methods = ['POST'])
 @login_required
-def save_state():
+def save_state(state_id):
     if method == 'POST':
         cur_design = design.query.filter_by(id = session['design']).first()
         if cur_design.owner_id != session['user']:
@@ -135,9 +141,9 @@ def save_state():
         db.session.commit()
         return redirect(url_for('router_state'), design_id = session['design'], state_id = state_id)
 
-@app.route('/commit_state_<state_id>', methods = ['GET', 'POST'])
+@app.route('/commit_state_<state_id>', methods = ['POST'])
 @login_required
-def commit_state():
+def commit_state(state_id):
     if method == 'POST':
         cur_design = design.query.filter_by(id = session['design']).first()
         if cur_design.owner_id != session['user']:
@@ -150,9 +156,9 @@ def commit_state():
             return redirect(url_for('router_profile'))
         return redirect(url_for('router_state'), design_id = session['design'], state_id = state_id + 1)
 
-@app.route('/get_state_<state_id>_saved', methods = ['GET', 'POST'])
+@app.route('/get_state_<state_id>_saved', methods = ['GET'])
 @login_required
-def get_state_saved():
+def get_state_saved(state_id):
     if method == 'GET':
         cur_design = design.query.filter_by(id = request.args.get('_id')).first()
         if cur_design.owner_id != session['user']:
@@ -161,3 +167,28 @@ def get_state_saved():
             return redirect(url_for('router_state', design_id = cur_design.id, state_id = cur_design.state))
         return jsonify({})
 
+@app.route('/search/matters/<matter_name>')
+def search_matters_name(matter_name):
+    querier = matterDB.query.filter(matterDB.matter_name.ilike('%'+matter_name+'%'))
+    if querier.first() is None:
+        return jsonify({
+                        "success": False
+                        })
+    results = []
+    counter = 1;
+    for m in querier:
+        ares = {"title": m.matter_name, "description": ""}
+        results.append(ares)
+        counter += 1
+        if counter >= 10:
+            break
+    return jsonify({
+                    "success": True,
+                    "results": 
+                    {"matters":
+                        {
+                        "name": "Matters",
+                        "results": results
+                        }
+                    }
+                    })

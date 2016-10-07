@@ -56,3 +56,14 @@ class calculator(db.Model):
 	def save(self):
 		db.session.add(self)
 		db.session.commit()
+
+class matterDB(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    matter_name =db.Column(db.String(120))
+    def __init__(self, matter_name):
+        self.matter_name = matter_name
+    def __repr__(self):
+        return '<Matter %r>' % self.matter_name
+    def save(self):
+        db.session.add(self)
+        db.session.commit()

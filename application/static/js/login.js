@@ -4,7 +4,7 @@ $(document).ready(function() {
     // });
 
     $.extend($.fn.api.settings.api, {
-        categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
+        categorySearch: 'http://127.0.0.1:5000/search/matters/{query}'
     });
 
     var $category = $('.ui.category.search');

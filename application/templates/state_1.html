@@ -192,9 +192,21 @@
                   <tbody id="resolve-tbody">
                     <tr class="resolve-line">
                       <td class="center aligned">
-                        <!-- 可以自动补全 -->
+                        <!-- 可以自动补全 
                         <div class="ui input fluid name search">
                           <input class="prompt" type="text" placeholder="Search matter...">
+                        </div> 
+                        -->
+                        <div class="ui fluid search dropdown selection" id="medium-slt">
+                          <i class="dropdown icon"></i>
+                          <input class="search" autocomplete="off" tabindex="0">
+                          <div class="default text">Month</div>
+                          <div class="menu transition hidden" tabindex="-1">
+                         <!-- <div class="item selected" data-value="1">January</div>-->
+                            {% for matter in matters -%}
+                              <div class="item" data-value="{{ matter.id }}">{{ matter.name }}</div>
+                            {%- endfor %}
+                          </div>
                         </div>
                         <div class="results"></div>
                       </td>
