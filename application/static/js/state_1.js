@@ -1,13 +1,14 @@
 $(document).ready(function() {
     $('.ui.name.search').search({
         apiSettings: {
-            url: 'http://api.github.com/search/repositories?q={query}'
+            url: '/search/matters/{query}'
         },
         fields: {
-            results: 'items',
-            title: 'name'
+            results: 'results',
+            title: 'title',
+            description: 'description'
         },
-        minCharacters: 3
+        minCharacters: 1
     });
 
     // Can not fix the flashing problem
@@ -42,13 +43,14 @@ $(document).ready(function() {
         $($("#make-tbody")[0]).append(makeLine);
         $('.ui.name.search').search({
             apiSettings: {
-                url: 'http://api.github.com/search/repositories?q={query}'
+                url: '/search/matters/{query}'
             },
             fields: {
-                results: 'items',
-                title: 'name'
+                results: 'results',
+                title: 'title',
+                description: 'description'
             },
-            minCharacters: 3
+            minCharacters: 1
         });
     });
 
@@ -82,7 +84,7 @@ $(document).ready(function() {
     swal({
         title: 'Name and select mode',
         html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
-        '<div class="ui buttons"><button class="ui button mode-btn make">Make</button><div class="or"></div><button class="ui button mode-btn resolve">Resolve</button></div>',
+            '<div class="ui buttons"><button class="ui button mode-btn make">Make</button><div class="or"></div><button class="ui button mode-btn resolve">Resolve</button></div>',
         preConfirm: function(result) {
             return new Promise(function(resolve, reject) {
                 var name = $("#design-name-input").val();
@@ -116,7 +118,7 @@ $(document).ready(function() {
             'Enjoy the design time!',
             '',
             'success'
-            );
+        );
     });
 
     $(document).on('click', '.mode-btn', function() {
@@ -134,22 +136,22 @@ $(document).ready(function() {
      * define the change callback function
      * to modify the package
      */
-     var medium, flora;
-     $("#medium-slt").dropdown({
+    var medium, flora;
+    $("#medium-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             medium = value;
             console.log(value, text, $selectedItem);
         }
     });
-     $("#medium-slt").dropdown("set selected", 1);
+    $("#medium-slt").dropdown("set selected", 1);
 
-     $("#flora-slt").dropdown({
+    $("#flora-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             flora = value;
             console.log(value, text, $selectedItem);
         }
     });
-     $("#flora-slt").dropdown("set selected", 1);
+    $("#flora-slt").dropdown("set selected", 1);
 
     // disable select after upload file
     $(".button.flora").click(function() {
@@ -170,7 +172,7 @@ $(document).ready(function() {
     var setUpPackage = function() {
         var inputs = [];
 
-        if(isMake) {
+        if (isMake) {
             $(".make-line").each(function(n, el) {
                 var line = $(el).find("input");
                 inputs.push({
@@ -197,13 +199,38 @@ $(document).ready(function() {
         }
 
         return {
-            mode: (isMake?"made":"resolve"),
+            design_id: $("#design-id").text(),
+            mode: (isMake ? "made" : "resolve"),
             inputs: inputs,
             other: other
         };
     }
 
     $("#save-btn").click(function() {
-        console.log(setUpPackage());
+        $.ajax({
+            url: "/save_test",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: JSON.stringify(setUpPackage()),
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                } else {
+                    swal({
+                        title: "Done",
+                        type: "success",
+                        confirmButtonText: "Okay"
+                    });
+                }
+            }
+        });
     });
 });

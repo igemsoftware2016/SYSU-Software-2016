@@ -72,6 +72,9 @@ $(document).ready(function() {
     // plasmid
     // orange one
     $($("#marker-1").parent()).click(function() {
+        if(!$("#marker-1").attr("_id")) {
+            return false;
+        }
         $("img.promoter").attr("src", "/static/img/promoter-orange.png");
         $("img.RBS").attr("src", "/static/img/RBS-orange.png");
         $("img.CDS").attr("src", "/static/img/CDS-orange.png");
@@ -81,6 +84,9 @@ $(document).ready(function() {
     });
     // green one
     $($("#marker-2").parent()).click(function() {
+        if(!$("#marker-2").attr("_id")) {
+            return false;
+        }
         $("img.promoter").attr("src", "/static/img/promoter-green.png");
         $("img.RBS").attr("src", "/static/img/RBS-green.png");
         $("img.CDS").attr("src", "/static/img/CDS-green.png");
@@ -90,6 +96,9 @@ $(document).ready(function() {
     });
     // blue one
     $($("#marker-3").parent()).click(function() {
+        if(!$("#marker-3").attr("_id")) {
+            return false;
+        }
         $("img.promoter").attr("src", "/static/img/promoter-blue.png");
         $("img.RBS").attr("src", "/static/img/RBS-blue.png");
         $("img.CDS").attr("src", "/static/img/CDS-blue.png");
@@ -122,17 +131,41 @@ $(document).ready(function() {
      * select dropdown
      * define the change callback function
      * to modify the plasmid
-     */
+    */
+    var promoter_info, RBS_info, bacteria_list;
+    var nowBac, nowPla;
     $("#bacteria-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             console.log(value, text, $selectedItem);
+            $(bacteria_list).each(function(n, bac) {
+                if(bac._id == value) {
+                    nowBac = bac;
+                    $("#plasmid-slt").find(".item").remove();
+                    $(bac.plasmid).each(function(n, el) {
+                        $("#plasmid-slt").find(".menu").append('<div class="item" data-value="' + el._id + '">' + el.name + '</div>');
+                    });
+                }
+            });
         }
     });
-    $("#bacteria-slt").dropdown("set selected", 1);
+    // $("#bacteria-slt").dropdown("set selected", 1);
 
     $("#plasmid-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
             console.log(value, text, $selectedItem);
+            for(var i=0; i<3; i++) {
+                $("#path-text-" + (i+1)).find("textPath").text("");
+                $("#marker-" + (i+1)).attr("_id", "");
+            }
+            $(nowBac.plasmid).each(function(n, plas) {
+                if(plas._id == value) {
+                    nowPla = plas;
+                    $(plas.pathway).each(function(n, el) {
+                        $("#path-text-" + (n+1)).find("textPath").text(el.name);
+                        $("#marker-" + (n+1)).attr("_id", el._id);
+                    })
+                }
+            })
         }
     });
     $("#plasmid-slt").dropdown("set selected", 1);
@@ -141,5 +174,45 @@ $(document).ready(function() {
     $(".ui.row.component img").popup({
         inline: true,
         on: "click"
+    });
+
+    $.ajax({
+        url: "/getState2Info",
+        type: "GET",
+        dataType: "json",
+        contentType: 'charset=utf-8',
+        cache: false,
+        success: function(data) {
+            if (data.code) {
+                swal({
+                    title: "Ooo",
+                    text: data.message,
+                    type: "error",
+                    confirmButtonText: "Okay"
+                });
+                return false;
+            } else {
+                console.log(data);
+                promoter_info = data.ret.promoter_Info;
+                RBS_info = data.ret.RBS_Info;
+                bacteria_list = data.ret.bacteria;
+                console.log(promoter_info, RBS_info, bacteria_list);
+
+                // redraw drowdown
+                $("#bacteria-slt").find(".item").remove();
+                $(bacteria_list).each(function(n, el) {
+                    $("#bacteria-slt").find(".menu").append('<div class="item" data-value="' + el._id + '">' + el.name + '</div>');
+                });
+
+                // redraw second drowdown
+                $("#plasmid-slt").find(".item").remove();
+                $(bacteria_list[0].plasmid).each(function(n, el) {
+                    $("#plasmid-slt").find(".menu").append('<div class="item" data-value="' + el._id + '">' + el.name + '</div>');
+                });
+            }
+        },
+        error: function() {
+            AjaxFail();
+        }
     });
 })

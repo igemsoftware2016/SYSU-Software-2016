@@ -1,3 +1,5 @@
+# -*- coding=utf-8 -*-
+from __future__ import print_function
 from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
 from application import app, db
@@ -31,7 +33,7 @@ def router_testlogin():
 @app.route('/login', methods = ['POST'])
 def router_login():
     if request.method == "POST":
-        print(request.form)
+        # print(request.form)
         checker = user.query.filter_by(email = request.form.get("email")).first()
         if checker is None:
             return jsonify({
@@ -100,7 +102,7 @@ def router_state(design_id, state_id):
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
         if cur_calculator.ans == -1:
             return render_template('wait.html')
-        return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_placmid)
+        return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_plasmid)
 
     elif state_id == 3:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state2).first()
@@ -156,12 +158,14 @@ def mod_design_name():
 @login_required
 def get_steps():
     # test!
-    if not request.args.get('_id'):
+    # myPrint("----- _id:%s" % request.args.get('_id'))
+    if str(request.args.get('_id')) == "233":
         return jsonify({
                     'code': 0,
-                    'ret': 2
+                    'ret': 5
                     })
     design_query = design.query.filter_by(id = request.args.get('_id')).first()
+    # design_query =None
     if design_query is None:
         return_code = 1
         return_state = -1
@@ -176,6 +180,8 @@ def get_steps():
 @app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
 def save_state(state_id):
+    # need attention, you should change `request.form` to `request.json`
+    #   and access other parmas in a totally different way
     if method == 'POST':
         cur_design = design.query.filter_by(id = request.form.get('design_id')).first()
         if cur_design.owner_id != session['user']:
@@ -256,20 +262,24 @@ def search_matters_name(matter_name):
     results = []
     counter = 1;
     for m in querier:
-        ares = {"title": m.matter_name, "description": ""}
+        ares = {"title": m.matter_name, "description": "xxxxxx"}
         results.append(ares)
         counter += 1
         if counter >= 10:
             break
+    # return jsonify({
+    #                 "success": True,
+    #                 "results": 
+    #                 {"matters":
+    #                     {
+    #                     "name": "Matters",
+    #                     "results": results
+    #                     }
+    #                 }
+    #                 })
     return jsonify({
                     "success": True,
-                    "results": 
-                    {"matters":
-                        {
-                        "name": "Matters",
-                        "results": results
-                        }
-                    }
+                    "results": results
                     })
 
 #upload file
@@ -297,6 +307,135 @@ def upload_file():
 
 
 # for states test
+import sys
 @app.route("/s/<int:state>")
 def test_s(state):
-    return render_template("state_%s.html" % state)
+    if state == 2:
+        dict_bacteria = [{
+            "_id": 1,
+            "name": "firstba"
+        }, {
+            "_id": 2,
+            "name": "secondba"
+        }]
+        dict_plasmid = [{
+            "_id": 1,
+            "name": "firstpl"
+        }, {
+            "_id": 2,
+            "name": "secondpl"
+        }]
+        return render_template('state_2.html', bacteria = dict_bacteria, plasmid = dict_plasmid, design_id=233)
+    return render_template("state_%s.html" % state, design_id=233)
+
+@app.route("/save_test", methods=["POST"])
+def save_test():
+    myPrint(request.json)
+    return jsonify({"code":0})
+
+def myPrint(str):
+    print(str, file=sys.stderr)
+
+@app.route("/getState2Info")
+def getState2Info():
+    ret = {
+    "bacteria": [{
+        "name": "bac_name1",
+        "_id": 1,
+        "plasmid": [{
+            "_id": 1,
+            "name": "first",
+            "pathway": [{
+                "_id": 1,
+                "name": "P1",
+                "strength": {
+                    "promoter_lower": 0.1,
+                    "promoter_upper": 1.33,
+                    "promoter": [{
+                        "s": 0.1,
+                        "info": "1"
+                    }, {
+                        "s": 1.33,
+                        "info": "2"
+                    }],
+
+                    "RBS_lower": 0.1,
+                    "RBS_upper": 2.9,
+                    "RBS": [{
+                        "s": 0.8,
+                        "info": "1"
+                    }, {
+                        "s": 2.9,
+                        "info": "2"
+                    }]
+                }
+            }, {
+                "_id": 2,
+                "name": "P2",
+                "strength": {
+                    "promoter_lower": 0.1,
+                    "promoter_upper": 1.33,
+                    "promoter": [{
+                        "s": 0.1,
+                        "info": "1"
+                    }, {
+                        "s": 1.33,
+                        "info": "2"
+                    }],
+
+                    "RBS_lower": 0.1,
+                    "RBS_upper": 2.9,
+                    "RBS": [{
+                        "s": 0.8,
+                        "info": "1"
+                    }, {
+                        "s": 2.9,
+                        "info": "2"
+                    }]
+                }
+            }]
+        }]
+    }],
+
+    "promoter_Info": {
+        "1": {
+            "name": "sdasd",
+            "type": "A",
+            "BBa": "BBa_213213",
+            "Introduction": "no",
+            "NCBI": "No.",
+            "FASTA": "No."
+        },
+        "2": {
+            "name": "ahahahah",
+            "type": "Z",
+            "BBa": "BBa_2sssd",
+            "Introduction": "no",
+            "NCBI": "No.2",
+            "FASTA": "No.2"
+        },
+    },
+    
+    "RBS_Info": {
+        "1": {
+            "name": "sdasd",
+            "type": "A",
+            "BBa": "BBa_213213",
+            "Introduction": "no",
+            "NCBI": "No.b",
+            "FASTA": "No.b"
+        },
+        "2": {
+            "name": "2222",
+            "type": "B",
+            "BBa": "BBa_3322222",
+            "Introduction": "no",
+            "NCBI": "No.333",
+            "FASTA": "No223."
+        },
+    }
+}
+    return jsonify({
+            "code": 0,
+            "ret": ret
+        })

@@ -7,7 +7,7 @@
 
 {% block container %}
 
-<span id="design-id" style="display: none;">26</span> <!-- given by jinja2 -->
+<span id="design-id" style="display: none;">{{design_id}}</span> <!-- given by jinja2 -->
 <div class="ui five steps sticky">
   <a class="step">
     <i class="circle icon"></i>
@@ -51,18 +51,9 @@
           <input class="search" autocomplete="off" tabindex="0">
           <div class="default text">bacteria</div>
           <div class="menu transition hidden" tabindex="-1">
-            <div class="item selected" data-value="1">January</div>
-            <div class="item" data-value="2">February</div>
-            <div class="item" data-value="3">March</div>
-            <div class="item" data-value="4">April</div>
-            <div class="item" data-value="5">May</div>
-            <div class="item" data-value="6">June</div>
-            <div class="item" data-value="7">July</div>
-            <div class="item" data-value="8">August</div>
-            <div class="item" data-value="9">September</div>
-            <div class="item" data-value="10">October</div>
-            <div class="item" data-value="11">November</div>
-            <div class="item" data-value="12">December</div>
+            {# {% for b in bacteria %}
+            <div class="item" data-value="{{b._id}}">{{b.name}}</div>
+            {% endfor %} #}
           </div>
         </div>
       </div>
@@ -76,18 +67,9 @@
           <input class="search" autocomplete="off" tabindex="0">
           <div class="default text">plasmid</div>
           <div class="menu transition hidden" tabindex="-1">
-            <div class="item selected" data-value="1">January</div>
-            <div class="item" data-value="2">February</div>
-            <div class="item" data-value="3">March</div>
-            <div class="item" data-value="4">April</div>
-            <div class="item" data-value="5">May</div>
-            <div class="item" data-value="6">June</div>
-            <div class="item" data-value="7">July</div>
-            <div class="item" data-value="8">August</div>
-            <div class="item" data-value="9">September</div>
-            <div class="item" data-value="10">October</div>
-            <div class="item" data-value="11">November</div>
-            <div class="item" data-value="12">December</div>
+            {# {% for p in plasmid %}
+            <div class="item" data-value="{{p._id}}">{{p.name}}</div>
+            {% endfor %} #}
           </div>
         </div>
       </div>
@@ -106,13 +88,13 @@
 
           <!-- draw the main markers and labels -->
           <trackmarker start="50" end="95" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
-            <markerlabel type="path" class="mdlabel white" text="HSP70" id="path-text-1"></markerlabel>
+            <markerlabel type="path" class="mdlabel white" text="path1" id="path-text-1"></markerlabel>
           </trackmarker>
           <trackmarker start="150" end="210" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
-            <markerlabel type="path" class="mdlabel white" text="NF1 Promoter" id="path-text-2"></markerlabel>
+            <markerlabel type="path" class="mdlabel white" text="path2" id="path-text-2"></markerlabel>
           </trackmarker>
           <trackmarker start="250" end="320" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
-            <markerlabel type="path" class="mdlabel white" text="ColE1 Ori" id="path-text-3"></markerlabel>
+            <markerlabel type="path" class="mdlabel white" text="path3" id="path-text-3"></markerlabel>
           </trackmarker>
 
           <!-- draw the marker regions -->
@@ -138,7 +120,7 @@
       <div class="ui four column grid">
         <div class="ui row component">
           <div class="ui column">
-            <img class="ui tiny Rounded image promoter" src="/static/img/promoter-blue.png">
+            <img class="ui tiny Rounded image promoter" src="/static/img/promoter-orange.png">
             <div class="ui popup component">
               <div class="ui one column grid">
                 <div class="ui row">
@@ -170,7 +152,7 @@
             </div>
           </div>
           <div class="ui column">
-            <img class="ui tiny Rounded image RBS" src="/static/img/RBS-blue.png">
+            <img class="ui tiny Rounded image RBS" src="/static/img/RBS-orange.png">
             <div class="ui popup component">
               <div class="ui one column grid">
                 <div class="ui row">
@@ -202,7 +184,7 @@
             </div>
           </div>
           <div class="ui column">
-            <img class="ui tiny Rounded image CDS" src="/static/img/CDS-blue.png">
+            <img class="ui tiny Rounded image CDS" src="/static/img/CDS-orange.png">
             <div class="ui popup component">
               <div class="ui one column grid">
                 <div class="ui row">
@@ -234,7 +216,7 @@
             </div>
           </div>
           <div class="ui column">
-            <img class="ui tiny Rounded image teminator" src="/static/img/teminator-blue.png">
+            <img class="ui tiny Rounded image teminator" src="/static/img/teminator-orange.png">
             <div class="ui popup component">
               <div class="ui one column grid">
                 <div class="ui row">

@@ -2,6 +2,18 @@ $(document).ready(function() {
     $("body").backstretch("/static/img/login_bg.png");
     // $("body").backstretch("destroy", false);
 
+    $.extend($.fn.api.settings.api, {
+        categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
+    });
+
+    var $category = $('.ui.category.search');
+    $category.search({
+        type: 'category',
+        apiSettings: {
+            action: 'categorySearch'
+        }
+    });
+
     $('.menu > .ui.dropdown').dropdown();
 
     var lastScroll = 0;
@@ -85,21 +97,21 @@ $(document).ready(function() {
             },
             error: function() {
                 /* test !!! */
-                ret = 3; /* 1~5 -> 0~4*/
-                ret -= 1;
-                // console.log(steps.find(".step"));
-                $(steps.find(".step")).each(function(n, el) {
-                    // console.log(el);
-                    if (n < ret) {
-                        $(el).children(".icon").addClass("green check"); /* done */
-                    } else if (n === ret) {
-                        $(el).children(".icon").addClass("info"); /* now doing */
-                    } else {
-                        $(el).addClass("disabled");
-                        $(el).children(".icon").addClass("help"); /* todo */
-                    }
-                });
-                // AjaxFail();
+                // ret = 3; /* 1~5 -> 0~4*/
+                // ret -= 1;
+                // // console.log(steps.find(".step"));
+                // $(steps.find(".step")).each(function(n, el) {
+                //     // console.log(el);
+                //     if (n < ret) {
+                //         $(el).children(".icon").addClass("green check"); /* done */
+                //     } else if (n === ret) {
+                //         $(el).children(".icon").addClass("info"); /* now doing */
+                //     } else {
+                //         $(el).addClass("disabled");
+                //         $(el).children(".icon").addClass("help"); /* todo */
+                //     }
+                // });
+                AjaxFail();
             }
         });
     } else {

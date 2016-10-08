@@ -3,18 +3,6 @@ $(document).ready(function() {
     //     type: 'fixed'
     // });
 
-    $.extend($.fn.api.settings.api, {
-        categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
-    });
-
-    var $category = $('.ui.category.search');
-    $category.search({
-        type: 'category',
-        apiSettings: {
-            action: 'categorySearch'
-        }
-    });
-
     $("#sign-up-btn").click(function() {
         // console.log("1");
         $("#sign-in-btn").removeClass("active");
