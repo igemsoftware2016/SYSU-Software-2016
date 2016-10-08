@@ -64,7 +64,21 @@ def router_register():
 @app.route('/profile')
 @login_required
 def router_profile():
-    return render_template('profile.html', user = user.query.filter_by(id = session['user']).first().nickname)
+    return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
+
+@app.route('/profile/<int:user_id>')
+@login_required
+def router_others_profile(user_id):
+    if user_id == session['user']:
+        return redirect(url_for('router_profile'))
+    return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
+
+@app.route('/setting', methods = ['GET', 'POST'])
+@login_required
+def router_setting():
+    if request.method == 'POST':
+        return {'code': 0}
+    return render_template('setting.html')
 
 @app.route('/state/<int:design_id>/<int:state_id>')
 @login_required
@@ -83,13 +97,13 @@ def router_state(design_id, state_id):
     elif state_id == 2:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
         if cur_calculator.ans == -1:
-            return render_template('pending.html')
+            return render_template('wait.html')
         return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_placmid)
 
     elif state_id == 3:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state2).first()
         if cur_calculator.ans == -1:
-            return render_template('pending.html')
+            return render_template('wait.html')
         return render_template('state_3.html')#, y_list = dict_ylist)
 
     elif state_id == 4:
@@ -100,7 +114,7 @@ def router_state(design_id, state_id):
 @app.route('/square')
 def router_square():
     if session.get('user'):
-        return render_template('square.html', userid = session['user'])
+        return render_template('square.html', userid = user.query.filter_by(id = session['user']).first().nickname)
     return render_template('square.html')
 
 @app.route('/logout')
@@ -122,6 +136,19 @@ def new_design():
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 
+@app.route('/mod_design_name', methods = ['POST'])
+@login_required
+def mod_design_name():
+    if request.method == "POST":
+        cur_design = design.query.filter_by(id = request.form.get('_id')).first()
+        if cur_design is None:
+            return jsonify({'code': 1})
+        if cur_design.owner_id != session['user']:
+            return jsonify({'code': 1})
+        cur_design.design_name = request.form.get('name')
+        db.session.commit()
+        return jsonify({'code': 0})
+
 @app.route('/get_steps', methods = ['GET'])
 @login_required
 def get_steps():
@@ -140,42 +167,78 @@ def get_steps():
                         'ret': return_state
                         })
 
-@app.route('/save_state_<state_id>', methods = ['POST'])
+@app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
 def save_state(state_id):
     if method == 'POST':
-        cur_design = design.query.filter_by(id = session['design']).first()
+        cur_design = design.query.filter_by(id = request.form.get('design_id')).first()
         if cur_design.owner_id != session['user']:
             return redirect(url_for('router_profile'))
-        #process data
-        db.session.commit()
-        return redirect(url_for('router_state'), design_id = session['design'], state_id = state_id)
+        if cur_design.state < state_id:
+            return jsonify({"code": 1})
 
-@app.route('/commit_state_<state_id>', methods = ['POST'])
+        if state_id == 1:
+            cur_design.design_mode = request.form.get('mode')
+            if request.form.get('mode') == 'make':
+                d_input = request.form.get('inputs')
+                for m in d_input:
+                    new_make_matter = make_matter(cur_design, matterDB.query.filter_by(matter_name = m.get('name')).first(), m.get('lower'), m.get('upper'), m.get('maxim'))
+                    new_make_matter.save()                   
+            elif request.form.get('mode') == 'resolve':
+                for m in d_input:
+                    new_resolve_matter = resolve_matter(cur_design, materDB.query.filter_by(matter_name = m.get('name')).first(), m.get('begin'))
+                    new_resolve_matter.save()
+            d_order = request.form.get('other')
+            cur_design.time = d_order.get('time')
+            cur_design.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
+            cur_design.flora = floraDB.query.filter_by(id = d_order.get('flora')).first()
+        #elif state_id == 2:
+
+        db.session.commit()
+        return jsonify({"code": 0})
+
+@app.route('/commit_state_<int:state_id>', methods = ['POST'])
 @login_required
 def commit_state(state_id):
     if method == 'POST':
-        cur_design = design.query.filter_by(id = session['design']).first()
+        cur_design = design.query.filter_by(id = request.form['design_id']).first()
         if cur_design.owner_id != session['user']:
-            return redirect(url_for('router_profile'))
-        #process data
+            return jsonify({"code": 1})
+
+        if state_id == 1:
+            cur_design.design_mode = request.form.get('mode')
+            if request.form.get('mode') == 'make':
+                d_input = request.form.get('inputs')
+                for m in d_input:
+                    new_make_matter = make_matter(cur_design, matterDB.query.filter_by(matter_name = m.get('name')).first(), m.get('lower'), m.get('upper'), m.get('maxim'))
+                    new_make_matter.save()                   
+            elif request.form.get('mode') == 'resolve':
+                for m in d_input:
+                    new_resolve_matter = resolve_matter(cur_design, materDB.query.filter_by(matter_name = m.get('name')).first(), m.get('begin'))
+                    new_resolve_matter.save()
+            d_order = request.form.get('other')
+            cur_design.time = d_order.get('time')
+            cur_design.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
+            cur_design.flora = floraDB.query.filter_by(id = d_order.get('flora')).first()
+        #elif state_id == 2:
+            
         db.session.commit()
         if state_id == cur_design.state:
             cur_design.state += 1
         if state_id == 5:
-            return redirect(url_for('router_profile'))
-        return redirect(url_for('router_state'), design_id = session['design'], state_id = state_id + 1)
+            return jsonify({"code": 1})
+        return jsonify({"code": 0})
 
-@app.route('/get_state_<state_id>_saved', methods = ['GET'])
+@app.route('/get_state_<int:state_id>_saved', methods = ['GET'])
 @login_required
 def get_state_saved(state_id):
     if method == 'GET':
-        cur_design = design.query.filter_by(id = request.args.get('_id')).first()
+        cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
         if cur_design.owner_id != session['user']:
             return redirect(url_for('router_profile'))
         if state_id > cur_design.state:
             return redirect(url_for('router_state', design_id = cur_design.id, state_id = cur_design.state))
-        return jsonify({})
+        return jsonify({}) #TODO
 
 @app.route('/search/matters/<matter_name>')
 def search_matters_name(matter_name):

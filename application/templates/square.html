@@ -29,15 +29,19 @@
       <div class="right menu">
         <a class="item">Wiki</a>
         <a class="item">Help</a>
-        <div class="ui dropdown item">
-          My <i class="dropdown icon"></i>
-          <div class="menu">
-            <a class="item">My Profile</a>
-            <a class="item">Setting</a>
-            <div class="divider"></div>
-            <a class="item">Log Out</a>
+        {% if userid %}
+          <div class="ui dropdown item">
+            {{ userid }} <i class="dropdown icon"></i>
+            <div class="menu">
+              <a class="item" href="/profile">My Profile</a>
+              <a class="item">Setting</a>
+              <div class="divider"></div>
+              <a class="item" href="/logout">Log Out</a>
+            </div>
           </div>
-        </div>
+        {% else %}
+          <a class="item" href="/">Login</a>
+        {% endif %}
       </div>
     </div>
   </div>

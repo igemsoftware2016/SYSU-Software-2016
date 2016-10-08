@@ -127,7 +127,7 @@ $(document).ready(function() {
         }
         var data = {
             "email": $("input[name='signup-email']").val(),
-            "username": $("input[name='signup-username']").val(),
+            "nickname": $("input[name='signup-username']").val(),
             "password": $.md5($("input[name='signup-password']").val())
         }
         $.ajax({
