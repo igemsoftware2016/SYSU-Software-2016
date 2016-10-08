@@ -68,3 +68,7 @@ img#star-3 {
     /*transform-origin:50% 200px;*/
     z-index: 1;
 }
+
+#top-bg {
+    height: 100%;
+}

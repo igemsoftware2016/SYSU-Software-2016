@@ -61,10 +61,6 @@ body {
     /*border: 3px solid black;*/
 }
 
-.ui.row.equal.width > .ui.column.pathway {
-    height: 15vh;
-}
-
 .ui.vertical.inverted.menu .active.item {
     border-left: 3px solid #bfbfbf;
 }

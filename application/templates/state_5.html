@@ -1,141 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>State 5</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/menu.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/dropdown.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/search.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/checkbox.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/sticky.min.css">
-  <!-- put css stylesheet down here -->
-  <link rel="stylesheet" type="text/css" href="/static/css/state_5.css">
-  <!-- put css stylesheet down here -->
-</head>
-<body>
-  <!-- <div class="container ui"> </div>  -->
-  <div class="ui borderless main menu inverted fixed" id="top-menu">
-    <div class="ui container">
-      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
-      <div class="item">
-        <div class="ui category search item">
-          <div class="ui transparent icon input inverted small">
-            <input class="prompt inverted" type="text" placeholder="Search...">
-            <i class="search link icon"></i>
-          </div>
-          <div class="results"></div>
-        </div>
-      </div>
-      <div class="right menu">
-        <a class="item">Wiki</a>
-        <a class="item">Help</a>
-        <div class="ui dropdown item">
-          My <i class="dropdown icon"></i>
-          <div class="menu">
-            <a class="item">My Profile</a>
-            <a class="item">Setting</a>
-            <div class="divider"></div>
-            <a class="item">Log Out</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/state_5.css">
+{% endblock %}
 
-  <button class="ui grey button icon compact" id="to-top">
-    <i class="arrow up icon"></i>
-  </button>
-  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
-    <i class="mail icon"></i>
+
+{% block container %}
+<!-- put code here with-->
+<span id="design-id" style="display: none;">26</span> <!-- given by jinja2 -->
+<div class="ui five steps sticky">
+  <a class="step">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">Step 1</div>
+    </div>
   </a>
-
-  <div class="ui column fluid" id="top-bg">
-
-    <div class="container ui" id="main-container">
-      <!-- put code here with-->
-      <span id="design-id" style="display: none;">26</span> <!-- given by jinja2 -->
-      <div class="ui five steps sticky">
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Step 1</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Step 2</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Step 3</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Step 4</div>
-          </div>
-        </a>
-        <a class="active step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Step 5</div>
-          </div>
-        </a>
-      </div>
+  <a class="step">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">Step 2</div>
+    </div>
+  </a>
+  <a class="step">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">Step 3</div>
+    </div>
+  </a>
+  <a class="step">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">Step 4</div>
+    </div>
+  </a>
+  <a class="active step">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">Step 5</div>
+    </div>
+  </a>
+</div>
 
 
-      <div class="ui column grid state">
-        <div class="ui row">
-          <div class="ui column fluid test">
-            实验数据反馈
-          </div>
-        </div>
-
-        <div class="ui row">
-          <div class="ui column twelve wide"></div> <!-- offset -->
-          <div class="ui column two wide">
-            <button class="ui blue button fluid">Save</button>
-          </div>
-          <div class="ui column two wide">
-            <button class="ui black button fluid">Edit</button>
-          </div>
-        </div>
-      </div> <!-- state grid -->
-
-    </div> <!-- main-container end -->
-  </div>
-
-  <!-- put code here, without background image -->
-
-  <!-- footer -->
-  <!-- <div class="ui one column grid footer"> -->
-  <div class="ui vertical footer segment column fliud">
-    <div class="ui center aligned container">
-      SYSU-Software 2016
+<div class="ui column grid state">
+  <div class="ui row">
+    <div class="ui column fluid test">
+      实验数据反馈
     </div>
   </div>
-  <!-- </div> -->
+
+  <div class="ui row">
+    <div class="ui column twelve wide"></div> <!-- offset -->
+    <div class="ui column two wide">
+      <button class="ui blue button fluid">Save</button>
+    </div>
+    <div class="ui column two wide">
+      <button class="ui black button fluid">Edit</button>
+    </div>
+  </div>
+</div> <!-- state grid -->
+{% endblock %}
 
 
-  <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/semantic.min.js"></script>
-  <script type="text/javascript" src="/static/js/jquery.backstretch.min.js"></script>
-  <script type="text/javascript" src="/static/js/base.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/components/dropdown.min.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/components/search.min.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/components/checkbox.min.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/components/sticky.min.js"></script>
-  <!-- put javascript down here -->
-  <script type="text/javascript" src="/static/js/state_5.js"></script>
-  <!-- put javascript down here -->
-  <script>
-    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
-  </script>
-</body>
-</html>
+{% block javascript %}
+<script type="text/javascript" src="/static/js/state_5.js"></script>
+{% endblock %}

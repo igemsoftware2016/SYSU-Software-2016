@@ -2,41 +2,67 @@
 <html>
 <head>
   <meta charset="UTF-8"> 
-  <title>login</title>
+  <title>profile</title>
   <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
   <!-- put css stylesheet down here -->
+  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+  {% block stylesheet %}{% endblock %}
 </head>
 <body>
   <!-- <div class="container ui"> </div>  -->
-  <div class="ui borderless main menu inverted fixed">
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
     <div class="ui container">
-      <div class="header item"><i class="rocket icon"></i> CRAFT</div>
+      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
       <div class="item">
         <div class="ui category search item">
-          <div class="ui transparent icon input inverted">
-            <input class="prompt inverted" type="text" placeholder="Search animals...">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
             <i class="search link icon"></i>
           </div>
           <div class="results"></div>
         </div>
       </div>
       <div class="right menu">
-        <a class="item">About Us </a>
-        <a class="item">Jobs </a>
-        <a class="item active">Locations </a>
+        <a class="item">Wiki</a>
+        <a class="item">Help</a>
+        {% if session.get("nickname") %}
+        <div class="ui dropdown item">
+        {{ session.get("nickname") }} <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item" href="/profile">My Profile</a>
+            <a class="item">Setting</a>
+            <div class="divider"></div>
+            <a class="item" href="/logout">Log Out</a>
+          </div>
+        </div>
+        {% else %}
+        <a class="item" href="/">Login</a>
+        {% endif %}
       </div>
     </div>
   </div>
-  <div class="ui column fluid" style="height:100%;" id="top-bg">
+  
+  <button class="ui grey button icon compact" id="to-top">
+    <i class="arrow up icon"></i>
+  </button>
+  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
+    <i class="mail icon"></i>
+  </a>
+
+
+  <div class="ui column fluid" id="top-bg">
+    {% block topbg %}{% endblock %} {# just for 404 page #}
     <div class="container ui" id="main-container">
-        <!-- put code here with-->
-    </div>
+      <!-- put code here with-->
+      {% block container %}{% endblock %}
+    </div> <!-- main-container -->
   </div>
 
   <!-- put code here, without background image -->
 
-  <div class="ui vertical footer segment">
+  <!-- footer -->
+  <div class="ui vertical footer segment column fliud">
     <div class="ui center aligned container">
       SYSU-Software 2016
     </div>
@@ -46,8 +72,12 @@
   <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
   <script type="text/javascript" src="/static/css/semantic/semantic.min.js"></script>
   <script type="text/javascript" src="/static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="/static/js/plax.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.md5.js"></script>
   <script type="text/javascript" src="/static/js/base.js"></script>
   <!-- put javascript down here -->
+  {% block javascript %}{% endblock %}
   <script>
     document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
   </script>

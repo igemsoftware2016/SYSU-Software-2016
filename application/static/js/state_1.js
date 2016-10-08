@@ -34,8 +34,8 @@ $(document).ready(function() {
     //     }
     // });
 
-    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search animals..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
-    var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="text" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
+    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search animals..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
+    var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
 
 
     $(document).on('click', "#add-make", function() {
@@ -98,9 +98,11 @@ $(document).ready(function() {
                     "mode": mode
                 });
             });
-        }
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false
     }).then(function(result) {
-        console.log(result);
+        // console.log(result);
         if (result.mode === "make") {
             $(".resolve-row").hide();
             $(".ui.dimmer:not(.upload)").dimmer("hide");
@@ -132,8 +134,10 @@ $(document).ready(function() {
      * define the change callback function
      * to modify the package
      */
+     var medium, flora;
      $("#medium-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
+            medium = value;
             console.log(value, text, $selectedItem);
         }
     });
@@ -141,6 +145,7 @@ $(document).ready(function() {
 
      $("#flora-slt").dropdown({
         onChange: function(value, text, $selectedItem) {
+            flora = value;
             console.log(value, text, $selectedItem);
         }
     });
@@ -159,5 +164,46 @@ $(document).ready(function() {
     $(".all-file").click(function() {
         $("#upload-all-file").click();
         $(".dimmer.upload").dimmer("toggle");
-    })
+    });
+
+    // set up ajax package
+    var setUpPackage = function() {
+        var inputs = [];
+
+        if(isMake) {
+            $(".make-line").each(function(n, el) {
+                var line = $(el).find("input");
+                inputs.push({
+                    name: $(line[0]).val(),
+                    lower: $(line[1]).val(),
+                    upper: $(line[2]).val(),
+                    maxim: $(el).find(".ui.checkbox").checkbox("is checked")
+                });
+            });
+        } else {
+            $(".resolve-line").each(function(n, el) {
+                var line = $(el).find("input");
+                inputs.push({
+                    name: $(line[0]).val(),
+                    begin: $(line[1]).val()
+                });
+            });
+        }
+
+        var other = {
+            time: $("#time").val(),
+            medium: medium,
+            env: flora
+        }
+
+        return {
+            mode: (isMake?"made":"resolve"),
+            inputs: inputs,
+            other: other
+        };
+    }
+
+    $("#save-btn").click(function() {
+        console.log(setUpPackage());
+    });
 });

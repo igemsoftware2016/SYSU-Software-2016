@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("body").backstretch("./static/img/login_bg.png");
+    $("body").backstretch("/static/img/login_bg.png");
     // $("body").backstretch("destroy", false);
 
     $('.menu > .ui.dropdown').dropdown();
@@ -89,7 +89,7 @@ $(document).ready(function() {
                 ret -= 1;
                 // console.log(steps.find(".step"));
                 $(steps.find(".step")).each(function(n, el) {
-                    console.log(el);
+                    // console.log(el);
                     if (n < ret) {
                         $(el).children(".icon").addClass("green check"); /* done */
                     } else if (n === ret) {

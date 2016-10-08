@@ -72,28 +72,28 @@ $(document).ready(function() {
     // plasmid
     // orange one
     $($("#marker-1").parent()).click(function() {
-        $("img.promoter").attr("src", "./static/img/promoter-orange.png");
-        $("img.RBS").attr("src", "./static/img/RBS-orange.png");
-        $("img.CDS").attr("src", "./static/img/CDS-orange.png");
-        $("img.teminator").attr("src", "./static/img/teminator-orange.png");
+        $("img.promoter").attr("src", "/static/img/promoter-orange.png");
+        $("img.RBS").attr("src", "/static/img/RBS-orange.png");
+        $("img.CDS").attr("src", "/static/img/CDS-orange.png");
+        $("img.teminator").attr("src", "/static/img/teminator-orange.png");
         $(".ui.row.component").hide();
         $(".ui.row.component").fadeIn();
     });
     // green one
     $($("#marker-2").parent()).click(function() {
-        $("img.promoter").attr("src", "./static/img/promoter-green.png");
-        $("img.RBS").attr("src", "./static/img/RBS-green.png");
-        $("img.CDS").attr("src", "./static/img/CDS-green.png");
-        $("img.teminator").attr("src", "./static/img/teminator-green.png");
+        $("img.promoter").attr("src", "/static/img/promoter-green.png");
+        $("img.RBS").attr("src", "/static/img/RBS-green.png");
+        $("img.CDS").attr("src", "/static/img/CDS-green.png");
+        $("img.teminator").attr("src", "/static/img/teminator-green.png");
         $(".ui.row.component").hide();
         $(".ui.row.component").fadeIn();
     });
     // blue one
     $($("#marker-3").parent()).click(function() {
-        $("img.promoter").attr("src", "./static/img/promoter-blue.png");
-        $("img.RBS").attr("src", "./static/img/RBS-blue.png");
-        $("img.CDS").attr("src", "./static/img/CDS-blue.png");
-        $("img.teminator").attr("src", "./static/img/teminator-blue.png");
+        $("img.promoter").attr("src", "/static/img/promoter-blue.png");
+        $("img.RBS").attr("src", "/static/img/RBS-blue.png");
+        $("img.CDS").attr("src", "/static/img/CDS-blue.png");
+        $("img.teminator").attr("src", "/static/img/teminator-blue.png");
         $(".ui.row.component").hide();
         $(".ui.row.component").fadeIn();
     });

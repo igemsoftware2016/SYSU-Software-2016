@@ -44,6 +44,7 @@ def router_login():
                             'message': 'Invalid e-mail or password!'
                             })
         session['user'] = checker.get_id()
+        session['nickname'] = checker.nickname
         return jsonify({'code': 0})
     else:
         return redirect(url_for('router_index'))
@@ -59,6 +60,7 @@ def router_register():
         new_user = user(request.form.get("nickname"), request.form.get("email"), request.form.get("password"))
         new_user.save()
         session['user'] = new_user.get_id()
+        session['nickname'] = new_user.nickname
         return jsonify({'code': 0})
 
 @app.route('/profile')
@@ -121,6 +123,7 @@ def router_square():
 @login_required
 def router_logout():
     session.pop('user', None)
+    session.pop('nickname', None)
     return redirect(url_for('router_index'))
 
 @app.errorhandler(404)
@@ -149,23 +152,26 @@ def mod_design_name():
         db.session.commit()
         return jsonify({'code': 0})
 
-@app.route('/get_steps', methods = ['GET'])
+@app.route('/get_steps')
 @login_required
 def get_steps():
-    if request.method == "GET":
-        design_query = design.query.filter_by(id = request.args.get('_id')).first()
-        return_code = 0
-        return_state = 0
-        if design_query is None:
-            return_code = 1
-            return_state = -1
-        else:
-            return_code = 0
-            return_state = design_query.state
+    # test!
+    if not request.args.get('_id'):
         return jsonify({
-                        'code': return_code,
-                        'ret': return_state
-                        })
+                    'code': 0,
+                    'ret': 2
+                    })
+    design_query = design.query.filter_by(id = request.args.get('_id')).first()
+    if design_query is None:
+        return_code = 1
+        return_state = -1
+    else:
+        return_code = 0
+        return_state = design_query.state
+    return jsonify({
+                    'code': return_code,
+                    'ret': return_state
+                    })
 
 @app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
@@ -288,3 +294,9 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
+
+
+# for states test
+@app.route("/s/<int:state>")
+def test_s(state):
+    return render_template("state_%s.html" % state)
