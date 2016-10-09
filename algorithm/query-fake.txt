@@ -1,7 +1,0 @@
-synthetic
-5
-C27
-C26
-C22
-C24
-C28

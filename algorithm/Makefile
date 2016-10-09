@@ -12,8 +12,8 @@ all: get-common OptCom-test dOptCom
 data-fake: data-fake.cpp
 	$(CC) $(CFLAG) $(INCLUDES) -o $@ $^
 
-get-common: get-common.cpp
-	$(CC) $(CFLAG) $(INCLUDES) -o $@ $^
+get-common: get-common.cpp OptCom.o
+	$(CC) $(CFLAG) $(OPTL) $(INCLUDES) -o $@ $^ $(OPTK)
 
 opt-test: MyNLP.o opt-test.o
 	$(CC) $(CFLAG) $(OPTL) -o $@ $^ $(OPTK)

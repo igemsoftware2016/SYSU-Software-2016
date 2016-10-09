@@ -1,11 +1,12 @@
 These instructions are for UNIX-like systems only.
 
 REQUIRED:
-	Memory:		2G
+	hardisk:	20G
+	Memory:		3G
 	CPU:		Intel I5-2500k / AMD Phenom II X4
-	
+
 HIGHLY RECOMMANDED:
-	Memory:		4G memory
+	Memory:		4G memory or better
 	CPU:		Intel I7 / AMD Fx8350 or better
 
 ======== Get All the Code ========

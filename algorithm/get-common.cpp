@@ -18,13 +18,14 @@ void current_memory() {
 #include "timer.h"
 
 ifstream fin("data.dat");
-ifstream qin("query-fake.txt");
+ifstream qin("query.txt");
 ifstream oin("org-data.dat");
 ifstream kin("org-kcat-fake.txt");
 ifstream gin("mer-g-fake.txt");
 
 using std :: ofstream;
 ofstream marout("mar_total.txt");
+ofstream fin_res("search_res.txt");
 
 string work_type;
 
@@ -63,7 +64,7 @@ void add_ec(string x, string pro_id, string sub_id, string pro_coff,
 void add_sub(string x, string name) {
 	if (0 == sub_map.count(x)) {
 		sub_map.insert(make_pair(x, sub_data(name)));
-		marout << name << endl;
+		marout << name << ' ' << x << endl;
 	}
 }
 
@@ -800,6 +801,9 @@ int main() {
 #endif
 
 	free_alloc();
+
+	marout.close();
+	fin_res.close();
 
 	return 0;
 }

@@ -11,6 +11,9 @@
 #include <sstream>
 #include <queue>
 #include <algorithm>
+#include "IpIpoptApplication.hpp"
+#include "IpSolveStatistics.hpp"
+#include "OptCom.h"
 
 using std :: string;
 using std :: cout;
