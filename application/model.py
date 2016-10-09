@@ -46,6 +46,8 @@ class design(db.Model):
         self.design_mode = design_mode
         self.md5_state1 = ''
         self.md5_state2 = ''
+        self.medium_id = 0
+        self.flora_id = 0
     def __repr__(self):
         return '<Design %r>' % self.id
     def save(self):

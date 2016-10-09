@@ -137,7 +137,7 @@ def router_not_found(error):
 @app.route('/new_design')
 @login_required
 def new_design():
-    new_design = design(user.query.filter_by(id = session['user']).first())
+    new_design = design(user.query.filter_by(id = session['user']).first(), "")
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 
