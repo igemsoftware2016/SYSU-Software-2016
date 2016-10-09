@@ -1,68 +1,68 @@
 {% extends "base.html" %}
 {% block stylesheet %}
-  <link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
+<link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
 {% endblock %}
 
 
 {% block container %}
-      <div class="ui five steps sticky">
-        <a class="step">
-          <i class="green check circle icon"></i>
-          <div class="content">
-            <div class="title">Step 1</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="green check circle icon"></i>
-          <div class="content">
-            <div class="title">Step 2</div>
-          </div>
-        </a>
-        <a class="active step">
-          <i class="info circle icon"></i>
-          <div class="content">
-            <div class="title">Step 3</div>
-          </div>
-        </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
-          <div class="content">
-            <div class="title">Step 4</div>
-          </div>
-        </a>
-        <a class="disabled step">
-          <i class="help circle icon"></i>
-          <div class="content">
-            <div class="title">Step 5</div>
-          </div>
-        </a>
-      </div>
-      
-      <!-- put code here with-->
-      <div class="ui column grid state">
-        <div class="ui row">
-          <div class="ui five wide column"></div>
-          <div class="ui six wide column medium bordered image">
-            <img src="static/img/pending.jpg" alt="" style="margin:auto;"/>
-          </div>
-        </div>
-        <div class="ui row">
-          <div class="ui four wide column"></div>
-          <div class="ui eight wide column piled segment">
-            <p>Your sample is just uploaded. It needs to be calculated. Here is your Task ID : </p>
-            <pre><code class="language-bash">XXXX-XXXX-XXXX-XXXX</code></pre>
-            <p>To complete the calculation, open your terminal, run command:</p>
-            <pre><code class="language-bash">python xxx.py &lt;Task ID&gt;</code></pre>
-            <p>Or shared your Task ID.</p>
-          </div>
-        </div>
-          
-      </div>
-          <!-- state_1 grid -->
+<div class="ui five steps sticky">
+  <a class="step">
+    <i class="green check circle icon"></i>
+    <div class="content">
+      <div class="title">Step 1</div>
+    </div>
+  </a>
+  <a class="step">
+    <i class="green check circle icon"></i>
+    <div class="content">
+      <div class="title">Step 2</div>
+    </div>
+  </a>
+  <a class="active step">
+    <i class="info circle icon"></i>
+    <div class="content">
+      <div class="title">Step 3</div>
+    </div>
+  </a>
+  <a class="disabled step">
+    <i class="help circle icon"></i>
+    <div class="content">
+      <div class="title">Step 4</div>
+    </div>
+  </a>
+  <a class="disabled step">
+    <i class="help circle icon"></i>
+    <div class="content">
+      <div class="title">Step 5</div>
+    </div>
+  </a>
+</div>
+
+<!-- put code here with-->
+<div class="ui column grid state">
+  <div class="ui row">
+    <div class="ui five wide column"></div>
+    <div class="ui six wide column medium bordered image">
+      <img src="static/img/pending.jpg" alt="" style="margin:auto;"/>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui four wide column"></div>
+    <div class="ui eight wide column piled segment">
+      <p>Your sample is just uploaded. It needs to be calculated. Here is your Task ID : </p>
+      <pre><code class="language-bash">XXXX-XXXX-XXXX-XXXX</code></pre>
+      <p>To complete the calculation, open your terminal, run command:</p>
+      <pre><code class="language-bash">python xxx.py &lt;Task ID&gt;</code></pre>
+      <p>Or shared your Task ID.</p>
+    </div>
+  </div>
+  
+</div>
+<!-- state_1 grid -->
 
 {% endblock %}
 
 
 {% block javascript %}
-  <script type="text/javascript" src="/static/js/state_2.js"></script>
+<script type="text/javascript" src="/static/js/state_2.js"></script>
 {% endblock %}

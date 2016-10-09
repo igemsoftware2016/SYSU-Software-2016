@@ -336,6 +336,12 @@ def save_test():
 def myPrint(str):
     print(str, file=sys.stderr)
 
+
+@app.route("/settings")
+def settings():
+    return render_template("setting.html")
+
+
 @app.route("/getState2Info")
 def getState2Info():
     ret = {
@@ -348,17 +354,20 @@ def getState2Info():
             "pathway": [{
                 "_id": 1,
                 "name": "P1",
+                "prom": 1,
+                "RBS": 2,
+                "CDS": 1,
+                "term": 1,
                 "strength": {
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
                     "promoter": [{
-                        "s": 0.1,
+                        "s": 0.19,
                         "info": "1"
                     }, {
                         "s": 1.33,
                         "info": "2"
                     }],
-
                     "RBS_lower": 0.1,
                     "RBS_upper": 2.9,
                     "RBS": [{
@@ -367,11 +376,21 @@ def getState2Info():
                     }, {
                         "s": 2.9,
                         "info": "2"
-                    }]
+                    }],
+                    "mRNA_lower": 0.5,
+                    "mRNA_upper": 7.5,
+                    "mRNA_s": 4.8,
+                    "protein_lower": 1.1,
+                    "protein_upper": 9.8,
+                    "protein_s": 2.4,
                 }
             }, {
                 "_id": 2,
                 "name": "P2",
+                "prom": 2,
+                "RBS": 1,
+                "CDS": 1,
+                "term": 2,
                 "strength": {
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
@@ -382,7 +401,6 @@ def getState2Info():
                         "s": 1.33,
                         "info": "2"
                     }],
-
                     "RBS_lower": 0.1,
                     "RBS_upper": 2.9,
                     "RBS": [{
@@ -391,7 +409,13 @@ def getState2Info():
                     }, {
                         "s": 2.9,
                         "info": "2"
-                    }]
+                    }],
+                    "mRNA_lower": 0.5,
+                    "mRNA_upper": 7.5,
+                    "mRNA_s": 6.7,
+                    "protein_lower": 1.1,
+                    "protein_upper": 9.8,
+                    "protein_s": 1.4,
                 }
             }]
         }]
@@ -399,8 +423,8 @@ def getState2Info():
 
     "promoter_Info": {
         "1": {
-            "name": "sdasd",
-            "type": "A",
+            "name": "prom1",
+            "type": "PA",
             "BBa": "BBa_213213",
             "Introduction": "no",
             "NCBI": "No.",
@@ -418,8 +442,8 @@ def getState2Info():
     
     "RBS_Info": {
         "1": {
-            "name": "sdasd",
-            "type": "A",
+            "name": "RBS1",
+            "type": "RA",
             "BBa": "BBa_213213",
             "Introduction": "no",
             "NCBI": "No.b",
@@ -427,6 +451,44 @@ def getState2Info():
         },
         "2": {
             "name": "2222",
+            "type": "B",
+            "BBa": "BBa_3322222",
+            "Introduction": "no",
+            "NCBI": "No.333",
+            "FASTA": "No223."
+        },
+    },
+
+    "CDS_Info": {
+        "1": {
+            "name": "CDS_sdasd",
+            "type": "CA",
+            "BBa": "BBa_213213",
+            "Introduction": "no",
+            "NCBI": "No.b",
+            "FASTA": "No.b"
+        },
+        "2": {
+            "name": "CDS_2222",
+            "type": "B",
+            "BBa": "BBa_3322222",
+            "Introduction": "no",
+            "NCBI": "No.333",
+            "FASTA": "No223."
+        },
+    },
+
+    "term_Info": {
+        "1": {
+            "name": "term_sdasd",
+            "type": "TA",
+            "BBa": "BBa_213213",
+            "Introduction": "no",
+            "NCBI": "No.b",
+            "FASTA": "No.b"
+        },
+        "2": {
+            "name": "term_2222",
             "type": "B",
             "BBa": "BBa_3322222",
             "Introduction": "no",

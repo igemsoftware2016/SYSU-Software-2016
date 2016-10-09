@@ -6,7 +6,6 @@
 
 
 {% block container %}
-
 <span id="design-id" style="display: none;">{{design_id}}</span> <!-- given by jinja2 -->
 <div class="ui five steps sticky">
   <a class="step">
@@ -42,6 +41,9 @@
 </div>
 <!-- put code here with-->
 <div class="ui column grid state">
+<div class="ui active inverted dimmer">
+  <div class="ui large text loader">Loading</div>
+</div>
   <div class="ui row">
     <div class="ui six wide column">
       <div class="ui column">
@@ -129,23 +131,23 @@
                     Part Infomation
                   </h4>
                   <div class="ui column fliud">
-                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>BBa Name:  &nbsp;&nbsp;</b><span>BBa_C0051</span>
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Intoduction: <br></b><span>No intoduction yet.</span>
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
                   </div>
                   <div class="ui column fliud">
                     <b>Learn More infomation:</b>
                   </div>
                   <div class="ui column fliud info-btns">
-                    <button class="ui button gray mini">NCBI</button>
-                    <button class="ui button gray mini">FASTA</button>
+                    <a class="ui button gray mini NCBI">NCBI</a>
+                    <a class="ui button gray mini FASTA">FASTA</a>
                   </div>
                 </div>
               </div>
@@ -161,23 +163,23 @@
                     Part Infomation
                   </h4>
                   <div class="ui column fliud">
-                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>BBa Name:  &nbsp;&nbsp;</b><span>BBa_C0051</span>
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Intoduction: <br></b><span>No intoduction yet.</span>
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
                   </div>
                   <div class="ui column fliud">
                     <b>Learn More infomation:</b>
                   </div>
                   <div class="ui column fliud info-btns">
-                    <button class="ui button gray mini">NCBI</button>
-                    <button class="ui button gray mini">FASTA</button>
+                    <a class="ui button gray mini NCBI">NCBI</a>
+                    <a class="ui button gray mini FASTA">FASTA</a>
                   </div>
                 </div>
               </div>
@@ -193,23 +195,23 @@
                     Part Infomation
                   </h4>
                   <div class="ui column fliud">
-                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>BBa Name:  &nbsp;&nbsp;</b><span>BBa_C0051</span>
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Intoduction: <br></b><span>No intoduction yet.</span>
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
                   </div>
                   <div class="ui column fliud">
                     <b>Learn More infomation:</b>
                   </div>
                   <div class="ui column fliud info-btns">
-                    <button class="ui button gray mini">NCBI</button>
-                    <button class="ui button gray mini">FASTA</button>
+                    <a class="ui button gray mini NCBI">NCBI</a>
+                    <a class="ui button gray mini FASTA">FASTA</a>
                   </div>
                 </div>
               </div>
@@ -225,23 +227,23 @@
                     Part Infomation
                   </h4>
                   <div class="ui column fliud">
-                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span>cl</span>
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span>gene</span>
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>BBa Name:  &nbsp;&nbsp;</b><span>BBa_C0051</span>
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
                   </div>
                   <div class="ui column fliud">
-                    <b>Intoduction: <br></b><span>No intoduction yet.</span>
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
                   </div>
                   <div class="ui column fliud">
                     <b>Learn More infomation:</b>
                   </div>
                   <div class="ui column fliud info-btns">
-                    <button class="ui button gray mini">NCBI</button>
-                    <button class="ui button gray mini">FASTA</button>
+                    <a class="ui button gray mini NCBI">NCBI</a>
+                    <a class="ui button gray mini FASTA">FASTA</a>
                   </div>
                 </div>
               </div>
@@ -254,22 +256,22 @@
       <div class="ui two column grid">
         <div class="ui row">
           <div class="ui column">
-            AAAAA:
-            <div class="ui range"></div>
+            Promoter strength: <span class="promoter num"></span>
+            <div class="ui range promoter"></div>
           </div>
           <div class="ui column">
-            BBBBB:
-            <div class="ui range"></div>
+            RBS strength: <span class="RBS num"></span>
+            <div class="ui range RBS"></div>
           </div>
         </div>
         <div class="ui row">
           <div class="ui column">
-            CCCCC:
-            <div class="ui range"></div>
+            Decomposition rate of mRNA: <span class="mRNA num"></span>
+            <div class="ui range mRNA"></div>
           </div>
           <div class="ui column">
-            DDDDD:
-            <div class="ui range"></div>
+            decomposition rate of protein: <span class="protein num"></span>
+            <div class="ui range protein"></div>
           </div>
         </div>
       </div>
@@ -278,7 +280,7 @@
 
   <div class="ui row">
     <div class="ui column right aligned">
-      <button class="ui blue button big">Save</button>
+      <button class="ui blue button big save">Save</button>
       <button class="ui green button big">Next Step</button>
     </div>
   </div>
