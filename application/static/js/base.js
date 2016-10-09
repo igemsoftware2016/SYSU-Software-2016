@@ -75,7 +75,7 @@ $(document).ready(function() {
             success: function(r) {
                 if (r.code) {
                     swal({
-                        title: "Ooo",
+                        title: "Ooo_ERROR_STEPS",
                         text: r.message,
                         type: "error",
                         confirmButtonText: "Okay"

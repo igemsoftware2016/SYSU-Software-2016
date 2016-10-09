@@ -1,4 +1,5 @@
 from application import db
+import random
 #from flask.ext.login import UserMinix
 
 class user(db.Model):
@@ -7,6 +8,7 @@ class user(db.Model):
     nickname = db.Column(db.String(60))
     email = db.Column(db.String(120), unique = True)
     password = db.Column(db.String(120))
+    icon = db.Column(db.Integer)
     def get_id(self):
         return self.id
     def check_pw(self, pw):
@@ -15,6 +17,7 @@ class user(db.Model):
         self.nickname = nickname
         self.email = email
         self.password = password
+        self.icon = random.randint(0,5)
     def __repr__(self):
         return '<User %r>' % self.nickname
     def save(self):

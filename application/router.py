@@ -11,6 +11,7 @@ from functools import wraps
 from werkzeug import secure_filename
 import os
 import urllib
+import json
 
 def login_required(f):
     @wraps(f)
@@ -47,6 +48,7 @@ def router_login():
                             })
         session['user'] = checker.get_id()
         session['nickname'] = checker.nickname
+        session['icon'] = checker.icon
         return jsonify({'code': 0})
     else:
         return redirect(url_for('router_index'))
@@ -63,6 +65,7 @@ def router_register():
         new_user.save()
         session['user'] = new_user.get_id()
         session['nickname'] = new_user.nickname
+        session['icon'] = new_user.icon
         return jsonify({'code': 0})
 
 @app.route('/profile')
@@ -77,12 +80,33 @@ def router_others_profile(user_id):
         return redirect(url_for('router_profile'))
     return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
 
+
 @app.route('/setting', methods = ['GET', 'POST'])
 @login_required
 def router_setting():
     if request.method == 'POST':
-        return {'code': 0}
-    return render_template('setting.html')
+        myPrint(request.json.get("setIcon"))
+        # data = json.loads(request.json)
+        u = user.query.filter_by(id = session['user']).first()
+        if request.json.get("setPassword"):
+            if u.password != request.json.get("oldPassword"):
+                return jsonify({
+                    'code': 1,
+                    'message': 'Wrong old password.'
+                    })
+            u.password = request.json.get("newPassword")
+        if request.json.get("setName"):
+            u.nickname = request.json.get("newName")
+        if request.json.get("setIcon"):
+            myPrint(request.json.get("newIcon"))
+            u.icon = request.json.get("newIcon")
+        # db.session.add(u)
+        db.session.commit()
+        session['nickname'] = u.nickname
+        session['icon'] = u.icon
+        return jsonify({'code': 0})
+    return render_template('setting.html', title="Setting")
+
 
 @app.route('/state/<int:design_id>/<int:state_id>')
 @login_required
@@ -96,24 +120,24 @@ def router_state(design_id, state_id):
         #state_id = cur_design.state
 
     if state_id == 1:
-        return render_template('state_1.html')#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
+        return render_template('state_1.html', design_id = design_id)#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
 
     elif state_id == 2:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
         if cur_calculator.ans == -1:
-            return render_template('wait.html')
+            return render_template('wait.html', design_id = design_id)
         return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_plasmid)
 
     elif state_id == 3:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state2).first()
         if cur_calculator.ans == -1:
-            return render_template('wait.html')
-        return render_template('state_3.html')#, y_list = dict_ylist)
+            return render_template('wait.html', design_id = design_id)
+        return render_template('state_3.html', design_id = design_id)#, y_list = dict_ylist)
 
     elif state_id == 4:
-        return render_template('state_4.html')#, pdf_pos = where_is_the_pdf)
+        return render_template('state_4.html', design_id = design_id)#, pdf_pos = where_is_the_pdf)
 
-    return render_template('state_%r.html' % state_id)
+    return render_template('state_%r.html' % state_id, design_id = design_id)
 
 @app.route('/square')
 def router_square():
@@ -167,15 +191,15 @@ def get_steps():
     design_query = design.query.filter_by(id = request.args.get('_id')).first()
     # design_query =None
     if design_query is None:
-        return_code = 1
-        return_state = -1
+        return jsonify({
+            'code': 1,
+            'message': "Error Design ID"
+            })
     else:
-        return_code = 0
-        return_state = design_query.state
-    return jsonify({
-                    'code': return_code,
-                    'ret': return_state
-                    })
+        return jsonify({
+                'code': 0,
+                'ret': design_query.state
+                })
 
 @app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
@@ -282,10 +306,12 @@ def search_matters_name(matter_name):
                     "results": results
                     })
 
+
 #upload file
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 @app.route('/upload', methods = ['GET', 'POST'])
 def upload_file():
@@ -306,7 +332,9 @@ def upload_file():
     '''
 
 
-# for states test
+
+###################################################
+# for states test!!!!
 import sys
 @app.route("/s/<int:state>")
 def test_s(state):
@@ -336,10 +364,6 @@ def save_test():
 def myPrint(str):
     print(str, file=sys.stderr)
 
-
-@app.route("/settings")
-def settings():
-    return render_template("setting.html")
 
 
 @app.route("/getState2Info")

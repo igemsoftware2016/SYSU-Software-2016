@@ -35,11 +35,11 @@
             <div class="ui dimmer">
               <div class="content">
                 <div class="center">
-                  <div class="ui inverted button tiny">New one</div>
+                  <div class="ui inverted button tiny new-icon">New one</div>
                 </div>
               </div>
             </div>
-            <img src="/static/img/pending.jpg">
+            <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="icon" pic_num="{{session.get('icon')}}" new_num="{{session.get('icon')}}">
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <div class="six wide column"></div>
         <div class="five wide column">
           <div class="ui input fluid disabled nickname">
-            <input type="text" value="ZingLee" name="nickname">
+            <input type="text" value="{{session.get('nickname')}}" name="nickname">
           </div>
         </div>
       </div>
@@ -99,8 +99,8 @@
       <div class="ui row buttom">
         <div class="six wide column"></div>
         <div class="five wide column">
-          <button class="ui secondary basic button">Reset</button>
-          <button class="ui positive basic button">Commit</button>
+          <button class="ui secondary basic button reset">Reset</button>
+          <button class="ui positive basic button commit">Commit</button>
         </div>
       </div>
     </div>

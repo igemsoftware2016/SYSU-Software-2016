@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8"> 
-  <title>profile</title>
+  <title>{% if title %}{{title}}{% else %}CRAFT{% endif %}</title>
   <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
   <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
   <!-- put css stylesheet down here -->
@@ -31,7 +31,7 @@
         {{ session.get("nickname") }} <i class="dropdown icon"></i>
           <div class="menu">
             <a class="item" href="/profile">My Profile</a>
-            <a class="item">Setting</a>
+            <a class="item" href="/setting">Setting</a>
             <div class="divider"></div>
             <a class="item" href="/logout">Log Out</a>
           </div>

@@ -44,7 +44,9 @@ $(document).ready(function() {
                 dataType: "json",
                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
                 cache: false,
-                data: {"email": email},
+                data: {
+                    "email": email
+                },
                 success: function(data) {
                     if (data.code) {
                         swal({
@@ -95,6 +97,17 @@ $(document).ready(function() {
         "invert": true
     });
     $.plax.enable();
+    // listen enter
+    $("input[name='signup-password']").keydown(function(event) {
+        if (event.which == "13") {
+            $("#signup-btn").click();
+        }
+    });
+    $("input[name='login-password']").keydown(function(event) {
+        if (event.which == "13") {
+            $("#login-btn").click();
+        }
+    });
     // sign in button click event
     $("#signup-btn").click(function() {
         // check inputs has things

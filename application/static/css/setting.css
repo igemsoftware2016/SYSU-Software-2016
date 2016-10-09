@@ -67,3 +67,7 @@ body {
 p.title > .icon {
     float: right;
 }
+
+img.icon {
+    border: 1px solid gray;
+}
