@@ -33,14 +33,14 @@ int main() {
 	}
 
 	int u_size; dopt >> u_size;
-	for (int i = 0; i < 13; ++ i) {
+	for (int i = 0; i < u_size; ++ i) {
 		string mer; double tot;
 		dopt >> mer >> tot;
 		u_tot[mer] = tot;
 	}
 
 	int c_size; dopt >> c_size;
-	for (int i = 0; i < 5; ++ i) {
+	for (int i = 0; i < c_size; ++ i) {
 		string mer; double coeff;
 		dopt >> mer >> coeff;
 		c[mer] = coeff;
@@ -59,21 +59,20 @@ int main() {
 
 	for (int time_slice = 1; time_slice <= 20; ++ time_slice) {
 		map <string, double> u;
+
 		for (auto k = u_tot.begin(); k != u_tot.end(); ++ k) {
-			u[k -> first] = k -> second / time_slice;
+			u[k -> first] = k -> second / (time_slice);
 		}
 
-		SmartPtr <TNLP> nlp = new opt_com_nlp(s, m, u, c);
+		SmartPtr <opt_com_nlp> nlp = new opt_com_nlp(s, m, u, c);
 		SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
 
 		app -> Options() -> SetStringValue("hessian_approximation", "limited-memory");
 		app -> Options() -> SetStringValue("jac_c_constant", "yes");
 		app -> Options() -> SetStringValue("jac_d_constant", "yes");
 		app -> Options() -> SetStringValue("print_user_options", "yes");
-		app -> Options() -> SetStringValue("output_file", "OPO.txt");
 		app -> Options() -> SetIntegerValue("print_level", 0);
-		app -> Options() -> SetIntegerValue("file_print_level", 5);
-		app -> Options() -> SetNumericValue("max_cpu_time", 30.0);
+		app -> Options() -> SetNumericValue("max_cpu_time", 300.0);
 
 		ApplicationReturnStatus status;
 		status = app->Initialize();
@@ -92,7 +91,15 @@ int main() {
 			Number final_obj = app->Statistics()->FinalObjective();
 			std::cout << std::endl << std::endl << "*** The final value of the objective function is " << final_obj << '.' << std::endl;
 		}
+
+		for (auto i = nlp -> ct.begin(); i != nlp -> ct.end(); ++ i) {
+			//cout << i -> first << ' ' << i -> second << endl;
+			ct[i -> first] += i -> second;
+		}
+
 		dopt_res << time_slice << endl;
+		for (auto i = ct.begin(); i != ct.end(); ++ i)
+			dopt_res << i -> first << ' ' << i -> second << endl;
 	}
 
 	dopt_res.close();

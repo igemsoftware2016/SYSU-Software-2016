@@ -10,6 +10,7 @@ int main() {
 	std :: ios :: sync_with_stdio(false);
 
 	set <string> s;
+	//s.insert("aace887700cyc");
 //	s.insert("O3");
 	s.insert("O4");
 //	s.insert("O5");
@@ -22,11 +23,11 @@ int main() {
 //	m["O5"].insert("EC25"); m["O5"].insert("EC26");
 
 	int d[14] = {1, 10, 13, 14, 15, 16, 18, 19, 22, 24, 25, 26, 27, 28};
-	string d2[5] = {"C27","C26","C22","C24","C28"};
+	string d2[6] = {"C00080", "C27","C26","C22","C24","C28"};
 
 	for (int i = 0; i < 1; ++ i)
 		u["C" + std :: to_string(d[i])] = 1.0;
-	for (int i = 0; i < 5; ++ i)
+	for (int i = 1; i < 6; ++ i)
 		c[d2[i]] = 1.0;
 
 	SmartPtr <TNLP> nlp = new opt_com_nlp(s, m, u, c);
@@ -37,9 +38,10 @@ int main() {
 	app -> Options() -> SetStringValue("jac_d_constant", "yes");
 	app -> Options() -> SetStringValue("print_user_options", "yes");
 //	app -> Options() -> SetStringValue("output_file", "OPO.txt");
-//	app -> Options() -> SetIntegerValue("print_level", 0);
+	app -> Options() -> SetIntegerValue("print_level", 5);
 //	app -> Options() -> SetIntegerValue("file_print_level", 5);
-	app -> Options() -> SetNumericValue("max_cpu_time", 30.0);
+	app -> Options() -> SetNumericValue("max_cpu_time", 3000000.0);
+	app -> Options() -> SetIntegerValue("max_iter", 100000000);
 
 	ApplicationReturnStatus status;
 	status = app->Initialize();

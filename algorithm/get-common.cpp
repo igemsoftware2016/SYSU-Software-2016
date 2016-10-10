@@ -533,30 +533,8 @@ void search() {
 		sub_id = sub_vec[i];
 #endif
 		needed.insert(sub_id);
-		//ec_path_bfs(sub_id);
 	}
-/*
-	if (work_type != "synthetic") {
-		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
-			if ( needed.count(k -> first) ) {
-				sub_flag[sub_index[k -> first]] = true;
-			}
-		}
 
-		int ss = (9 * org_map.size() /10);
-		for (auto k = sub_map.begin(); k != sub_map.end(); ++ k) {
-			if ( false == sub_flag[sub_index[k -> first]] && 
-				(int) sub_map[k -> first].org.size() > ss) {
-				for (int j = 0; j < sub_size; ++ j)
-					sub_res[j].clear();
-				ec_path_bfs(k -> first);
-			}
-		}
-
-		cout << endl;
-		return;
-	}
-*/
 	for (auto i = needed.begin(); i != needed.end(); ++ i) {
 		for (int j = 0; j < sub_size; ++ j)
 			sub_res[j].clear();
@@ -657,6 +635,44 @@ void dfs_pattern_init(const set <string> & s, set < full_result > & ret) {
 	dfs_pattern(0, 0, 0, s, current, ret);
 }
 
+void res_evalue(const set < full_result > & ret) {
+/*
+	for (auto i = ret.begin(); i != ret.end(); ++ i) {
+		cout << "SOLUTION " << (count ++) << endl;
+		for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
+			++ j) {
+			cout << ' ' << (* j) << endl;
+			if (false == i -> insert_gene.count(* j))
+				continue;
+
+			cout << ' ';
+			for (auto k = i -> insert_gene.at(* j).begin();
+				k != i -> insert_gene.at(* j).end(); ++ k) {
+				cout << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
+			}
+			cout << endl;
+		}
+		cout << endl;
+	}*/
+	auto i = ret.begin();
+	fin_res << i -> org_list.size() << endl;
+	for (auto j = i -> org_list.begin(); j != i -> org_list.end(); ++ j) {
+		fin_res << (* j) << ' ';
+		if (false == i -> insert_gene.count(* j)) {
+			fin_res << 0 << endl;
+			continue;
+		}
+
+		fin_res << i -> insert_gene.at(* j).size() << endl;
+
+		for (auto k = i -> insert_gene.at(* j).begin();
+			k != i -> insert_gene.at(* j).end(); ++ k) {
+			fin_res << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
+		}
+		fin_res << endl;
+	}
+}
+
 void pattern_org(const set < set <string> > & solution) {
 
 	string str, x;
@@ -726,6 +742,7 @@ void pattern_org(const set < set <string> > & solution) {
 		cout << endl;
 	}
 
+	res_evalue(ret);
 }
 
 void free_alloc() {

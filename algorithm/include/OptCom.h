@@ -63,6 +63,9 @@ public:
 		const IpoptData* ip_data,
 		IpoptCalculatedQuantities* ip_cq);
 
+	map <string, double> ct;
+	double obj;
+
 private:
 	vector <string> s_mat_m_mer_name;
 	vector <int> s_mat_m_mer_cnt;
@@ -82,7 +85,7 @@ private:
 	opt_com_nlp(const opt_com_nlp&);
 	opt_com_nlp& operator=(const opt_com_nlp&);
 	
-	void debug_print(ofstream &);
+//	void debug_print(ofstream &);
 };
 
 #endif

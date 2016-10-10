@@ -2,35 +2,37 @@
 
 using namespace Ipopt;
 
-void opt_com_nlp :: debug_print(ofstream & log) {
+//void opt_com_nlp :: debug_print(ofstream & log) {
 
-	log << s_mat_m << ' ' << s_mat_n << endl;
-	for (int i = 0; i < s_mat_m; ++ i) {
-		for (int j = 0; j < s_mat_n; ++ j)
-			log << s_mat[i][j] << '\t';
-		log << endl;
-	}
+//	log << s_mat_m << ' ' << s_mat_n << endl;
+//	for (int i = 0; i < s_mat_m; ++ i) {
+//		for (int j = 0; j < s_mat_n; ++ j)
+//			if (s_mat[i][j] >= 0)
+//				log << s_mat[i][j] << "  ";
+//			else log << s_mat[i][j] << " ";
+//		log << endl;
+//	}
 
-	log << endl;
+//	log << endl;
 
-	for (int i = 0; i < org_size; ++ i) {
-		log << i << ' ' << s1_mat_m[i] << ' ' << s1_mat_n[i] << endl;
-		for (int x = 0; x < s1_mat_m[i]; ++ x) {
-			for (int y = 0; y < s1_mat_n[i]; ++ y)
-				log << s1_mat[i][x][y] << ' ';
-			log << endl;
-		}
-	}
+//	for (int i = 0; i < org_size; ++ i) {
+//		log << i << ' ' << s1_mat_m[i] << ' ' << s1_mat_n[i] << endl;
+//		for (int x = 0; x < s1_mat_m[i]; ++ x) {
+//			for (int y = 0; y < s1_mat_n[i]; ++ y)
+//				log << s1_mat[i][x][y] << ' ';
+//			log << endl;
+//		}
+//	}
 
-	for (int i = 0; i < org_size; ++ i) {
-		log << i << ' ' << s2_mat_m[i] << ' ' << s2_mat_n << endl;
-		for (int x = 0; x < s2_mat_m[i]; ++ x) {
-			for (int y = 0; y < s2_mat_n; ++ y)
-				log << s2_mat[i][x][y] << ' ';
-			log << endl;
-		}
-	}
-}
+//	for (int i = 0; i < org_size; ++ i) {
+//		log << i << ' ' << s2_mat_m[i] << ' ' << s2_mat_n << endl;
+//		for (int x = 0; x < s2_mat_m[i]; ++ x) {
+//			for (int y = 0; y < s2_mat_n; ++ y)
+//				log << s2_mat[i][x][y] << ' ';
+//			log << endl;
+//		}
+//	}
+//}
 
 opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 	map <string, double> u, map <string , double> c) {
@@ -71,7 +73,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 		map <string, int> s_mer_to_index, s1_mer_to_index;
 		s1_mat_m[index] = s1_mat_n[index] = 0;
 
-		int ec_count; org >> ec_count;
+		int ec_count; org >> ec_count; log << ec_count << endl;
 		
 		map < int , map <int, int> > s1n;
 
@@ -79,8 +81,8 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 			string ec_name; int mer_size;
 			org >> ec_name >> mer_size;
 
-			set <string> s_list;
-
+			vector <string> s_list;
+			
 			for (int j = 0; j < mer_size; ++ j) {
 				string mer_name; org >> mer_name;
 
@@ -90,7 +92,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 					s_mat_m_mer_name.push_back(mer_name);
 				}
 
-				s_list.insert(mer_name);
+				s_list.push_back(mer_name);
 			}
 
 			for (auto j = s_list.begin(); j != s_list.end(); ++ j) {
@@ -180,7 +182,7 @@ opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 
 	s_mat_m = m_count;
 
-	debug_print(log);
+	//debug_print(log);
 
 	log.close();
 };
@@ -238,9 +240,22 @@ bool opt_com_nlp :: get_bounds_info(Index n, Number* x_l, Number* x_u,
 	}
 
 	for (auto i = feed.begin(); i != feed.end(); ++ i) {
-		g_l[cnt] = 0.0; g_u[cnt] = i -> second;
+		//g_l[cnt] = 0.0; g_u[cnt] = i -> second;
+		//g_l[cnt] = i -> second / 2; g_u[cnt] = i -> second;
+		g_l[cnt] = g_u[cnt] = - (i -> second);
+		//g_l[cnt] = - (i -> second); g_u[cnt] = 0.0;
 		++ cnt;
 	}
+
+//	cout << "BEGIN G" << endl;
+//	for (int i = 0; i < s_mat_m; ++ i)
+//		cout << '\t' << g_l[i] << ' ' << g_u[i] << endl;
+//	cout << "END G" << endl;
+
+//	cout << "BEGIN X" << endl;
+//	for (int i = 0; i < s_mat_n; ++ i)
+//		cout << '\t' << x_l[i] << ' ' << x_u[i] << endl;
+//	cout << "END X" << endl;
 
 	assert(cnt == (int)s_mat_m);
 
@@ -256,7 +271,7 @@ bool opt_com_nlp :: get_starting_point(Index n, bool init_x, Number* x,
 	assert(init_lambda == false);
 
 	for (int i = 0; i < n; ++ i)
-		x[i] = 0.0;
+		x[i] = (double)0.0;
 
 	return true;
 }
@@ -264,7 +279,7 @@ bool opt_com_nlp :: get_starting_point(Index n, bool init_x, Number* x,
 bool opt_com_nlp :: eval_f(Index n, const Number* x,
 	bool new_x, Number& obj_value) {
 
-	cout << "F" << endl;
+	//cout << "F" << endl;
 
 	Number f = 0.0;
 
@@ -272,32 +287,44 @@ bool opt_com_nlp :: eval_f(Index n, const Number* x,
 		f -= 1.0 * x[i];
 
 	int cnt = 0, cnt2 = s_mat_n_s;
-	double inf = 500.0; double p = 0.0;
+	double inf = 50000.0; //double p = 0.0;
 
 	for (int k = 0; k < org_size; ++ k) {
 		double cv = 0.0, pepsiw = 0.0;
 
-		for (int i = 0; i < s1_mat_n[k]; ++ i)
+		//cout << "CV" << endl;
+		for (int i = 0; i < s1_mat_n[k]; ++ i) {
 			cv += x[cnt + i];
+			//cout << x[cnt + i] << ' ' << cnt + i << endl;
+		}
 		cnt += s1_mat_n[k];
 		
 		vector <double> pepsi; pepsi.resize(s1_mat_m[k]);
 
-		for (size_t i = 0; i < feed.size(); ++ i)
+		//cout << "PEPSI" << endl;
+		for (size_t i = 0; i < feed.size(); ++ i) {
 			for (int j = 0; j < s2_mat_m[k]; ++ j) if (s2_mat[k][j].count(i))
 				pepsi[j] += x[cnt + i] * s2_mat[k][j][i];
+			//cout << x[cnt + i] << ' ' << cnt + i << ' ' << endl;
+		}
+		//cout << endl;
 
-		for (int i = 0; i < s1_mat_m[k]; ++ i)
+		//cout << "PEPSI" << endl;
+		for (int i = 0; i < s1_mat_m[k]; ++ i) {
 			pepsiw += pepsi[i] * x[cnt2 + i];
+			//cout << pepsi[i] << ' ' << x[cnt2 + i] << ' ' << cnt2 + i << endl;
+		}
+		//cout << endl;
 		
 		cnt2 += s1_mat_m[k];
 		cnt += feed.size();
 		
 		f += (cv + pepsiw) * inf;
-		p += (cv + pepsiw);
+		//p += (cv + pepsiw);
+		//cout << "CV" << cv << ' ' << "PEPSIW" << pepsiw << endl;
 	}
 
-	cout << "STH" << p << endl;
+	//cout << "STH" << p << endl;
 
 	assert(cnt == s_mat_n_s);
 	assert(cnt2 == s_mat_n);
@@ -310,13 +337,23 @@ bool opt_com_nlp :: eval_f(Index n, const Number* x,
 bool opt_com_nlp :: eval_grad_f(Index n, const Number* x,
 	bool new_x, Number* grad_f) {
 
-	cout << "GRAD_F" << endl;
+	//cout << "GRAD_F" << endl;
 
-	double inf = 500.0;
+	for (int i = 0; i < s_mat_n; ++ i)
+		grad_f[i] = 0.0;
+
+	double inf = 50000.0;
 	for (int i = 0; i < s_mat_n_s; ++ i)
-		grad_f[i] = inf - 1.0 ;
+		grad_f[i] = -1.0 ;
 
-	cout << "GRAD_F2" << endl;
+	int index = 0;
+	for (int k = 0; k < org_size; ++ k) {
+		for (int i = 0; i < s1_mat_n[k]; ++ i)
+			grad_f[index + i] += inf;
+		index += s1_mat_n[k] + feed.size();
+	}
+
+	//cout << "GRAD_F2" << endl;
 
 	int cnt = 0, cnt2 = s_mat_n_s;
 	for (int k = 0; k < org_size; ++ k) {
@@ -328,23 +365,31 @@ bool opt_com_nlp :: eval_grad_f(Index n, const Number* x,
 		for (int i = 0; i < s1_mat_m[k]; ++ i)
 			w.push_back(x[cnt2 + i]);
 
-		cout << "GRAD_F3" << endl;
+		//cout << "GRAD_F3" << endl;
 
 		for (size_t i = 0; i < feed.size(); ++ i)
 			for (int j = 0; j < s1_mat_m[k]; ++ j) if (s2_mat[k][j].count(i))
 				grad_f[cnt + i] += inf * w[j] * s2_mat[k][j][i];
 
-		cout << "GRAD_F4" << endl;
+		//cout << "GRAD_F4" << endl;
 
 		for (int j = 0; j < s1_mat_m[k]; ++ j)
-			for (size_t i = 0; i < feed.size(); ++ i) if(s2_mat[k][j].count(i))
+			for (size_t i = 0; i < feed.size(); ++ i) if(s2_mat[k][j].count(i)) {
 				grad_f[cnt2 + j] += inf * s2_mat[k][j][i] * uval[i];
+				//cout << "U" << cnt2 + j << ' ' << s2_mat[k][j][i] << ' ' << uval[i] << ' ' << grad_f[cnt2 + j] << endl;
+			}
 
-		cout << "GRAD_F5" << endl;
+		//cout << "GRAD_F5" << endl;
 
 		cnt += feed.size();
 		cnt2 += s1_mat_m[k];
 	}
+
+	//cout << "GRAD BEGIN" << endl;
+	//for (int i = 0; i < n; ++ i) {
+	//	cout << '\t' << grad_f[i] << ' ' << i << endl;
+	//}
+	//cout << "GRAD END" << endl;
 
 	assert(cnt == s_mat_n_s);
 	assert(cnt2 == s_mat_n);
@@ -360,7 +405,13 @@ bool opt_com_nlp :: eval_g(Index n, const Number* x, bool new_x,
 		for (int j = 0; j < s_mat_n; ++ j)
 			if (s_mat[i].count(j))
 				g[i] += x[j] * s_mat[i][j];
+		//cout << g[i] << ' ';
 	}
+	
+	//cout << endl;
+	//for (int j = 0; j < s_mat_n; ++ j)
+	//	cout << x[j] << ' ';
+	//cout << endl;
 
 	return true;
 }
@@ -386,12 +437,13 @@ bool opt_com_nlp :: eval_jac_g(Index n, const Number* x, bool new_x,
 	for (int i = 0; i < s_mat_m; ++ i) {
 		for (int j = 0; j < s_mat_n; ++ j) {
 			if (s_mat[i].count(j))
-				values[cnt] = s_mat[i][j];
-			else values[cnt] = 0;
+				values[cnt] = 1.0 * s_mat[i][j];
+			else values[cnt] = 0.0;
 			++ cnt;
 		}
 	}
-
+	
+	//cout << "JAC_G" << endl;
 	return true;
 }
 
@@ -402,9 +454,30 @@ void opt_com_nlp :: finalize_solution(SolverReturn status,
 	const IpoptData* ip_data,
 	IpoptCalculatedQuantities* ip_cq) {
 
-	cout << obj_value << '\n';
-	for (int i = 0; i < n; ++ i)
-		cout << x[i] << ' ';
-	cout << '\n';
+	obj = obj_value;
+	int cnt = 0, cnt2 = 0;
+	for (int k = 0; k < org_size; ++ k) {
+		for (int j = 0; j < s1_mat_m[k]; ++ j)
+			for (int i = 0; i < s1_mat_n[k]; ++ i) if (s1_mat[k][j].count(i)) {
+				ct[s_mat_m_mer_name[cnt2 + j]] -= x[cnt + i] * s1_mat[k][j][i];
+				//cout << s_mat_m_mer_name[cnt2 + j] << ' ' << s1_mat[k][j][i] << ' ' << x[cnt + i] << ' ' << cnt + i << '\n';
+			}
+		cnt += s1_mat_n[k] + feed.size();
+		cnt2 += s1_mat_m[k];
+	}
 
+	for (auto i = feed.begin(); i != feed.end(); ++ i) {
+		ct[i -> first] += i -> second;
+	}
+
+	//cout << obj_value << '\n';
+	//for (int i = 0; i < n; ++ i)
+	//	cout << x[i] << ' ';
+	//cout << '\n';
+
+//	for (int i = 0; i < m; ++ i)
+//		cout << g[i] << ' ';
+//	cout << '\n';
+
+	return;
 }
