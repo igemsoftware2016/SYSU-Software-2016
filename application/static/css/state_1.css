@@ -39,3 +39,7 @@ body {
 input.hidden {
     display: none;
 }
+
+.idea.icon:hover {
+    cursor: pointer;
+}

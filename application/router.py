@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 import os
 import urllib
 import json
+from dataLibs import *
 
 def login_required(f):
     @wraps(f)
@@ -71,7 +72,8 @@ def router_register():
 @app.route('/profile')
 @login_required
 def router_profile():
-    return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
+    designs, info = getAllPosts(session['user'])
+    return render_template('profile.html', title='My Profile', designs = designs, info = info)
 
 @app.route('/profile/<int:user_id>')
 @login_required
@@ -120,7 +122,8 @@ def router_state(design_id, state_id):
         #state_id = cur_design.state
 
     if state_id == 1:
-        return render_template('state_1.html', design_id = design_id)#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
+        return render_template('state_1.html', design_id = design_id,
+             design_name = cur_design.design_name, design_mode = cur_design.design_mode)#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
 
     elif state_id == 2:
         cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
@@ -139,11 +142,28 @@ def router_state(design_id, state_id):
 
     return render_template('state_%r.html' % state_id, design_id = design_id)
 
+@app.route('/setDesignName', methods=['POST'])
+@login_required
+def setDesignName():
+    myPrint(request.json)
+    designID = request.json.get("_id")
+    d = design.query.filter_by(id=designID).first()
+    if not d:
+        return jsonify({"code": 1, "message": "Error ID"})
+    if d.owner_id != session['user']:
+        abort(403)
+    name = request.json.get("name")
+    mode = request.json.get("mode")
+    d.design_name = name
+    if mode:
+        d.design_mode = mode
+    db.session.commit()
+    return jsonify({"code":0})
+
 @app.route('/square')
 def router_square():
-    if session.get('user'):
-        return render_template('square.html', userid = user.query.filter_by(id = session['user']).first().nickname)
-    return render_template('square.html')
+    designs, info = getAllPosts(session.get("user"))
+    return render_template('square.html', title='Square', designs = designs, info = info)
 
 @app.route('/logout')
 @login_required
@@ -307,10 +327,37 @@ def search_matters_name(matter_name):
                     })
 
 
-#upload file
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+@app.route('/set_like', methods=['POST'])
+@login_required
+def set_like():
+    myPrint(request.json)
+    return libs_setLike(session['user'], request.json.get("design_id"), request.json.get("isLike"))
+
+
+@app.route('/set_mark', methods=['POST'])
+@login_required
+def set_mark():
+    myPrint(request.json)
+    return libs_setMark(session['user'], request.json.get("design_id"), request.json.get("isMark"))
+
+
+@app.route('/delete_design', methods=['DELETE'])
+@login_required
+def deleteDesign():
+    d = design.query.filter_by(id=request.json.get("design_id")).first()
+    if not d:
+        return libs_errorMsg("Error Design ID: %s" % request.json.get("design_id"))
+    if d.owner_id != session['user']:
+        return libs_errorMsg("You can only delete YOUR designs")
+    # remove mark
+    u = user.query.filter_by(id=session['user']).first()
+    l = json.loads(u.mark)
+    if request.json.get("design_id") in l:
+        l.remove(request.json.get("design_id"))
+        u.mark = json.dumps(l)
+    db.session.delete(d)
+    db.session.commit()
+    return libs_sucess()
 
 
 @app.route('/upload', methods = ['GET', 'POST'])
@@ -331,6 +378,11 @@ def upload_file():
     </form>
     '''
 
+@app.route('/report', methods=['POST'])
+def report():
+    # save report
+    myPrint(request.json)
+    return libs_sucess()
 
 
 ###################################################
@@ -360,11 +412,6 @@ def test_s(state):
 def save_test():
     myPrint(request.json)
     return jsonify({"code":0})
-
-def myPrint(str):
-    print(str, file=sys.stderr)
-
-
 
 @app.route("/getState2Info")
 def getState2Info():

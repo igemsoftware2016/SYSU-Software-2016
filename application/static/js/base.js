@@ -117,4 +117,13 @@ $(document).ready(function() {
     } else {
         console.log("no steps");
     }
+
+    window.showErrMsg = function(msg) {
+        swal({
+            title: "Ooo",
+            text: msg,
+            type: "error",
+            confirmButtonText: "Okay"
+        });
+    }
 });

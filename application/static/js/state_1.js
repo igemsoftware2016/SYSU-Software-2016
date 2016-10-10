@@ -81,45 +81,119 @@ $(document).ready(function() {
 
     var isMake = true;
     $(".ui.dimmer:not(.upload)").dimmer("show");
-    swal({
-        title: 'Name and select mode',
-        html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
-            '<div class="ui buttons"><button class="ui button mode-btn make">Make</button><div class="or"></div><button class="ui button mode-btn resolve">Resolve</button></div>',
-        preConfirm: function(result) {
-            return new Promise(function(resolve, reject) {
-                var name = $("#design-name-input").val();
-                if (!name.length) {
-                    reject("Enter a name.");
-                }
-                if (!$(".make.mode-btn").hasClass("active") && !$(".resolve.mode-btn").hasClass("active")) {
-                    reject("Select a mode.");
-                }
-                var mode = $(".make.mode-btn").hasClass("active") ? "make" : "resolve";
-                resolve({
-                    "name": name,
-                    "mode": mode
+    if ($(".design-name").hasClass("new")) {
+        swal({
+            title: 'Name and select mode',
+            html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
+                '<div class="ui buttons"><button class="ui button mode-btn make">Products</button><div class="or"></div><button class="ui button mode-btn resolve">Substrates</button></div>',
+            preConfirm: function(result) {
+                return new Promise(function(resolve, reject) {
+                    var name = $("#design-name-input").val();
+                    if (!name.length) {
+                        reject("Enter a name.");
+                    }
+                    if (!$(".make.mode-btn").hasClass("active") && !$(".resolve.mode-btn").hasClass("active")) {
+                        reject("Select a mode.");
+                    }
+                    var mode = $(".make.mode-btn").hasClass("active") ? "make" : "resolve";
+                    resolve({
+                        "name": name,
+                        "mode": mode,
+                        "_id":  $("#design-id").text()
+                    });
                 });
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then(function(result) {
+            // console.log(result);
+            $.ajax({
+                url: "/setDesignName",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify(result),
+                success: function(r) {
+                    if (r.code) {
+                        showErrMsg(r.message);
+                        return false;
+                    } else {
+                        $(".design-name").text(result.name);
+                    }
+                }
             });
-        },
-        allowOutsideClick: false,
-        allowEscapeKey: false
-    }).then(function(result) {
-        // console.log(result);
-        if (result.mode === "make") {
-            $(".resolve-row").hide();
-            $(".ui.dimmer:not(.upload)").dimmer("hide");
-        } else {
-            $(".make-row").hide();
-            $(".ui.dimmer:not(.upload)").dimmer("hide");
-            isMake = false;
-        }
+            if (result.mode === "make") {
+                $(".resolve-row").hide();
+                $(".ui.dimmer:not(.upload)").dimmer("hide");
+            } else {
+                $(".make-row").hide();
+                $(".ui.dimmer:not(.upload)").dimmer("hide");
+                isMake = false;
+            }
 
-        swal(
-            'Enjoy the design time!',
-            '',
-            'success'
-        );
-    });
+            swal(
+                'Enjoy the design time!',
+                '',
+                'success'
+            );
+        });
+    } else if ($("#design-mode").text() == "make") {
+        $(".resolve-row").hide();
+        $(".ui.dimmer:not(.upload)").dimmer("hide");
+    } else if ($("#design-mode").text() == "make") {
+        $(".make-row").hide();
+        $(".ui.dimmer:not(.upload)").dimmer("hide");
+        isMake = false;
+    }
+
+    $(".idea.icon").click(function() {
+        swal({
+            title: 'Give it a new Name',
+            html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>',
+            preConfirm: function(result) {
+                return new Promise(function(resolve, reject) {
+                    var name = $("#design-name-input").val();
+                    if (!name.length) {
+                        reject("Enter a name.");
+                    }
+                    resolve({
+                        "name": name,
+                        "_id":  $("#design-id").text()
+                    });
+                });
+            },
+            showCancelButton: true
+        }).then(function(result) {
+            // console.log(result);
+            $.ajax({
+                url: "/setDesignName",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify(result),
+                success: function(r) {
+                    if (r.code) {
+                        swal({
+                            title: "Ooo",
+                            text: r.message,
+                            type: "error",
+                            confirmButtonText: "Okay"
+                        });
+                        return false;
+                    } else {
+                        $(".design-name").text(result.name);
+                    }
+                }
+            });
+            swal(
+                'Done!',
+                '',
+                'success'
+            );
+        });
+    })
 
     $(document).on('click', '.mode-btn', function() {
         if ($(this).hasClass("make")) {

@@ -20,21 +20,80 @@ $(document).ready(function() {
     $(".ui.progress").progress();
 
     $(".button.like").click(function() {
-        if($($(this).find(".icon")).hasClass("empty")) {
-            var nowLike = parseInt($($(this).find(".label")).text());
-            $($(this).find(".label")).text(nowLike+1);
+        var $btn = $(this);
+        if ($($(this).find(".icon")).hasClass("empty")) {
+            $.ajax({
+                url: "/set_like",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify({
+                    design_id: $(this).parents('.grid.design').attr('design-id'),
+                    isLike: true
+                }),
+                success: function(r) {
+                    if (r.code) {
+                        showErrMsg(r.message);
+                        return false;
+                    } else {
+                        var nowLike = parseInt($($btn.find(".label")).text());
+                        $($btn.find(".label")).text(nowLike + 1);
+                        $($btn.find(".icon")).toggleClass("empty");
+                    }
+                }
+            });
         } else {
-            var nowLike = parseInt($($(this).find(".label")).text());
-            $($(this).find(".label")).text(nowLike-1);
+            $.ajax({
+                url: "/set_like",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify({
+                    design_id: $(this).parents('.grid.design').attr('design-id'),
+                    isLike: false
+                }),
+                success: function(r) {
+                    if (r.code) {
+                        showErrMsg(r.message);
+                        return false;
+                    } else {
+                        var nowLike = parseInt($($btn.find(".label")).text());
+                        $($btn.find(".label")).text(nowLike - 1);
+                        $($btn.find(".icon")).toggleClass("empty");
+                    }
+                }
+            });
+
         }
-        $($(this).find(".icon")).toggleClass("empty");
     });
 
     $(".button.mark").click(function() {
-        $($(this).find(".icon")).toggleClass("empty");
+        var $btn = $(this);
+        $.ajax({
+            url: "/set_mark",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: JSON.stringify({
+                design_id: $(this).parents('.grid.design').attr('design-id'),
+                isMark: $($(this).find(".icon")).hasClass("empty")
+            }),
+            success: function(r) {
+                if (r.code) {
+                    showErrMsg(r.message);
+                    return false;
+                } else {
+                    $($btn.find(".icon")).toggleClass("empty");
+                }
+            }
+        });
     });
 
     $(".button.tip-off").click(function() {
+        var $btn = $(this);
         swal({
             html: '<b>Describt the tip-off reason please.</b>',
             input: 'textarea',
@@ -51,12 +110,15 @@ $(document).ready(function() {
             allowOutsideClick: false
         }).then(function(text) {
             $.ajax({
-                url: "http://www.findpsw.test.com",
+                url: "/report",
                 type: "POST",
                 dataType: "json",
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                contentType: 'application/json; charset=utf-8',
                 cache: false,
-                data: {"email": email},
+                data: JSON.stringify({
+                    "design_id": $btn.parents('.grid.design').attr('design-id'),
+                    "reason": text
+                }),
                 success: function(data) {
                     if (data.code) {
                         swal({
@@ -70,7 +132,7 @@ $(document).ready(function() {
                         swal({
                             type: 'success',
                             title: 'Done',
-                            html: 'Your password was sended, check it please.'
+                            html: 'Your report is received.'
                         });
                     }
                 },

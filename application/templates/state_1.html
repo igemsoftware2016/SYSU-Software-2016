@@ -7,6 +7,7 @@
 {% block container %}
 <!-- put code here with-->
 <span id="design-id" style="display: none;">{% if design_id %}{{design_id}}{% endif %}</span> <!-- given by jinja2 -->
+<span id="design-mode" style="display: none;">{% if design_mode %}{{design_mode}}{% endif %}</span> <!-- given by jinja2 -->
 <div class="ui five steps sticky">
   <a class="active step">
     <i class="circle icon"></i>
@@ -41,14 +42,25 @@
 </div>
 <div class="ui column grid state">
   <div class="ui grid">
+    <div class="ui row">
+      <div class="ui column sixteen wide">
+        <h1 class="ui header right floated">
+          <i class="idea icon default black"></i>
+          <div class="content design-name {% if not design_name %}new{% endif %}">
+            {% if design_name %}{{design_name}}{% else %}Default Design Name{% endif %}
+            <div class="sub header"></div>
+          </div>
+        </h1>
+      </div>
+    </div>
     <div class="ui row make-row">
       <div class="ui column fifteen wide">
-        <h2 class="ui green header">
-          <i class="settings icon default black"></i>
-          <div class="content">产生物质
-            <div class="sub header">sub-title here</div>
+        <h3 class="ui green header">
+          <i class="lab icon default black"></i>
+          <div class="content">Products
+            <div class="sub header"></div>
           </div>
-        </h2>
+        </h3>
       </div>
       <div class="ui column one wide">
         <button class="ui circular plus icon button small green" id="add-make">
@@ -61,11 +73,11 @@
         <table class="ui very basic table">
           <thead>
             <tr>
-              <th class="four wide">物质名称</th>
-              <th class="two wide">浓度下限</th>
-              <th class="two wide">浓度上限</th>
-              <th class="one wide">浓度MAX</th>
-              <th class="one wide right aligned">删除</th>
+              <th class="four wide">Targets</th>
+              <th class="two wide">Lower bound</th>
+              <th class="two wide">Upper bound</th>
+              <th class="one wide">Concentration MAX</th>
+              <th class="one wide right aligned">Delete</th>
             </tr></thead>
             <tbody id="make-tbody">
               <tr class="make-line">
@@ -110,12 +122,12 @@
       <!-- row 2 resolve matter -->
       <div class="ui row resolve-row">
         <div class="ui column fifteen wide">
-          <h2 class="ui yellow header">
-            <i class="settings icon default black"></i>
-            <div class="content">分解物质
-              <div class="sub header">sub-title here</div>
+          <h3 class="ui yellow header">
+            <i class="lab icon default black"></i>
+            <div class="content">Substrates
+              <div class="sub header"></div>
             </div>
-          </h2>
+          </h3>
         </div>
         <div class="ui column one wide">
           <button class="ui circular plus icon button small yellow" id="add-resolve">
@@ -128,9 +140,9 @@
           <table class="ui very basic table collapsing">
             <thead>
               <tr>
-                <th class="three wide">物质名称</th>
-                <th class="two wide">开始浓度</th>
-                <th class="one wide right aligned">删除</th>
+                <th class="three wide">Targets</th>
+                <th class="two wide">Concentration</th>
+                <th class="one wide right aligned">Delete</th>
               </tr>
             </thead>
             <tbody id="resolve-tbody">
@@ -165,15 +177,15 @@
         <div class="ui column fluid wide">
           <h3 class="ui header">
             <i class="settings icon default black"></i>
-            <div class="content">其他设置
-              <div class="sub header">sub-title here</div>
+            <div class="content">Constraints
+              <div class="sub header"></div>
             </div>
           </h3>
         </div>
       </div>
       <div class="ui row divided">
         <div class="ui column four wide">
-          <label><b>时间</b></label>
+          <label><b>Time</b></label>
           <div class="ui right labeled left icon input fluid">
             <i class="time icon"></i>
             <input type="text" placeholder="Enter time" id="time">

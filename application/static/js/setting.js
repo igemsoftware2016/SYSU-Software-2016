@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $(".ui.banner").backstretch("/static/img/profile_banner.png");
+    $(".ui.banner").backstretch("/static/img/setting_banner1.1.jpg");
     $(".ui.image.icon").dimmer({
         on: "hover"
     });

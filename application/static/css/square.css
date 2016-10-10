@@ -60,10 +60,14 @@ body {
     padding: 3px 5px;
     margin: 5px 0;
 }
-
+p.description {
+    font-size: 1.2em;
+    font-weight: 600;
+}
 .time {
     text-align: right;
-    width: 100%;
+    /*width: 100%;*/
+    padding-bottom: 10px;
 }
 
 .description:not(.design) {

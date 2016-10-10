@@ -39,3 +39,31 @@ body {
 .profile-menu > .segment {
     margin-top: 0;
 }
+
+/* design card */
+.design.card {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px 10px;
+    margin: 10px 0;
+}
+
+.popup-bro {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 2px;
+    padding: 3px 5px;
+    margin: 5px 0;
+}
+p.description {
+    font-size: 1.2em;
+    font-weight: 600;
+}
+.time {
+    text-align: right;
+    /*width: 100%;*/
+    padding-bottom: 10px;
+}
+
+.description:not(.design) {
+    padding: 0 15px;
+}
