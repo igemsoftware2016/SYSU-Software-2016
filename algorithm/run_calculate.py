@@ -167,7 +167,7 @@ if __name__ == "__main__":
 		connector.request(method = "POST", url, sent_data, headers)
 		sent_response = json.loads(connector.getresponse().read())
 		if sent_response.get("code") == 0:
-			print("Data successfully sent.")
+			print("Data have been successfully sent.")
 		else:
 			print("Error occurred. Contact administrator for more help.")
 
