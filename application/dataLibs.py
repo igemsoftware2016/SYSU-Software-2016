@@ -54,6 +54,41 @@ def getAllPosts(_id=None):
     return ret, otherInfo
 
 
+def getNeedHelp():
+    return filter(lambda x: x.state==1 or x.state==3, design.query.filter_by(needHelp = True).all())
+    # return filter(lambda x: x.state==2 or x.state==3, design.query.filter_by(needHelp = True).all())
+
+def getPublick(_id=None):
+    ret = design.query.filter_by(shared = True)
+    otherInfo = {}
+    if _id:
+        u = user.query.filter_by(id = _id).first()
+        for r in ret:
+            otherInfo[r.id] = {}
+            l = json.loads(r.liked_by)
+            # myPrint(l, session['user'])
+            otherInfo[r.id]['icon'] = r.owner.icon
+            otherInfo[r.id]['like_num'] = len(l)
+            otherInfo[r.id]['liked'] = (session['user'] in l)
+            otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
+            l = json.loads(u.mark)
+            # myPrint(l, r.id, (str(r.id) in l))
+            otherInfo[r.id]['marked'] = (str(r.id) in l)
+            otherInfo[r.id]['myCreation'] = (r.owner == session["user"])
+            myPrint(r.design_mode)
+    else:
+        ret = design.query.all()
+        for r in ret:
+            otherInfo[r.id] = {}
+            l = json.loads(r.liked_by)
+            otherInfo[r.id]['icon'] = r.owner.icon
+            otherInfo[r.id]['like_num'] = len(l)
+            otherInfo[r.id]['liked'] = False
+            otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
+            otherInfo[r.id]['marked'] = False
+    return ret, otherInfo
+
+
 def libs_errorMsg(msg):
     return jsonify({'code': 1, 'message': msg})
 
@@ -70,7 +105,8 @@ def libs_list_insert(list_string, element):
     l.append(element)
     ret = json.dumps(l)
     return ret
-def libs_list_delete(list_string, element)
+
+def libs_list_delete(list_string, element):
     l = json.loads(list_string)
     if not element in l:
         return None
@@ -353,19 +389,12 @@ def report():
 
 @app.route('/set_design_shared', methods=['POST'])
 def setDesignShared():
-    d = design.query.filter_by(id = request.json.get("_id"))
-    if not d or not request.json.get("shared"):
+    myPrint(request.json)
+    d = design.query.filter_by(id = request.json.get("_id")).first()
+    if not d:
         return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
+    d.description = request.json.get("description")
     d.shared = request.json.get("shared")
-    db.session.commit()
-    return libs_success()
-
-
-@app.route('/set_design_need_help', methods=['POST'])
-def setDesignNeedHelp():
-    d = design.query.filter_by(id = request.json.get("_id"))
-    if not d or not request.json.get("shared"):
-        return libs_errorMsg("Error Design: %s, Shared: %S" % (request.json.get("_id"), request.json.get("shared")))
     d.needHelp = request.json.get("needHelp")
     db.session.commit()
     return libs_success()

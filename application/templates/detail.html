@@ -51,6 +51,7 @@
 
   <div class="ui column fluid" id="top-bg">
     <div class="container ui" id="main-container">
+      <span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
       <!-- put code here with-->
       <div class="ui column grid centered">
         <div class="ui banner one column fliud centered">
@@ -69,7 +70,7 @@
         <!-- designs -->
         <div class="ui column sixteen wide main">
           <div class="ui segment main">
-          <div class="design card {% if not info['myCreation'] %}my{% endif %}">
+            <div class="design card {% if not info['myCreation'] %}my{% endif %}">
               <div class="ui column grid design" design-id="{{design.id}}">
                 <div class="ui row">
                   <div class="eleven wide column">
@@ -77,23 +78,25 @@
                       <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
                       <a href="#user" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
                       [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
-                      <span title="Private design"><i class="ui icon lock"></i></span>
+                      {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
+                      {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
+                      
                     </h3>
                   </div>
 
                   <div class="five wide column right aligned">
                     <div class="ui labeled button mini like">
-                      <div class="ui red button">
-                      <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
+                      <div class="ui red button" title="{% if not info['liked'] %}Like it{% else %}Liked{% endif %}">
+                        <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
                       </div>
                       <a class="ui basic red left pointing label">
-                      {{ info['like_num'] }}
+                        {{ info['like_num'] }}
                       </a>
                     </div>
-                    <button class="ui icon button tiny basic orange mark">
-                    <i class="{% if not info['marked'] %}empty{% endif %} star icon"></i>
+                    <button class="ui icon button tiny basic orange mark" title="{% if not info['marked'] %}Mark it{% else %}Marked{% endif %}">
+                      <i class="{% if not info['marked'] %}empty{% endif %} star icon"></i>
                     </button>
-                    <button class="ui icon button tiny basic share brown">
+                    <button class="ui icon button tiny basic share {% if design.shared %}brown{% else %}gray{% endif %}" title="{% if design.shared %}Shared{% else %}Share it now!{% endif %}">
                       <i class="share sign icon"></i>
                     </button>
                     <button class="ui icon button tiny basic delete red">

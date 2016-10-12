@@ -114,3 +114,9 @@ p.description {
 .ui.grid>.main.column:not(.row) {
     padding: 0;
 }
+
+/* in swal */
+.ui.form + .ui.checkbox {
+    margin-top: 10px;
+}
+/* in swal end*/
