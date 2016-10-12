@@ -73,3 +73,9 @@ p.description {
 .description:not(.design) {
     padding: 0 15px;
 }
+
+.ui.segment.empty {
+    background: url("/static/img/nothing.png") no-repeat center center;
+    background-color: white;
+    min-height: 269px;
+}

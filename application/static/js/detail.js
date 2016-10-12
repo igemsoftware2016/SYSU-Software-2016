@@ -1,6 +1,7 @@
 $(document).ready(function() {
     // $("body").backstretch("destroy", false);
-    $(".ui.banner").backstretch("/static/img/profile_banner.png");
+    $(".ui.banner").backstretch("/static/img/detail_banner-1.1.jpg");
+    $(".ui.progress").progress();
 
     $(".ui.sticky").sticky({
         context: '#square-context',
@@ -36,7 +37,7 @@ $(document).ready(function() {
 
     $(".button.tip-off").click(function() {
         swal({
-            html: '<b>Describt the tip-off reason please.</b>',
+            html: '<b>Describe the tip-off reason please.</b>',
             input: 'textarea',
             showCancelButton: true,
             confirmButtonText: 'Submit',
@@ -51,14 +52,15 @@ $(document).ready(function() {
             allowOutsideClick: false
         }).then(function(text) {
             $.ajax({
-                url: "http://www.findpsw.test.com",
+                url: "/report",
                 type: "POST",
                 dataType: "json",
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                contentType: 'application/json; charset=utf-8',
                 cache: false,
-                data: {
-                    "email": email
-                },
+                data: JSON.stringify({
+                    "design_id": $btn.parents('.grid.design').attr('design-id'),
+                    "reason": text
+                }),
                 success: function(data) {
                     if (data.code) {
                         swal({
@@ -72,7 +74,7 @@ $(document).ready(function() {
                         swal({
                             type: 'success',
                             title: 'Done',
-                            html: 'Your password was sended, check it please.'
+                            html: 'Your report is received.'
                         });
                     }
                 },
@@ -84,7 +86,7 @@ $(document).ready(function() {
     });
 
     $('.ui.accordion')
-    .accordion();
+        .accordion();
 
     // step 3 chart
     var ctx = document.getElementById("myChart");
@@ -210,5 +212,57 @@ $(document).ready(function() {
 
     $(".item.legend").click(function() {
         $(this).toggleClass("active");
+    });
+
+    // share button
+    $(".button.share").click(function() {
+        swal({
+            title: '<b>Describe the tip-off reason please.</b>',
+            html: '<div class="ui form"><div class="field"><textarea rows="3"></textarea></div></div>' +
+                '<div class="ui slider checkbox"><input type="checkbox" name="newsletter"><label>Wanted someone help</label></div>',
+            // input: 'textarea',
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            showLoaderOnConfirm: true,
+            preConfirm: function(text) {
+                return new Promise(function(resolve, reject) {
+                    setTimeout(function() {
+                        resolve();
+                    }, 1000);
+                });
+            },
+            allowOutsideClick: false
+        }).then(function(text) {
+            $.ajax({
+                url: "http://www.findpsw.test.com",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                cache: false,
+                data: {
+                    "email": email
+                },
+                success: function(data) {
+                    if (data.code) {
+                        swal({
+                            title: "Ooo",
+                            text: data.message,
+                            type: "error",
+                            confirmButtonText: "Okay"
+                        });
+                        return false;
+                    } else {
+                        swal({
+                            type: 'success',
+                            title: 'Done',
+                            html: 'Your password was sended, check it please.'
+                        });
+                    }
+                },
+                error: function() {
+                    AjaxFail();
+                }
+            });
+        });
     });
 });

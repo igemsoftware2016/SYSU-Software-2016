@@ -6,7 +6,7 @@
 
 {% block container %}
 <div class="ui column grid centered">
-  <div class="ui banner one column fliud centered">
+  <div class="ui banner one column fluid centered">
     <div class="ui column grid centered bottom">
       <div class="ui five wide column center aligned fluid">
         <a class="ui inverted grey basic button huge" href="/square">CRAFT Square</a>
@@ -21,7 +21,7 @@
 <div class="ui column grid">
   <!-- designs -->
   <div class="ui column twelve wide profile-menu" id="square-context">
-    <div class="ui segment">
+    <div class="ui segment empty">
       {% for design in designs %}
       <div class="design card">
         <div class="ui column grid design" design-id="{{design.id}}">
@@ -63,17 +63,17 @@
         <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
           <div class="bar"></div>
           <div class="label">
-          {% if design.state == 1 %}
-          Data Input
-          {% elif design.state == 2 %}
-          Search
-          {% elif design.state == 3 %}
-          Simulation
-          {% elif design.state == 4 %}
-          Promoter
-          {% elif design.state == 5 %}
-          Feedback
-          {% endif %}
+            {% if design.state == 1 %}
+            Data Input
+            {% elif design.state == 2 %}
+            Search
+            {% elif design.state == 3 %}
+            Simulation
+            {% elif design.state == 4 %}
+            Promoter
+            {% elif design.state == 5 %}
+            Feedback
+            {% endif %}
           </div>
         </div>
       </div> <!-- design card -->
@@ -90,7 +90,7 @@
           <img src="/static/img/icon/{{session.get('icon')}}.jpg">
         </div>
         <div class="ui divider"></div>
-        <div class="ui row">
+        <div class="ui row equal width">
           <div class="ui mini statistic column">
             <div class="value">
               22
@@ -101,18 +101,18 @@
           </div>
           <div class="ui mini statistic column">
             <div class="value">
-              22
-            </div>
-            <div class="label">
-              Share
-            </div>
-          </div>
-          <div class="ui mini statistic column">
-            <div class="value">
               31
             </div>
             <div class="label">
               Marked
+            </div>
+          </div>
+          <div class="ui mini statistic column">
+            <div class="value">
+              22
+            </div>
+            <div class="label">
+              Share
             </div>
           </div>
         </div>
@@ -125,7 +125,7 @@
 
         <div class="ui row">
           <!-- one asking -->
-          <div class="ui column fliud popup-bro">
+          <div class="ui column fluid popup-bro">
             <a href="#help"><span>SB</span> asks for help about simulation!</a> - 05 Feb
           </div>
           <div class="ui popup">
@@ -133,7 +133,7 @@
             Here is a long long long title of biology design.
           </div>
           <!-- one asking -->
-          <div class="ui column fliud popup-bro">
+          <div class="ui column fluid popup-bro">
             <a href="#help"><span>ONE SBB</span> asks for help about search!</a> - 08 Feb
           </div>
           <div class="ui popup">
@@ -141,7 +141,7 @@
             Here is a long long long title of biology design.
           </div>
           <!-- one asking -->
-          <div class="ui column fliud popup-bro">
+          <div class="ui column fluid popup-bro">
             <a href="#help"><span>SSSSB</span> asks for help about simulation!</a> - 12 Oct
           </div>
           <div class="ui popup">
@@ -160,5 +160,5 @@
 
 
 {% block javascript %}
-  <script type="text/javascript" src="/static/js/square.js"></script>
+<script type="text/javascript" src="/static/js/square.js"></script>
 {% endblock %}

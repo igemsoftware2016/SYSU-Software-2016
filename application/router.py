@@ -181,7 +181,7 @@ def router_not_found(error):
 @app.route('/new_design')
 @login_required
 def new_design():
-    new_design = design(user.query.filter_by(id = session['user']).first(), "")
+    new_design = design(user.query.filter_by(id = session['user']).first())
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 
@@ -361,6 +361,7 @@ def deleteDesign():
 
 
 @app.route('/upload', methods = ['GET', 'POST'])
+@login_required
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
@@ -383,6 +384,46 @@ def report():
     # save report
     myPrint(request.json)
     return libs_success()
+
+
+@app.route('/set_design_shared', methods=['POST'])
+def setDesignShared():
+    d = design.query.filter_by(id = request.json.get("_id"))
+    if not d or not request.json.get("shared"):
+        return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
+    d.shared = request.json.get("shared")
+    db.session.commit()
+    return libs_success()
+
+
+@app.route('/set_design_need_help', methods=['POST'])
+def setDesignNeedHelp():
+    d = design.query.filter_by(id = request.json.get("_id"))
+    if not d or not request.json.get("shared"):
+        return libs_errorMsg("Error Design: %s, Shared: %S" % (request.json.get("_id"), request.json.get("shared")))
+    d.needHelp = request.json.get("needHelp")
+    db.session.commit()
+    return libs_success()
+
+
+@app.route('/design/<int:design_id>')
+@login_required
+def designDetail(design_id):
+    d = design.query.filter_by(id=design_id).first_or_404()
+    u = user.query.filter_by(id=session['user']).first()
+
+    otherInfo = {}
+    l = json.loads(d.liked_by)
+    # myPrint(l, session['user'])
+    otherInfo['icon'] = d.owner.icon
+    otherInfo['like_num'] = len(l)
+    otherInfo['liked'] = (session['user'] in l)
+    otherInfo['datetime'] = d.design_time.strftime("%Y-%m-%d %H:%M")
+    l = json.loads(u.mark)
+    # myPrint(l, d.id, (str(d.id) in l))
+    otherInfo['marked'] = (str(d.id) in l)
+    otherInfo['myCreation'] = (d.owner == session["user"])
+    return render_template("detail.html", title="Design detail", design = d, info=otherInfo)
 
 
 ###################################################
