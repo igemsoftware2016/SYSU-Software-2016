@@ -19,7 +19,7 @@ class user(db.Model):
         self.nickname = nickname
         self.email = email
         self.password = password
-        self.icon = random.randint(0,5)
+        self.icon = random.randint(1,10)
         self.mark = '[]'
     def __repr__(self):
         return '<User %r>' % self.nickname
@@ -110,6 +110,8 @@ class design(db.Model):
         self.design_name = None
         self.design_mode = ''
         self.design_time = datetime.datetime.now(pytz.timezone('America/New_York'))
+        self.shared = False
+        self.needHelp = False
     def __repr__(self):
         return '<Design %r> %r' % (self.id, self.d)
     def save(self):

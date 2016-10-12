@@ -2,6 +2,10 @@ $(document).ready(function() {
     // $("body").backstretch("destroy", false);
     $(".ui.banner").backstretch("/static/img/profile_banner-1.1.jpg");
 
+    if($(".design.card").length) {
+        $(".ui.segment.empty").removeClass("empty");
+    }
+
     $(".ui.progress").progress();
 
     $(".button.like").click(function() {

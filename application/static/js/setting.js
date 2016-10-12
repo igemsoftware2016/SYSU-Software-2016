@@ -19,8 +19,8 @@ $(document).ready(function(){
     var defaultName = $("input[name='nickname']").val();
 
     $(".new-icon").click(function() {
-        // from 0~5
-        var new_num = Math.floor(Math.random() * 6);
+        // from 1~10
+        var new_num = Math.floor(Math.random() * 10 + 1);
         // console.log(new_num.toString(), $("img.icon").attr("new_num"));
         while(new_num.toString() == $("img.icon").attr("new_num")) {
             new_num = Math.floor(Math.random() * 6);

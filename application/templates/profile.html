@@ -9,7 +9,7 @@
 
 {% block container %}
 <div class="ui column grid centered">
-  <div class="ui banner one column fliud centered">
+  <div class="ui banner one column fluid centered">
     <div class="ui column grid centered bottom">
       <div class="ui five wide column center aligned fluid">
         <a class="ui inverted grey basic button huge" href="/square">CRAFT Square</a>
@@ -22,7 +22,7 @@
 </div> <!-- top banner -->
 
 <div class="ui column grid">
-  <div class="ui column fliud profile-menu">
+  <div class="ui column fluid profile-menu">
     <div class="ui secondary large pointing menu">
       <a class="active item all">
         All
@@ -34,7 +34,7 @@
         Marked
       </a>
     </div>
-    <div class="ui segment">
+    <div class="ui segment empty">
       {% for design in designs %}
       <div class="design card {% if not info[design.id]['myCreation'] %}my{% endif %}">
         <div class="ui column grid design" design-id="{{design.id}}">
@@ -44,6 +44,7 @@
                 <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
                 <a href="#user" class="user">{{design.owner.nickname}}</a> - <a href="#design" class="design-name">{{design.design_name}}</a>
                 [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
+                <span title="Private design"><i class="ui icon lock"></i></span>
               </h3>
             </div>
 
@@ -75,17 +76,17 @@
         <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
           <div class="bar"></div>
           <div class="label">
-          {% if design.state == 1 %}
-          Data Input
-          {% elif design.state == 2 %}
-          Search
-          {% elif design.state == 3 %}
-          Simulation
-          {% elif design.state == 4 %}
-          Promoter
-          {% elif design.state == 5 %}
-          Feedback
-          {% endif %}
+            {% if design.state == 1 %}
+            Data Input
+            {% elif design.state == 2 %}
+            Search
+            {% elif design.state == 3 %}
+            Simulation
+            {% elif design.state == 4 %}
+            Promoter
+            {% elif design.state == 5 %}
+            Feedback
+            {% endif %}
           </div>
         </div>
       </div> <!-- design card -->

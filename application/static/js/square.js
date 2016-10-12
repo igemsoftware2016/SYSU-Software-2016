@@ -95,7 +95,7 @@ $(document).ready(function() {
     $(".button.tip-off").click(function() {
         var $btn = $(this);
         swal({
-            html: '<b>Describt the tip-off reason please.</b>',
+            html: '<b>Describe the tip-off reason please.</b>',
             input: 'textarea',
             showCancelButton: true,
             confirmButtonText: 'Submit',
