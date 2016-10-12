@@ -158,7 +158,7 @@ def setDesignName():
     if mode:
         d.design_mode = mode
     db.session.commit()
-    return jsonify({"code":0})
+    return libs_success()
 
 @app.route('/square')
 def router_square():
@@ -185,18 +185,18 @@ def new_design():
     new_design.save()
     return redirect(url_for('router_state', design_id = new_design.id, state_id = 1))
 
-@app.route('/mod_design_name', methods = ['POST'])
-@login_required
-def mod_design_name():
-    if request.method == "POST":
-        cur_design = design.query.filter_by(id = request.form.get('_id')).first()
-        if cur_design is None:
-            return jsonify({'code': 1})
-        if cur_design.owner_id != session['user']:
-            return jsonify({'code': 1})
-        cur_design.design_name = request.form.get('name')
-        db.session.commit()
-        return jsonify({'code': 0})
+# @app.route('/mod_design_name', methods = ['POST'])
+# @login_required
+# def mod_design_name():
+#     if request.method == "POST":
+#         cur_design = design.query.filter_by(id = request.form.get('_id')).first()
+#         if cur_design is None:
+#             return jsonify({'code': 1})
+#         if cur_design.owner_id != session['user']:
+#             return jsonify({'code': 1})
+#         cur_design.design_name = request.form.get('name')
+#         db.session.commit()
+#         return jsonify({'code': 0})
 
 @app.route('/get_steps')
 @login_required
@@ -357,7 +357,7 @@ def deleteDesign():
         u.mark = json.dumps(l)
     db.session.delete(d)
     db.session.commit()
-    return libs_sucess()
+    return libs_success()
 
 
 @app.route('/upload', methods = ['GET', 'POST'])
@@ -382,7 +382,7 @@ def upload_file():
 def report():
     # save report
     myPrint(request.json)
-    return libs_sucess()
+    return libs_success()
 
 
 ###################################################
@@ -405,7 +405,7 @@ def test_s(state):
             "_id": 2,
             "name": "secondpl"
         }]
-        return render_template('state_2.html', bacteria = dict_bacteria, plasmid = dict_plasmid, design_id=233)
+        return render_template('state_2.html', bacteria = dict_bacteria, plasmid = dict_plasmid, design_id = 233)
     return render_template("state_%s.html" % state, design_id=233)
 
 @app.route("/save_test", methods=["POST"])

@@ -16,7 +16,7 @@ import json
 def getAllPosts(_id=None):
     otherInfo = {}
     if _id:
-        u = user.query.filter_by(id=_id).first()
+        u = user.query.filter_by(id = _id).first()
         ret = u.design_set
         for r in ret:
             otherInfo[r.id] = {}
@@ -47,7 +47,7 @@ def getAllPosts(_id=None):
 def libs_errorMsg(msg):
     return jsonify({'code': 1, 'message': msg})
 
-def libs_sucess():
+def libs_success():
     return jsonify({'code': 0})
 
 
