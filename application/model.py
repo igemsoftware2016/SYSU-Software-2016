@@ -129,7 +129,7 @@ class state1_data(db.Model):
     resolve_matter = db.Column(db.String(320))                      # All matters for decomposing (With dirty list)
     md5 = db.Column(db.String(60))                                  # All data's md5 (For multi used of the calculating result)
     def refresh_md5(self):                                          # Refresh the md5 hash with all the data
-        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + self.flora_id
+        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + self.flora + self.make_matter + self.resolve_matter
         m = hashlib.md5()
         m.update(src)
         self.md5 = m.hexdigest()

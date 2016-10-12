@@ -70,7 +70,7 @@ def libs_list_insert(list_string, element):
     l.append(element)
     ret = json.dumps(l)
     return ret
-def libs_list_delete(list_string, element)
+def libs_list_delete(list_string, element):
     l = json.loads(list_string)
     if not element in l:
         return None
