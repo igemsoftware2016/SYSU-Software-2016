@@ -113,17 +113,19 @@ if __name__ == "__main__":
 
 		search_res = open('search_res.txt', 'r')
 		n = int(search_res.readline())
-		all_promoter_set = []
-		all_rbs_set = []
+		all_bact_set = []
 		print("Generating promoter and RBS...")
 		for i in range(0, n):
 			tmp = search_res.readline().split()
 			batt_name = tmp[0]
 			gene_count = int(tmp[1])
 			tmpenz = search_res.readline().split()
+			bact_set["name"] = batt_name
+			bact_set["enzyme"] = []
 			for j in range(0, gene_count):
 				enzyme_name = tmpenz[j * 2]
 				batt_from = tmpenz[j * 2 + 1]
+
 				# Cauculate sum energy
 				enzyme_Kcat = Kcat.get(enzyme_name)
 				if enzyme_Kcat is None:
@@ -142,24 +144,25 @@ if __name__ == "__main__":
 						break
 					rbs_strength = float(rbs_res.readline())
 					rbs_seq_set.append({"sequence": rbs_seq, "strength": rbs_strength})
-					# Record promoter strength
-					pro_input.write(Ktarget / rbs_strength)
+					# Dump promoter strength
+					pro_input.write(str(Ktarget / rbs_strength) + '\n')
 				rbs_res.close()
 				pro_input.close()
 
 				# if RBS has results
 				if len(rbs_seq_set) != 0:
-					all_rbs_set += rbs_seq_set
 					os.system('./promoter')
 					promoter_res = open('promoter_res.txt', 'r')
 					for k in range(0, 5):
 						pro_seq = promoter_res.readline()
 						pro_strength = float(promoter_res.readline())
 						pro_seq_set.append({"sequence": pro_seq, "strength": pro_strength})
-					all_promoter_set.append(pro_seq_set)
-		print("Calculation finished. Sending data to server...")
-		all_set = {"promoter": all_promoter_set, "rbs": all_rbs_set}
+					promoter_res.close()
+				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "promoter": pro_seq_set, "rbs": rbs_seq_set})
+			all_bact_set.append(bact_set)
 		search_res.close()
+		print("Calculation finished. Sending data to server...")
+		all_set = {"code": 0, "bacteria": all_bact_set}
 
 		#send post request to server
 		headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
