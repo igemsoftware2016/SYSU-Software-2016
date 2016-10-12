@@ -66,7 +66,7 @@ def libs_setLike(user_id, design_id, isLike):
         l.remove(user_id)
     d.liked_by = json.dumps(l)
     db.session.commit()
-    return libs_sucess()
+    return libs_success()
 
 
 def libs_setMark(user_id, design_id, isMark):
@@ -85,7 +85,7 @@ def libs_setMark(user_id, design_id, isMark):
         l.remove(design_id)
     u.mark = json.dumps(l)
     db.session.commit()
-    return libs_sucess()
+    return libs_success()
 
 
 def myPrint(*str):
