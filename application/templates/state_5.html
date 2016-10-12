@@ -42,20 +42,168 @@
 
 
 <div class="ui column grid state">
-  <div class="ui row">
-    <div class="ui column fluid test">
-      实验数据反馈
-    </div>
-  </div>
+  <!--div class="ui grid"--><!--i class="certificate icon"></i-->
 
-  <div class="ui row">
-    <div class="ui column twelve wide"></div> <!-- offset -->
-    <div class="ui column two wide">
-      <button class="ui blue button fluid">Save</button>
+    <div class="ui row make-row">
+      <div class="ui column fifteen wide">
+        <h3 class="ui green header">
+          <i class="lab icon default black"></i>
+          <div class="content">Co-Culture
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-compund">
+          <i class="plus icon"></i>
+        </button>
+      </div>
     </div>
-    <div class="ui column two wide">
-      <button class="ui black button fluid">Edit</button>
+
+    <div class="ui row make-row">
+      <div class="ui column fluid">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="six wide"> Compound </th>
+            <th class="four wide"> Time </th>
+            <th class="five wide"> Concentrations </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="co-culture"> <tr class="compund">
+            <td class="center aligned">
+              <div class="ui search name fluid standard">
+                <div class="ui icon input fluid">
+                  <input class="prompt" type="text" placeholder="Search animals...">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-compund">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
     </div>
+
+    <div class="ui row make-row">
+      <div class="ui column seven wide">
+        <h3 class="ui green header">
+          <i class="certificate icon default black"></i>
+          <div class="content">ABS600
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-abs600">
+          <i class="plus icon"></i>
+        </button>
+      </div>
+      <div class="ui column seven wide">
+        <h3 class="ui green header">
+          <i class="certificate icon default black"></i>
+          <div class="content">Fluorescence Intensity
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-fl">
+          <i class="plus icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="ui row make-row">
+      <div class="ui column eight wide">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="seven wide"> Time </th>
+            <th class="seven wide"> ABS600 </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="abs600"> <tr class="abs600">
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-abs600">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
+
+      <div class="ui column eight wide">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="seven wide"> Time </th>
+            <th class="seven wide"> Fluorescence Intensity </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="fl"> <tr class="fl">
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">Unit </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-fl">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ui row">
+      <div class="ui column grid centered">
+        <div class="ui five wide column center aligned fluid">
+          <input type="file" name="all-file" class="hidden" id="upload-all-file">
+          <button class="ui black button big all-file">Upload File</button>
+        </div>
+        <div class="ui five wide column center aligned fluid ">
+          <button class="ui green button big" id="submit">Submit Result</button>
+        </div>
+      </div>
+    </div>
+
+    <!--/div-->
+
   </div>
 </div> <!-- state grid -->
 {% endblock %}

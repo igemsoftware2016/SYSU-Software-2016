@@ -22,7 +22,15 @@ body {
     padding-left: 2vw;
     padding-right: 2vw;
     padding-bottom: 5vh;
-    padding-top: 2vh;
+    /*padding-top: 2vh;*/
+}
+
+.ui.search.name .prompt {
+    border-radius: .28571429rem;
+}
+
+input.hidden {
+    display: none;
 }
 
 .test {
