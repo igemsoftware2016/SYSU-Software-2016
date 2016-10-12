@@ -1,5 +1,5 @@
 2
 bmcb585530-hmpcyc 2
- EC-2.1.2.11_0_pum_0:(FROM zpro655815cyc) EC-4.1.2.12_0_pum_0:(FROM metacyc)
+ EC-2.1.2.11_0_pum_0 zpro655815cyc EC-4.1.2.12_0_pum_0 metacyc
 tsp499229cyc 1
- EC-1.11.1.6_1_pum_0:(FROM zmob264203cyc)
+ EC-1.11.1.6_1_pum_0 zmob264203cyc
