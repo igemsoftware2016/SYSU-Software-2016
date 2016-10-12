@@ -5,7 +5,6 @@ import hashlib
 #from flask.ext.login import UserMinix
 
 class user(db.Model):
-    #__tablename__ = 'user'
     id = db.Column(db.Integer, primary_key = True)          
     nickname = db.Column(db.String(60))                 # User's nickname, shown at the top of pages
     email = db.Column(db.String(120), unique = True)    # User's email, an unique key
@@ -28,6 +27,12 @@ class user(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
+matter_in_medium = db.Table('matter_in_medium',
+                   db.Column('medium_id', db.Integer, db.ForeignKey('mediumDB.id')),
+                   db.Column('matter_id', db.Integer, db.ForeignKey('matterDB.id'))
+                   )
+
 class matterDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     matter_name = db.Column(db.String(120))
@@ -40,11 +45,6 @@ class matterDB(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-
-matter_in_medium = db.Table('matter_in_medium',
-                   db.Column('medium_id', db.Integer, db.ForeignKey('mediumDB.id')),
-                   db.Column('matter_id', db.Integer, db.ForeignKey('matterDB.id'))
-                   )
 
 class mediumDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -60,8 +60,10 @@ class mediumDB(db.Model):
 
 class floraDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)
+    code = db.Column(db.String(100))
     name = db.Column(db.String(100))
-    def __init__(self, name):
+    def __init__(self, code, name):
+        self.code = code
         self.name = name
     def __repr__(self):
         return '<Flora %r>' % self.name
@@ -120,51 +122,22 @@ class state1_data(db.Model):
     reaction_time = db.Column(db.Integer)                           # Total time of the reaction
     medium_id = db.Column(db.Integer, db.ForeignKey('mediumDB.id')) # Used medium's id
     medium = db.relationship('mediumDB', backref = 'all_design')
-    flora_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))   # Used flora's id
-    flora = db.relationship('floraDB', backref = 'all_design')
+    flora_id = db.Column(db.String(320))
     md5 = db.Column(db.String(60))                                  # All data's md5(For multi used of the calculating result)
     def refresh_md5(self):                                          # Refresh the md5 hash with all the data
-        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + str(self.flora_id)
+        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + self.flora_id
         m = hashlib.md5()
         m.update(src)
         self.md5 = m.hexdigest()
     def __init__(self):
         self.md5 = ''
+        self.flora_id = '[]'
     def __repr__(self):
         return '<State 1 data %r>' % self.md5
     def save(self):
         self.refresh_md5()
         db.session.add(self)
         db.session.commit()
-
-promoter_table = db.Table('promoter_table',
-                 db.Column('data_id', db.Integer, db.ForeignKey('state2_data.id')),
-                 db.Column('promoter_id', db.Integer, db.ForeignKey('promoter.id'))
-                )
-
-rbs_table = db.Table(
-            db.Column('data_id', db.Integer, db.ForeignKey('state2_data.id')),
-            db.Column('rbs_id', db.Integer, db.ForeignKey('rbs.id'))
-            )
-
-class state2_data(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    promoter = db.relationship('promoter', secondary = promoter_table, backref = db.backref('used_datas', lazy = 'dynamic'))
-    rbs = db.relationship('rbs', secondary = rbs_table, backref = db.backref('used_dats', lazy = 'dynamic'))
-    def refresh_md5(self):
-        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + str(self.flora_id)
-        m = hashlib.md5()
-        m.update(src)
-        self.md5 = m.hexdigest()
-    def __init__(self):
-        self.md5 = ''
-    def __repr__(self):
-        return '<State 2 data %r>' % self.md5
-    def save(self):
-        self.refresh_md5()
-        db.session.add(self)
-        db.session.commit()
-
 
 class make_matter(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -204,6 +177,71 @@ class resolve_matter(db.Model):
         db.session.add(self)
         db.session.commit()
 
+bacteria_set = db.Table('bacteria_set',
+               db.Column('data_id', db.Integer, db.ForeignKey('state2_data.id')),
+               db.Column('bacteria_id', db.Integer, db.ForeignKey('used_bacteria.id'))
+            )
+
+class state2_data(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    bacteria = db.relationship('used_bacteria', secondary = bacteria_set, backref = db.backref('used_data', lazy = 'dynamic'))
+    def refresh_md5(self):
+        src = ""
+        m = hashlib.md5()
+        m.update(src)
+        self.md5 = m.hexdigest()
+    def __init__(self):
+        self.md5 = ''
+    def __repr__(self):
+        return '<State 2 data %r>' % self.md5
+    def save(self):
+        self.refresh_md5()
+        db.session.add(self)
+        db.session.commit()
+
+bacteria_enzyme = db.Table('bacteria_enzyme',
+                  db.Column('bacteria_id', db.Integer, db.ForeignKey('used_bacteria.id')),
+                  db.Column('enzyme_id', db.Integer, db.ForeignKey('enzyme.id'))
+                )
+
+class used_bacteria(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    flora_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))
+    flora = db.relationship('floraDB', backref = db.backref('used_bacteria_set', lazy = 'dynamic'))
+    enzyme = db.relationship('enzyme', secondary = bacteria_enzyme, backref = db.backref('used_bactedia', lazy = 'dynamic'))
+    def __init__(self, flora):
+        self.flora = flora
+    def __repr__(self):
+        return '<Edited bacteria based on %r>' % self.flora_id
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+promoter_table = db.Table('promoter_table',
+                 db.Column('enzyme_id', db.Integer, db.ForeignKey('enzyme.id')),
+                 db.Column('promoter_id', db.Integer, db.ForeignKey('promoter.id'))
+                )
+
+# rbs_table = db.Table(
+#             db.Column('enzyme_id', db.Integer, db.ForeignKey('enzyme.id')),
+#             db.Column('rbs_id', db.Integer, db.ForeignKey('rbs.id'))
+#             )
+
+class enzyme(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(60))
+    sequence = db.Column(db.String(500))
+    promoter = db.relationship('promoter', secondary = promoter_table, backref = db.backref('used_enzyme', lazy = 'dynamic'))
+    # rbs = db.relationship('rbs', secondary = promoter_table, backref = db.backref('used_enzyme', lazy = 'dynamic'))
+    def __init__(self, sequence, name):
+        self.sequence = sequence
+        self.name = name
+    def __repr__(self):
+        return '<Enzyme %r>' % self.name
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 class promoter(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     sequence = db.Column(db.String(300))
@@ -217,33 +255,18 @@ class promoter(db.Model):
         db.session.add(self)
         db.session.commit()
 
-class rbs(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    sequence = db.Column(db.String(300))
-    strength = db.Column(db.Float)
-    def __init__(self, sequence, strength):
-        self.sequence = sequence
-        self.strength = strength
-    def __repr__(self):
-        return '<RBS with strength %r>' % self.strength
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-class enzyme(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(60))
-    sequence = db.Column(db.String(500))
-    from_bacteria_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))
-    def __init__(self, sequence, name, from_bacteria_id):
-        self.sequence = sequence
-        self.name = name
-        self.from_bacteria_id = from_bacteria_id
-    def __repr__(self):
-        return '<Enzyme %r>' % self.name
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
+# class rbs(db.Model):
+#     id = db.Column(db.Integer, primary_key = True)
+#     sequence = db.Column(db.String(300))
+#     strength = db.Column(db.Float)
+#     def __init__(self, sequence, strength):
+#         self.sequence = sequence
+#         self.strength = strength
+#     def __repr__(self):
+#         return '<RBS with strength %r>' % self.strength
+#     def save(self):
+#         db.session.add(self)
+#         db.session.commit()
 
 # tip off
 class report(db.Model):
