@@ -1,6 +1,10 @@
 #include "input_utils.h"
 using namespace mol;
 
+#include <iostream>
+
+using std :: cout;
+
 int main() {
 
 	vector <reaction> reaction_list;
@@ -16,7 +20,9 @@ int main() {
 		res << reaction_list[i].ec_name << '\t';
 		res << reaction_list[i].sub.size() + reaction_list[i].pdt.size() << '\t';
 		for (auto j = reaction_list[i].sub.begin();
-			j != reaction_list[i].sub.end(); ++ j)
+			j != reaction_list[i].sub.end(); ++ j) if (false == substance_list.count(j -> first))
+				cout << "FUCK" << endl;
+			else
 			res << ((substance_list[j -> first].ID == "") ? (substance_list[j -> first].name) : (substance_list[j -> first].ID)) << '\t';
 		for (auto j = reaction_list[i].pdt.begin();
 			j != reaction_list[i].pdt.end(); ++ j)

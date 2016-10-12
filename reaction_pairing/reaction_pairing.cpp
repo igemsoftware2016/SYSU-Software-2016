@@ -42,7 +42,7 @@ int get_score(map <string, substance> & substance_list,
 int main() {
 	char buffer[256];
 	if (getcwd(buffer, 256) == NULL) {
-		perror("Dude, permitsion denied");
+		perror("Dude, permitstion denied");
 		return 0;
 	}
 

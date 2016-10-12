@@ -636,41 +636,61 @@ void dfs_pattern_init(const set <string> & s, set < full_result > & ret) {
 }
 
 void res_evalue(const set < full_result > & ret) {
-/*
-	for (auto i = ret.begin(); i != ret.end(); ++ i) {
-		cout << "SOLUTION " << (count ++) << endl;
-		for (auto j = i -> org_list.begin(); j != i -> org_list.end(); 
-			++ j) {
-			cout << ' ' << (* j) << endl;
-			if (false == i -> insert_gene.count(* j))
-				continue;
+	auto best = ret.begin(); double best_score = 0.0;
+//	for (auto i = ret.begin(); i != ret.end(); ++ i) {
 
-			cout << ' ';
-			for (auto k = i -> insert_gene.at(* j).begin();
-				k != i -> insert_gene.at(* j).end(); ++ k) {
-				cout << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
-			}
-			cout << endl;
-		}
-		cout << endl;
-	}*/
-	auto i = ret.begin();
-	fin_res << i -> org_list.size() << endl;
-	for (auto j = i -> org_list.begin(); j != i -> org_list.end(); ++ j) {
+//		set <string> orgs = i -> org_list;
+//		map < string, set <string> > ins = i -> insert_gene;
+
+//		map <string, double> u;
+//		map <string , double> c;
+
+//		SmartPtr <opt_com_nlp> nlp = new opt_com_nlp(orgs, ins, u, c);
+//		SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
+
+//		app -> Options() -> SetStringValue("hessian_approximation", "limited-memory");
+//		app -> Options() -> SetStringValue("jac_c_constant", "yes");
+//		app -> Options() -> SetStringValue("jac_d_constant", "yes");
+//		app -> Options() -> SetStringValue("print_user_options", "yes");
+//		app -> Options() -> SetIntegerValue("print_level", 0);
+//		app -> Options() -> SetNumericValue("max_cpu_time", 300.0);
+
+//		ApplicationReturnStatus status;
+//		status = app -> Initialize();
+//		
+//		if (status != Solve_Succeeded) {
+//			cout << "ERROR : Ipopt Initialization" << endl;
+//		}
+
+//		status = app -> OptimizeTNLP(nlp);
+//		
+//		if (ret.begin() == i) {
+//			best_score = nlp -> obj;
+//		}
+//		
+//		if (nlp -> obj < best_score) {
+//			best_score = nlp -> obj;
+//			best = i;
+//		}
+//	}
+	
+	fin_res << best -> org_list.size() << endl;
+	for (auto j = best -> org_list.begin(); j != best -> org_list.end(); ++ j) {
 		fin_res << (* j) << ' ';
-		if (false == i -> insert_gene.count(* j)) {
+		if (false == best -> insert_gene.count(* j)) {
 			fin_res << 0 << endl;
 			continue;
 		}
 
-		fin_res << i -> insert_gene.at(* j).size() << endl;
+		fin_res << best -> insert_gene.at(* j).size() << endl;
 
-		for (auto k = i -> insert_gene.at(* j).begin();
-			k != i -> insert_gene.at(* j).end(); ++ k) {
-			fin_res << ' ' << (* k) << ":(FROM " << ec_map[* k].kcat_org << ")";
+		for (auto k = best -> insert_gene.at(* j).begin();
+			k != best -> insert_gene.at(* j).end(); ++ k) {
+			fin_res << ' ' << (* k) << " " << ec_map[* k].kcat_org;
 		}
 		fin_res << endl;
 	}
+
 }
 
 void pattern_org(const set < set <string> > & solution) {

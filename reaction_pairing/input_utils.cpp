@@ -64,7 +64,12 @@ void reaction :: clear() {
 
 string first_useful(ifstream & fin) {
 	string str;
-	do {getline(fin, str);} while ('#' == str[0]);
+	do {
+		getline(fin, str);
+		if (spc == "")
+			if (str.find("# Species: ") != string :: npos)
+				spc = str.substr(11);
+	} while ('#' == str[0] && fin.eof() == false);
 	return str;
 }
 
@@ -73,6 +78,16 @@ string all_caps(string x) {
 		if ('a' <= x[i] && x[i] <= 'z')
 			x[i] = x[i] - 'a' + 'A';
 	return x;
+}
+
+vector <string> split(const string & x) {
+	string s = all_caps(x); vector <string> ret;
+	while (s.find(' ') != string :: npos) {
+		ret.push_back(s.substr(0, s.find(' ')));
+		s = s.substr(s.find(' ') + 1);
+	}
+	ret.push_back(s);
+	return ret;
 }
 
 bool input_initial(vector <reaction>& reaction_list,
@@ -107,7 +122,7 @@ bool input_initial(vector <reaction>& reaction_list,
 			current_subs.atom.insert(make_pair(atom_name, atom_count));
 		}
 
-		if (check_element(str, "DBLINKS - (LIGAND-CPD \"")) {
+		if (check_element(str, "DBLINKS - (CHEBI \"")) {
 			size_t pos = str.find('\"');
 			string n_str(str, pos + 1);
 			stringstream sin(n_str);
@@ -160,16 +175,20 @@ bool input_initial(vector <reaction>& reaction_list,
 		if (check_element(str , "LEFT")) {
 			name = get_element(str, "LEFT");
 			flag_drop |= drop_test(name);
-			if (false == flag_drop && false == substance_list.count(name))
+			if (false == flag_drop && false == substance_list.count(name)) {
 				log << "ERROR " << name << endl;
+				flag_drop = true;
+			}
 			current_react.sub[name] = 1;
 		}
 
 		if (check_element(str , "RIGHT")) {
 			name = get_element(str, "RIGHT");
 			flag_drop |= drop_test(name);
-			if (false == flag_drop && false == substance_list.count(name))
+			if (false == flag_drop && false == substance_list.count(name)) {
 				log << "ERROR " << name << endl;
+				flag_drop = true;
+			}
 			current_react.pdt[name] = 1;
 		}
 
@@ -225,6 +244,25 @@ bool input_initial(vector <reaction>& reaction_list,
 	}
 
 	log.close();
+	
+	spc = all_caps(spc); bool dang_flag = false;
+	for (size_t i = 0; i < forbid_org.size(); ++ i) {
+		vector <string> s = split(forbid_org[i]); int cnt = 0;
+		for (size_t j = 0; j < min((size_t)2, s.size()) ; ++ j) {
+			if (spc.find(s[j]) != string :: npos)
+				++ cnt;
+			//cout << s[j] << endl;
+		}
+		if (cnt >= 2) {
+			dang_flag = true;
+			cout << spc << '|' << forbid_org[i] << endl;
+			break;
+		}
+	}
+	
+	cout << spc << endl;
+
+	assert(dang_flag == false);
 
 	return true;
 }
