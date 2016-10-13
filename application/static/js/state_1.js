@@ -288,7 +288,7 @@ $(document).ready(function() {
         browse_button : 'upload-btn', // you can pass in id...
         //container: getElementById, // ... or DOM Element itself
 
-        url : "/upload/0/1",
+        url : "/upload/" + $("#design-id").text() + "/1",
 
         filters : {
             max_file_size : '100mb',
@@ -360,14 +360,12 @@ $(document).ready(function() {
                     console.log(file.name);
                 });
             },
-
-            UploadProgress: function(up, file) {
-            },
  
             Error: function(up, err) {
+                console.log(err);
                 swal({
                     title: "Ooo",
-                    text: err.code,
+                    text: err.message,
                     type: "error",
                     confirmButtonText: "Okay"
                 });
