@@ -190,7 +190,7 @@ $(document).ready(function() {
     });
     var mRNA_lower = path.strength.mRNA_lower,
       mRNA_upper = path.strength.mRNA_upper,
-      mRNA = path.strength.mRNA_s;
+      mRNA = path.mRNA_s;
     $('.ui.range.mRNA').range({
       min: mRNA_lower,
       max: mRNA_upper,
@@ -203,7 +203,7 @@ $(document).ready(function() {
     });
     var protein_lower = path.strength.protein_lower,
       protein_upper = path.strength.protein_upper,
-      protein = path.strength.protein_s;
+      protein = path.protein_s;
     $('.ui.range.protein').range({
       min: protein_lower,
       max: protein_upper,

@@ -233,6 +233,8 @@ def getState2Info():
                 "RBS": 2,
                 "CDS": 1,
                 "term": 1,
+                "mRNA_s": 4.8,
+                "protein_s": 2.4,
                 "strength": {
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
@@ -254,10 +256,8 @@ def getState2Info():
                     }],
                     "mRNA_lower": 0.5,
                     "mRNA_upper": 7.5,
-                    "mRNA_s": 4.8,
                     "protein_lower": 1.1,
                     "protein_upper": 9.8,
-                    "protein_s": 2.4,
                 }
             }, {
                 "_id": 2,
@@ -266,6 +266,8 @@ def getState2Info():
                 "RBS": 1,
                 "CDS": 1,
                 "term": 2,
+                "mRNA_s": 6.7,
+                "protein_s": 1.4,
                 "strength": {
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
@@ -287,10 +289,8 @@ def getState2Info():
                     }],
                     "mRNA_lower": 0.5,
                     "mRNA_upper": 7.5,
-                    "mRNA_s": 6.7,
                     "protein_lower": 1.1,
                     "protein_upper": 9.8,
-                    "protein_s": 1.4,
                 }
             }]
         }]

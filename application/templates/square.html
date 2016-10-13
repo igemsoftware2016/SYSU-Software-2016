@@ -66,15 +66,15 @@
           <div class="bar"></div>
           <div class="label">
             {% if design.state == 1 %}
-            Data Input
-            {% elif design.state == 2 %}
             Search
+            {% elif design.state == 2 %}
+            Adjustment
             {% elif design.state == 3 %}
             Simulation
             {% elif design.state == 4 %}
             Promoter
             {% elif design.state == 5 %}
-            Feedback
+            Experimental results
             {% endif %}
           </div>
         </div>
@@ -132,7 +132,7 @@
             <a href="/design/{{h.owner.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Search{% else %}Simulation{% endif %}!</a>
           </div>
           <div class="ui popup">
-          <h4>{{ h.design_name }}</h4>
+            <h4>{{ h.design_name }}</h4>
             {{ h.description }}
           </div>
           {% endfor %}
