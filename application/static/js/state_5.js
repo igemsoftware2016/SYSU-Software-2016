@@ -123,11 +123,15 @@ $(document).ready(function() {
 
     // set up ajax package
     var setUpPackage = function() {
-        var inputs = [];
+        var inputs = {
+            abs600: [],
+            fl: [],
+            compund: []
+        };
         
         $(".abs600").each(function(n, el) {
             var line = $(el).find("input");
-            inputs.push({
+            inputs.abs600.push({
                 time: $(line[0]).val(),
                 abs600: $(line[1]).val()
             });
@@ -135,7 +139,7 @@ $(document).ready(function() {
 
         $(".fl").each(function(n, el) {
             var line = $(el).find("input");
-            inputs.push({
+            inputs.fl.push({
                 time: $(line[0]).val(),
                 fl: $(line[1]).val()
             });
@@ -143,7 +147,7 @@ $(document).ready(function() {
 
         $(".compund").each(function(n, el) {
             var line = $(el).find("input");
-            inputs.push({
+            inputs.compund.push({
                 compund: $(line[0]).val(),
                 time: $(line[1]).val(),
                 concentration: $(line[1]).val()
