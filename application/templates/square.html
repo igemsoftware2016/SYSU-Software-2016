@@ -29,8 +29,10 @@
             <div class="eleven wide column">
               <h3 class="ui header">
                 <img src="/static/img/icon/{{info[design.id]['icon']}}.jpg" class="ui rounded image mini">&nbsp;
-                <a href="#user" class="user">{{design.owner.nickname}}</a> - <a href="#design" class="design-name">{{design.design_name}}</a>
+                <a href="#user" class="user">{{design.owner.nickname}}</a> - <a href="/design/{{design.id}}" class="design-name">{{design.design_name}}</a>
                 [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
+                {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
+                {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
               </h3>
             </div>
 
@@ -124,30 +126,16 @@
         </h4>
 
         <div class="ui row">
+          {% for h in help %}
           <!-- one asking -->
           <div class="ui column fluid popup-bro">
-            <a href="#help"><span>SB</span> asks for help about simulation!</a> - 05 Feb
+            <a href="/design/{{h.owner.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Search{% else %}Simulation{% endif %}!</a>
           </div>
           <div class="ui popup">
-            <h4>Design title!</h4>
-            Here is a long long long title of biology design.
+          <h4>{{ h.design_name }}</h4>
+            {{ h.description }}
           </div>
-          <!-- one asking -->
-          <div class="ui column fluid popup-bro">
-            <a href="#help"><span>ONE SBB</span> asks for help about search!</a> - 08 Feb
-          </div>
-          <div class="ui popup">
-            <h4>Design title!</h4>
-            Here is a long long long title of biology design.
-          </div>
-          <!-- one asking -->
-          <div class="ui column fluid popup-bro">
-            <a href="#help"><span>SSSSB</span> asks for help about simulation!</a> - 12 Oct
-          </div>
-          <div class="ui popup">
-            <h4>Design title!</h4>
-            Here is a long long long title of biology design.
-          </div>
+          {% endfor %}
         </div>
 
 

@@ -162,8 +162,11 @@ def setDesignName():
 
 @app.route('/square')
 def router_square():
-    designs, info = getAllPosts(session.get("user"))
-    return render_template('square.html', title='Square', designs = designs, info = info)
+    designs, info = getPublick(session.get('user'))
+    helpList = getNeedHelp()
+    # if session.get('user'):
+        # design_num, mark_num, share_num
+    return render_template('square.html', title='Square', designs = designs, info = info, help = helpList)
 
 @app.route('/logout')
 @login_required

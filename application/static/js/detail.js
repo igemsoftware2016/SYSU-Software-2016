@@ -1,8 +1,6 @@
 $(document).ready(function() {
     // $("body").backstretch("destroy", false);
     $(".ui.banner").backstretch("/static/img/detail_banner-1.1.jpg");
-    $(".ui.progress").progress();
-
     $(".ui.sticky").sticky({
         context: '#square-context',
         offset: 54,
@@ -16,73 +14,6 @@ $(document).ready(function() {
             show: 100,
             hide: 100
         }
-    });
-
-    $(".ui.progress").progress();
-
-    $(".button.like").click(function() {
-        if ($($(this).find(".icon")).hasClass("empty")) {
-            var nowLike = parseInt($($(this).find(".label")).text());
-            $($(this).find(".label")).text(nowLike + 1);
-        } else {
-            var nowLike = parseInt($($(this).find(".label")).text());
-            $($(this).find(".label")).text(nowLike - 1);
-        }
-        $($(this).find(".icon")).toggleClass("empty");
-    });
-
-    $(".button.mark").click(function() {
-        $($(this).find(".icon")).toggleClass("empty");
-    });
-
-    $(".button.tip-off").click(function() {
-        swal({
-            html: '<b>Describe the tip-off reason please.</b>',
-            input: 'textarea',
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            showLoaderOnConfirm: true,
-            preConfirm: function(text) {
-                return new Promise(function(resolve, reject) {
-                    setTimeout(function() {
-                        resolve();
-                    }, 1000);
-                });
-            },
-            allowOutsideClick: false
-        }).then(function(text) {
-            $.ajax({
-                url: "/report",
-                type: "POST",
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                cache: false,
-                data: JSON.stringify({
-                    "design_id": $btn.parents('.grid.design').attr('design-id'),
-                    "reason": text
-                }),
-                success: function(data) {
-                    if (data.code) {
-                        swal({
-                            title: "Ooo",
-                            text: data.message,
-                            type: "error",
-                            confirmButtonText: "Okay"
-                        });
-                        return false;
-                    } else {
-                        swal({
-                            type: 'success',
-                            title: 'Done',
-                            html: 'Your report is received.'
-                        });
-                    }
-                },
-                error: function() {
-                    AjaxFail();
-                }
-            });
-        });
     });
 
     $('.ui.accordion')
@@ -214,34 +145,37 @@ $(document).ready(function() {
         $(this).toggleClass("active");
     });
 
-    // share button
-    $(".button.share").click(function() {
+    // share button (unshared now)
+    $(".button.share.gray").click(function() {
         swal({
-            title: '<b>Describe the tip-off reason please.</b>',
-            html: '<div class="ui form"><div class="field"><textarea rows="3"></textarea></div></div>' +
-                '<div class="ui slider checkbox"><input type="checkbox" name="newsletter"><label>Wanted someone help</label></div>',
+            title: '<b>Describe this design</b>',
+            html: '<div class="ui form"><div class="field"><textarea rows="3" class="description"></textarea></div></div>' +
+                '<div class="ui toggle checkbox"><input type="checkbox" class="help"><label>Wanted someone help</label></div>',
             // input: 'textarea',
             showCancelButton: true,
             confirmButtonText: 'Submit',
             showLoaderOnConfirm: true,
-            preConfirm: function(text) {
+            preConfirm: function(result) {
                 return new Promise(function(resolve, reject) {
-                    setTimeout(function() {
-                        resolve();
-                    }, 1000);
+                    var desc = $("textarea.description").val(),
+                        shared = true,
+                        needHelp = $("input.help:checked").length;
+                    resolve({
+                        "description": desc,
+                        "shared": shared,
+                        "needHelp": needHelp,
+                        "_id": $("#design-id").text()
+                    });
                 });
-            },
-            allowOutsideClick: false
+            }
         }).then(function(text) {
             $.ajax({
-                url: "http://www.findpsw.test.com",
+                url: "/set_design_shared",
                 type: "POST",
                 dataType: "json",
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                contentType: 'application/json; charset=utf-8',
                 cache: false,
-                data: {
-                    "email": email
-                },
+                data: JSON.stringify(text),
                 success: function(data) {
                     if (data.code) {
                         swal({
@@ -252,11 +186,54 @@ $(document).ready(function() {
                         });
                         return false;
                     } else {
+                        location.reload();
+                        // swal({
+                        //     type: 'success',
+                        //     title: 'Done',
+                        //     html: 'This design could be visited by public now.'
+                        // });
+                    }
+                },
+                error: function() {
+                    AjaxFail();
+                }
+            });
+        });
+    });
+
+    // share button (shared)
+    $(".button.share.brown").click(function() {
+        swal({
+            title: 'Set it private?',
+            // text: "Others can't see this great work",
+            type: 'question',
+            showCancelButton: true,
+            // confirmButtonColor: '#3085d6',
+            // cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then(function() {
+            $.ajax({
+                url: "/set_design_shared",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify({
+                    "shared": false,
+                    "needHelp": false,
+                    "_id": $("#design-id").text()
+                }),
+                success: function(data) {
+                    if (data.code) {
                         swal({
-                            type: 'success',
-                            title: 'Done',
-                            html: 'Your password was sended, check it please.'
+                            title: "Ooo",
+                            text: data.message,
+                            type: "error",
+                            confirmButtonText: "Okay"
                         });
+                        return false;
+                    } else {
+                        location.reload();
                     }
                 },
                 error: function() {
