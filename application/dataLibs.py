@@ -388,16 +388,23 @@ def deleteDesign():
     db.session.commit()
     return libs_success()
 
-
-@app.route('/upload', methods = ['GET', 'POST'])
+# mark manually
+# libs_success()
+# libs_errorMsg()
+@app.route('/upload/<int:design_id>/<int:state_id>', methods = ['GET', 'POST'])
 @login_required
-def upload_file():
+def upload_file(design_id, state_id):
+    print ("Hello")
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print (os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return libs_success()
+
+        return libs_errorMsg("Upload failed")
+
     return '''
     <!doctype html>
     <title>Upload new File</title>

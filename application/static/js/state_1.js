@@ -237,9 +237,11 @@ $(document).ready(function() {
         capacity: 0.54,
         closable: false
     });
-    $(".all-file").click(function() {
-        $("#upload-all-file").click();
-        $(".dimmer.upload").dimmer("toggle");
+
+    var isUpload = false;
+
+    $('#upload-all-file').change(function() {
+        $('.upload span').text($('#upload-all-file').val());
     });
 
     // set up ajax package
@@ -280,31 +282,105 @@ $(document).ready(function() {
         };
     }
 
-    $("#save-btn").click(function() {
-        $.ajax({
-            url: "/save_test",
-            type: "POST",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            cache: false,
-            data: JSON.stringify(setUpPackage()),
-            success: function(r) {
-                if (r.code) {
-                    swal({
-                        title: "Ooo",
-                        text: r.message,
-                        type: "error",
-                        confirmButtonText: "Okay"
-                    });
+    var uploader = new plupload.Uploader({
+        runtimes : 'html5,flash,silverlight,html4',
+
+        browse_button : 'upload-btn', // you can pass in id...
+        //container: getElementById, // ... or DOM Element itself
+
+        url : "/upload/0/1",
+
+        filters : {
+            max_file_size : '100mb',
+            mime_types: [
+                {title : "excel files", extensions : "xls,xlsx"}
+            ]
+        },
+
+        // Flash settings
+        flash_swf_url : 'static/plupload/js/Moxie.swf',
+
+        // Silverlight settings
+        silverlight_xap_url : 'static/plupload/js/Moxie.xap',
+
+        init: {
+            PostInit: function() {
+                document.getElementById('save-btn').onclick = function() {
+                    if (isUpload == false) {
+                        $.ajax({
+                            url: "/save_test",
+                            type: "POST",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            cache: false,
+                            data: JSON.stringify(setUpPackage()),
+                            success: function(r) {
+                                if (r.code) {
+                                    swal({
+                                        title: "Ooo",
+                                        text: r.message,
+                                        type: "error",
+                                        confirmButtonText: "Okay"
+                                    });
+                                    return false;
+                                } else {
+                                    swal({
+                                    title: "Done",
+                                    type: "success",
+                                    confirmButtonText: "Okay"
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        uploader.start();
+                        $(".dimmer.upload").dimmer("hide");
+                    }
                     return false;
-                } else {
-                    swal({
-                        title: "Done",
-                        type: "success",
-                        confirmButtonText: "Okay"
-                    });
+                };
+            },
+
+            FilesAdded: function(up, files) {
+                isUpload = true;
+                $(".dimmer.upload").dimmer("show");
+                $(files).each(function(n, file){
+                    if (n == 0)
+                        $('.upload span').text(file.name);
+                    else
+                        up.removeFile(file);
+                });
+            },
+
+            FilesRemoved: function(up, files) {
+                if (up.files.length < 1) {
+                    $(".dimmer.upload").dimmer("hide");
+                    isUpload = false;
                 }
+                $(files).each(function(n, file){
+                    console.log(file.name);
+                });
+            },
+
+            UploadProgress: function(up, file) {
+            },
+ 
+            Error: function(up, err) {
+                swal({
+                    title: "Ooo",
+                    text: err.code,
+                    type: "error",
+                    confirmButtonText: "Okay"
+                });
             }
+        }
+    });
+    
+    uploader.init();
+    
+    $(".dimmer").click(function() {
+        $(uploader.files).each(function(n, file) {
+            uploader.removeFile(file);
         });
     });
+
 });
