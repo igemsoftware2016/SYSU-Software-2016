@@ -335,7 +335,7 @@ def search_matters_name(matter_name):
     results = []
     counter = 1;
     for m in querier:
-        ares = {"title": m.matter_name, "description": "xxxxxx"}
+        ares = {"title": m.matter_name}
         results.append(ares)
         counter += 1
         if counter >= 10:

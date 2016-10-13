@@ -5,10 +5,33 @@ $(document).ready(function() {
         },
         fields: {
             results: 'results',
-            title: 'title',
-            description: 'description'
+            title: 'title'
         },
         minCharacters: 1
+    });
+
+    var colors = ['orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'];
+
+    $('.ui.env.search').search({
+        apiSettings: {
+            url: '/search/matters/{query}'
+        },
+        fields: {
+            results: 'results',
+            title: 'title'
+        },
+        minCharacters: 1,
+        maxResults: 4,
+        onSelect: function(result, response) {
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                result.title + '</span><i class="icon env close"></i></a>');
+        }
+    });
+
+    // remove env labels
+    $(document).on('click', '.env.close', function() {
+        $(this).parent().remove();
     });
 
     // Can not fix the flashing problem
@@ -47,8 +70,8 @@ $(document).ready(function() {
             },
             fields: {
                 results: 'results',
-                title: 'title',
-                description: 'description'
+                title: 'title'
+                    // description: 'description'
             },
             minCharacters: 1
         });
@@ -99,7 +122,7 @@ $(document).ready(function() {
                     resolve({
                         "name": name,
                         "mode": mode,
-                        "_id":  $("#design-id").text()
+                        "_id": $("#design-id").text()
                     });
                 });
             },
@@ -159,7 +182,7 @@ $(document).ready(function() {
                     }
                     resolve({
                         "name": name,
-                        "_id":  $("#design-id").text()
+                        "_id": $("#design-id").text()
                     });
                 });
             },
@@ -219,18 +242,13 @@ $(document).ready(function() {
     });
     $("#medium-slt").dropdown("set selected", 1);
 
-    $("#flora-slt").dropdown({
-        onChange: function(value, text, $selectedItem) {
-            flora = value;
-            console.log(value, text, $selectedItem);
-        }
-    });
-    $("#flora-slt").dropdown("set selected", 1);
-
-    // disable select after upload file
-    $(".button.flora").click(function() {
-        $("#flora-slt").toggleClass("disabled");
-    })
+    // $("#flora-slt").dropdown({
+    //     onChange: function(value, text, $selectedItem) {
+    //         flora = value;
+    //         console.log(value, text, $selectedItem);
+    //     }
+    // });
+    // $("#flora-slt").dropdown("set selected", 1);
 
     // disable everything while using file
     $(".dimmer.upload").dimmer({
@@ -246,7 +264,8 @@ $(document).ready(function() {
 
     // set up ajax package
     var setUpPackage = function() {
-        var inputs = [];
+        var inputs = [],
+            flora = [];
 
         if (isMake) {
             $(".make-line").each(function(n, el) {
@@ -268,6 +287,10 @@ $(document).ready(function() {
             });
         }
 
+        $('.env.label').each(function(n, el) {
+            flora.push($(el).find('span').text());
+        })
+
         var other = {
             time: $("#time").val(),
             medium: medium,
@@ -283,25 +306,26 @@ $(document).ready(function() {
     }
 
     var uploader = new plupload.Uploader({
-        runtimes : 'html5,flash,silverlight,html4',
+        runtimes: 'html5,flash,silverlight,html4',
 
-        browse_button : 'upload-btn', // you can pass in id...
+        browse_button: 'upload-btn', // you can pass in id...
         //container: getElementById, // ... or DOM Element itself
 
-        url : "/upload/" + $("#design-id").text() + "/1",
+        url: "/upload/" + $("#design-id").text() + "/1",
 
-        filters : {
-            max_file_size : '100mb',
-            mime_types: [
-                {title : "excel files", extensions : "xls,xlsx"}
-            ]
+        filters: {
+            max_file_size: '100mb',
+            mime_types: [{
+                title: "excel files",
+                extensions: "xls,xlsx"
+            }]
         },
 
         // Flash settings
-        flash_swf_url : 'static/plupload/js/Moxie.swf',
+        flash_swf_url: 'static/plupload/js/Moxie.swf',
 
         // Silverlight settings
-        silverlight_xap_url : 'static/plupload/js/Moxie.xap',
+        silverlight_xap_url: 'static/plupload/js/Moxie.xap',
 
         init: {
             PostInit: function() {
@@ -325,9 +349,9 @@ $(document).ready(function() {
                                     return false;
                                 } else {
                                     swal({
-                                    title: "Done",
-                                    type: "success",
-                                    confirmButtonText: "Okay"
+                                        title: "Done",
+                                        type: "success",
+                                        confirmButtonText: "Okay"
                                     });
                                 }
                             }
@@ -343,7 +367,7 @@ $(document).ready(function() {
             FilesAdded: function(up, files) {
                 isUpload = true;
                 $(".dimmer.upload").dimmer("show");
-                $(files).each(function(n, file){
+                $(files).each(function(n, file) {
                     if (n == 0)
                         $('.upload span').text(file.name);
                     else
@@ -356,11 +380,11 @@ $(document).ready(function() {
                     $(".dimmer.upload").dimmer("hide");
                     isUpload = false;
                 }
-                $(files).each(function(n, file){
+                $(files).each(function(n, file) {
                     console.log(file.name);
                 });
             },
- 
+
             Error: function(up, err) {
                 console.log(err);
                 swal({
@@ -372,9 +396,9 @@ $(document).ready(function() {
             }
         }
     });
-    
+
     uploader.init();
-    
+
     $(".dimmer").click(function() {
         $(uploader.files).each(function(n, file) {
             uploader.removeFile(file);
