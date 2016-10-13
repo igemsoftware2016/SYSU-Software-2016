@@ -134,7 +134,6 @@ def libs_list_insert(list_string, element):
     l.append(element)
     ret = json.dumps(l)
     return ret
-
 def libs_list_delete(list_string, element):
     l = json.loads(list_string)
     if not element in l:
@@ -418,12 +417,19 @@ def report():
 
 @app.route('/set_design_shared', methods=['POST'])
 def setDesignShared():
-    myPrint(request.json)
-    d = design.query.filter_by(id = request.json.get("_id")).first()
-    if not d:
+    d = design.query.filter_by(id = request.json.get("_id"))
+    if not d or not request.json.get("shared"):
         return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
-    d.description = request.json.get("description")
     d.shared = request.json.get("shared")
+    db.session.commit()
+    return libs_success()
+
+
+@app.route('/set_design_need_help', methods=['POST'])
+def setDesignNeedHelp():
+    d = design.query.filter_by(id = request.json.get("_id"))
+    if not d or not request.json.get("shared"):
+        return libs_errorMsg("Error Design: %s, Shared: %S" % (request.json.get("_id"), request.json.get("shared")))
     d.needHelp = request.json.get("needHelp")
     db.session.commit()
     return libs_success()
