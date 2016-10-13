@@ -426,7 +426,7 @@ def search_matters_name(matter_name):
     results = []
     counter = 1;
     for m in querier:
-        ares = {"title": m.matter_name, "description": "xxxxxx"}
+        ares = {"title": m.matter_name}
         results.append(ares)
         counter += 1
         if counter >= 10:
@@ -479,16 +479,23 @@ def deleteDesign():
     db.session.commit()
     return libs_success()
 
-
-@app.route('/upload', methods = ['GET', 'POST'])
+# mark manually
+# libs_success()
+# libs_errorMsg()
+@app.route('/upload/<int:design_id>/<int:state_id>', methods = ['GET', 'POST'])
 @login_required
-def upload_file():
+def upload_file(design_id, state_id):
+    print ("Hello")
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            print (os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return libs_success()
+
+        return libs_errorMsg("Upload failed")
+
     return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -555,4 +562,3 @@ def getUserNum(_id):
         return num
     else:
         return {}
-

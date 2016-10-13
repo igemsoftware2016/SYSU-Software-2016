@@ -73,7 +73,7 @@
             <td class="center aligned">
               <div class="ui search name fluid standard">
                 <div class="ui icon input fluid">
-                  <input class="prompt" type="text" placeholder="Search animals...">
+                  <input class="prompt" type="text" placeholder="Search matters...">
                   <i class="search icon"></i>
                 </div>
                 <div class="results"></div>
@@ -190,25 +190,39 @@
       </div>
     </div>
 
+    <div class="ui dimmer blurring upload">
+      <div class="content">
+        <div class="center">
+          <h2 class="ui inverted icon header">
+            <i class="file icon"></i>
+            <span>Using file!</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ui grid">
     <div class="ui row">
       <div class="ui column grid centered">
         <div class="ui five wide column center aligned fluid">
           <input type="file" name="all-file" class="hidden" id="upload-all-file">
-          <button class="ui black button big all-file">Upload File</button>
+          <button class="ui black button big all-file" id="upload-btn">Upload File</button>
         </div>
         <div class="ui five wide column center aligned fluid ">
           <button class="ui green button big" id="submit">Submit Result</button>
         </div>
       </div>
     </div>
-
-    <!--/div-->
-
   </div>
+
 </div> <!-- state grid -->
 {% endblock %}
 
 
 {% block javascript %}
+<script type="text/javascript" src="/static/plupload/js/moxie.min.js"></script>
+<script type="text/javascript" src="/static/plupload/js/plupload.min.js"></script>
 <script type="text/javascript" src="/static/js/state_5.js"></script>
 {% endblock %}

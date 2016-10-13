@@ -14,8 +14,10 @@ $(document).ready(function() {
         }
     });
 
-    $('.menu > .ui.dropdown').dropdown();
-
+    $('.menu > .ui.dropdown').dropdown({
+        on: "hover"
+    });
+    
     var lastScroll = 0;
     $(window).scroll(function(event) {
         // console.log($(document).scrollTop());

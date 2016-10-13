@@ -61,9 +61,12 @@
               <button class="ui icon button tiny basic orange mark">
                 <i class="{% if not info[design.id]['marked'] %}empty{% endif %} star icon"></i>
               </button>
+              {# Can't remove design in profile #}
+              {# {% if info[design.id]['myCreation'] %}
               <button class="ui icon button tiny basic delete red">
                 <i class="delete sign icon"></i>
               </button>
+              {% endif %} #}
             </div>
           </div>
         </div>

@@ -5,10 +5,33 @@ $(document).ready(function() {
         },
         fields: {
             results: 'results',
-            title: 'title',
-            description: 'description'
+            title: 'title'
         },
         minCharacters: 1
+    });
+
+    var colors = ['orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'];
+
+    $('.ui.env.search').search({
+        apiSettings: {
+            url: '/search/matters/{query}'
+        },
+        fields: {
+            results: 'results',
+            title: 'title'
+        },
+        minCharacters: 1,
+        maxResults: 4,
+        onSelect: function(result, response) {
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                result.title + '</span><i class="icon env close"></i></a>');
+        }
+    });
+
+    // remove env labels
+    $(document).on('click', '.env.close', function() {
+        $(this).parent().remove();
     });
 
     // Can not fix the flashing problem
@@ -35,7 +58,7 @@ $(document).ready(function() {
     //     }
     // });
 
-    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search animals..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
+    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search matters..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
     var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
 
 
@@ -47,8 +70,8 @@ $(document).ready(function() {
             },
             fields: {
                 results: 'results',
-                title: 'title',
-                description: 'description'
+                title: 'title'
+                    // description: 'description'
             },
             minCharacters: 1
         });
@@ -99,7 +122,7 @@ $(document).ready(function() {
                     resolve({
                         "name": name,
                         "mode": mode,
-                        "_id":  $("#design-id").text()
+                        "_id": $("#design-id").text()
                     });
                 });
             },
@@ -159,7 +182,7 @@ $(document).ready(function() {
                     }
                     resolve({
                         "name": name,
-                        "_id":  $("#design-id").text()
+                        "_id": $("#design-id").text()
                     });
                 });
             },
@@ -219,32 +242,30 @@ $(document).ready(function() {
     });
     $("#medium-slt").dropdown("set selected", 1);
 
-    $("#flora-slt").dropdown({
-        onChange: function(value, text, $selectedItem) {
-            flora = value;
-            console.log(value, text, $selectedItem);
-        }
-    });
-    $("#flora-slt").dropdown("set selected", 1);
-
-    // disable select after upload file
-    $(".button.flora").click(function() {
-        $("#flora-slt").toggleClass("disabled");
-    })
+    // $("#flora-slt").dropdown({
+    //     onChange: function(value, text, $selectedItem) {
+    //         flora = value;
+    //         console.log(value, text, $selectedItem);
+    //     }
+    // });
+    // $("#flora-slt").dropdown("set selected", 1);
 
     // disable everything while using file
     $(".dimmer.upload").dimmer({
         capacity: 0.54,
         closable: false
     });
-    $(".all-file").click(function() {
-        $("#upload-all-file").click();
-        $(".dimmer.upload").dimmer("toggle");
+
+    var isUpload = false;
+
+    $('#upload-all-file').change(function() {
+        $('.upload span').text($('#upload-all-file').val());
     });
 
     // set up ajax package
     var setUpPackage = function() {
-        var inputs = [];
+        var inputs = [],
+            flora = [];
 
         if (isMake) {
             $(".make-line").each(function(n, el) {
@@ -266,6 +287,10 @@ $(document).ready(function() {
             });
         }
 
+        $('.env.label').each(function(n, el) {
+            flora.push($(el).find('span').text());
+        })
+
         var other = {
             time: $("#time").val(),
             medium: medium,
@@ -280,31 +305,104 @@ $(document).ready(function() {
         };
     }
 
-    $("#save-btn").click(function() {
-        $.ajax({
-            url: "/save_test",
-            type: "POST",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            cache: false,
-            data: JSON.stringify(setUpPackage()),
-            success: function(r) {
-                if (r.code) {
-                    swal({
-                        title: "Ooo",
-                        text: r.message,
-                        type: "error",
-                        confirmButtonText: "Okay"
-                    });
+    var uploader = new plupload.Uploader({
+        runtimes: 'html5,flash,silverlight,html4',
+
+        browse_button: 'upload-btn', // you can pass in id...
+        //container: getElementById, // ... or DOM Element itself
+
+        url: "/upload/" + $("#design-id").text() + "/1",
+
+        filters: {
+            max_file_size: '100mb',
+            mime_types: [{
+                title: "excel files",
+                extensions: "xls,xlsx"
+            }]
+        },
+
+        // Flash settings
+        flash_swf_url: 'static/plupload/js/Moxie.swf',
+
+        // Silverlight settings
+        silverlight_xap_url: 'static/plupload/js/Moxie.xap',
+
+        init: {
+            PostInit: function() {
+                document.getElementById('save-btn').onclick = function() {
+                    if (isUpload == false) {
+                        $.ajax({
+                            url: "/save_test",
+                            type: "POST",
+                            dataType: "json",
+                            contentType: 'application/json; charset=utf-8',
+                            cache: false,
+                            data: JSON.stringify(setUpPackage()),
+                            success: function(r) {
+                                if (r.code) {
+                                    swal({
+                                        title: "Ooo",
+                                        text: r.message,
+                                        type: "error",
+                                        confirmButtonText: "Okay"
+                                    });
+                                    return false;
+                                } else {
+                                    swal({
+                                        title: "Done",
+                                        type: "success",
+                                        confirmButtonText: "Okay"
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        uploader.start();
+                        $(".dimmer.upload").dimmer("hide");
+                    }
                     return false;
-                } else {
-                    swal({
-                        title: "Done",
-                        type: "success",
-                        confirmButtonText: "Okay"
-                    });
+                };
+            },
+
+            FilesAdded: function(up, files) {
+                isUpload = true;
+                $(".dimmer.upload").dimmer("show");
+                $(files).each(function(n, file) {
+                    if (n == 0)
+                        $('.upload span').text(file.name);
+                    else
+                        up.removeFile(file);
+                });
+            },
+
+            FilesRemoved: function(up, files) {
+                if (up.files.length < 1) {
+                    $(".dimmer.upload").dimmer("hide");
+                    isUpload = false;
                 }
+                $(files).each(function(n, file) {
+                    console.log(file.name);
+                });
+            },
+
+            Error: function(up, err) {
+                console.log(err);
+                swal({
+                    title: "Ooo",
+                    text: err.message,
+                    type: "error",
+                    confirmButtonText: "Okay"
+                });
             }
+        }
+    });
+
+    uploader.init();
+
+    $(".dimmer").click(function() {
+        $(uploader.files).each(function(n, file) {
+            uploader.removeFile(file);
         });
     });
+
 });
