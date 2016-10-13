@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 import os, sys
 import urllib, pytz
 import json
+from sets import Set
 # from router import login_required
 
 def login_required(f):
@@ -27,7 +28,11 @@ def getAllPosts(_id=None):
     otherInfo = {}
     if _id:
         u = user.query.filter_by(id = _id).first()
-        ret = u.design_set
+        if _id != session.get('user'):
+            ret = filter(lambda x: x.shared, [x for x in u.design_set])
+        else:
+            ret = [x for x in u.design_set]
+        ret += filter(lambda x: x.shared and x not in ret, [design.query.filter_by(id=x).first() for x in json.loads(u.mark)])
         for r in ret:
             otherInfo[r.id] = {}
             l = json.loads(r.liked_by)
@@ -36,11 +41,13 @@ def getAllPosts(_id=None):
             otherInfo[r.id]['like_num'] = len(l)
             otherInfo[r.id]['liked'] = (session['user'] in l)
             otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
-            l = json.loads(u.mark)
-            # myPrint(l, r.id, (str(r.id) in l))
-            otherInfo[r.id]['marked'] = (str(r.id) in l)
-            otherInfo[r.id]['myCreation'] = (r.owner == session["user"])
-            myPrint(r.design_mode)
+            if session.get('user'):
+                l = json.loads(user.query.filter_by(id = session['user']).first().mark)
+                otherInfo[r.id]['marked'] = (str(r.id) in l)
+            else:
+                otherInfo[r.id]['marked'] = False
+            otherInfo[r.id]['myCreation'] = (r.owner_id == session["user"])
+            # myPrint(r.design_mode)
     else:
         ret = design.query.all()
         for r in ret:
@@ -58,7 +65,7 @@ def getNeedHelp():
     return filter(lambda x: x.state==1 or x.state==3, design.query.filter_by(needHelp = True).all())
     # return filter(lambda x: x.state==2 or x.state==3, design.query.filter_by(needHelp = True).all())
 
-def getPublick(_id=None):
+def getPublic(_id=None):
     ret = design.query.filter_by(shared = True)
     otherInfo = {}
     if _id:
@@ -71,11 +78,13 @@ def getPublick(_id=None):
             otherInfo[r.id]['like_num'] = len(l)
             otherInfo[r.id]['liked'] = (session['user'] in l)
             otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
-            l = json.loads(u.mark)
-            # myPrint(l, r.id, (str(r.id) in l))
-            otherInfo[r.id]['marked'] = (str(r.id) in l)
+            if session.get('user'):
+                l = json.loads(user.query.filter_by(id = session['user']).first().mark)
+                otherInfo[r.id]['marked'] = (str(r.id) in l)
+            else:
+                otherInfo[r.id]['marked'] = False
             otherInfo[r.id]['myCreation'] = (r.owner == session["user"])
-            myPrint(r.design_mode)
+            # myPrint(r.design_mode)
     else:
         ret = design.query.all()
         for r in ret:
@@ -86,6 +95,26 @@ def getPublick(_id=None):
             otherInfo[r.id]['liked'] = False
             otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
             otherInfo[r.id]['marked'] = False
+    return ret, otherInfo
+
+
+def getUserPublic(_id):
+    u = user.query.filter_by(id = _id).first()
+    ret = filter(lambda x: x.shared, u.design_set)
+    otherInfo = {}
+    for r in ret:
+        otherInfo[r.id] = {}
+        l = json.loads(r.liked_by)
+        # myPrint(l, session['user'])
+        otherInfo[r.id]['icon'] = r.owner.icon
+        otherInfo[r.id]['like_num'] = len(l)
+        otherInfo[r.id]['liked'] = (session['user'] in l)
+        otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
+        l = json.loads(u.mark)
+        # myPrint(l, r.id, (str(r.id) in l))
+        otherInfo[r.id]['marked'] = (str(r.id) in l)
+        otherInfo[r.id]['myCreation'] = (r.owner == session["user"])
+        # myPrint(r.design_mode)
     return ret, otherInfo
 
 
@@ -419,3 +448,14 @@ def designDetail(design_id):
     otherInfo['myCreation'] = (d.owner == session["user"])
     return render_template("detail.html", title="Design detail", design = d, info=otherInfo)
 
+
+def getUserNum(_id):
+    if _id:
+        num = {}
+        u = user.query.filter_by(id=_id).first()
+        num["design"] = len([x for x in u.design_set])
+        num["mark"] = len(json.loads(u.mark))
+        num["share"] = len(filter(lambda x: x.shared, u.design_set))
+        return num
+    else:
+        return {}

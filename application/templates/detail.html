@@ -1,225 +1,151 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/detail.css">
+{% endblock %}
 
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8"> 
-  <title>detail</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
-  <!-- put css stylesheet down here -->
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/menu.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/dropdown.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/detail.css">
-</head>
-<body>
-  <!-- <div class="container ui"> </div>  -->
-  <div class="ui borderless main menu inverted fixed" id="top-menu">
-    <div class="ui container">
-      <div class="header item menu-title"><i class="rocket icon"></i> CRAFT</div>
-      <div class="item">
-        <div class="ui category search item">
-          <div class="ui transparent icon input inverted small">
-            <input class="prompt inverted" type="text" placeholder="Search...">
-            <i class="search link icon"></i>
+
+{% block container %}
+<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<!-- put code here with-->
+<div class="ui column grid centered">
+  <div class="ui banner one column fliud centered">
+  </div>
+</div> <!-- top banner -->
+
+<div class="ui column grid">
+  <!-- designs -->
+  <div class="ui column sixteen wide main">
+    <div class="ui segment main">
+      <div class="design card {% if not info['myCreation'] %}my{% endif %}">
+        <div class="ui column grid design" design-id="{{design.id}}">
+          <div class="ui row">
+            <div class="eleven wide column">
+              <h3 class="ui header">
+                <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
+                <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
+                [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
+                {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
+                {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
+
+              </h3>
+            </div>
+
+            <div class="five wide column right aligned">
+              <div class="ui labeled button mini like">
+                <div class="ui red button" title="{% if not info['liked'] %}Like it{% else %}Liked{% endif %}">
+                  <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
+                </div>
+                <a class="ui basic red left pointing label">
+                  {{ info['like_num'] }}
+                </a>
+              </div>
+              <button class="ui icon button tiny basic orange mark" title="{% if not info['marked'] %}Mark it{% else %}Marked{% endif %}">
+                <i class="{% if not info['marked'] %}empty{% endif %} star icon"></i>
+              </button>
+              {% if design.owner_id == session.get("user") %}
+              <button class="ui icon button tiny basic share {% if design.shared %}brown{% else %}gray{% endif %}" title="{% if design.shared %}Shared{% else %}Share it now!{% endif %}">
+                <i class="share sign icon"></i>
+              </button>
+              <button class="ui icon button tiny basic delete red">
+                <i class="delete sign icon"></i>
+              </button>
+              {% endif %}
+            </div>
           </div>
-          <div class="results"></div>
         </div>
-      </div>
-      <div class="right menu">
-        <a class="item">Wiki</a>
-        <a class="item">Help</a>
-        <div class="ui dropdown item">
-          My <i class="dropdown icon"></i>
-          <div class="menu">
-            <a class="item">My Profile</a>
-            <a class="item">Setting</a>
-            <div class="divider"></div>
-            <a class="item">Log Out</a>
+        <div class="ui divider"></div>
+        <div class="description">
+          <p class="design description">
+            {% if design.description %}{{ design.description }}{% else %}No Description{% endif %}
+          </p>
+          <p class="time">{{ info.datetime }}</p>
+        </div>
+        <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
+          <div class="bar"></div>
+          <div class="label">
+            {% if design.state == 1 %}
+            Data Input
+            {% elif design.state == 2 %}
+            Search
+            {% elif design.state == 3 %}
+            Simulation
+            {% elif design.state == 4 %}
+            Promoter
+            {% elif design.state == 5 %}
+            Feedback
+            {% endif %}
           </div>
+        </div>
+      </div> <!-- design card -->
+
+      <div class="ui styled fluid accordion">
+        <div class="title active">
+          <i class="dropdown icon"></i>
+          Step 1
+        </div>
+        <div class="content active">
+          <p class="transition visible">一堆数据，脑子不够想排版。做成标签形式。</p>
+        </div>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Step 2
+        </div>
+        <div class="content">
+          <p class="transition hidden">一大堆图表，先不放</p>
+        </div>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Step 3
+        </div>
+        <div class="content">
+          <p class="transition hidden">
+            <div class="ui column grid state">
+              <div class="ui four wide column">
+                <div class="ui inverted vertical menu fluid" id="state-3-menu">
+                </div>
+              </div>
+              <div class="twelve wide column fluid">
+                <div class="ui segment" id="state-3-content">
+                  <div class="ui grid">
+                    <div class="ui row equal width">
+                      <div class="ui column center aligned">
+                        <canvas id="myChart"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- state grid -->
+          </p>
+        </div>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Step 4
+        </div>
+        <div class="content">
+          <p class="transition hidden">
+            <button class="ui green button">
+              <i class="download icon"></i>
+              Download Protocal
+            </button>
+          </p>
+        </div>
+        <div class="title">
+          <i class="dropdown icon"></i>
+          Step 5
+        </div>
+        <div class="content">
+          <p class="transition hidden">实验数据反馈</p>
         </div>
       </div>
     </div>
   </div>
 
-  <button class="ui grey button icon compact" id="to-top">
-    <i class="arrow up icon"></i>
-  </button>
-  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank">
-    <i class="mail icon"></i>
-  </a>
-
-  <div class="ui column fluid" id="top-bg">
-    <div class="container ui" id="main-container">
-      <span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
-      <!-- put code here with-->
-      <div class="ui column grid centered">
-        <div class="ui banner one column fliud centered">
-           <!--<div class="ui column grid centered bottom">
-            <div class="ui five wide column center aligned fluid">
-              <button class="ui inverted grey basic button huge">CRAFT Square</button>
-            </div>
-            <div class="ui five wide column center aligned fluid">
-              <button class="ui inverted grey basic button huge">CRAFT Designer</button>
-            </div>
-          </div> -->
-        </div>
-      </div> <!-- top banner -->
-
-      <div class="ui column grid">
-        <!-- designs -->
-        <div class="ui column sixteen wide main">
-          <div class="ui segment main">
-            <div class="design card {% if not info['myCreation'] %}my{% endif %}">
-              <div class="ui column grid design" design-id="{{design.id}}">
-                <div class="ui row">
-                  <div class="eleven wide column">
-                    <h3 class="ui header">
-                      <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
-                      <a href="#user" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
-                      [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
-                      {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
-                      {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
-                      
-                    </h3>
-                  </div>
-
-                  <div class="five wide column right aligned">
-                    <div class="ui labeled button mini like">
-                      <div class="ui red button" title="{% if not info['liked'] %}Like it{% else %}Liked{% endif %}">
-                        <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
-                      </div>
-                      <a class="ui basic red left pointing label">
-                        {{ info['like_num'] }}
-                      </a>
-                    </div>
-                    <button class="ui icon button tiny basic orange mark" title="{% if not info['marked'] %}Mark it{% else %}Marked{% endif %}">
-                      <i class="{% if not info['marked'] %}empty{% endif %} star icon"></i>
-                    </button>
-                    <button class="ui icon button tiny basic share {% if design.shared %}brown{% else %}gray{% endif %}" title="{% if design.shared %}Shared{% else %}Share it now!{% endif %}">
-                      <i class="share sign icon"></i>
-                    </button>
-                    <button class="ui icon button tiny basic delete red">
-                      <i class="delete sign icon"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="ui divider"></div>
-              <div class="description">
-                <p class="design description">
-                  {% if design.description %}{{ design.description }}{% else %}No Description{% endif %}
-                </p>
-                <p class="time">{{ info.datetime }}</p>
-              </div>
-              <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
-                <div class="bar"></div>
-                <div class="label">
-                  {% if design.state == 1 %}
-                  Data Input
-                  {% elif design.state == 2 %}
-                  Search
-                  {% elif design.state == 3 %}
-                  Simulation
-                  {% elif design.state == 4 %}
-                  Promoter
-                  {% elif design.state == 5 %}
-                  Feedback
-                  {% endif %}
-                </div>
-              </div>
-            </div> <!-- design card -->
-
-            <div class="ui styled fluid accordion">
-              <div class="title active">
-                <i class="dropdown icon"></i>
-                Step 1
-              </div>
-              <div class="content active">
-                <p class="transition visible">一堆数据，脑子不够想排版。做成标签形式。</p>
-              </div>
-              <div class="title">
-                <i class="dropdown icon"></i>
-                Step 2
-              </div>
-              <div class="content">
-                <p class="transition hidden">一大堆图表，先不放</p>
-              </div>
-              <div class="title">
-                <i class="dropdown icon"></i>
-                Step 3
-              </div>
-              <div class="content">
-                <p class="transition hidden">
-                  <div class="ui column grid state">
-                    <div class="ui four wide column">
-                      <div class="ui inverted vertical menu fluid" id="state-3-menu">
-                      </div>
-                    </div>
-                    <div class="twelve wide column fluid">
-                      <div class="ui segment" id="state-3-content">
-                        <div class="ui grid">
-                          <div class="ui row equal width">
-                            <div class="ui column center aligned">
-                              <canvas id="myChart"></canvas>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> <!-- state grid -->
-                </p>
-              </div>
-              <div class="title">
-                <i class="dropdown icon"></i>
-                Step 4
-              </div>
-              <div class="content">
-                <p class="transition hidden">
-                  <button class="ui green button">
-                    <i class="download icon"></i>
-                    Download Protocal
-                  </button>
-                </p>
-              </div>
-              <div class="title">
-                <i class="dropdown icon"></i>
-                Step 5
-              </div>
-              <div class="content">
-                <p class="transition hidden">实验数据反馈</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div> <!-- main-container -->
-  </div>
-
-  <!-- put code here, without background image -->
-
-  <!-- footer -->
-  <!-- <div class="ui one column grid footer"> -->
-  <div class="ui vertical footer segment column fliud">
-    <div class="ui center aligned container">
-      SYSU-Software 2016
-    </div>
-  </div>
-  <!-- </div> -->
+</div>
+{% endblock %}
 
 
-  <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="/static/css/semantic/semantic.min.js"></script>
-  <script type="text/javascript" src="/static/js/jquery.backstretch.min.js"></script>
-  <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
-  <script type="text/javascript" src="/static/js/base.js"></script>
-  <!-- put javascript down here -->
-  <script type="text/javascript" src="/static/css/semantic/components/dropdown.min.js"></script>
-  <script type="text/javascript" src="/static/js/Chart.min.js"></script>
+{% block javascript %}
   <script type="text/javascript" src="/static/js/detail.js"></script>
-  <script>
-    document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
-  </script>
-</body>
-</html>
+  <script type="text/javascript" src="/static/js/Chart.min.js"></script>
+{% endblock %}

@@ -36,13 +36,13 @@
     </div>
     <div class="ui segment empty">
       {% for design in designs %}
-      <div class="design card {% if not info[design.id]['myCreation'] %}my{% endif %}">
+      <div class="design card {% if info[design.id]['myCreation'] %}my{% endif %}">
         <div class="ui column grid design" design-id="{{design.id}}">
           <div class="ui row">
             <div class="eleven wide column">
               <h3 class="ui header">
-                <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
-                <a href="#user" class="user">{{design.owner.nickname}}</a> - <a href="/design/{{design.id}}" class="design-name">{{design.design_name}}</a>
+                <img src="/static/img/icon/{{info[design.id]['icon']}}.jpg" class="ui rounded image mini">&nbsp;
+                <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - <a href="/design/{{design.id}}" class="design-name">{{design.design_name}}</a>
                 [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
                 {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
                 {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}

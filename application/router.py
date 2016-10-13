@@ -69,18 +69,20 @@ def router_register():
         session['icon'] = new_user.icon
         return jsonify({'code': 0})
 
+
 @app.route('/profile')
 @login_required
 def router_profile():
     designs, info = getAllPosts(session['user'])
     return render_template('profile.html', title='My Profile', designs = designs, info = info)
 
-@app.route('/profile/<int:user_id>')
-@login_required
-def router_others_profile(user_id):
-    if user_id == session['user']:
-        return redirect(url_for('router_profile'))
-    return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
+
+# @app.route('/profile/<int:user_id>')
+# @login_required
+# def router_others_profile(user_id):
+#     if user_id == session['user']:
+#         return redirect(url_for('router_profile'))
+#     return render_template('profile.html', userid = user.query.filter_by(id = session['user']).first().nickname)
 
 
 @app.route('/setting', methods = ['GET', 'POST'])
@@ -162,11 +164,10 @@ def setDesignName():
 
 @app.route('/square')
 def router_square():
-    designs, info = getPublick(session.get('user'))
+    designs, info = getPublic(session.get('user'))
     helpList = getNeedHelp()
-    # if session.get('user'):
-        # design_num, mark_num, share_num
-    return render_template('square.html', title='Square', designs = designs, info = info, help = helpList)
+    num = getUserNum(session.get('user'))
+    return render_template('square.html', title='Square', designs = designs, info = info, help = helpList, num=num)
 
 @app.route('/logout')
 @login_required
@@ -178,6 +179,15 @@ def router_logout():
 @app.errorhandler(404)
 def router_not_found(error):
     return render_template('404.html'), 404
+
+@app.route('/user/<int:user_id>')
+def route_user(user_id):
+    if user_id == session.get('user'):
+        return redirect(url_for('router_profile'))
+    u = user.query.filter_by(id=user_id).first_or_404()
+    designs, info = getAllPosts(user_id)
+    num = getUserNum(user_id)
+    return render_template('user.html', title='Square', designs = designs, info = info, num=num, user=u)
 
 ###################################################
 # for states test!!!!
