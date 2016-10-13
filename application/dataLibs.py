@@ -388,11 +388,29 @@ def get_state_saved(state_id):
             pass
 
 
-@app.route('/process/<int:design_id>')
+@app.route('/process/<int:design_id>', methods = ['GET', 'POST'])
 def process_local_calc(design_id):
     cur_design = design.query.filter_by(id = design_id).first()
     if cur_design is None:
         return jsonify({"state": 0})
+    if method == 'POST':
+        if request.form.get("code") != 0:
+            return libs_errorMsg("Local calculate failed")
+        if cur_design.state == 1:
+            cur_data = cur_design.state2_data
+            if cur_data is None:
+                cur_data = state2_data()
+            for bact in request.form.get("bacteria"):
+                cur_bact = used_bacteria(floraDB.query.filter_by(name = bact.get("name")).first())
+                for enzy in bact.get("enzyme"):
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"))
+                        for pro in enzy.get("promoter")
+
+                        for rbs in enzy.get("rbs")
+                            
+                    cur_bact.enzyme = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
+                cur_data.bacteria = libs_list_insert(cur_data.bacteria, cur_bact.id)
+        return libs_success()
     ret = dict()
     ret["state"] = cur_design.state
     if cur_design.state == 1:
@@ -412,8 +430,25 @@ def process_local_calc(design_id):
         for x in libs_list_query(cur_data.medium.matters):
             ret["medium"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
         return jsonify(ret)
+
     if cur_design.state == 2:
-        pass
+        cur_data = cur_design.state2_data
+        if cur_data is None:
+            return jsonify({"state": 0})
+        ret["initial_matters"] = []
+        ret["insert_matters"] = []
+        for x in libs_list_query(cur_data.medium.matters):
+            ret["insert_matters"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
+        ret["bacteria"] = []
+        for x in libs_list_query(cur_data.bacteria):
+            tmpbact = used_bacteria.query.filter_by(id = x).first()
+            tmpret = {"code": tmpbact.flora.code}
+            tmpret["enzyme"] = []
+            for e in libs_list_query(tmpbact.enzyme):
+                tmpret["enzyme"].append(enzyme.query.filter_by(id = e).first().name)
+            ret["bacteria"].append(tmpret)
+        return jsonify(ret)
+
 
 
 @app.route('/search/matters/<matter_name>')
