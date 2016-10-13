@@ -45,6 +45,7 @@ class mediumDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     name = db.Column(db.String(100))                # Medium's name
     matters = db.Column(db.String(500))             # Matters included in the medium (With dirty list)
+    concentration = db.Column(db.String(500))       # Matters' concentration (With dirty dictionary)
     def __init__(self, name):
         self.name = name
         self.matters = '[]'
@@ -121,7 +122,7 @@ class design(db.Model):
 class state1_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)                  # Index
     design_mode = db.Column(db.String(60))                          # Mode of the design (Should be "synthetic" or "decompose")
-    reaction_time = db.Column(db.Integer)                           # Total time of the reaction
+    reaction_time = db.Column(db.Float)                             # Total time of the reaction
     medium_id = db.Column(db.Integer, db.ForeignKey('mediumDB.id')) # Used medium's id
     medium = db.relationship('mediumDB', backref = 'all_design')
     flora = db.Column(db.String(320))                               # All flora set (With dirty list)
@@ -175,8 +176,8 @@ class resolve_matter(db.Model):
     matter_id = db.Column(db.Integer, db.ForeignKey('matterDB.id'))     # Based on which matter
     matter = db.relationship('matterDB', backref = db.backref('resolved_set', lazy = 'dynamic'))
     begin = db.Column(db.Float)                                         # Beginning concentration
-    def __init__(self, design, matter, begin):
-        self.design = design
+    def __init__(self, data, matter, begin):
+        self.data = data
         self.matter = matter
         self.begin = begin
     def __repr__(self):
@@ -225,7 +226,9 @@ class enzyme(db.Model):
     name = db.Column(db.String(60))                 # Enzyme's name
     sequence = db.Column(db.String(500))            # Enzyme's CDS sequence
     promoter = db.Column(db.String(320))            # Enzyme's adapted promoter (With dirty list)
+    detected_promoter = db.Column(db.Integer)       # User's detected promoter
     rbs = db.Column(db.String(320))                 # Enzyme's adapted rbs (With dirty list)
+    detected_rbs = db.Column(db.Integer)            # User's detected RBS
     def __init__(self, sequence, name):
         self.sequence = sequence
         self.name = name

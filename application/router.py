@@ -22,15 +22,18 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
 @app.route('/')
 def router_index():
     if session.get('user'):
         return redirect(url_for('router_profile'))
     return render_template('login.html')
 
+
 @app.route('/testlogin')
 def router_testlogin():
     return render_template('testlogin.html')
+
 
 @app.route('/login', methods = ['POST'])
 def router_login():
@@ -38,36 +41,28 @@ def router_login():
         # print(request.form)
         checker = user.query.filter_by(email = request.form.get("email")).first()
         if checker is None:
-            return jsonify({
-                            'code': 1,
-                            'message': 'Invalid e-mail or password!'
-                            })
+            return libs_errorMsg('Invalid e-mail or password!')
         if not checker.check_pw(request.form.get("password")):
-            return jsonify({
-                            'code': 1,
-                            'message': 'Invalid e-mail or password!'
-                            })
+            return libs_errorMsg('Invalid e-mail or password!')
         session['user'] = checker.get_id()
         session['nickname'] = checker.nickname
         session['icon'] = checker.icon
-        return jsonify({'code': 0})
+        return libs_success()
     else:
         return redirect(url_for('router_index'))
+
 
 @app.route('/register', methods = ['POST'])
 def router_register():
     if request.method == "POST":
         if not user.query.filter_by(email = request.form.get("email")).first() is None:
-            return jsonify({
-                            'code': 1,
-                            'message': 'E-mail has been registered!'
-                            })
+            return libs_errorMsg('E-mail has been registered!')
         new_user = user(request.form.get("nickname"), request.form.get("email"), request.form.get("password"))
         new_user.save()
         session['user'] = new_user.get_id()
         session['nickname'] = new_user.nickname
         session['icon'] = new_user.icon
-        return jsonify({'code': 0})
+        return libs_success()
 
 
 @app.route('/profile')
@@ -144,23 +139,6 @@ def router_state(design_id, state_id):
 
     return render_template('state_%r.html' % state_id, design_id = design_id)
 
-@app.route('/setDesignName', methods=['POST'])
-@login_required
-def setDesignName():
-    myPrint(request.json)
-    designID = request.json.get("_id")
-    d = design.query.filter_by(id=designID).first()
-    if not d:
-        return jsonify({"code": 1, "message": "Error ID"})
-    if d.owner_id != session['user']:
-        abort(403)
-    name = request.json.get("name")
-    mode = request.json.get("mode")
-    d.design_name = name
-    if mode:
-        d.design_mode = mode
-    db.session.commit()
-    return libs_success()
 
 @app.route('/square')
 def router_square():
@@ -176,10 +154,6 @@ def router_logout():
     session.pop('nickname', None)
     return redirect(url_for('router_index'))
 
-@app.errorhandler(404)
-def router_not_found(error):
-    return render_template('404.html'), 404
-
 @app.route('/user/<int:user_id>')
 def route_user(user_id):
     if user_id == session.get('user'):
@@ -188,6 +162,29 @@ def route_user(user_id):
     designs, info = getAllPosts(user_id)
     num = getUserNum(user_id)
     return render_template('user.html', title='Square', designs = designs, info = info, num=num, user=u)
+
+@app.route('/design/<int:design_id>')
+@login_required
+def designDetail(design_id):
+    d = design.query.filter_by(id=design_id).first_or_404()
+    u = user.query.filter_by(id=session['user']).first()
+
+    otherInfo = {}
+    l = json.loads(d.liked_by)
+    # myPrint(l, session['user'])
+    otherInfo['icon'] = d.owner.icon
+    otherInfo['like_num'] = len(l)
+    otherInfo['liked'] = (session['user'] in l)
+    otherInfo['datetime'] = d.design_time.strftime("%Y-%m-%d %H:%M")
+    l = json.loads(u.mark)
+    # myPrint(l, d.id, (str(d.id) in l))
+    otherInfo['marked'] = (str(d.id) in l)
+    otherInfo['myCreation'] = (d.owner == session["user"])
+    return render_template("detail.html", title="Design detail", design = d, info=otherInfo)
+
+@app.errorhandler(404)
+def router_not_found(error):
+    return render_template('404.html'), 404
 
 ###################################################
 # for states test!!!!
