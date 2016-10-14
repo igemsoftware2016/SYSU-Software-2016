@@ -118,26 +118,23 @@ def router_state(design_id, state_id):
     session['design'] = design_id
     if state_id > cur_design.state:
         return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
-        #state_id = cur_design.state
 
     if state_id == 1:
         return render_template('state_1.html', design_id = design_id,
-             design_name = cur_design.design_name, design_mode = cur_design.design_mode)#, matters = dict_matters, medium = dict_medium, flora = dict_flora)
+             design_name = cur_design.design_name, design_mode = cur_design.design_mode)
 
     elif state_id == 2:
-        cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state1).first()
-        if cur_calculator.ans == -1:
+        if cur_design.state2_data is None:
             return render_template('wait.html', design_id = design_id)
-        return render_template('state_2.html')#, bacteria = dict_bacteria, plasmid = dict_plasmid)
+        return render_template('state_2.html')
 
     elif state_id == 3:
-        cur_calculator = calculator.query.filter_by(md5 = cur_design.md5_state2).first()
-        if cur_calculator.ans == -1:
+        if cur_design.state3_matter_list == '[]':
             return render_template('wait.html', design_id = design_id)
-        return render_template('state_3.html', design_id = design_id)#, y_list = dict_ylist)
+        return render_template('state_3.html', design_id = design_id)
 
     elif state_id == 4:
-        return render_template('state_4.html', design_id = design_id)#, pdf_pos = where_is_the_pdf)
+        return render_template('state_4.html', design_id = design_id)
 
     return render_template('state_%r.html' % state_id, design_id = design_id)
 

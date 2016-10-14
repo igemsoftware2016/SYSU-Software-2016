@@ -95,14 +95,17 @@ class design(db.Model):
     design_time = db.Column(db.DateTime)                        # Design's created time
     shared = db.Column(db.Boolean)                              # If the design is shared
     needHelp = db.Column(db.Boolean)                            # If the design's owner need help
-    #state1 data region
+    # state1 data region
     state1_data_id = db.Column(db.Integer, db.ForeignKey("state1_data.id"))
     state1_data = db.relationship('state1_data', backref = db.backref('owners', lazy = 'dynamic'))
     state1_upload_file = db.Column(db.Boolean)
-    #state2 data region
+    # state2 data region
     state2_data_id = db.Column(db.Integer, db.ForeignKey("state2_data.id"))
     state2_data = db.relationship('state2_data', backref = db.backref('owners', lazy = 'dynamic'))
-    #state5 data region
+    # state3 data region
+    # state3_matter_list = db.Column(db.String(300))              # Matter's name for drawing Diagram (With dirty list)
+    state3_matter_plot = db.Column(db.String(1000))             # Diagram's 20 points for each Matters (With dirty dict)
+    # state5 data region
     state5_saved_data = db.Column(db.String(2000))
     state5_upload_file = db.Column(db.Boolean)
     state5_file_path = db.Column(db.String(100))
@@ -118,6 +121,8 @@ class design(db.Model):
         self.shared = False
         self.needHelp = False
         self.state1_upload_file = False
+        state3_matter_list = '[]'
+        state3_matter_plot = "{}"
         self.state5_saved_data = ''
         self.state5_upload_file = False
     def __repr__(self):
@@ -237,11 +242,14 @@ class enzyme(db.Model):
     detected_promoter = db.Column(db.Integer)       # User's detected promoter
     rbs = db.Column(db.String(320))                 # Enzyme's adapted rbs (With dirty list)
     detected_rbs = db.Column(db.Integer)            # User's detected RBS
-    def __init__(self, sequence, name):
+    from_bact_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))
+    from_bact = db.relationship('floraDB', backref = db.backref('used_enzyme', lazy = 'dynamic'))   # Where the enzyme from
+    def __init__(self, sequence, name, from_bact):
         self.sequence = sequence
         self.name = name
         self.promoter = '[]'
         self.rbs = '[]'
+        self.from_bact = from_bact
     def __repr__(self):
         return '<Enzyme %r>' % self.name
     def save(self):
