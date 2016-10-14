@@ -1,4 +1,4 @@
-from application import db
+from application import db, dataLibs
 import random
 import datetime, pytz
 import hashlib
@@ -46,10 +46,18 @@ class mediumDB(db.Model):
     name = db.Column(db.String(100))                # Medium's name
     matters = db.Column(db.String(500))             # Matters included in the medium (With dirty list)
     concentration = db.Column(db.String(500))       # Matters' concentration (With dirty dictionary)
-    def __init__(self, name):
+    def __init__(self, name, mattersdict = None):
         self.name = name
-        self.matters = '[]'
-        self.concentration = '{}'
+        if mattersdict is None:
+            self.matters = '[]'
+            self.concentration = '{}'
+        else:
+            for i in mattersdict.keys():
+                cur_matter = matterDB.query.filter_by(matter_name = i).first()
+                if cur_matter is None:
+                    continue
+                self.matters = libs_list_insert(self.matters, cur_matter.id)
+                self.concentration = libs_dict_insert(self.concentration, cur_matter.id, mattersdict[i])
     def __repr__(self):
         return '<Medium %r>' % self.name
     def save(self):
@@ -74,8 +82,9 @@ class floraDB(db.Model):
 class plasmidDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     name = db.Column(db.String(60))                 # Plasmid's name
-    sequence = db.Column(db.String(500))            # Plasmid's sequence
-    def __init__(self, sequence):
+    sequence = db.Column(db.String(5000))            # Plasmid's sequence
+    def __init__(self, name, sequence):
+        self.name = name
         self.sequence = sequence
     def __repr__(self):
         return '<Plasmid %r>' % self.name
@@ -124,7 +133,7 @@ class design(db.Model):
         self.state1_upload_file = False
         state3_matter_list = '[]'
         state3_matter_plot = "{}"
-        self.state5_saved_data = ''
+        self.state5_saved_data = '{}'
         self.state5_upload_file = False
     def __repr__(self):
         return '<Design %r> %r' % (self.id, self.d)
