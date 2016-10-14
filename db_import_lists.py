@@ -3,6 +3,10 @@ from application.model import *
 import os
 nowdir = os.path.abspath(os.path.dirname(__file__))
 
+def upcase(s):
+	for x in s:
+		if x
+
 f = open(os.path.join(nowdir, 'mar_total.txt'), 'r')
 while True:
 	line = f.readline()
@@ -38,4 +42,19 @@ for filename in medium_list:
 		else:
 			break
 	new_medium.save()
+	file.close()
+
+plasmid_list = ['pSB1AK3.txt', 'pSB1AT3.txt', 'pSB1C3.txt', 'pSB1K3.txt', 'pSB1T3.txt']
+plasmid_path = os.path.join(nowdir, 'plasmid')
+for filename in plasmid_list:
+	file = open(os.path.join(plasmid_path, filename), 'r')
+	sequence = ''
+	while True:
+		line = file.readline()
+		if line:
+			sequence += line.upper()
+		else:
+			break
+	new_plasmid = plasmidDB(filename[0 : filename.rfind('.')], sequence)
+	new_plasmid.save()
 	file.close()
