@@ -64,7 +64,7 @@ void add_ec(string x, string pro_id, string sub_id, string pro_coff,
 void add_sub(string x, string name) {
 	if (0 == sub_map.count(x)) {
 		sub_map.insert(make_pair(x, sub_data(name)));
-		marout << name << ' ' << x << endl;
+		marout << name << '|' << x << endl;
 	}
 }
 
