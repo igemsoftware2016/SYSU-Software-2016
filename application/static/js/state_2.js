@@ -4,6 +4,15 @@ $(document).ready(function() {
       context: $('.bottom.segment')
     });
 
+  // range items
+  $('.ui.range').range({
+    min: 0,
+    max: 1,
+    start: 0,
+    step: 0.01
+  });
+
+
   var ctx = document.getElementById("myChart");
   var data = {
     labels: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0', '9.5', '10.0'],
@@ -144,16 +153,16 @@ $(document).ready(function() {
 
   // set popup
   var setPopup = function(now_id) {
-    var el = $.grep($(nowPla.pathway), function(p) {
+    nowPath = $.grep($(nowPla.pathway), function(p) {
       return p._id == now_id;
     })[0];
     // console.log(el);
-    set_comp(".ui.promoter + .popup", getProm(el.prom));
-    set_comp(".ui.RBS + .popup", getRBS(el.RBS));
-    set_comp(".ui.CDS + .popup", getCDS(el.CDS));
-    set_comp(".ui.teminator + .popup", getTerm(el.term));
+    set_comp(".ui.promoter + .popup", getProm(nowPath.prom));
+    set_comp(".ui.RBS + .popup", getRBS(nowPath.RBS));
+    set_comp(".ui.CDS + .popup", getCDS(nowPath.CDS));
+    set_comp(".ui.teminator + .popup", getTerm(nowPath.term));
   }
-  // set popup
+  // set range
   var setRange = function(now_id) {
     var path = $.grep($(nowPla.pathway), function(p) {
       return p._id == now_id;
@@ -169,8 +178,9 @@ $(document).ready(function() {
       start: prom.s,
       step: 0.01,
       onChange: function(val) {
-        console.log(val);
+        // console.log(val);
         $(".promoter.num").text(val.toFixed(2));
+        setClosestInfo(val, "prom", path.strength.promoter);
       }
     });
     var RBS_lower = path.strength.RBS_lower,
@@ -184,8 +194,9 @@ $(document).ready(function() {
       start: RBS.s,
       step: 0.01,
       onChange: function(val) {
-        console.log(val);
+        // console.log(val);
         $(".RBS.num").text(val.toFixed(2));
+        setClosestInfo(val, "RBS", path.strength.RBS);
       }
     });
     var mRNA_lower = path.strength.mRNA_lower,
@@ -197,8 +208,9 @@ $(document).ready(function() {
       start: mRNA,
       step: 0.01,
       onChange: function(val) {
-        console.log(val);
+        // console.log(val);
         $(".mRNA.num").text(val.toFixed(2));
+        setClosestInfo(val, "mRNA");
       }
     });
     var protein_lower = path.strength.protein_lower,
@@ -210,11 +222,43 @@ $(document).ready(function() {
       start: protein,
       step: 0.01,
       onChange: function(val) {
-        console.log(val);
+        // console.log(val);
         $(".protein.num").text(val.toFixed(2));
+        setClosestInfo(val, "protein");
       }
     });
   }
+  // find the closest strength one and set popup
+  // modify the package(will be send when save) at the same time
+  var setClosestInfo = function(val, type, slist) {
+    if(type === "mRNA") {
+      nowPath.mRNA_s = val;
+      return true;
+    } else if (type == "protein") {
+      nowPath.protein_s = val;
+      return true;
+    }
+
+    var clIndex = 0;
+    $(slist).each(function(n, el) {
+      console.log(slist[clIndex].s, el.s, val);
+      if(parseFloat(slist[clIndex].s) < parseFloat(val) ||
+        parseFloat(el.s - val) < parseFloat(slist[clIndex].s - val)) {
+        console.log("change");
+        clIndex = n;
+      }
+    });
+
+    if(type === "prom") {
+      set_comp(".ui.promoter + .popup", getProm(slist[clIndex].info));
+      nowPath.prom = slist[clIndex].info;
+    } else if(type === "RBS") {
+      console.log(slist);
+      set_comp(".ui.RBS + .popup", getRBS(slist[clIndex].info));
+      nowPath.RBS = slist[clIndex].info;
+    }
+  }
+
   // set component
   var set_comp = function(selector, info) {
     var $popup = $(selector);
@@ -224,7 +268,7 @@ $(document).ready(function() {
     $popup.find(".intro").text(info.Introduction);
     $popup.find("a.NCBI").attr("href", "#" + info.NCBI);
     $popup.find("a.FASTA").attr("href", "#" + info.FASTA);
-    console.log(selector, info);
+    // console.log(selector, info);
   }
 
 
@@ -236,7 +280,7 @@ $(document).ready(function() {
   var promoter_info, RBS_info,
     CDS_info, term_info,
     bacteria_list;
-  var nowBac, nowPla;
+  var nowBac, nowPla, nowPath;
   $("#bacteria-slt").dropdown({
     onChange: function(value, text, $selectedItem) {
       console.log(value, text, $selectedItem);
@@ -327,19 +371,8 @@ $(document).ready(function() {
     }
   });
 
-  // range items
-  $('.ui.range').range({
-    min: 0,
-    max: 1,
-    start: 0,
-    step: 0.01
-  });
-
-
   // modify by address
-  // $(".ui.button.save").click(function(){
-  //   console.log(bacteria_list);
-  //   nowPla.name = "change!!!!";
-  //   console.log(bacteria_list);
-  // })
+  $(".ui.button.save").click(function(){
+    console.log(bacteria_list);
+  })
 })

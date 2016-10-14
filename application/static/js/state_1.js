@@ -58,8 +58,8 @@ $(document).ready(function() {
     //     }
     // });
 
-    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search matters..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
-    var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">Unit </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
+    var makeLine = '<tr class="make-line"><td class="center aligned"><div class="ui search name fluid"><div class="ui icon input fluid"><input class="prompt" type="text" placeholder="Search matters..."><i class="search icon"></i></div><div class="results"></div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">mol/L </div></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">mol/L </div></div></td><td class="center aligned"><div class="ui toggle checkbox max"><input type="checkbox"><label></label></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-add"><i class="minus icon"></i></button></td></tr>'
+    var resolveLine = '<tr class="resolve-line"><td class="center aligned"><div class="ui input fluid name search"><input class="prompt" type="text" placeholder="Search matter..."></div><div class="results"></div></td><td class="center aligned"><div class="ui right labeled input fluid"><input type="number" placeholder="Weight.."><div class="ui basic label">mol/L </div></div></td><td class="right aligned"><button class="ui circular minus icon button tiny remove-resolve"><i class="minus icon"></i></button></td></tr>'
 
 
     $(document).on('click', "#add-make", function() {
@@ -78,7 +78,6 @@ $(document).ready(function() {
     });
 
     $("#add-resolve").click(function() {
-        console.log($($("#resolve-tbody")[0]));
         $($("#resolve-tbody")[0]).append(resolveLine);
         $('.ui.name.search').search({
             apiSettings: {
@@ -175,7 +174,7 @@ $(document).ready(function() {
     } else if ($("#design-mode").text() == "make") {
         $(".resolve-row").hide();
         $(".ui.dimmer:not(.upload)").dimmer("hide");
-    } else if ($("#design-mode").text() == "make") {
+    } else if ($("#design-mode").text() == "resolve") {
         $(".make-row").hide();
         $(".ui.dimmer:not(.upload)").dimmer("hide");
         isMake = false;
@@ -244,14 +243,14 @@ $(document).ready(function() {
      * define the change callback function
      * to modify the package
      */
-    var medium, flora;
-    $("#medium-slt").dropdown({
-        onChange: function(value, text, $selectedItem) {
-            medium = value;
-            console.log(value, text, $selectedItem);
-        }
-    });
-    $("#medium-slt").dropdown("set selected", 1);
+    // var medium, flora;
+    // $("#medium-slt").dropdown({
+    //     onChange: function(value, text, $selectedItem) {
+    //         medium = value;
+    //         console.log(value, text, $selectedItem);
+    //     }
+    // });
+    // $("#medium-slt").dropdown("set selected", 1);
 
     // $("#flora-slt").dropdown({
     //     onChange: function(value, text, $selectedItem) {
@@ -304,7 +303,7 @@ $(document).ready(function() {
 
         var other = {
             time: $("#time").val(),
-            medium: medium,
+            medium: $("#medium-slt").dropdown("get text"),
             env: flora
         }
 
@@ -423,15 +422,66 @@ $(document).ready(function() {
         dataType: "json",
         contentType: 'charset=utf-8',
         cache: false,
-        data: {design_id: $("#design-id").text()},
+        data: {
+            design_id: $("#design-id").text()
+        },
         success: function(r) {
             if (r.code) {
                 showErrMsg(r.message);
                 return false;
             } else {
-                if(r.ret) {
+                if (r.ret) {
                     // do something with reload
-                    console.log(r.ret);
+                    // test now
+                    r = {
+                        "code": 0,
+                        "ret": {
+                            "design_id": 2,
+                            "input": [{
+                                name: "bbbb111",
+                                conc: 9.23
+                            }, {
+                                name: "QQQ",
+                                conc: 2.1
+                            }],
+                            "mode": "resolve",
+                            "other": {
+                                "env": ["AMMONIUM", "D-ALANINE"],
+                                "medium": "May",
+                                "time": 2.9
+                            }
+                        }
+                    }
+                    if (r.ret.mode == "make") {
+                        $(r.ret.input).each(function(n, el) {
+                            var $line = $('.make-line').eq(-1);
+                            $line.find("input").eq(0).val(el.name);
+                            $line.find("input").eq(1).val(el.lower);
+                            $line.find("input").eq(2).val(el.upper);
+                            if (el.maxim) {
+                                $line.find(".ui.checkbox").checkbox("set checked");
+                            }
+                            $("#add-make").click();
+                        });
+                        $('.make-line').eq(-1).find("button.remove-add").click();
+                    } else if (r.ret.mode == "resolve") {
+                        $(r.ret.input).each(function(n, el) {
+                            var $line = $('.resolve-line').eq(-1);
+                            $line.find("input").eq(0).val(el.name);
+                            $line.find("input").eq(1).val(el.conc);
+                            $("#add-resolve").click();
+                        });
+                        $('.resolve-line').eq(-1).find("button.remove-resolve").click();
+                    }
+
+                    $("#time").val(r.ret.other.time);
+                    $("#medium-slt").dropdown("set value", r.ret.other.medium);
+                    $(r.ret.other.env).each(function(n, el) {
+                        var color = colors[Math.floor(Math.random() * colors.length)];
+                        $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                            el + '</span><i class="icon env close"></i></a>');
+                    });
+                    $("#medium-slt").dropdown("set text", r.ret.other.medium);
                 }
             }
         }

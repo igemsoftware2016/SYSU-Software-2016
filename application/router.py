@@ -238,10 +238,10 @@ def getState2Info():
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
                     "promoter": [{
-                        "s": 0.19,
+                        "s": 0.7,
                         "info": "1"
                     }, {
-                        "s": 1.33,
+                        "s": 1.03,
                         "info": "2"
                     }],
                     "RBS_lower": 0.1,
@@ -261,7 +261,7 @@ def getState2Info():
             }, {
                 "_id": 2,
                 "name": "P2",
-                "prom": 2,
+                "prom": 1,
                 "RBS": 1,
                 "CDS": 1,
                 "term": 2,
@@ -271,10 +271,10 @@ def getState2Info():
                     "promoter_lower": 0.1,
                     "promoter_upper": 1.33,
                     "promoter": [{
-                        "s": 0.1,
+                        "s": 0.7,
                         "info": "1"
                     }, {
-                        "s": 1.33,
+                        "s": 1.13,
                         "info": "2"
                     }],
                     "RBS_lower": 0.1,
