@@ -80,6 +80,17 @@ $(document).ready(function() {
     $("#add-resolve").click(function() {
         console.log($($("#resolve-tbody")[0]));
         $($("#resolve-tbody")[0]).append(resolveLine);
+        $('.ui.name.search').search({
+            apiSettings: {
+                url: '/search/matters/{query}'
+            },
+            fields: {
+                results: 'results',
+                title: 'title'
+                    // description: 'description'
+            },
+            minCharacters: 1
+        });
     });
 
     $(document).on('click', '.remove-add', function() {
