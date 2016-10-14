@@ -133,8 +133,7 @@ class design(db.Model):
 
 
 class state1_data(db.Model):
-    id = db.Column(db.Integer, primary_key = True)                  # Index
-    design_mode = db.Column(db.String(60))                          # Mode of the design (Should be "synthetic" or "decompose")
+    id = db.Column(db.Integer, primary_key = True)                  # Mode of the design (Should be "synthetic" or "decompose")
     reaction_time = db.Column(db.Float)                             # Total time of the reaction
     medium_id = db.Column(db.Integer, db.ForeignKey('mediumDB.id')) # Used medium's id
     medium = db.relationship('mediumDB', backref = 'all_design')

@@ -277,10 +277,11 @@ def save_state(state_id):
             # state1 data generation
             # cur_design.design_mode = request.form.get('mode')
             cur_data = state1_data()
-
             d_input = request.json.get('inputs')
             if request.json.get('mode') == 'make':
                 for m in d_input:
+                    myPrint(m.get('name'))
+                    myPrint(m.get('lower'))
                     new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
                     new_make_matter.save()
                     tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
@@ -390,10 +391,10 @@ def get_state_saved(state_id):
             for x in libs_list_query(cur_data.flora):
                 ret["other"]["env"].append(floraDB.query.filter_by(id = x).first().name)
             ret["input"] = []
-            if cur_data.design_mode == "make":
+            if cur_design.design_mode == "make":
                 for x in libs_list_query(cur_data.make_matter):
                     tmp_matter = make_matter.query.filter_by(id = x).first()
-                    ret["input"].append({"upper": tmp_matter.upper, "lower": tmp_matter.lower, "name": tmp_matter.matter.name, "maxim": tmp_matter.maxim})
+                    ret["input"].append({"upper": tmp_matter.upper, "lower": tmp_matter.lower, "name": tmp_matter.matter.matter_name, "maxim": tmp_matter.maxim})
             else:
                 for x in libs_list_query(cur_data.resolve_matter):
                     tmp_matter = resolve_matter.query.filter_by(id = x).first()
