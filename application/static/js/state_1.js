@@ -332,7 +332,7 @@ $(document).ready(function() {
                 document.getElementById('save-btn').onclick = function() {
                     if (isUpload == false) {
                         $.ajax({
-                            url: "/save_test",
+                            url: "/save_state_1",
                             type: "POST",
                             dataType: "json",
                             contentType: 'application/json; charset=utf-8',

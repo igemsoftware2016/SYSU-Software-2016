@@ -259,44 +259,58 @@ def get_steps():
 def save_state(state_id):
     # need attention, you should change `request.form` to `request.json`
     #   and access other parmas in a totally different way
-    if method == 'POST':
-        cur_design = design.query.filter_by(id = request.form.get('design_id')).first()
+    if request.method == 'POST':
+
+        #
+        # get design from db
+        #
+        cur_design = design.query.filter_by(id = request.json.get('design_id')).first()
+
         if cur_design.owner_id != session['user']:
             return redirect(url_for('router_profile'))
         if cur_design.state < state_id:
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
-            cur_design.design_mode = request.form.get('mode')
-            cur_data = cur_design.state1_data
-            if cur_data is None:
-                cur_data = state1_data()
-                cur_data.save()
-                cur_design.state1_data = cur_data
 
-            d_input = request.form.get('inputs')
-            if request.form.get('mode') == 'make':
+            # state1 data generation
+            cur_design.design_mode = request.form.get('mode')
+            cur_data = state1_data()
+
+            d_input = request.json.get('inputs')
+            if request.json.get('mode') == 'make':
                 for m in d_input:
                     new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
                     new_make_matter.save()
                     tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
                     cur_data.make_matter = tmplist
-            elif request.form.get('mode') == 'resolve':
+            elif request.json.get('mode') == 'resolve':
                 for m in d_input:
                     new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
                     new_resolve_matter.save()
                     tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
                     cur_data.resolve = tmplist
 
-            d_order = request.form.get('other')
+            d_order = request.json.get('other')
             cur_data.reaction_time = float(d_order.get('time'))
             cur_data.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
+
             for floras in d_order.get('env'):
-                tmplist = libs_list_insert(cur_data.flora, floraDB.query.filter_by(name = floras).first().id)
+                flora = floraDB.query.filter_by(name = floras).first()
+                if not flora:
+                    continue
+
+                tmplist = libs_list_insert(cur_data.flora, flora.id)
                 if tmplist is not None:
                     cur_data.flora = tmplist
-        
+
+            if cur_design.state1_data:
+                db.session.delete(cur_design.state1_data)
+            cur_design.state1_data = cur_data
+
         elif state_id == 2:
+            pass
+        elif state_id == 5:
             pass
 
         db.session.commit()
@@ -355,16 +369,17 @@ def commit_state(state_id):
 @app.route('/get_state_<int:state_id>_saved', methods = ['GET'])
 @login_required
 def get_state_saved(state_id):
-    if method == 'GET':
+    if request.method == 'GET':
         cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
         if cur_design is None:
             return libs_errorMsg("Design not found")
         if cur_design.owner_id != session['user']:
-            return redirect(url_for('router_profile'))
+            return libs_errorMsg('Not your design')
         if state_id > cur_design.state:
-            return redirect(url_for('router_state', design_id = cur_design.id, state_id = cur_design.state))
+            return libs_errorMsg('Not reach that step yet');
         if cur_design.state1_data is None:
             return libs_success()
+
         if state_id == 1:
             ret = dict()
             ret["design_id"] = cur_design.design_id
@@ -404,10 +419,10 @@ def process_local_calc(design_id):
                 cur_bact = used_bacteria(floraDB.query.filter_by(name = bact.get("name")).first())
                 for enzy in bact.get("enzyme"):
                     cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"))
-                        for pro in enzy.get("promoter")
-
-                        for rbs in enzy.get("rbs")
-                            
+                    for pro in enzy.get("promoter"):
+                        pass
+                    for rbs in enzy.get("rbs"):
+                        pass
                     cur_bact.enzyme = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
                 cur_data.bacteria = libs_list_insert(cur_data.bacteria, cur_bact.id)
         return libs_success()
@@ -520,13 +535,15 @@ def deleteDesign():
 @app.route('/upload/<int:design_id>/<int:state_id>', methods = ['GET', 'POST'])
 @login_required
 def upload_file(design_id, state_id):
-    print ("Hello")
+
+    if state_id != 1 and state_id != 5:
+        return libs_errorMsg("Wrong state")
+
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            print (os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return libs_success()
 
         return libs_errorMsg("Upload failed")
