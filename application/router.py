@@ -26,6 +26,8 @@ def login_required(f):
 @app.route('/')
 def router_index():
     if session.get('user'):
+        if not user.query.filter_by(id = session.get('user')).first():
+            return redirect(url_for('router_logout'))
         return redirect(url_for('router_profile'))
     return render_template('login.html')
 
