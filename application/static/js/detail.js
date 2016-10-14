@@ -241,5 +241,37 @@ $(document).ready(function() {
                 }
             });
         });
+    });    
+
+    $(".button.delete").click(function() {
+        var $btn = $(this);
+        swal({
+            title: 'You are deleting a design',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            focusCancel: true
+        }).then(function() {
+            $.ajax({
+                url: "/delete_design",
+                type: "DELETE",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify({
+                    design_id: $btn.parents('.grid.design').attr('design-id')
+                }),
+                success: function(r) {
+                    if (r.code) {
+                        showErrMsg(r.message);
+                        return false;
+                    } else {
+                        window.location.href='/profile';
+                    }
+                }
+            });
+        });
     });
 });

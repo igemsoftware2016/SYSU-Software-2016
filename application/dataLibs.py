@@ -272,9 +272,10 @@ def save_state(state_id):
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
+            myPrint(request.json)
 
             # state1 data generation
-            cur_design.design_mode = request.form.get('mode')
+            # cur_design.design_mode = request.form.get('mode')
             cur_data = state1_data()
 
             d_input = request.json.get('inputs')
@@ -307,7 +308,7 @@ def save_state(state_id):
             if cur_design.state1_data:
                 db.session.delete(cur_design.state1_data)
             cur_design.state1_data = cur_data
-
+        
         elif state_id == 2:
             pass
         elif state_id == 5:
@@ -329,7 +330,7 @@ def commit_state(state_id):
             cur_design.design_mode = request.form.get('mode')
             cur_data = cur_design.state1_data
             if cur_data is None:
-                cur_data = state1_data()
+                cur_data = state1_data(cur_design.owner)
                 cur_data.save()
                 cur_design.state1_data = cur_data
 
@@ -382,8 +383,8 @@ def get_state_saved(state_id):
 
         if state_id == 1:
             ret = dict()
-            ret["design_id"] = cur_design.design_id
-            ret["mode"] = cur_design.mode
+            ret["design_id"] = cur_design.id
+            ret["mode"] = cur_design.design_mode
             cur_data = cur_design.state1_data
             ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": []}
             for x in libs_list_query(cur_data.flora):

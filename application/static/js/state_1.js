@@ -299,7 +299,7 @@ $(document).ready(function() {
 
         return {
             design_id: $("#design-id").text(),
-            mode: (isMake ? "made" : "resolve"),
+            mode: (isMake ? "make" : "resolve"),
             inputs: inputs,
             other: other
         };
@@ -403,6 +403,27 @@ $(document).ready(function() {
         $(uploader.files).each(function(n, file) {
             uploader.removeFile(file);
         });
+    });
+
+    // get saved state data
+    $.ajax({
+        url: "/get_state_1_saved",
+        type: "GET",
+        dataType: "json",
+        contentType: 'charset=utf-8',
+        cache: false,
+        data: {design_id: $("#design-id").text()},
+        success: function(r) {
+            if (r.code) {
+                showErrMsg(r.message);
+                return false;
+            } else {
+                if(r.ret) {
+                    // do something with reload
+                    console.log(r.ret);
+                }
+            }
+        }
     });
 
 });
