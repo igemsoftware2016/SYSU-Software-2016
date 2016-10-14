@@ -120,8 +120,11 @@ def router_state(design_id, state_id):
         return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
 
     if state_id == 1:
+        mlist = []
+        for ms in mediumDB.query.all():
+            mlist.append({"id": ms.id, "value": name})
         return render_template('state_1.html', design_id = design_id,
-             design_name = cur_design.design_name, design_mode = cur_design.design_mode)
+             design_name = cur_design.design_name, design_mode = cur_design.design_mode, medium_list = mlist)
 
     elif state_id == 2:
         if cur_design.state2_data is None:

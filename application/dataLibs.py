@@ -254,6 +254,43 @@ def get_steps():
         return libs_success(design_query.state)
 
 
+def save_state1(cur_design, data_dict):
+    myPrint(request.json)
+
+    # state1 data generation
+    # cur_design.design_mode = request.form.get('mode')
+    cur_data = state1_data()
+    d_input = data_dict.get('inputs')
+    if data_dict.get('mode') == 'make':
+        for m in d_input:
+            new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
+            new_make_matter.save()
+            tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
+            cur_data.make_matter = tmplist
+    elif data_dict.get('mode') == 'resolve':
+        for m in d_input:
+            new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
+            new_resolve_matter.save()
+            tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
+            cur_data.resolve = tmplist
+
+    d_order = data_dict.get('other')
+    cur_data.reaction_time = float(d_order.get('time'))
+    cur_data.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
+
+    for floras in d_order.get('env'):
+        flora = floraDB.query.filter_by(name = floras).first()
+        if not flora:
+            continue
+
+        tmplist = libs_list_insert(cur_data.flora, flora.id)
+        if tmplist is not None:
+            cur_data.flora = tmplist
+
+    if cur_design.state1_data:
+        db.session.delete(cur_design.state1_data)
+    cur_design.state1_data = cur_data
+
 @app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
 def save_state(state_id):
@@ -272,43 +309,7 @@ def save_state(state_id):
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
-            myPrint(request.json)
-
-            # state1 data generation
-            # cur_design.design_mode = request.form.get('mode')
-            cur_data = state1_data()
-            d_input = request.json.get('inputs')
-            if request.json.get('mode') == 'make':
-                for m in d_input:
-                    myPrint(m.get('name'))
-                    myPrint(m.get('lower'))
-                    new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
-                    new_make_matter.save()
-                    tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
-                    cur_data.make_matter = tmplist
-            elif request.json.get('mode') == 'resolve':
-                for m in d_input:
-                    new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
-                    new_resolve_matter.save()
-                    tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
-                    cur_data.resolve = tmplist
-
-            d_order = request.json.get('other')
-            cur_data.reaction_time = float(d_order.get('time'))
-            cur_data.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
-
-            for floras in d_order.get('env'):
-                flora = floraDB.query.filter_by(name = floras).first()
-                if not flora:
-                    continue
-
-                tmplist = libs_list_insert(cur_data.flora, flora.id)
-                if tmplist is not None:
-                    cur_data.flora = tmplist
-
-            if cur_design.state1_data:
-                db.session.delete(cur_design.state1_data)
-            cur_design.state1_data = cur_data
+            save_state1(cur_design, request.json)
         
         elif state_id == 2:
             pass
@@ -319,53 +320,33 @@ def save_state(state_id):
         return libs_success()
 
 
-@app.route('/commit_state_<int:state_id>', methods = ['POST'])
+@app.route('/commit_state_<int:state_id>', methods = ['GET', 'POST'])
 @login_required
 def commit_state(state_id):
-    if method == 'POST':
-        cur_design = design.query.filter_by(id = request.form['design_id']).first()
+    if request.method == 'POST':
+        myPrint("I'm in!")
+        cur_design = design.query.filter_by(id = request.json['design_id']).first()
         if cur_design.owner_id != session['user']:
             return jsonify({"code": 1})
 
         if state_id == 1:
-            cur_design.design_mode = request.form.get('mode')
-            cur_data = cur_design.state1_data
-            if cur_data is None:
-                cur_data = state1_data(cur_design.owner)
-                cur_data.save()
-                cur_design.state1_data = cur_data
-
-            d_input = request.form.get('inputs')
-            if request.form.get('mode') == 'make':
-                for m in d_input:
-                    new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
-                    new_make_matter.save()
-                    tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
-                    cur_data.make_matter = tmplist
-            elif request.form.get('mode') == 'resolve':
-                for m in d_input:
-                    new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
-                    new_resolve_matter.save()
-                    tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
-                    cur_data.resolve = tmplist
-
-            d_order = request.form.get('other')
-            cur_data.reaction_time = float(d_order.get('time'))
-            cur_data.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
-            for floras in d_order.get('env'):
-                tmplist = libs_list_insert(cur_data.flora, floraDB.query.filter_by(name = floras).first().id)
-                if tmplist is not None:
-                    cur_data.flora = tmplist
+            save_state1(cur_design, request.json)
         
         elif state_id == 2:
             pass
             
-        db.session.commit()
         if state_id == cur_design.state:
             cur_design.state += 1
         if state_id == 5:
             return libs_errorMsg("No next step")
+
+        db.session.commit()
         return libs_success()
+
+    # cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
+    # cur_design.state += 1 #for test
+    # db.session.commit()
+    # return jsonify({"code": 0, "state": cur_design.state})
 
 
 @app.route('/get_state_<int:state_id>_saved', methods = ['GET'])
@@ -410,14 +391,14 @@ def process_local_calc(design_id):
     cur_design = design.query.filter_by(id = design_id).first()
     if cur_design is None:
         return jsonify({"state": 0})
-    if method == 'POST':
-        if request.form.get("code") != 0:
+    if request.method == 'POST':
+        if request.json.get("code") != 0:
             return libs_errorMsg("Local calculate failed")
         if cur_design.state == 2:
             cur_data = cur_design.state2_data
             if cur_data is None:
                 cur_data = state2_data()
-            for bact in request.form.get("bacteria"):
+            for bact in request.json.get("bacteria"):
                 cur_bact = used_bacteria(floraDB.query.filter_by(name = bact.get("name")).first())
                 for enzy in bact.get("enzyme"):
                     cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(name = enzy.get("from")).first())
@@ -502,6 +483,27 @@ def search_matters_name(matter_name):
     #                     }
     #                 }
     #                 })
+    return jsonify({
+                    "success": True,
+                    "results": results
+                    })
+
+
+@app.route('/search/microbiota/<bact_name>')
+def search_bact_name(bact_name):
+    querier = floraDB.query.filter(floraDB.name.ilike('%'+bact_name+'%'))
+    if querier.first() is None:
+        return jsonify({
+                        "success": False
+                        })
+    results = []
+    counter = 1;
+    for m in querier:
+        ares = {"title": m.name}
+        results.append(ares)
+        counter += 1
+        if counter >= 5:
+            break
     return jsonify({
                     "success": True,
                     "results": results

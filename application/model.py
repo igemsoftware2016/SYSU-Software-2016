@@ -49,6 +49,7 @@ class mediumDB(db.Model):
     def __init__(self, name):
         self.name = name
         self.matters = '[]'
+        self.concentration = '{}'
     def __repr__(self):
         return '<Medium %r>' % self.name
     def save(self):
