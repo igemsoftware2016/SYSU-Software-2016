@@ -8,38 +8,47 @@
 <!-- put code here with-->
 <span id="design-id" style="display: none;">{{design_id}}</span> <!-- given by jinja2 -->
 <div class="ui five steps sticky">
-  <a class="step">
+  <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
-      <div class="title">Search</div>
+      <div class="title">
+        Search
+      </div>
     </div>
   </a>
-  <a class="step">
+  <a class="step" href="{% if design.state >= 2 %}/state/{{design.id}}/2{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
-      <div class="title">Adjustment</div>
+    <div class="title">
+        Adjustment
+      </div>
     </div>
   </a>
-  <a class="active step">
+  <a class="active step" href="{% if design.state >= 3 %}/state/{{design.id}}/3{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
-      <div class="title">Simulation</div>
+      <div class="title">
+        Simulation
+      </div>
     </div>
   </a>
-  <a class="step">
+  <a class="step" href="{% if design.state >= 4 %}/state/{{design.id}}/4{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
-      <div class="title">Protocol</div>
+      <div class="title">
+        Protocol
+      </div>
     </div>
   </a>
-  <a class="step">
+  <a class="step" href="{% if design.state >= 5 %}/state/{{design.id}}/5{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
-      <div class="title">Experimental results</div>
+      <div class="title">
+        Experimental results
+      </div>
     </div>
   </a>
 </div>
-
 <div class="ui column grid state">
   <div class="ui four wide column">
     <div class="ui inverted vertical menu fluid" id="state-3-menu">

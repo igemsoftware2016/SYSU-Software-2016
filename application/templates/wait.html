@@ -1,65 +1,75 @@
 {% extends "base.html" %}
 {% block stylesheet %}
-  <link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
+<link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
 {% endblock %}
 
 
 {% block container %}
-<span id="design-id" style="display: none;">{{design_id}}</span> <!-- given by jinja2 -->
-      <div class="ui five steps sticky">
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Search</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Adjustment</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Simulation</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Protocol</div>
-          </div>
-        </a>
-        <a class="step">
-          <i class="circle icon"></i>
-          <div class="content">
-            <div class="title">Experimental results</div>
-          </div>
-        </a>
+<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<div class="ui five steps sticky">
+  <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Search
       </div>
-      
-      <!-- put code here with-->
-      <div class="ui column grid state">
-        <div class="ui row">
-          <div class="ui five wide column"></div>
-          <div class="ui six wide column medium bordered image">
-            <img src="/static/img/pending.jpg" alt="" style="margin:auto;"/>
-          </div>
-        </div>
-        <div class="ui row">
-          <div class="ui four wide column"></div>
-          <div class="ui eight wide column piled segment">
-            <p>Your sample is just uploaded. It needs to be calculated. Here is your Design ID : </p>
-            <pre><code class="language-bash">XXXX-XXXX-XXXX-XXXX</code></pre>
-            <p>To complete the calculation, open your terminal, run command:</p>
-            <pre><code class="language-bash">python xxx.py &lt;Design ID&gt;</code></pre>
-            <p>Or shared your Design ID.</p>
-          </div>
-        </div>
-          
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 2 %}/state/{{design.id}}/2{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+    <div class="title">
+        Adjustment
       </div>
-          <!-- state_1 grid -->
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 3 %}/state/{{design.id}}/3{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Simulation
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 4 %}/state/{{design.id}}/4{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Protocol
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 5 %}/state/{{design.id}}/5{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Experimental results
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- put code here with-->
+<div class="ui column grid state">
+  <div class="ui row">
+    <div class="ui six wide column"></div>
+    <div class="ui four wide column small bordered image">
+      <img src="/static/img/pending.png" alt="" style="margin:auto;"/>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui four wide column"></div>
+    <div class="ui eight wide column piled segment">
+      <p>Your sample is just uploaded. It needs to be calculated. Here is your Design ID : </p>
+      <pre><code class="language-bash">XXXX-XXXX-XXXX-XXXX</code></pre>
+      <p>To complete the calculation, open your terminal, run command:</p>
+      <pre><code class="language-bash">python xxx.py &lt;Design ID&gt;</code></pre>
+      <p>Or <a href="/design/{{design.id}}">shared your Design.</a></p>
+    </div>
+  </div>
+
+</div>
+<!-- state_1 grid -->
 
 {% endblock %}
 

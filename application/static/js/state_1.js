@@ -14,7 +14,7 @@ $(document).ready(function() {
 
     $('.ui.env.search').search({
         apiSettings: {
-            url: '/search/matters/{query}'
+            url: '/search/microbiota/{query}'
         },
         fields: {
             results: 'results',
@@ -244,11 +244,12 @@ $(document).ready(function() {
      * to modify the package
      */
     // var medium, flora;
+    $("#medium-slt").dropdown();
     // $("#medium-slt").dropdown({
-    //     onChange: function(value, text, $selectedItem) {
-    //         medium = value;
-    //         console.log(value, text, $selectedItem);
-    //     }
+    // onChange: function(value, text, $selectedItem) {
+    //     medium = value;
+    //     console.log(value, text, $selectedItem);
+    // }
     // });
     // $("#medium-slt").dropdown("set selected", 1);
 
@@ -303,7 +304,7 @@ $(document).ready(function() {
 
         var other = {
             time: $("#time").val(),
-            medium: $("#medium-slt").dropdown("get text"),
+            medium: $("#medium-slt").dropdown("get value"),
             env: flora
         }
 
@@ -433,25 +434,25 @@ $(document).ready(function() {
                 if (r.ret) {
                     // do something with reload
                     // test now
-                    r = {
-                        "code": 0,
-                        "ret": {
-                            "design_id": 2,
-                            "input": [{
-                                name: "bbbb111",
-                                conc: 9.23
-                            }, {
-                                name: "QQQ",
-                                conc: 2.1
-                            }],
-                            "mode": "resolve",
-                            "other": {
-                                "env": ["AMMONIUM", "D-ALANINE"],
-                                "medium": "May",
-                                "time": 2.9
-                            }
-                        }
-                    }
+                    // r = {
+                    //     "code": 0,
+                    //     "ret": {
+                    //         "design_id": 2,
+                    //         "input": [{
+                    //             name: "bbbb111",
+                    //             conc: 9.23
+                    //         }, {
+                    //             name: "QQQ",
+                    //             conc: 2.1
+                    //         }],
+                    //         "mode": "resolve",
+                    //         "other": {
+                    //             "env": ["AMMONIUM", "D-ALANINE"],
+                    //             "medium": "May",
+                    //             "time": 2.9
+                    //         }
+                    //     }
+                    // }
                     if (r.ret.mode == "make") {
                         $(r.ret.input).each(function(n, el) {
                             var $line = $('.make-line').eq(-1);
@@ -481,10 +482,34 @@ $(document).ready(function() {
                         $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
                             el + '</span><i class="icon env close"></i></a>');
                     });
-                    $("#medium-slt").dropdown("set text", r.ret.other.medium);
+                    $("#medium-slt").dropdown("set selected", r.ret.other.medium);
                 }
             }
         }
     });
 
+    $("#next-step").click(function() {
+        $.ajax({
+            url: "/commit_state_1",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: JSON.stringify(setUpPackage()),
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                } else {
+                    window.location.href = r.ret;
+                }
+            },
+            error: AjaxFail
+        });
+    })
 });

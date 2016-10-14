@@ -327,7 +327,7 @@ def save_state(state_id):
 @login_required
 def commit_state(state_id):
     if request.method == 'POST':
-        myPrint("I'm in!")
+        # myPrint("I'm in!")
         cur_design = design.query.filter_by(id = request.json['design_id']).first()
         if cur_design.owner_id != session['user']:
             return jsonify({"code": 1})
@@ -345,7 +345,7 @@ def commit_state(state_id):
             cur_design.state += 1
 
         db.session.commit()
-        return libs_success()
+        return libs_success("/state/%d/%d" % (state_id, cur_design.state))
 
     # cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
     # cur_design.state += 1 #for test
