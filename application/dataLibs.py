@@ -270,7 +270,7 @@ def save_state1(cur_design, data_dict):
             cur_data.make_matter = tmplist
     elif data_dict.get('mode') == 'resolve':
         for m in d_input:
-            new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
+            new_resolve_matter = resolve_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
             new_resolve_matter.save()
             tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
             cur_data.resolve = tmplist
@@ -318,7 +318,7 @@ def save_state(state_id):
         elif state_id == 5:
             pass
 
-        
+
         db.session.commit()
         return libs_success()
 
@@ -387,7 +387,26 @@ def get_state_saved(state_id):
             return libs_success(ret)
 
         elif state_id == 2:
-            pass
+            cur_data = cur_design.state2_data
+            if cur_design is None:
+                return libs_errorMsg("Not calculated yet")
+            ret = dict()
+            ret["bacteria"] = []
+            _id = 1
+            for bact in libs_list_query(cur_data.bacteria):
+                cur_bact = used_bacteria.query.filter_by(id = bact).first()
+                if cur_bact is None:
+                    break
+                ret_bact = {"name": cur_bact.flora.name, "_id": _id}
+                _id += 1
+                ret_bact["plasmid"] = []
+
+                ret["bacteria"].append(ret_bact)
+            ret["promoter_Info"] = dict()
+            ret["RBS_Info"] = dict()
+
+        elif state_id == 5:
+            return libs_success(cur_design.state5_saved_data)
 
 
 @app.route('/process/<int:design_id>', methods = ['GET', 'POST'])
