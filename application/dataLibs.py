@@ -277,7 +277,7 @@ def save_state1(cur_design, data_dict):
 
     d_order = data_dict.get('other')
     cur_data.reaction_time = float(d_order.get('time'))
-    cur_data.medium = mediumDB.query.filter_by(id = d_order.get('medium')).first()
+    cur_data.medium = mediumDB.query.filter_by(id = int(d_order.get('medium'))).first()
 
     for floras in d_order.get('env'):
         flora = floraDB.query.filter_by(name = floras).first()
@@ -318,6 +318,7 @@ def save_state(state_id):
         elif state_id == 5:
             pass
 
+        
         db.session.commit()
         return libs_success()
 
@@ -336,11 +337,12 @@ def commit_state(state_id):
         
         elif state_id == 2:
             pass
-            
-        if state_id == cur_design.state:
-            cur_design.state += 1
+        
         if state_id == 5:
             return libs_errorMsg("No next step")
+
+        if state_id == cur_design.state:
+            cur_design.state += 1
 
         db.session.commit()
         return libs_success()

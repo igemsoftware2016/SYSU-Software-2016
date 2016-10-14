@@ -37,4 +37,5 @@ for filename in medium_list:
 				new_medium.concentration = libs_dict_insert(new_medium.concentration, new_matter.id, line[0 : line.find(' ')])
 		else:
 			break
+	new_medium.save()
 	file.close()
