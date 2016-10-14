@@ -428,6 +428,7 @@ def process_local_calc(design_id):
         return libs_success()
     ret = dict()
     ret["state"] = cur_design.state
+
     if cur_design.state == 1:
         cur_data = cur_design.state1_data
         if cur_data is None:
@@ -537,13 +538,23 @@ def deleteDesign():
 def upload_file(design_id, state_id):
 
     if state_id != 1 and state_id != 5:
-        return libs_errorMsg("Wrong state")
+        return libs_errorMsg("Invalid state")
+    cur_design = design.query.filter_by(id = design_id).first()
+    if cur_design is None:
+        return libs_errorMsg("Invalid design ID")
+    if state_id == 5 and cur_design.state < 5:
+        return libs_errorMsg("Invalid state")
 
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if state_id == 1:
+                cur_design.state1_upload_file = True
+            else:
+                cur_design.state5_upload_file = True
+                cur_design.state5_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             return libs_success()
 
         return libs_errorMsg("Upload failed")

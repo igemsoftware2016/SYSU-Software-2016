@@ -98,9 +98,14 @@ class design(db.Model):
     #state1 data region
     state1_data_id = db.Column(db.Integer, db.ForeignKey("state1_data.id"))
     state1_data = db.relationship('state1_data', backref = db.backref('owners', lazy = 'dynamic'))
+    state1_upload_file = db.Column(db.Boolean)
     #state2 data region
     state2_data_id = db.Column(db.Integer, db.ForeignKey("state2_data.id"))
     state2_data = db.relationship('state2_data', backref = db.backref('owners', lazy = 'dynamic'))
+    #state5 data region
+    state5_saved_data = db.Column(db.String(2000))
+    state5_upload_file = db.Column(db.Boolean)
+    state5_file_path = db.Column(db.String(100))
     def get_id(self):
         return self.id
     def __init__(self, owner):
@@ -112,6 +117,9 @@ class design(db.Model):
         self.design_time = datetime.datetime.now(pytz.timezone('America/New_York'))
         self.shared = False
         self.needHelp = False
+        self.state1_upload_file = False
+        self.state5_saved_data = ''
+        self.state5_upload_file = False
     def __repr__(self):
         return '<Design %r> %r' % (self.id, self.d)
     def save(self):
