@@ -22,7 +22,13 @@ for i in xrange(cnt + 1, cnt + 1 + numEnv):
     envBtr = sheet.cell(i, 0).value
     print envBtr
 
-cnt += 1 + numEnv + 1
+cnt += 1 + numEnv
+
+time = sheet.cell(cnt, 1).value
+print time
+print ""
+
+cnt += 1
 
 matNum = int(sheet.cell(cnt, 1).value)
 
@@ -31,3 +37,6 @@ for i in xrange(cnt + 1, cnt + 1 + matNum):
     con = sheet.cell(i, 1).value
     print mater_name, con
 
+#{"design_id":"1","mode":"resolve","inputs":[{"name":"PYRROLINE-HYDROXY-CARBOXYLATE","begin":"2"},{"name":"VANILLATE","begin":"4"},{"name":"L-DELTA1-PYRROLINE_5-CARBOXYLATE","begin":"6"}],"other":{"time":"20","medium":"1","env":["THREO-DS-ISO-CITRATE","DEOXYGUANOSINE","1-KESTOTRIOSE"]}}
+
+#{"design_id":"2","mode":"make","inputs":[{"name":"CARBON-DIOXIDE","lower":"2","upper":"4","maxim":true},{"name":"PYRUVATE","lower":"2","upper":"3","maxim":false}],"other":{"time":"32","medium":"6","env":["DIHYDROXY-ACETONE-PHOSPHATE"]}}

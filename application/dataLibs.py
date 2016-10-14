@@ -13,6 +13,7 @@ import os, sys
 import urllib, pytz
 import json
 from sets import Set
+from xlrd import open_workbook
 # from router import login_required
 
 def login_required(f):
@@ -288,7 +289,7 @@ def save_state(state_id):
                     cur_data.make_matter = tmplist
             elif request.json.get('mode') == 'resolve':
                 for m in d_input:
-                    new_resolve_matter = resolve_matter(cur_data, materDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
+                    new_resolve_matter = resolve_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
                     new_resolve_matter.save()
                     tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
                     cur_data.resolve = tmplist
@@ -378,7 +379,7 @@ def get_state_saved(state_id):
         if cur_design.owner_id != session['user']:
             return libs_errorMsg('Not your design')
         if state_id > cur_design.state:
-            return libs_errorMsg('Not reach that step yet');
+            return libs_errorMsg('Not reach that step yet')
         if cur_design.state1_data is None:
             return libs_success()
 
@@ -485,7 +486,7 @@ def search_matters_name(matter_name):
                         "success": False
                         })
     results = []
-    counter = 1;
+    counter = 1
     for m in querier:
         ares = {"title": m.matter_name}
         results.append(ares)
@@ -562,6 +563,57 @@ def upload_file(design_id, state_id):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if state_id == 1:
                 cur_design.state1_upload_file = True
+                book = open_workbook(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                sheet = book.sheet_by_index(0)
+                
+                data = {}
+                data["design_id"] = str(design_id)
+                if sheet.cell(0,1).value == 'Products' :
+                    data["mode"] = "make"
+                else:
+                    data["mode"] = "resolve"
+                data["inputs"] = []
+
+                numMater = int(sheet.cell(0,3).value)
+                for i in xrange(2, 2 + numMater):
+                    mater_name = sheet.cell(i, 0).value
+                    init_con = sheet.cell(i, 1).value
+                    lower = sheet.cell(i, 2).value
+                    upper = sheet.cell(i, 3).value
+                    max_con = sheet.cell(i, 4).value
+
+                    matter_i = {}
+                    matter_i["name"] = mater_name
+                    if data["mode"] == "resolve":
+                        matter_i["begin"] = str(init_con)
+                    else:
+                        matter_i["lower"] = str(lower)
+                        matter_i["upper"] = str(upper)
+                        matter_i["maxim"] = (max_con > 0)
+                    data["inputs"].append(matter_i)
+                
+                cnt = 2 + numMater + 1
+                numEnv = int(sheet.cell(cnt, 1).value)
+                data["other"] ={}
+                data["other"]["env"] = []
+                for i in xrange(cnt + 1, cnt + 1 + numEnv):
+                    envBtr = sheet.cell(i, 0).value
+                    data["other"]["env"].append(envBtr)
+                
+                cnt += 1 + numEnv
+
+                time = sheet.cell(cnt, 1).value
+                data["other"]["time"] = str(time)
+                cnt += 1
+                matNum = int(sheet.cell(cnt, 1).value)
+
+                ##########
+                for i in xrange(cnt + 1, cnt + 1 + matNum):
+                    mater_name = sheet.cell(i, 0).value
+                    con = sheet.cell(i, 1).value
+                ##########
+
+                print (data)
             else:
                 cur_design.state5_upload_file = True
                 cur_design.state5_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
