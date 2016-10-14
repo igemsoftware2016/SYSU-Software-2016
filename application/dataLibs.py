@@ -277,10 +277,11 @@ def save_state(state_id):
             # state1 data generation
             # cur_design.design_mode = request.form.get('mode')
             cur_data = state1_data()
-
             d_input = request.json.get('inputs')
             if request.json.get('mode') == 'make':
                 for m in d_input:
+                    myPrint(m.get('name'))
+                    myPrint(m.get('lower'))
                     new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
                     new_make_matter.save()
                     tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
@@ -390,10 +391,10 @@ def get_state_saved(state_id):
             for x in libs_list_query(cur_data.flora):
                 ret["other"]["env"].append(floraDB.query.filter_by(id = x).first().name)
             ret["input"] = []
-            if cur_data.design_mode == "make":
+            if cur_design.design_mode == "make":
                 for x in libs_list_query(cur_data.make_matter):
                     tmp_matter = make_matter.query.filter_by(id = x).first()
-                    ret["input"].append({"upper": tmp_matter.upper, "lower": tmp_matter.lower, "name": tmp_matter.matter.name, "maxim": tmp_matter.maxim})
+                    ret["input"].append({"upper": tmp_matter.upper, "lower": tmp_matter.lower, "name": tmp_matter.matter.matter_name, "maxim": tmp_matter.maxim})
             else:
                 for x in libs_list_query(cur_data.resolve_matter):
                     tmp_matter = resolve_matter.query.filter_by(id = x).first()
@@ -412,25 +413,34 @@ def process_local_calc(design_id):
     if method == 'POST':
         if request.form.get("code") != 0:
             return libs_errorMsg("Local calculate failed")
-        if cur_design.state == 1:
+        if cur_design.state == 2:
             cur_data = cur_design.state2_data
             if cur_data is None:
                 cur_data = state2_data()
             for bact in request.form.get("bacteria"):
                 cur_bact = used_bacteria(floraDB.query.filter_by(name = bact.get("name")).first())
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"))
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(name = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
-                        pass
+                        cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
+                        cur_promo.save()
+                        cur_enzy.promoter = libs_list_insert(cur_enzy.promoter, cur_promo.id)
                     for rbs in enzy.get("rbs"):
-                        pass
+                        cur_rbs = rbs(rbs.get("sequence"), rbs.get("strength"))
+                        cur_rbs.save()
+                        cur_enzy.rbs = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
                     cur_bact.enzyme = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
                 cur_data.bacteria = libs_list_insert(cur_data.bacteria, cur_bact.id)
+        elif cur_design.state == 3:
+            plot_data = request.json.get(data)
+            for i in plot_data.keys():
+                cur_design.state3_matter_plot = libs_dict_insert(cur_design.state3_matter_plot, i, plot_data[i])
+        db.session.commit()
         return libs_success()
     ret = dict()
     ret["state"] = cur_design.state
 
-    if cur_design.state == 1:
+    if cur_design.state == 2:
         cur_data = cur_design.state1_data
         if cur_data is None:
             return jsonify({"state": 0})
@@ -448,7 +458,7 @@ def process_local_calc(design_id):
             ret["medium"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
         return jsonify(ret)
 
-    if cur_design.state == 2:
+    if cur_design.state == 3:
         cur_data = cur_design.state2_data
         if cur_data is None:
             return jsonify({"state": 0})
@@ -465,7 +475,6 @@ def process_local_calc(design_id):
                 tmpret["enzyme"].append(enzyme.query.filter_by(id = e).first().name)
             ret["bacteria"].append(tmpret)
         return jsonify(ret)
-
 
 
 @app.route('/search/matters/<matter_name>')
