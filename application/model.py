@@ -1,4 +1,4 @@
-from application import db, dataLibs
+from application import db, dirtylist
 import random
 import datetime, pytz
 import hashlib

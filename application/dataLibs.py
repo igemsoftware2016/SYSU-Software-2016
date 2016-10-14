@@ -2,7 +2,7 @@
 from __future__ import print_function
 from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
-from application import app, db
+from application import app, db, dirtylist
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 # from flask.ext.login import logout_user
 # from .forms import LoginForm
@@ -12,6 +12,7 @@ from werkzeug import secure_filename
 import os, sys
 import urllib, pytz
 import json
+import math
 from sets import Set
 from xlrd import open_workbook
 # from router import login_required
@@ -125,37 +126,6 @@ def libs_errorMsg(msg):
 
 def libs_success(ret = None):
     return jsonify({'code': 0, 'ret': ret})
-
-
-# General dirty list processor
-def libs_list_insert(list_string, element):
-    l = json.loads(list_string)
-    if element in l:
-        return None
-    l.append(element)
-    ret = json.dumps(l)
-    return ret
-def libs_list_delete(list_string, element):
-    l = json.loads(list_string)
-    if not element in l:
-        return None
-    l.remove(element)
-    ret = json.dumps(l)
-    return ret
-def libs_list_query(list_string):
-    return json.loads(list_string)
-##############################
-
-# Generai dirty dictionary processor
-def libs_dict_insert(dict_string, key, value):
-    l = json.loads(dict_string)
-    l[key] = value
-    ret = json.dumps(l)
-    return ret
-def libs_dict_query(dict_string, key):
-    l = json.loads(dict_string)
-    return l[key]
-####################################
 
 
 def libs_setLike(user_id, design_id, isLike):
@@ -400,7 +370,9 @@ def get_state_saved(state_id):
                 ret_bact = {"name": cur_bact.flora.name, "_id": _id}
                 _id += 1
                 ret_bact["plasmid"] = []
-
+                plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
+                for i in range(plasmid_count):
+                    pass    # todo
                 ret["bacteria"].append(ret_bact)
             ret["promoter_Info"] = dict()
             ret["RBS_Info"] = dict()

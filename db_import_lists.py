@@ -3,10 +3,6 @@ from application.model import *
 import os
 nowdir = os.path.abspath(os.path.dirname(__file__))
 
-def upcase(s):
-	for x in s:
-		if x
-
 f = open(os.path.join(nowdir, 'mar_total.txt'), 'r')
 while True:
 	line = f.readline()
