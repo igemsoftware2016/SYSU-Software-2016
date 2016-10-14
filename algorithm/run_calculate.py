@@ -22,21 +22,8 @@ if __name__ == "__main__":
 	# {
 	# 	"state": 1,
 	# 	"mode": "synthetic",
-	# 	"matters": [
-	# 		{
-	# 			"code": "C001",
-	# 			"con": 0.1
-	# 		},
-	# 		{
-	# 			"code": "C002",
-	# 			"con": 0.2
-	# 		}
-	# 		{
-	# 			"code": "C003",
-	# 			"con": 0.3
-	# 		}
-	# 	],
-	# 	"plasmid": [
+	# 	"matters": ["C001", "C002", "C003"],
+	# 	"medium": [
 	# 		{
 	# 			"code": "C004",
 	# 			"con": 0.1
@@ -53,14 +40,7 @@ if __name__ == "__main__":
 	# 	"bacteria":[
 	# 		{
 	# 			"code": "C001",
-	# 			"enzyme":[
-	# 				{
-	# 					"name": "E001"
-	# 				},
-	# 				{
-	# 					"name": "E002"
-	# 				}
-	# 			]
+	# 			"enzyme":["E001", "E002"]
 	# 		}
 	# 	],
 	# 	"initial_matters":[
@@ -97,14 +77,14 @@ if __name__ == "__main__":
 		# Print data for search & opt-com part
 		mode = response_object.get('mode')
 		matters = response_object.get('matters')
-		plasmid = response_object.get('plasmid')
+		medium = response_object.get('medium')
 		search_file = open('query.txt', 'w')
 		search_file.write(mode + '\n')
 		search_file.write(str(len(matters)) + '\n')
 		for m in matters:
-			search_file.write(m.get('code') + '\n')
-		search_file.write(str(len(plasmid)) + '\n')
-		for m in plasmid:
+			search_file.write(m + '\n')
+		search_file.write(str(len(medium)) + '\n')
+		for m in medium:
 			search_file.write(m.get('code') + ' ' + str(m.get('con')) + '\n')
 		search_file.close()
 		print("Processing search and opt-com...")
@@ -158,7 +138,7 @@ if __name__ == "__main__":
 						pro_strength = float(promoter_res.readline())
 						pro_seq_set.append({"sequence": pro_seq, "strength": pro_strength})
 					promoter_res.close()
-				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "promoter": pro_seq_set, "rbs": rbs_seq_set})
+				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "promoter": pro_seq_set, "rbs": rbs_seq_set}) #TODO: GET CDS SEQUENCE
 			all_bact_set.append(bact_set)
 		search_res.close()
 		print("Calculation finished. Sending data to server...")
@@ -183,13 +163,14 @@ if __name__ == "__main__":
 		for batt in batt_list:
 			dopt_input.write(batt.get("code") + ' ' + str(len(batt.get('enzyme'))) + '\n')
 			for enzy in batt.get('enzyme'):
-				dopt_input.write(batt.get("name") + '\n')
+				dopt_input.write(enzy + '\n')
 		insert_list = response_object.get('insert_matters')
 		dopt_input.write(str(len(insert_list)) + '\n')
 		for matter in insert_list:
 			dopt_input.write(str(matter.get("code")) + ' ' + str(matter.get("con")) + '\n')
 		dopt_input.write('0\n')
 		initial_list = response_object.get("initial_matters")
+		dopt_input.write('0\n')
 		for matter in initial_list:
 			dopt_input.write(str(matter.get("code")) + ' ' + str(matter.get("con")) + '\n')
 		dopt_input.close()
