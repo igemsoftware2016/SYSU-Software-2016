@@ -772,9 +772,12 @@ def state1_chart(promoter, rbs, mrna, protein):
     k2 = rbs
     d1 = mrna
     d2 = protein
-    c1 = k1 / d1
+    res = {}
     y = []
     for t in xrange(0, 20):
-        y.append(int(c1 * k2 * math.exp(t/3.0) / (1 + d2) + k1 * k2 / (d1 * (1 + d2))))
-    return jsonify(y)
+        part1 = math.exp(-d2 * t) * (k1 * k2 * math.exp(d2 * t) - k1 * k2) / (d1 - d2) / d2
+        part2 = math.exp(-d1 * t) * (k1 * k2 * math.exp(d1 * t) + k1 * k2) / (d2 - d1) / d1
+        y.append(round(part1 - part2, 4))
+    res["y"] = y
+    return libs_success(res)
 
