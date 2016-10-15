@@ -93,6 +93,14 @@ class plasmidDB(db.Model):
         db.session.commit()
 
 
+terminalDB = {
+    "name": "A 202 Terminator",
+    "Introduction": "double terminator (B0010-B0012)",
+    "BBa": "BBa_B0015",
+    "sequence": "CCAGGCATCAAATAAAACGAAAGGCTCAGTCGAAAGACTGGGCCTTTCGTTTTATCTGTTGTTTGTCGGTGAACGCTCTCTACTAGAGTCACACTGGCTCACCTTCGGGTGGGCCTTTCTGCGTTTATA"
+}
+
+
 class design(db.Model):
     id = db.Column(db.Integer, primary_key = True)              # Index
     design_name = db.Column(db.String(60))                      # Name of the design
@@ -221,7 +229,7 @@ class state2_data(db.Model):
         self.md5 = ''
         self.bacteria = '[]'
     def __repr__(self):
-        return '<State 2 data %r>' % self.md5
+        return '<State 2 data %r>' % self.id
     def save(self):
         self.refresh_md5()
         db.session.add(self)

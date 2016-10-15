@@ -362,13 +362,15 @@ def get_state_saved(state_id):
 
         elif state_id == 2:
             cur_data = cur_design.state2_data
-            if cur_design is None:
+            if cur_data is None:
                 return libs_errorMsg("Not calculated yet")
             ret = dict()
             ret["bacteria"] = []
             _id = 1
             total_pro = []
             total_rbs = []
+            myPrint(cur_data)
+            myPrint(cur_data.bacteria)
             for bact in libs_list_query(cur_data.bacteria):
                 cur_bact = used_bacteria.query.filter_by(id = bact).first()
                 if cur_bact is None:
@@ -377,13 +379,14 @@ def get_state_saved(state_id):
                 _id += 1
                 ret_bact["plasmid"] = []
                 plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
+                print(plasmid_count)
                 for i in range(plasmid_count):
-                    cur_plas = plasmidDB.query.filter_by(id = i).first()
+                    cur_plas = plasmidDB.query.filter_by(id = i + 1).first()
                     ret_plas = {"_id": i + 1, "name": cur_plas.name, "pathway": []}
                     for j in range(3):
-                        cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
-                        if cur_enzy is None:
+                        if len(libs_list_query((cur_bact.enzyme))) <= i * 3 + j:
                             break
+                        cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
                         ret_enzy =  {
                                         "_id": j + 1,
                                         "name": cur_enzy.name,
@@ -400,7 +403,7 @@ def get_state_saved(state_id):
                                 all_pro.append(tmppro)
                         total_pro.extend(all_pro)
                         ret_enzy["strength"]["promoter_lower"] = all_pro[0].strength
-                        ret_enzy["strength"]["promoter_upper"] = all_pro[len(all_pro)].strength
+                        ret_enzy["strength"]["promoter_upper"] = all_pro[len(all_pro) - 1].strength
                         ret_enzy["strength"]["promoter"] = []
                         for pro in all_pro:
                             ret_enzy["strength"]["promoter"].append({"s": pro.strength, "info": pro.id})
@@ -411,10 +414,10 @@ def get_state_saved(state_id):
                                 all_rbs.append(tmprbs)
                         total_rbs.extend(all_rbs)
                         ret_enzy["strength"]["RBS_lower"] = all_rbs[0].strength
-                        ret_enzy["strength"]["RBS_upper"] = all_rbs[len(all_rbs)].strength
+                        ret_enzy["strength"]["RBS_upper"] = all_rbs[len(all_rbs) - 1].strength
                         ret_enzy["strength"]["RBS"] = []
-                        for rbs in all_rbs:
-                            ret_enzy["strength"]["RBS"].append({"s": rbs.strength, "info": rbs.id})
+                        for rbss in all_rbs:
+                            ret_enzy["strength"]["RBS"].append({"s": rbss.strength, "info": rbss.id})
                         ret_enzy["strength"]["mRNA_lower"] = 0
                         ret_enzy["strength"]["mRNA_upper"] = 10
                         ret_enzy["strength"]["mRNA_s"] = 6.7
@@ -426,7 +429,7 @@ def get_state_saved(state_id):
                 ret["bacteria"].append(ret_bact)
             ret["promoter_Info"] = dict()
             for pro in total_pro:
-                ret["promoter_Info"][pro.id] = {
+                ret["promoter_Info"][pro.id] =  {
                                                     "name": pro.name,
                                                     "type": pro.type_,
                                                     "BBa": pro.BBa,
@@ -435,17 +438,27 @@ def get_state_saved(state_id):
                                                     "FASTA": pro.FASTA
                                                 }
             ret["RBS_Info"] = dict()
-            for rbs in total_rbs:
-                ret["RBS_Info"][rbs.id] = {
-                                                    "name": rbs.name,
-                                                    "type": rbs.type_,
-                                                    "BBa": rbs.BBa,
-                                                    "Introduction": rbs.Introduction,
-                                                    "NCBI": rbs.NCBI,
-                                                    "FASTA": rbs.FASTA
-                                                }
-            ret["CDS_Info"] = {}
-            ret["term_Info"] = {}
+            for rbss in total_rbs:
+                ret["RBS_Info"][rbss.id] =  {
+                                                    "name": rbss.name,
+                                                    "type": rbss.type_,
+                                                    "BBa": rbss.BBa,
+                                                    "Introduction": rbss.Introduction,
+                                                    "NCBI": rbss.NCBI,
+                                                    "FASTA": rbss.FASTA
+                                            }
+            ret["CDS_Info"] =   {
+                                    "1": {
+                                        "name": "Specified CDS for enzyme"
+                                    }
+                                }
+            ret["term_Info"] =  {
+                                    "1": {
+                                        "name": terminalDB["name"],
+                                        "BBa": terminalDB["BBa"],
+                                        "Introduction": terminalDB["Introduction"]
+                                    }
+                                }
 
             return libs_success(ret)
 
@@ -464,30 +477,46 @@ def process_local_calc(design_id):
         if request.json.get("code") != 0:
             return libs_errorMsg("Local calculate failed")
         if cur_design.state == 2:
-            cur_data = cur_design.state2_data
-            if cur_data is None:
-                cur_data = state2_data()
+
+            print(request.json)
+            cur_data = state2_data()
+            # myPrint(cur_data)
             for bact in request.json.get("bacteria"):
-                cur_bact = used_bacteria(floraDB.query.filter_by(name = bact.get("name")).first())
+                origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
+                cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(name = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
                         cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
                         cur_promo.save()
-                        cur_enzy.promoter = libs_list_insert(cur_enzy.promoter, cur_promo.id)
-                    for rbs in enzy.get("rbs"):
-                        cur_rbs = rbs(rbs.get("sequence"), rbs.get("strength"))
+                        tmpprolist = libs_list_insert(cur_enzy.promoter, cur_promo.id)
+                        if tmpprolist:
+                            cur_enzy.promoter = tmpprolist
+                    for rbss in enzy.get("rbs"):
+                        cur_rbs = rbs(rbss.get("sequence"), rbss.get("strength"))
                         cur_rbs.save()
-                        cur_enzy.rbs = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
-                    cur_bact.enzyme = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
-                cur_data.bacteria = libs_list_insert(cur_data.bacteria, cur_bact.id)
+                        tmprbslist = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
+                        if tmprbslist:
+                            cur_enzy.rbs = tmprbslist
+                    tmpenzylist = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
+                    if tmpenzylist:
+                        cur_bact.enzyme = tmpenzylist
+                tmpbactlist = libs_list_insert(cur_data.bacteria, cur_bact.id)
+                if tmpbactlist:
+                    cur_data.bacteria = tmpbactlist
+                # print(cur_data.bacteria)
+            if cur_design.state2_data:
+                db.session.delete(cur_design.state2_data)
+            cur_design.state2_data = cur_data
 
         elif cur_design.state == 3:
             plot_data = request.json.get(data)
             for i in plot_data.keys():
                 cur_design.state3_matter_plot = libs_dict_insert(cur_design.state3_matter_plot, i, plot_data[i])
+
         db.session.commit()
         return libs_success()
+
     ret = dict()
     ret["state"] = cur_design.state
 
@@ -500,14 +529,17 @@ def process_local_calc(design_id):
         if cur_design.design_mode == "make":
             ret["mode"] = "synthetic"
             for x in libs_list_query(cur_data.make_matter):
-                ret["matters"].append(make_matter.query.filter_by(id = x).first().matter.matter_code)
+                tmpmat = make_matter.query.filter_by(id = x).first()
+                tmpcon = tmpmat.lower
+                if tmpmat.maxim:
+                    tmpcon = tmpmat.upper
+                ret["matters"].append({"code": tmpmat.matter.matter_code, "con": tmpcon})
         else:
             ret["mode"] = "decompose"
             for x in libs_list_query(cur_data.resolve_matter):
-                ret["matters"].append(resolve_matter.query.filter_by(id = x).first().matter.matter_code)
+                tmpmat = resolve_matter.query.filter_by(id = x).first()
+                ret["matters"].append({"code": tmpmat.matter.matter_code, 'con': tmpmat.begin})
         ret["medium"] = []
-        myPrint(cur_data.medium.matters)
-        myPrint(cur_data.medium.concentration)
         for x in libs_list_query(cur_data.medium.matters):
             ret["medium"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
         return jsonify(ret)
@@ -548,16 +580,6 @@ def search_matters_name(matter_name):
         counter += 1
         if counter >= 10:
             break
-    # return jsonify({
-    #                 "success": True,
-    #                 "results": 
-    #                 {"matters":
-    #                     {
-    #                     "name": "Matters",
-    #                     "results": results
-    #                     }
-    #                 }
-    #                 })
     return jsonify({
                     "success": True,
                     "results": results
