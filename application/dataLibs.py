@@ -267,6 +267,22 @@ def save_state1(cur_design, data_dict):
     cur_design.state1_data = cur_data
 
 
+def save_state2(cur_design, data_dict):
+    for bact in data_dict["bacteria"]:
+        cur_bact = used_bacteria.query.filter_by(id = bact["_id"]).first()
+        if cur_bact is None:
+            continue
+        for plas in bact["plasmid"]:
+            for enzy in plas["pathway"]:
+                cur_enzy = enzyme.query.filter_by(name = enzy["name"]).first()
+                if cur_enzy is None:
+                    continue
+                cur_enzy.mRNA_s = enzy["mRNA_s"]
+                cur_enzy.protein_s = enzy["protein_s"]
+                cur_enzy.detected_promoter = libs_list_query(cur_enzy.promoter).index(id = enzy["prom"])
+                cur_enzy.detected_rbs = libs_list_query(cur_enzy.rbs).index(id = enzy["RBS"])
+
+
 @app.route('/save_state_<int:state_id>', methods = ['POST'])
 @login_required
 def save_state(state_id):
@@ -285,14 +301,15 @@ def save_state(state_id):
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
-            myPrint(request.json)
+            # myPrint(request.json)
             save_state1(cur_design, request.json)
         
         elif state_id == 2:
-            pass
-        elif state_id == 5:
-            pass
+            save_state2(cur_design, request.json)
 
+        elif state_id == 5:
+            cur_design.state5_saved_data = json.dumps(request.json)
+            cur_design.state5_upload_file = False
 
         db.session.commit()
         return libs_success()
@@ -311,7 +328,7 @@ def commit_state(state_id):
             save_state1(cur_design, request.json)
         
         elif state_id == 2:
-            pass
+            save_state2(cur_design, request.json)
         
         if state_id == 5:
             return libs_errorMsg("No next step")
@@ -366,12 +383,13 @@ def get_state_saved(state_id):
             if cur_data is None:
                 return libs_errorMsg("Not calculated yet")
             ret = dict()
+            ret["time"] = cur_design.state1_data.reaction_time
             ret["bacteria"] = []
             _id = 1
             total_pro = []
             total_rbs = []
-            myPrint(cur_data)
-            myPrint(cur_data.bacteria)
+            # myPrint(cur_data)
+            # myPrint(cur_data.bacteria)
             for bact in libs_list_query(cur_data.bacteria):
                 cur_bact = used_bacteria.query.filter_by(id = bact).first()
                 if cur_bact is None:
@@ -395,6 +413,12 @@ def get_state_saved(state_id):
                                         "RBS": rbs.query.filter_by(id = libs_list_query(cur_enzy.rbs)[cur_enzy.detected_rbs]).first().id,
                                         "CDS": 1,
                                         "term": 1,
+                                        "mRNA_lower" : 0,
+                                        "mRNA_upper" : 10,
+                                        "mRNA_s" : cur_enzy.mRNA_s,
+                                        "protein_lower" : 0,
+                                        "protein_upper" : 10,
+                                        "protein_s" : cur_enzy.protein_s,
                                         "strength": {}
                                     }
                         all_pro = []
@@ -419,12 +443,6 @@ def get_state_saved(state_id):
                         ret_enzy["strength"]["RBS"] = []
                         for rbss in all_rbs:
                             ret_enzy["strength"]["RBS"].append({"s": rbss.strength, "info": rbss.id})
-                        ret_enzy["strength"]["mRNA_lower"] = 0
-                        ret_enzy["strength"]["mRNA_upper"] = 10
-                        ret_enzy["strength"]["mRNA_s"] = 6.7
-                        ret_enzy["strength"]["protein_lower"] = 0
-                        ret_enzy["strength"]["protein_upper"] = 10
-                        ret_enzy["strength"]["protein_s"] = 1.4
                         ret_plas["pathway"].append(ret_enzy)
                     ret_bact["plasmid"].append(ret_plas)    
                 ret["bacteria"].append(ret_bact)
@@ -463,8 +481,15 @@ def get_state_saved(state_id):
 
             return libs_success(ret)
 
+        elif state_id == 3:
+            ret = {"time": cur_design.state1_data.reaction_time, "datasets" : []}
+            plot_dict = libs_dict_query_all(cur_design.state3_matter_plot)
+            for reac_name in plot_dict.keys():
+                ret["datasets"].append({"name": reac_name, "data": plot_dict[reac_name]})
+            return libs_success(ret)
+
         elif state_id == 5:
-            return libs_success(cur_design.state5_saved_data)
+            return libs_success(json.loads(cur_design.state5_saved_data))
 
 
 @app.route('/process/<int:design_id>', methods = ['GET', 'POST'])
@@ -486,7 +511,7 @@ def process_local_calc(design_id):
                 origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
                 cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name")[0 : enzy.get("name").find('-')], floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
                         cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
                         cur_promo.save()

@@ -28,4 +28,7 @@ def libs_dict_insert(dict_string, key, value):
 def libs_dict_query(dict_string, key):
     l = json.loads(dict_string)
     return l[str(key)]
+def libs_dict_query_all(dict_string):
+    l = json.loads(dict_string)
+    return l
 ####################################

@@ -124,7 +124,7 @@ class design(db.Model):
     # state3_matter_list = db.Column(db.String(300))              # Matter's name for drawing Diagram (With dirty list)
     state3_matter_plot = db.Column(db.String(1000))             # Diagram's 20 points for each Matters (With dirty dict)
     # state5 data region
-    state5_saved_data = db.Column(db.String(2000))
+    state5_saved_data = db.Column(db.String(5000))
     state5_upload_file = db.Column(db.Boolean)
     state5_file_path = db.Column(db.String(100))
     def get_id(self):
@@ -261,14 +261,18 @@ class enzyme(db.Model):
     detected_rbs = db.Column(db.Integer)            # User's detected RBS
     from_bact_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))
     from_bact = db.relationship('floraDB', backref = db.backref('used_enzyme', lazy = 'dynamic'))   # Where the enzyme from
+    mRNA_s = db.Column(db.Float)
+    protein_s = db.Column(db.Float)
     def __init__(self, sequence, name, from_bact):
         self.sequence = sequence
         self.name = name
         self.promoter = '[]'
         self.rbs = '[]'
         self.from_bact = from_bact
-        self.detected_promoter = 1
-        self.detected_rbs = 1
+        self.detected_promoter = 0
+        self.detected_rbs = 0
+        self.mRNA_s = 6.7
+        self.protein_s = 1.4
     def __repr__(self):
         return '<Enzyme %r>' % self.name
     def save(self):
