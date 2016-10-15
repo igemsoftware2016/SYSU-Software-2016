@@ -6,6 +6,8 @@ $(document).ready(function() {
         categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
     });
 
+    window.colors = ['orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'];
+
     var $category = $('.ui.category.search');
     $category.search({
         type: 'category',

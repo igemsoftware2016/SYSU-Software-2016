@@ -343,7 +343,7 @@ def get_state_saved(state_id):
             ret["design_id"] = cur_design.id
             ret["mode"] = cur_design.design_mode
             cur_data = cur_design.state1_data
-            ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": []}
+            ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": [], "mediumName": cur_data.medium.name}
             for x in libs_list_query(cur_data.flora):
                 ret["other"]["env"].append(floraDB.query.filter_by(id = x).first().name)
             ret["input"] = []

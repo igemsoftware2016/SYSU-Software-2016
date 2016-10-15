@@ -64,7 +64,7 @@ p.description {
     font-size: 1.2em;
     font-weight: 600;
 }
-.time {
+.time:not(.field) {
     text-align: right;
     /*width: 100%;*/
     padding-bottom: 10px;
