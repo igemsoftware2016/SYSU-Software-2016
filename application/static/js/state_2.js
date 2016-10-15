@@ -13,34 +13,34 @@ $(document).ready(function() {
   });
 
 
-  var ctx = document.getElementById("myChart");
+  var ctx = document.getElementById("myChart-2");
   var data = {
     labels: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0', '9.5', '10.0'],
     datasets: [{
       label: "CL",
       fill: false, // 
       lineTension: 0.4,
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
+      backgroundColor: "rgba(237,174,73,0.4)",
+      borderColor: "rgba(237,174,73,1)",
       borderCapStyle: 'butt',
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: "rgba(75,192,192,1)",
+      pointBorderColor: "rgba(237,174,73,1)",
       pointBackgroundColor: "#fff",
       pointBorderWidth: 1,
       pointHoverRadius: 5,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBackgroundColor: "rgba(237,174,73,1)",
+      pointHoverBorderColor: "rgba(237,174,730,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
       pointStyle: "round",
-      data: [0, 500, 680, 610, 510, 400, 270, 120, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       spanGaps: false,
     }]
   };
-  window.myLineChart = new Chart(ctx, {
+  window.myLineChart_2 = new Chart(ctx, {
     type: 'line',
     data: data,
     options: {
@@ -80,10 +80,10 @@ $(document).ready(function() {
     setPopup(now_id); // set four popup
     setRange(now_id); // set four range
 
-    $("img.promoter").attr("src", "/static/img/promoter-orange.png");
-    $("img.RBS").attr("src", "/static/img/RBS-orange.png");
-    $("img.CDS").attr("src", "/static/img/CDS-orange.png");
-    $("img.teminator").attr("src", "/static/img/teminator-orange.png");
+    $("img.promoter").attr("src", "/static/img/promoter-blue.png");
+    $("img.RBS").attr("src", "/static/img/RBS-blue.png");
+    $("img.CDS").attr("src", "/static/img/CDS-blue.png");
+    $("img.teminator").attr("src", "/static/img/teminator-blue.png");
     $(".ui.row.component").hide();
     $(".ui.row.component").fadeIn();
   });
@@ -95,10 +95,10 @@ $(document).ready(function() {
     }
     setPopup(now_id); // set four popup
     setRange(now_id); // set four range
-    $("img.promoter").attr("src", "/static/img/promoter-green.png");
-    $("img.RBS").attr("src", "/static/img/RBS-green.png");
-    $("img.CDS").attr("src", "/static/img/CDS-green.png");
-    $("img.teminator").attr("src", "/static/img/teminator-green.png");
+    $("img.promoter").attr("src", "/static/img/promoter-orange.png");
+    $("img.RBS").attr("src", "/static/img/RBS-orange.png");
+    $("img.CDS").attr("src", "/static/img/CDS-orange.png");
+    $("img.teminator").attr("src", "/static/img/teminator-orange.png");
     $(".ui.row.component").hide();
     $(".ui.row.component").fadeIn();
   });
@@ -110,10 +110,10 @@ $(document).ready(function() {
     }
     setPopup(now_id); // set four popup
     setRange(now_id); // set four range
-    $("img.promoter").attr("src", "/static/img/promoter-blue.png");
-    $("img.RBS").attr("src", "/static/img/RBS-blue.png");
-    $("img.CDS").attr("src", "/static/img/CDS-blue.png");
-    $("img.teminator").attr("src", "/static/img/teminator-blue.png");
+    $("img.promoter").attr("src", "/static/img/promoter-green.png");
+    $("img.RBS").attr("src", "/static/img/RBS-green.png");
+    $("img.CDS").attr("src", "/static/img/CDS-green.png");
+    $("img.teminator").attr("src", "/static/img/teminator-green.png");
     $(".ui.row.component").hide();
     $(".ui.row.component").fadeIn();
   });
@@ -153,88 +153,88 @@ $(document).ready(function() {
 
   // set popup
   var setPopup = function(now_id) {
-    nowPath = $.grep($(nowPla.pathway), function(p) {
-      return p._id == now_id;
-    })[0];
-    // console.log(el);
-    set_comp(".ui.promoter + .popup", getProm(nowPath.prom));
-    set_comp(".ui.RBS + .popup", getRBS(nowPath.RBS));
-    set_comp(".ui.CDS + .popup", getCDS(nowPath.CDS));
-    set_comp(".ui.teminator + .popup", getTerm(nowPath.term));
-  }
-  // set range
+      nowPath = $.grep($(nowPla.pathway), function(p) {
+        return p._id == now_id;
+      })[0];
+      // console.log(el);
+      set_comp(".ui.promoter + .popup", getProm(nowPath.prom));
+      set_comp(".ui.RBS + .popup", getRBS(nowPath.RBS));
+      set_comp(".ui.CDS + .popup", getCDS(nowPath.CDS));
+      set_comp(".ui.teminator + .popup", getTerm(nowPath.term));
+    }
+    // set range
   var setRange = function(now_id) {
-    var path = $.grep($(nowPla.pathway), function(p) {
-      return p._id == now_id;
-    })[0];
-    var prom_lower = path.strength.promoter_lower,
-      prom_upper = path.strength.promoter_upper,
-      prom = $.grep(path.strength.promoter, function(el) {
-        return el.info == path.prom;
+      var path = $.grep($(nowPla.pathway), function(p) {
+        return p._id == now_id;
       })[0];
-    $('.ui.range.promoter').range({
-      min: prom_lower,
-      max: prom_upper,
-      start: prom.s,
-      step: 0.01,
-      onChange: function(val) {
-        // console.log(val);
-        $(".promoter.num").text(val.toFixed(2));
-        setClosestInfo(val, "prom", path.strength.promoter);
-      }
-    });
-    var RBS_lower = path.strength.RBS_lower,
-      RBS_upper = path.strength.RBS_upper,
-      RBS = $.grep(path.strength.RBS, function(el) {
-        return el.info == path.RBS;
-      })[0];
-    $('.ui.range.RBS').range({
-      min: RBS_lower,
-      max: RBS_upper,
-      start: RBS.s,
-      step: 0.01,
-      onChange: function(val) {
-        // console.log(val);
-        $(".RBS.num").text(val.toFixed(2));
-        setClosestInfo(val, "RBS", path.strength.RBS);
-      }
-    });
-    var mRNA_lower = path.strength.mRNA_lower,
-      mRNA_upper = path.strength.mRNA_upper,
-      mRNA = path.mRNA_s;
-    $('.ui.range.mRNA').range({
-      min: mRNA_lower,
-      max: mRNA_upper,
-      start: mRNA,
-      step: 0.01,
-      onChange: function(val) {
-        // console.log(val);
-        $(".mRNA.num").text(val.toFixed(2));
-        setClosestInfo(val, "mRNA");
-      }
-    });
-    var protein_lower = path.strength.protein_lower,
-      protein_upper = path.strength.protein_upper,
-      protein = path.protein_s;
-    $('.ui.range.protein').range({
-      min: protein_lower,
-      max: protein_upper,
-      start: protein,
-      step: 0.01,
-      onChange: function(val) {
-        // console.log(val);
-        $(".protein.num").text(val.toFixed(2));
-        setClosestInfo(val, "protein");
-      }
-    });
-  }
-  // find the closest strength one and set popup
-  // modify the package(will be send when save) at the same time
+      var prom_lower = path.strength.promoter_lower,
+        prom_upper = path.strength.promoter_upper,
+        prom = $.grep(path.strength.promoter, function(el) {
+          return el.info == path.prom;
+        })[0];
+      $('.ui.range.promoter').range({
+        min: prom_lower,
+        max: prom_upper,
+        start: prom.s,
+        step: 0.01,
+        onChange: function(val) {
+          // console.log(val);
+          $(".promoter.num").text(val.toFixed(2));
+          setClosestInfo(val, "prom", path.strength.promoter);
+        }
+      });
+      var RBS_lower = path.strength.RBS_lower,
+        RBS_upper = path.strength.RBS_upper,
+        RBS = $.grep(path.strength.RBS, function(el) {
+          return el.info == path.RBS;
+        })[0];
+      $('.ui.range.RBS').range({
+        min: RBS_lower,
+        max: RBS_upper,
+        start: RBS.s,
+        step: 0.01,
+        onChange: function(val) {
+          // console.log(val);
+          $(".RBS.num").text(val.toFixed(2));
+          setClosestInfo(val, "RBS", path.strength.RBS);
+        }
+      });
+      var mRNA_lower = path.strength.mRNA_lower,
+        mRNA_upper = path.strength.mRNA_upper,
+        mRNA = path.mRNA_s;
+      $('.ui.range.mRNA').range({
+        min: mRNA_lower,
+        max: mRNA_upper,
+        start: mRNA,
+        step: 0.01,
+        onChange: function(val) {
+          // console.log(val);
+          $(".mRNA.num").text(val.toFixed(2));
+          setClosestInfo(val, "mRNA");
+        }
+      });
+      var protein_lower = path.strength.protein_lower,
+        protein_upper = path.strength.protein_upper,
+        protein = path.protein_s;
+      $('.ui.range.protein').range({
+        min: protein_lower,
+        max: protein_upper,
+        start: protein,
+        step: 1,
+        onChange: function(val) {
+          // console.log(val);
+          $(".protein.num").text(val.toFixed(2));
+          setClosestInfo(val, "protein");
+        }
+      });
+    }
+    // find the closest strength one and set popup
+    // modify the package(will be send when save) at the same time
   var setClosestInfo = function(val, type, slist) {
-    if(type === "mRNA") {
+    if (type === "mRNA") {
       nowPath.mRNA_s = val;
       return true;
-    } else if (type == "protein") {
+    } else if (type === "protein") {
       nowPath.protein_s = val;
       return true;
     }
@@ -242,18 +242,18 @@ $(document).ready(function() {
     var clIndex = 0;
     $(slist).each(function(n, el) {
       console.log(slist[clIndex].s, el.s, val);
-      if(parseFloat(slist[clIndex].s) < parseFloat(val) ||
+      if (parseFloat(slist[clIndex].s) < parseFloat(val) ||
         parseFloat(el.s - val) < parseFloat(slist[clIndex].s - val)) {
-        console.log("change");
+        // console.log("change");
         clIndex = n;
       }
     });
 
-    if(type === "prom") {
+    if (type === "prom") {
       set_comp(".ui.promoter + .popup", getProm(slist[clIndex].info));
       nowPath.prom = slist[clIndex].info;
-    } else if(type === "RBS") {
-      console.log(slist);
+    } else if (type === "RBS") {
+      // console.log(slist);
       set_comp(".ui.RBS + .popup", getRBS(slist[clIndex].info));
       nowPath.RBS = slist[clIndex].info;
     }
@@ -261,14 +261,51 @@ $(document).ready(function() {
 
   // set component
   var set_comp = function(selector, info) {
-    var $popup = $(selector);
-    $popup.find(".name").text(info.name);
-    $popup.find(".type").text(info.type);
-    $popup.find(".BBa").text(info.BBa);
-    $popup.find(".intro").text(info.Introduction);
-    $popup.find("a.NCBI").attr("href", "#" + info.NCBI);
-    $popup.find("a.FASTA").attr("href", "#" + info.FASTA);
-    // console.log(selector, info);
+      var $popup = $(selector);
+      $popup.find(".name").text(info.name);
+      $popup.find(".type").text(info.type);
+      $popup.find(".BBa").text(info.BBa);
+      $popup.find(".intro").text(info.Introduction);
+      $popup.find("a.NCBI").attr("href", "#" + info.NCBI);
+      $popup.find("a.FASTA").attr("href", "#" + info.FASTA);
+      // console.log(selector, info);
+    }
+    // draw the line chart when click redraw
+  $(".button.redraw2").click(function() {
+    redrawChart_2();
+  });
+
+  window.redrawChart_2 = function() {
+    var prom = $(".promoter.num").text(),
+      RBS = $(".RBS.num").text(),
+      mRNA = $(".mRNA.num").text(),
+      protein = $(".protein.num").text();
+
+    // window.myLineChart_2.data.datasets[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    // window.myLineChart_2.update();
+
+    $.ajax({
+      url: "/state1_chart/" + prom + '/' + RBS + '/' + mRNA + '/' + protein,
+      type: "GET",
+      dataType: "json",
+      contentType: 'charset=utf-8',
+      cache: false,
+      success: function(data) {
+        if (data.code) {
+          swal({
+            title: "Ooo",
+            text: data.message,
+            type: "error",
+            confirmButtonText: "Okay"
+          });
+          return false;
+        } else {
+          window.myLineChart_2.data.datasets[0].data = data.ret;
+          window.myLineChart_2.update();
+        }
+      },
+      error: AjaxFail
+    });
   }
 
 
@@ -283,7 +320,7 @@ $(document).ready(function() {
   var nowBac, nowPla, nowPath;
   $("#bacteria-slt").dropdown({
     onChange: function(value, text, $selectedItem) {
-      console.log(value, text, $selectedItem);
+      // console.log(value, text, $selectedItem);
       $(bacteria_list).each(function(n, bac) {
         if (bac._id == value) {
           nowBac = bac;
@@ -299,7 +336,7 @@ $(document).ready(function() {
 
   $("#plasmid-slt").dropdown({
     onChange: function(value, text, $selectedItem) {
-      console.log(value, text, $selectedItem);
+      // console.log(value, text, $selectedItem);
       for (var i = 0; i < 3; i++) {
         $("#path-text-" + (i + 1)).find("textPath").text("");
         $("#marker-" + (i + 1)).attr("_id", "");
@@ -366,13 +403,11 @@ $(document).ready(function() {
         }, 1000);
       }
     },
-    error: function() {
-      AjaxFail();
-    }
+    error: AjaxFail
   });
 
   // modify by address
-  $(".ui.button.save").click(function(){
+  $(".ui.button.save").click(function() {
     console.log(bacteria_list);
-  })
+  });
 })

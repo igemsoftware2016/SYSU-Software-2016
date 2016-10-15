@@ -774,7 +774,7 @@ def state1_chart(promoter, rbs, mrna, protein):
     d2 = protein
     c1 = k1 / d1
     y = []
-    for t in xrange(0, 20):
-        y.append(int(c1 * k2 * math.exp(t/3.0) / (1 + d2) + k1 * k2 / (d1 * (1 + d2))))
-    return jsonify(y)
+    for t in xrange(0, 21):
+        y.append(round(c1 * k2 * math.exp(t/3.0) / (1 + d2) + k1 * k2 / (d1 * (1 + d2)), 2))
+    return libs_success(y)
 

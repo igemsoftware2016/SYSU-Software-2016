@@ -77,6 +77,43 @@ p.description {
 .ui.segment.main {
     margin-bottom: 45px;
 }
+/* state 2 */
+
+/* plasmid style */
+.plasmid {
+    overflow: hidden;
+}
+.mdlabel {font-size:12px}
+.white {fill:#fff}
+g {cursor: default;}
+#marker-1:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-2:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-3:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+
+/* componets row */
+.ui.row.component {
+    border: 0.5px solid rgba(156,156,156,0.3);
+    margin-top: 1rem;
+    border-bottom: 3px solid black;
+    padding-bottom: 1px;
+}
+
+.ui.popup.component {
+    min-width: 200px;
+}
+
+.info-btns {
+    padding-top: 10px;
+}
 
 /* state 3 chart */
 #state-3-menu {

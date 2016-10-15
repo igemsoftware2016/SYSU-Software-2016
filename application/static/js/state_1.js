@@ -468,12 +468,12 @@ $(document).ready(function() {
                         $(r.ret.input).each(function(n, el) {
                             var $line = $('.resolve-line').eq(-1);
                             $line.find("input").eq(0).val(el.name);
-                            $line.find("input").eq(1).val(el.conc);
+                            $line.find("input").eq(1).val(el.begin);
                             $("#add-resolve").click();
                         });
                         $('.resolve-line').eq(-1).find("button.remove-resolve").click();
                     }
-
+                    
                     $("#time").val(r.ret.other.time);
                     $("#medium-slt").dropdown("set value", r.ret.other.medium);
                     $(r.ret.other.env).each(function(n, el) {

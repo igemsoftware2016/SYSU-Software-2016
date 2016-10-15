@@ -127,8 +127,8 @@ def router_state(design_id, state_id):
         return render_template('state_1.html', design = cur_design, medium_list = mlist)
 
     elif state_id == 2:
-        if cur_design.state2_data is None:
-            return render_template('wait.html', design = cur_design)
+        # if cur_design.state2_data is None:
+            # return render_template('wait.html', design = cur_design)
         return render_template('state_2.html', design = cur_design)
 
     elif state_id == 3:
