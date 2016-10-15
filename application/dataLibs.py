@@ -15,6 +15,7 @@ import urllib, pytz
 import json
 import math
 from sets import Set
+import pdfkit
 from xlrd import open_workbook
 # from router import login_required
 
@@ -659,7 +660,7 @@ def upload_file(design_id, state_id):
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            filename = secure_filename(urllib.quote(file.filename.encode('utf-8')))
+            filename = "design-" + str(design_id) + ".xls"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if state_id == 1:
                 cur_design.state1_upload_file = True
