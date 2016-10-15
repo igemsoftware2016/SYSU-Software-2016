@@ -139,7 +139,6 @@ class design(db.Model):
         self.shared = False
         self.needHelp = False
         self.state1_upload_file = False
-        state3_matter_list = '[]'
         state3_matter_plot = "{}"
         self.state5_saved_data = '{}'
         self.state5_upload_file = False

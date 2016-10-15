@@ -409,7 +409,7 @@ def get_state_saved(state_id):
                         cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
                         ret_enzy =  {
                                         "_id": j + 1,
-                                        "name": cur_enzy.name,
+                                        "name": cur_enzy.name[0 : cur_enzy.name.find('_')],
                                         "prom": promoter.query.filter_by(id = libs_list_query(cur_enzy.promoter)[cur_enzy.detected_promoter]).first().id,
                                         "RBS": rbs.query.filter_by(id = libs_list_query(cur_enzy.rbs)[cur_enzy.detected_rbs]).first().id,
                                         "CDS": 1,
@@ -512,7 +512,7 @@ def process_local_calc(design_id):
                 origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
                 cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name")[0 : enzy.get("name").find('_')], floraDB.query.filter_by(code = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
                         cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
                         cur_promo.save()
@@ -537,9 +537,12 @@ def process_local_calc(design_id):
             cur_design.state2_data = cur_data
 
         elif cur_design.state == 3:
-            plot_data = request.json.get(data)
+            plot_data = request.json.get("data")
+            cur_design.state3_matter_plot = '{}'
             for i in plot_data.keys():
-                cur_design.state3_matter_plot = libs_dict_insert(cur_design.state3_matter_plot, i, plot_data[i])
+                tmpplot = libs_dict_insert(cur_design.state3_matter_plot, i, plot_data[i])
+                if tmpplot:
+                    cur_design.state3_matter_plot = tmpplot
 
         db.session.commit()
         return libs_success()
@@ -577,8 +580,8 @@ def process_local_calc(design_id):
             return jsonify({"state": 0})
         ret["initial_matters"] = []
         ret["insert_matters"] = []
-        for x in libs_list_query(cur_data.medium.matters):
-            ret["insert_matters"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
+        for x in libs_list_query(cur_design.state1_data.medium.matters):
+            ret["insert_matters"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_design.state1_data.medium.concentration, x)})
         ret["bacteria"] = []
         for x in libs_list_query(cur_data.bacteria):
             tmpbact = used_bacteria.query.filter_by(id = x).first()
