@@ -390,8 +390,8 @@ def get_state_saved(state_id):
                         ret_enzy =  {
                                         "_id": j + 1,
                                         "name": cur_enzy.name,
-                                        "prom": len(libs_list_query(cur_enzy.promoter)),
-                                        "RBS": len(libs_list_query(cur_enzy.rbs)),
+                                        "prom": promoter.query.filter_by(id = libs_list_query(cur_enzy.promoter)[cur_enzy.detected_promoter]).first().id,
+                                        "RBS": rbs.query.filter_by(id = libs_list_query(cur_enzy.rbs)[cur_enzy.detected_rbs]).first().id,
                                         "CDS": 1,
                                         "term": 1,
                                         "strength": {}

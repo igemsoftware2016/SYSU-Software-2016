@@ -232,426 +232,6 @@ def getState2Info():
       }
     }, 
     "RBS_Info": {
-      "156": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "157": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "158": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "159": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "160": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "161": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "162": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "163": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "164": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "165": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "166": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "167": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "168": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "169": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "170": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }
-    }, 
-    "bacteria": [
-      {
-        "_id": 1, 
-        "name": "BREVIBACTERIUM MCBRELLNERI ATCC 49030", 
-        "plasmid": [
-          {
-            "_id": 1, 
-            "name": "pSB1AK3", 
-            "pathway": [
-              {
-                "CDS": 1, 
-                "RBS": 5, 
-                "_id": 1, 
-                "name": "EC-2.1.2.11_0_pum_0", 
-                "prom": 5, 
-                "strength": {
-                  "RBS": [
-                    {
-                      "info": 156, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 157, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 158, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 159, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 160, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "RBS_lower": 0.11111, 
-                  "RBS_upper": 0.55555, 
-                  "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
-                  "mRNA_upper": 10, 
-                  "promoter": [
-                    {
-                      "info": 161, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 162, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 163, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 164, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 165, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "promoter_lower": 0.11111, 
-                  "promoter_upper": 0.55555, 
-                  "protein_lower": 0, 
-                  "protein_s": 1.4, 
-                  "protein_upper": 10
-                }, 
-                "term": 1
-              }, 
-              {
-                "CDS": 1, 
-                "RBS": 5, 
-                "_id": 2, 
-                "name": "EC-4.1.2.12_0_pum_0", 
-                "prom": 5, 
-                "strength": {
-                  "RBS": [
-                    {
-                      "info": 161, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 162, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 163, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 164, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 165, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "RBS_lower": 0.11111, 
-                  "RBS_upper": 0.55555, 
-                  "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
-                  "mRNA_upper": 10, 
-                  "promoter": [
-                    {
-                      "info": 166, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 167, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 168, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 169, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 170, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "promoter_lower": 0.11111, 
-                  "promoter_upper": 0.55555, 
-                  "protein_lower": 0, 
-                  "protein_s": 1.4, 
-                  "protein_upper": 10
-                }, 
-                "term": 1
-              }
-            ]
-          }
-        ]
-      }, 
-      {
-        "_id": 2, 
-        "name": "TEPIDANAEROBACTER ACETATOXYDANS", 
-        "plasmid": [
-          {
-            "_id": 1, 
-            "name": "pSB1AK3", 
-            "pathway": [
-              {
-                "CDS": 1, 
-                "RBS": 5, 
-                "_id": 1, 
-                "name": "EC-1.11.1.6_1_pum_0", 
-                "prom": 5, 
-                "strength": {
-                  "RBS": [
-                    {
-                      "info": 166, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 167, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 168, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 169, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 170, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "RBS_lower": 0.11111, 
-                  "RBS_upper": 0.55555, 
-                  "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
-                  "mRNA_upper": 10, 
-                  "promoter": [
-                    {
-                      "info": 171, 
-                      "s": 0.11111
-                    }, 
-                    {
-                      "info": 172, 
-                      "s": 0.22222
-                    }, 
-                    {
-                      "info": 173, 
-                      "s": 0.33333
-                    }, 
-                    {
-                      "info": 174, 
-                      "s": 0.44444
-                    }, 
-                    {
-                      "info": 175, 
-                      "s": 0.55555
-                    }
-                  ], 
-                  "promoter_lower": 0.11111, 
-                  "promoter_upper": 0.55555, 
-                  "protein_lower": 0, 
-                  "protein_s": 1.4, 
-                  "protein_upper": 10
-                }, 
-                "term": 1
-              }
-            ]
-          }
-        ]
-      }
-    ], 
-    "promoter_Info": {
-      "161": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "162": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "163": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "164": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "165": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "166": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "167": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "168": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "169": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
-      "170": {
-        "BBa": null, 
-        "FASTA": null, 
-        "Introduction": null, 
-        "NCBI": null, 
-        "name": null, 
-        "type": null
-      }, 
       "171": {
         "BBa": null, 
         "FASTA": null, 
@@ -685,6 +265,426 @@ def getState2Info():
         "type": null
       }, 
       "175": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "176": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "177": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "178": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "179": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "180": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "181": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "182": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "183": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "184": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "185": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }
+    }, 
+    "bacteria": [
+      {
+        "_id": 1, 
+        "name": "BREVIBACTERIUM MCBRELLNERI ATCC 49030", 
+        "plasmid": [
+          {
+            "_id": 1, 
+            "name": "pSB1AK3", 
+            "pathway": [
+              {
+                "CDS": 1, 
+                "RBS": 172, 
+                "_id": 1, 
+                "name": "EC-2.1.2.11_0_pum_0", 
+                "prom": 177, 
+                "strength": {
+                  "RBS": [
+                    {
+                      "info": 171, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 172, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 173, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 174, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 175, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "RBS_lower": 0.11111, 
+                  "RBS_upper": 0.55555, 
+                  "mRNA_lower": 0, 
+                  "mRNA_s": 6.7, 
+                  "mRNA_upper": 10, 
+                  "promoter": [
+                    {
+                      "info": 176, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 177, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 178, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 179, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 180, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "promoter_lower": 0.11111, 
+                  "promoter_upper": 0.55555, 
+                  "protein_lower": 0, 
+                  "protein_s": 1.4, 
+                  "protein_upper": 10
+                }, 
+                "term": 1
+              }, 
+              {
+                "CDS": 1, 
+                "RBS": 177, 
+                "_id": 2, 
+                "name": "EC-4.1.2.12_0_pum_0", 
+                "prom": 182, 
+                "strength": {
+                  "RBS": [
+                    {
+                      "info": 176, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 177, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 178, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 179, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 180, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "RBS_lower": 0.11111, 
+                  "RBS_upper": 0.55555, 
+                  "mRNA_lower": 0, 
+                  "mRNA_s": 6.7, 
+                  "mRNA_upper": 10, 
+                  "promoter": [
+                    {
+                      "info": 181, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 182, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 183, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 184, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 185, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "promoter_lower": 0.11111, 
+                  "promoter_upper": 0.55555, 
+                  "protein_lower": 0, 
+                  "protein_s": 1.4, 
+                  "protein_upper": 10
+                }, 
+                "term": 1
+              }
+            ]
+          }
+        ]
+      }, 
+      {
+        "_id": 2, 
+        "name": "TEPIDANAEROBACTER ACETATOXYDANS", 
+        "plasmid": [
+          {
+            "_id": 1, 
+            "name": "pSB1AK3", 
+            "pathway": [
+              {
+                "CDS": 1, 
+                "RBS": 182, 
+                "_id": 1, 
+                "name": "EC-1.11.1.6_1_pum_0", 
+                "prom": 187, 
+                "strength": {
+                  "RBS": [
+                    {
+                      "info": 181, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 182, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 183, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 184, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 185, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "RBS_lower": 0.11111, 
+                  "RBS_upper": 0.55555, 
+                  "mRNA_lower": 0, 
+                  "mRNA_s": 6.7, 
+                  "mRNA_upper": 10, 
+                  "promoter": [
+                    {
+                      "info": 186, 
+                      "s": 0.11111
+                    }, 
+                    {
+                      "info": 187, 
+                      "s": 0.22222
+                    }, 
+                    {
+                      "info": 188, 
+                      "s": 0.33333
+                    }, 
+                    {
+                      "info": 189, 
+                      "s": 0.44444
+                    }, 
+                    {
+                      "info": 190, 
+                      "s": 0.55555
+                    }
+                  ], 
+                  "promoter_lower": 0.11111, 
+                  "promoter_upper": 0.55555, 
+                  "protein_lower": 0, 
+                  "protein_s": 1.4, 
+                  "protein_upper": 10
+                }, 
+                "term": 1
+              }
+            ]
+          }
+        ]
+      }
+    ], 
+    "promoter_Info": {
+      "176": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "177": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "178": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "179": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "180": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "181": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "182": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "183": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "184": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "185": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "186": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "187": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "188": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "189": {
+        "BBa": null, 
+        "FASTA": null, 
+        "Introduction": null, 
+        "NCBI": null, 
+        "name": null, 
+        "type": null
+      }, 
+      "190": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 

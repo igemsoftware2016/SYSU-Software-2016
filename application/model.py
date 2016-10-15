@@ -267,6 +267,8 @@ class enzyme(db.Model):
         self.promoter = '[]'
         self.rbs = '[]'
         self.from_bact = from_bact
+        self.detected_promoter = 1
+        self.detected_rbs = 1
     def __repr__(self):
         return '<Enzyme %r>' % self.name
     def save(self):
