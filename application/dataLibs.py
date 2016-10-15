@@ -803,8 +803,15 @@ def state2_chart(promoter, rbs, mrna, protein):
     res = {}
     y = []
     for t in xrange(0, 21):
-        part1 = math.exp(-d2 * t) * (k1 * k2 * math.exp(d2 * t) - k1 * k2) / (d1 - d2) / d2
-        part2 = math.exp(-d1 * t) * (k1 * k2 * math.exp(d1 * t) + k1 * k2) / (d2 - d1) / d1
-        y.append(round(part1 - part2, 4))
+        if abs(d1 - d2) < 1e-8:
+            d = (d1 + d2) / 2.0
+            pro = -k2 * math.exp(-d * t) * (k1 + k1 * (d * t - 1) * math.exp(d * t)) / d / d
+            pro -= k2 * t * math.exp(-d * t) * (k1 - k1 * math.exp(d * t)) / d
+            y.append(round(pro, 4))
+        else:
+            part1 = math.exp(-d2 * t) * (k1 * k2 / (d2 - d1) / d1 + k1 * k2 / (d1 - d2) / d1 - k1 * k2 / (d1 - d2) / d2 +
+            k1 * k2 * math.exp(d2 * t)/ (d1 - d2) / d2)
+            part2 = math.exp(-d1 * t) * (- k1 * k2 * math.exp(d1 * t) + k1 * k2) / (d2 - d1) / d1
+            y.append(round(part1 - part2, 4))
     res["y"] = y
     return libs_success(res)
