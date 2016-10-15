@@ -269,6 +269,12 @@ class promoter(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     sequence = db.Column(db.String(300))            # Promoter's sequence
     strength = db.Column(db.Float)                  # Promoter's strength
+    name = db.Column(db.String(60))
+    type_ = db.Column(db.String(60))
+    BBa = db.Column(db.String(60))
+    Introduction = db.Column(db.String(60))
+    NCBI = db.Column(db.String(60))
+    FASTA = db.Column(db.String(60))
     def __init__(self, sequence, strength):
         self.sequence = sequence
         self.strength = strength
@@ -282,6 +288,12 @@ class rbs(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     sequence = db.Column(db.String(300))            # Promoter's sequence
     strength = db.Column(db.Float)                  # Promoter's strength
+    name = db.Column(db.String(60))
+    type_ = db.Column(db.String(60))
+    BBa = db.Column(db.String(60))
+    Introduction = db.Column(db.String(60))
+    NCBI = db.Column(db.String(60))
+    FASTA = db.Column(db.String(60))
     def __init__(self, sequence, strength):
         self.sequence = sequence
         self.strength = strength

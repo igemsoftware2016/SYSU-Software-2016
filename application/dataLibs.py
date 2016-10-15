@@ -364,6 +364,8 @@ def get_state_saved(state_id):
             ret = dict()
             ret["bacteria"] = []
             _id = 1
+            total_pro = []
+            total_rbs = []
             for bact in libs_list_query(cur_data.bacteria):
                 cur_bact = used_bacteria.query.filter_by(id = bact).first()
                 if cur_bact is None:
@@ -373,10 +375,70 @@ def get_state_saved(state_id):
                 ret_bact["plasmid"] = []
                 plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
                 for i in range(plasmid_count):
-                    pass    # todo
+                    cur_plas = plasmidDB.query.filter_by(id = i).first()
+                    ret_plas = {"_id": i + 1, "name": cur_plas.name, "pathway": []}
+                    for j in range(3):
+                        cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
+                        if cur_enzy is None:
+                            break
+                        ret_enzy =  {
+                                        "_id": j + 1,
+                                        "name": cur_enzy.name,
+                                        "prom": len(libs_list_query(cur_enzy.promoter)),
+                                        "RBS": len(libs_list_query(cur_enzy.rbs)),
+                                        "CDS": 1,
+                                        "term": 1,
+                                        "strength": {}
+                                    }
+                        all_pro = []
+                        for t in libs_list_query(cur_enzy.promoter):
+                            tmppro = promoter.query.filter_by(id = t).first()
+                            if tmppro:
+                                all_pro.append(tmppro)
+                        total_pro.extend(all_pro)
+                        ret_enzy["strength"]["promoter_lower"] = all_pro[0].strength
+                        ret_enzy["strength"]["promoter_upper"] = all_pro[len(all_pro)].strength
+                        ret_enzy["strength"]["promoter"] = []
+                        for pro in all_pro:
+                            ret_enzy["strength"]["promoter"].append({"s": pro.strength, "info": pro.id})
+                        all_rbs = []
+                        for t in libs_list_query(cur_enzy.rbs):
+                            tmprbs = rbs.query.filter_by(id = t).first()
+                            if tmprbs:
+                                all_rbs.append(tmprbs)
+                        total_rbs.extend(all_rbs)
+                        ret_enzy["strength"]["RBS_lower"] = all_rbs[0].strength
+                        ret_enzy["strength"]["RBS_upper"] = all_rbs[len(all_rbs)].strength
+                        ret_enzy["strength"]["RBS"] = []
+                        for rbs in all_rbs:
+                            ret_enzy["strength"]["RBS"].append({"s": rbs.strength, "info": rbs.id})
+                        ret_plas["pathway"].append(ret_enzy)
+                    ret_bact["plasmid"].append(ret_plas)    
                 ret["bacteria"].append(ret_bact)
             ret["promoter_Info"] = dict()
+            for pro in total_pro:
+                ret["promoter_Info"][pro.id] = {
+                                                    "name": pro.name,
+                                                    "type": pro.type_,
+                                                    "BBa": pro.BBa,
+                                                    "Introduction": pro.Introduction,
+                                                    "NCBI": pro.NCBI,
+                                                    "FASTA": pro.FASTA
+                                                }
             ret["RBS_Info"] = dict()
+            for rbs in total_rbs:
+                ret["RBS_Info"][rbs.id] = {
+                                                    "name": rbs.name,
+                                                    "type": rbs.type_,
+                                                    "BBa": rbs.BBa,
+                                                    "Introduction": rbs.Introduction,
+                                                    "NCBI": rbs.NCBI,
+                                                    "FASTA": rbs.FASTA
+                                                }
+            ret["CDS_Info"] = {}
+            ret["term_Info"] = {}
+            
+            return libs_success(ret)
 
         elif state_id == 5:
             return libs_success(cur_design.state5_saved_data)
