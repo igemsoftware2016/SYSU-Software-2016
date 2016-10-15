@@ -149,6 +149,10 @@ def router_square():
     num = getUserNum(session.get('user'))
     return render_template('square.html', title='Square', designs = designs, info = info, help = helpList, num=num)
 
+@app.route('/help')
+def help():
+    return render_template('help.html', title='Help')
+
 @app.route('/logout')
 @login_required
 def router_logout():
