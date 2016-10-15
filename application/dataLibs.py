@@ -16,6 +16,7 @@ import json
 import math
 from sets import Set
 import pdfkit
+import wkhtmltopdf
 from xlrd import open_workbook
 # from router import login_required
 
@@ -688,7 +689,6 @@ def upload_file(design_id, state_id):
             filename = "design-" + str(design_id) + ".xls"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if state_id == 1:
-                cur_design.state1_upload_file = True
                 book = open_workbook(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 sheet = book.sheet_by_index(0)
                 
@@ -746,6 +746,7 @@ def upload_file(design_id, state_id):
 
                 data["other"]["medium"] = new_medium.id
                 save_state1(cur_design, data)
+                cur_design.state1_upload_file = True
             else:
                 cur_design.state5_upload_file = True
                 cur_design.state5_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -820,7 +821,7 @@ def getUserNum(_id):
     else:
         return {}
 
-@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET'])
+@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
 def state2_chart(promoter, rbs, mrna, protein):
     k1 = promoter
     k2 = rbs
@@ -840,4 +841,51 @@ def state2_chart(promoter, rbs, mrna, protein):
             part2 = math.exp(-d1 * t) * (- k1 * k2 * math.exp(d1 * t) + k1 * k2) / (d2 - d1) / d1
             y.append(round(part1 - part2, 4))
     res["y"] = y
+    return libs_success(res)
+
+@app.route('/protocol_pdf/<int:design_id>', methods=['GET', 'POST'])
+def protocol_pdf(design_id):
+
+    #sudo apt-get install wkhtmltopdf
+    filename = str(design_id) + ".pdf"
+    appdir = os.path.abspath(os.path.dirname(__file__))
+
+    protocol_html = """
+    <html>
+        <head>
+            <title> protocol </title>
+        </head>
+        <body>
+            <div>
+    """
+
+    for i in xrange(1, 5):
+        file_object = open(os.path.join(appdir, 'static/protocol/exp1/part' + str(i) + '/1.txt'))
+        try:
+            all_the_text = file_object.read( )
+        finally:
+            file_object.close( )
+        protocol_html += "<h1>exp1 part" + str(i) + "</h1>"
+        protocol_html += '<div>' + all_the_text + '</div>'
+
+    for i in xrange(1, 6):
+        file_object = open(os.path.join(appdir, 'static/protocol/exp2/part' + str(i) + '/1.txt'))
+        try:
+            all_the_text = file_object.read( )
+        finally:
+            file_object.close( )
+        protocol_html += "<h1>exp2 part" + str(i) + "</h1>"
+        protocol_html += '<div>' + all_the_text + '</div>'
+
+    protocol_html += """
+            </div>
+        </body>
+    </html>
+    """
+    
+    print (protocol_html)
+
+    pdfkit.from_string(protocol_html, os.path.join(appdir, 'static/pdf/' + filename))
+    res = {}
+    res["name"] = str(design_id) + ".pdf"
     return libs_success(res)
