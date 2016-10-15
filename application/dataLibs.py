@@ -415,6 +415,12 @@ def get_state_saved(state_id):
                         ret_enzy["strength"]["RBS"] = []
                         for rbs in all_rbs:
                             ret_enzy["strength"]["RBS"].append({"s": rbs.strength, "info": rbs.id})
+                        ret_enzy["strength"]["mRNA_lower"] = 0
+                        ret_enzy["strength"]["mRNA_upper"] = 10
+                        ret_enzy["strength"]["mRNA_s"] = 6.7
+                        ret_enzy["strength"]["protein_lower"] = 0
+                        ret_enzy["strength"]["protein_upper"] = 10
+                        ret_enzy["strength"]["protein_s"] = 1.4
                         ret_plas["pathway"].append(ret_enzy)
                     ret_bact["plasmid"].append(ret_plas)    
                 ret["bacteria"].append(ret_bact)
