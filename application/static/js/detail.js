@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
 
     $('.ui.accordion')
-        .accordion();
+    .accordion();
 
     // step 3 chart
     var ctx = document.getElementById("myChart");
@@ -150,7 +150,7 @@ $(document).ready(function() {
         swal({
             title: '<b>Describe this design</b>',
             html: '<div class="ui form"><div class="field"><textarea rows="3" class="description"></textarea></div></div>' +
-                '<div class="ui toggle checkbox"><input type="checkbox" class="help"><label>Wanted someone help</label></div>',
+            '<div class="ui toggle checkbox"><input type="checkbox" class="help"><label>Wanted someone help</label></div>',
             // input: 'textarea',
             showCancelButton: true,
             confirmButtonText: 'Submit',
@@ -158,8 +158,8 @@ $(document).ready(function() {
             preConfirm: function(result) {
                 return new Promise(function(resolve, reject) {
                     var desc = $("textarea.description").val(),
-                        shared = true,
-                        needHelp = $("input.help:checked").length;
+                    shared = true,
+                    needHelp = $("input.help:checked").length;
                     resolve({
                         "description": desc,
                         "shared": shared,
@@ -241,7 +241,7 @@ $(document).ready(function() {
                 }
             });
         });
-    });    
+    });
 
     $(".button.delete").click(function() {
         var $btn = $(this);
@@ -268,7 +268,7 @@ $(document).ready(function() {
                         showErrMsg(r.message);
                         return false;
                     } else {
-                        window.location.href='/profile';
+                        window.location.href = '/profile';
                     }
                 }
             });
@@ -292,52 +292,42 @@ $(document).ready(function() {
             } else {
                 if (r.ret) {
                     if (r.ret.mode == "make") {
+                        $(".resolve-row").hide();
                         $(r.ret.input).each(function(n, el) {
                             var $line = $('<tr class="make-line">\
-                            <td class="left aligned">\
-                              {{name}}\
-                            </td>\
-                            <td class="center aligned">\
-                              {{lower}}\
-                            </td>\
-                            <td class="center aligned">\
-                              {{upper}}\
-                            </td>\
-                            <td class="center aligned">\
-                              <div class="ui toggle checkbox max">\
+                                <td></td><td></td><td></td>\
+                                <td>\
+                                <div class="ui toggle checkbox">\
                                 <input type="checkbox">\
                                 <label></label>\
-                              </div>\
-                            </td>\
-                          </tr>');
-                            var $line = $('.make-line').eq(-1);
-                            $line.find("input").eq(0).val(el.name);
-                            $line.find("input").eq(1).val(el.lower);
-                            $line.find("input").eq(2).val(el.upper);
+                                </div>\
+                                </td>\
+                                </tr>');
+                            $line.find("td").eq(0).text(el.name);
+                            $line.find("td").eq(1).text(el.lower);
+                            $line.find("td").eq(2).text(el.upper);
                             if (el.maxim) {
                                 $line.find(".ui.checkbox").checkbox("set checked");
                             }
-                            $("#add-make").click();
+                            $line.find(".ui.checkbox").checkbox("set disabled");
+                            $("#make-tbody").append($line);
                         });
-                        $('.make-line').eq(-1).find("button.remove-add").click();
                     } else if (r.ret.mode == "resolve") {
+                        $(".make-row").hide();
                         $(r.ret.input).each(function(n, el) {
-                            var $line = $('.resolve-line').eq(-1);
-                            $line.find("input").eq(0).val(el.name);
-                            $line.find("input").eq(1).val(el.conc);
-                            $("#add-resolve").click();
+                            var $line = $('<tr class="resolve-line"><td></td><td></td></tr>');
+                            $line.find("td").eq(0).val(el.name);
+                            $line.find("td").eq(1).val(el.conc);
+                            $("#resolve-tbody").append($line);
                         });
-                        $('.resolve-line').eq(-1).find("button.remove-resolve").click();
                     }
 
-                    $("#time").val(r.ret.other.time);
-                    $("#medium-slt").dropdown("set value", r.ret.other.medium);
+                    $(".field.time").text(r.ret.other.time);
+                    $(".field.medium").text(r.ret.other.mediumName);
                     $(r.ret.other.env).each(function(n, el) {
                         var color = colors[Math.floor(Math.random() * colors.length)];
-                        $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
-                            el + '</span><i class="icon env close"></i></a>');
+                        $('.env.labels').append('<a class="ui ' + color + ' tag label">' + el + '</a>');
                     });
-                    $("#medium-slt").dropdown("set selected", r.ret.other.medium);
                 }
             }
         }

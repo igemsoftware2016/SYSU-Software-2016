@@ -10,8 +10,6 @@ $(document).ready(function() {
         minCharacters: 1
     });
 
-    var colors = ['orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'];
-
     $('.ui.env.search').search({
         apiSettings: {
             url: '/search/microbiota/{query}'
@@ -365,7 +363,8 @@ $(document).ready(function() {
                                         confirmButtonText: "Okay"
                                     });
                                 }
-                            }
+                            },
+                            error: AjaxFail
                         });
                     } else {
                         uploader.start();

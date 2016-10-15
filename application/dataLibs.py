@@ -346,8 +346,7 @@ def get_state_saved(state_id):
             ret["design_id"] = cur_design.id
             ret["mode"] = cur_design.design_mode
             cur_data = cur_design.state1_data
-            ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": []}
-            # myPrint(cur_data.flora)
+            ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": [], "mediumName": cur_data.medium.name}
             for x in libs_list_query(cur_data.flora):
                 ret["other"]["env"].append(floraDB.query.filter_by(id = x).first().name)
             ret["input"] = []
@@ -766,3 +765,16 @@ def getUserNum(_id):
         return num
     else:
         return {}
+
+@app.route('/state1_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET'])
+def state1_chart(promoter, rbs, mrna, protein):
+    k1 = promoter
+    k2 = rbs
+    d1 = mrna
+    d2 = protein
+    c1 = k1 / d1
+    y = []
+    for t in xrange(0, 20):
+        y.append(int(c1 * k2 * math.exp(t/3.0) / (1 + d2) + k1 * k2 / (d1 * (1 + d2))))
+    return jsonify(y)
+
