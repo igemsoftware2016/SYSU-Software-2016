@@ -1,4 +1,5 @@
-from application import db, dirtylist
+from application import db
+from application.dirtylist import *
 import random
 import datetime, pytz
 import hashlib
@@ -48,10 +49,9 @@ class mediumDB(db.Model):
     concentration = db.Column(db.String(500))       # Matters' concentration (With dirty dictionary)
     def __init__(self, name, mattersdict = None):
         self.name = name
-        if mattersdict is None:
-            self.matters = '[]'
-            self.concentration = '{}'
-        else:
+        self.matters = '[]'
+        self.concentration = '{}'
+        if mattersdict:
             for i in mattersdict.keys():
                 cur_matter = matterDB.query.filter_by(matter_name = i).first()
                 if cur_matter is None:

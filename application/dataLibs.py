@@ -227,7 +227,7 @@ def get_steps():
 
 
 def save_state1(cur_design, data_dict):
-    myPrint(request.json)
+    #myPrint(request.json)
 
     # state1 data generation
     # cur_design.design_mode = request.form.get('mode')
@@ -493,7 +493,7 @@ def search_bact_name(bact_name):
                         "success": False
                         })
     results = []
-    counter = 1;
+    counter = 1
     for m in querier:
         ares = {"title": m.name}
         results.append(ares)
@@ -545,6 +545,8 @@ def deleteDesign():
 @login_required
 def upload_file(design_id, state_id):
 
+    if not design.query.filter_by(id = state_id).first():
+        return libs_errorMsg("No such design")
     if state_id != 1 and state_id != 5:
         return libs_errorMsg("Invalid state")
     cur_design = design.query.filter_by(id = design_id).first()
@@ -604,13 +606,19 @@ def upload_file(design_id, state_id):
                 cnt += 1
                 matNum = int(sheet.cell(cnt, 1).value)
 
+                medium_cur = {}
                 ##########
                 for i in xrange(cnt + 1, cnt + 1 + matNum):
                     mater_name = sheet.cell(i, 0).value
                     con = sheet.cell(i, 1).value
+                    medium_cur[mater_name] = str(con)
                 ##########
+                
+                new_medium = mediumDB("user_inserted", medium_cur)
+                new_medium.save()
 
-                print (data)
+                data["other"]["medium"] = new_medium.id
+                save_state1(cur_design, data)
             else:
                 cur_design.state5_upload_file = True
                 cur_design.state5_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
