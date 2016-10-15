@@ -13,4 +13,4 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.secret_key = SECRET_KEY
 db = SQLAlchemy(app)
 
-from application import router, model, dataLibs
+from application import router, model, dataLibs, dirtylist

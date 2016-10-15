@@ -2,11 +2,12 @@
 from __future__ import print_function
 from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
-from application import app, db, dirtylist
+from application import app, db
 from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 # from flask.ext.login import logout_user
 # from .forms import LoginForm
 from model import *
+from dirtylist import *
 from functools import wraps
 from werkzeug import secure_filename
 import os, sys
