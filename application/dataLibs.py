@@ -692,3 +692,16 @@ def getUserNum(_id):
         return num
     else:
         return {}
+
+@app.route('/state1_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET'])
+def state1_chart(promoter, rbs, mrna, protein):
+    k1 = promoter
+    k2 = rbs
+    d1 = mrna
+    d2 = protein
+    c1 = k1 / d1
+    y = []
+    for t in xrange(0, 20):
+        y.append(int(c1 * k2 * math.exp(t/3.0) / (1 + d2) + k1 * k2 / (d1 * (1 + d2))))
+    return jsonify(y)
+
