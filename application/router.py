@@ -144,9 +144,10 @@ def router_state(design_id, state_id):
 
 @app.route('/square')
 def router_square():
-    designs, info = getPublic(session.get('user'))
+    ds, info = getPublic(session.get('user'))
     helpList = getNeedHelp()
     num = getUserNum(session.get('user'))
+    designs = sorted(ds, key = lambda x: info[x.id]['like_num'], reverse = True)
     return render_template('square.html', title='Square', designs = designs, info = info, help = helpList, num=num)
 
 @app.route('/help')
@@ -224,15 +225,13 @@ def save_test():
 def getState2Info():
     null = None
     ret = {
-  "code": 0, 
-  "ret": {
     "CDS_Info": {
       "1": {
         "name": "Specified CDS for enzyme"
       }
     }, 
     "RBS_Info": {
-      "171": {
+      "16": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -240,7 +239,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "172": {
+      "17": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -248,7 +247,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "173": {
+      "18": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -256,7 +255,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "174": {
+      "19": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -264,7 +263,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "175": {
+      "20": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -272,7 +271,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "176": {
+      "21": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -280,7 +279,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "177": {
+      "22": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -288,7 +287,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "178": {
+      "23": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -296,7 +295,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "179": {
+      "24": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -304,7 +303,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "180": {
+      "25": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -312,7 +311,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "181": {
+      "26": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -320,7 +319,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "182": {
+      "27": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -328,7 +327,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "183": {
+      "28": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -336,7 +335,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "184": {
+      "29": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -344,7 +343,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "185": {
+      "30": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -364,128 +363,128 @@ def getState2Info():
             "pathway": [
               {
                 "CDS": 1, 
-                "RBS": 172, 
+                "RBS": 16, 
                 "_id": 1, 
-                "name": "EC-2.1.2.11_0_pum_0", 
-                "prom": 177, 
+                "mRNA_s": 6.7, 
+                "name": "EC-2.1.2.11", 
+                "prom": 16, 
+                "protein_s": 1.4, 
                 "strength": {
                   "RBS": [
                     {
-                      "info": 171, 
+                      "info": 16, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 172, 
+                      "info": 17, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 173, 
+                      "info": 18, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 174, 
+                      "info": 19, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 175, 
+                      "info": 20, 
                       "s": 0.55555
                     }
                   ], 
                   "RBS_lower": 0.11111, 
                   "RBS_upper": 0.55555, 
                   "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
                   "mRNA_upper": 10, 
                   "promoter": [
                     {
-                      "info": 176, 
+                      "info": 16, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 177, 
+                      "info": 17, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 178, 
+                      "info": 18, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 179, 
+                      "info": 19, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 180, 
+                      "info": 20, 
                       "s": 0.55555
                     }
                   ], 
                   "promoter_lower": 0.11111, 
                   "promoter_upper": 0.55555, 
                   "protein_lower": 0, 
-                  "protein_s": 1.4, 
                   "protein_upper": 10
                 }, 
                 "term": 1
               }, 
               {
                 "CDS": 1, 
-                "RBS": 177, 
+                "RBS": 21, 
                 "_id": 2, 
-                "name": "EC-4.1.2.12_0_pum_0", 
-                "prom": 182, 
+                "mRNA_s": 6.7, 
+                "name": "EC-4.1.2.12", 
+                "prom": 21, 
+                "protein_s": 1.4, 
                 "strength": {
                   "RBS": [
                     {
-                      "info": 176, 
+                      "info": 21, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 177, 
+                      "info": 22, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 178, 
+                      "info": 23, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 179, 
+                      "info": 24, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 180, 
+                      "info": 25, 
                       "s": 0.55555
                     }
                   ], 
                   "RBS_lower": 0.11111, 
                   "RBS_upper": 0.55555, 
                   "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
                   "mRNA_upper": 10, 
                   "promoter": [
                     {
-                      "info": 181, 
+                      "info": 21, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 182, 
+                      "info": 22, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 183, 
+                      "info": 23, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 184, 
+                      "info": 24, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 185, 
+                      "info": 25, 
                       "s": 0.55555
                     }
                   ], 
                   "promoter_lower": 0.11111, 
                   "promoter_upper": 0.55555, 
                   "protein_lower": 0, 
-                  "protein_s": 1.4, 
                   "protein_upper": 10
                 }, 
                 "term": 1
@@ -504,64 +503,64 @@ def getState2Info():
             "pathway": [
               {
                 "CDS": 1, 
-                "RBS": 182, 
+                "RBS": 26, 
                 "_id": 1, 
-                "name": "EC-1.11.1.6_1_pum_0", 
-                "prom": 187, 
+                "mRNA_s": 6.7, 
+                "name": "EC-1.11.1.6", 
+                "prom": 26, 
+                "protein_s": 1.4, 
                 "strength": {
                   "RBS": [
                     {
-                      "info": 181, 
+                      "info": 26, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 182, 
+                      "info": 27, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 183, 
+                      "info": 28, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 184, 
+                      "info": 29, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 185, 
+                      "info": 30, 
                       "s": 0.55555
                     }
                   ], 
                   "RBS_lower": 0.11111, 
                   "RBS_upper": 0.55555, 
                   "mRNA_lower": 0, 
-                  "mRNA_s": 6.7, 
                   "mRNA_upper": 10, 
                   "promoter": [
                     {
-                      "info": 186, 
+                      "info": 26, 
                       "s": 0.11111
                     }, 
                     {
-                      "info": 187, 
+                      "info": 27, 
                       "s": 0.22222
                     }, 
                     {
-                      "info": 188, 
+                      "info": 28, 
                       "s": 0.33333
                     }, 
                     {
-                      "info": 189, 
+                      "info": 29, 
                       "s": 0.44444
                     }, 
                     {
-                      "info": 190, 
+                      "info": 30, 
                       "s": 0.55555
                     }
                   ], 
                   "promoter_lower": 0.11111, 
                   "promoter_upper": 0.55555, 
                   "protein_lower": 0, 
-                  "protein_s": 1.4, 
                   "protein_upper": 10
                 }, 
                 "term": 1
@@ -572,7 +571,7 @@ def getState2Info():
       }
     ], 
     "promoter_Info": {
-      "176": {
+      "16": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -580,7 +579,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "177": {
+      "17": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -588,7 +587,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "178": {
+      "18": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -596,7 +595,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "179": {
+      "19": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -604,7 +603,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "180": {
+      "20": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -612,7 +611,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "181": {
+      "21": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -620,7 +619,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "182": {
+      "22": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -628,7 +627,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "183": {
+      "23": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -636,7 +635,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "184": {
+      "24": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -644,7 +643,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "185": {
+      "25": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -652,7 +651,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "186": {
+      "26": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -660,7 +659,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "187": {
+      "27": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -668,7 +667,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "188": {
+      "28": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -676,7 +675,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "189": {
+      "29": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -684,7 +683,7 @@ def getState2Info():
         "name": null, 
         "type": null
       }, 
-      "190": {
+      "30": {
         "BBa": null, 
         "FASTA": null, 
         "Introduction": null, 
@@ -699,9 +698,10 @@ def getState2Info():
         "Introduction": "double terminator (B0010-B0012)", 
         "name": "A 202 Terminator"
       }
-    }
+    }, 
+    "time": 11.5
   }
-}
+
     return jsonify({
             "code": 0,
             "ret": ret

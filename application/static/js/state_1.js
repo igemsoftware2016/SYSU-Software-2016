@@ -178,6 +178,10 @@ $(document).ready(function() {
         isMake = false;
     }
 
+    if($('#design-file').text() === "True") {
+        $('.ui.dimmer.upload').dimmer('show');
+    }
+
     $(".idea.icon").click(function() {
         swal({
             title: 'Give it a new Name',
@@ -368,7 +372,7 @@ $(document).ready(function() {
                         });
                     } else {
                         uploader.start();
-                        $(".dimmer.upload").dimmer("hide");
+                        // $(".dimmer.upload").dimmer("hide");
                     }
                     return false;
                 };
@@ -396,11 +400,20 @@ $(document).ready(function() {
             },
 
             Error: function(up, err) {
-                console.log(err);
+                // console.log(err);
                 swal({
                     title: "Ooo",
                     text: err.message,
                     type: "error",
+                    confirmButtonText: "Okay"
+                });
+            },
+
+            UploadComplete: function(up, files) {
+                swal({
+                    title: "Done",
+                    text: "File is uploaded.",
+                    type: "success",
                     confirmButtonText: "Okay"
                 });
             }

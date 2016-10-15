@@ -14,8 +14,13 @@ $(document).ready(function() {
 
 
   var ctx = document.getElementById("myChart-2");
+  var time_2 = parseFloat($("#design-time").text());
+  var labels = [];
+  for(var i=0; i<21; i++) {
+      labels.push((i/21.0*time_2).toFixed(1));
+  }
   var data = {
-    labels: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0', '9.5', '10.0'],
+    labels: labels,
     datasets: [{
       label: "CL",
       fill: false, // 
@@ -173,7 +178,7 @@ $(document).ready(function() {
           return el.info == path.prom;
         })[0];
       $('.ui.range.promoter').range({
-        min: prom_lower,
+        min: 0,
         max: prom_upper,
         start: prom.s,
         step: 0.01,
@@ -189,7 +194,7 @@ $(document).ready(function() {
           return el.info == path.RBS;
         })[0];
       $('.ui.range.RBS').range({
-        min: RBS_lower,
+        min: 0,
         max: RBS_upper,
         start: RBS.s,
         step: 0.01,
@@ -203,7 +208,7 @@ $(document).ready(function() {
         mRNA_upper = path.strength.mRNA_upper,
         mRNA = path.mRNA_s;
       $('.ui.range.mRNA').range({
-        min: mRNA_lower,
+        min: 0,
         max: mRNA_upper,
         start: mRNA,
         step: 0.01,
@@ -217,7 +222,7 @@ $(document).ready(function() {
         protein_upper = path.strength.protein_upper,
         protein = path.protein_s;
       $('.ui.range.protein').range({
-        min: protein_lower,
+        min: 0,
         max: protein_upper,
         start: protein,
         step: 1,
@@ -328,6 +333,10 @@ $(document).ready(function() {
           $(bac.plasmid).each(function(n, el) {
             $("#plasmid-slt").find(".menu").append('<div class="item" data-value="' + el._id + '">' + el.name + '</div>');
           });
+          setTimeout(function() {
+            $("#plasmid-slt").dropdown("set selected", bac.plasmid[0]._id);
+            $("#marker-1").click();
+          }, 100);
         }
       });
     }
@@ -344,8 +353,13 @@ $(document).ready(function() {
       $(nowBac.plasmid).each(function(n, plas) {
         if (plas._id == value) {
           nowPla = plas;
+          $("#marker-1").hide();
+          $("#marker-2").hide();
+          $("#marker-3").hide();
+          $("#plasmid-title").text(plas.name);
           $(plas.pathway).each(function(n, el) {
             $("#path-text-" + (n + 1)).find("textPath").text(el.name);
+            $("#marker-" + (n + 1)).fadeIn();
             $("#marker-" + (n + 1)).attr("_id", el._id);
           });
         }

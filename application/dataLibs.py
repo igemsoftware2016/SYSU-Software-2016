@@ -71,7 +71,7 @@ def getNeedHelp():
     # return filter(lambda x: x.state==2 or x.state==3, design.query.filter_by(needHelp = True).all())
 
 def getPublic(_id=None):
-    ret = design.query.filter_by(shared = True)
+    ret = design.query.filter_by(shared = True).all()
     otherInfo = {}
     if _id:
         u = user.query.filter_by(id = _id).first()
