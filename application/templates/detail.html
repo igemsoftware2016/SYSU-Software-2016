@@ -8,7 +8,7 @@
 <span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
 <!-- put code here with-->
 <div class="ui column grid centered">
-  <div class="ui banner one column fliud centered">
+  <div class="ui banner one column fluid centered">
   </div>
 </div> <!-- top banner -->
 
@@ -81,10 +81,95 @@
       <div class="ui styled fluid accordion">
         <div class="title active">
           <i class="dropdown icon"></i>
-          Step 1
+          Search
         </div>
         <div class="content active">
-          <p class="transition visible">一堆数据，脑子不够想排版。做成标签形式。</p>
+          <p class="transition visible">
+            <div class="ui grid">
+              <div class="ui row">
+                <div class="column">
+                  <div class="ui row make-row">
+                    <div class="ui column">
+                      <table class="ui very basic table">
+                        <thead>
+                          <tr>
+                            <th class="three wide">Targets</th>
+                            <th class="two wide">Lower bound (mol/L)</th>
+                            <th class="two wide">Upper bound (mol/L)</th>
+                            <th class="one wide">Concentration MAX</th>
+                          </tr>
+                        </thead>
+                        <tbody id="make-tbody">
+                          <tr class="make-line">
+                            <td class="left aligned">
+                              WATER
+                            </td>
+                            <td class="center aligned">
+                              0.2
+                            </td>
+                            <td class="center aligned">
+                              9.7
+                            </td>
+                            <td class="center aligned">
+                              <div class="ui toggle checkbox max">
+                                <input type="checkbox">
+                                <label></label>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> <!-- row 1 make matter -->
+                  <div class="ui divider make-row"></div>
+                  <div class="ui row resolve-row">
+                    <div class="ui column fluid">
+                      <table class="ui very basic table">
+                        <thead>
+                          <tr>
+                            <th class="one wide">Targets</th>
+                            <th class="three wide">Concentration (mol/L)</th>
+                          </tr>
+                        </thead>
+                        <tbody id="resolve-tbody">
+                          <tr class="resolve-line">
+                            <td class="left aligned">
+                              WATER CARE-2345
+                            </td>
+                            <td class="left aligned">
+                              5.6
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> <!-- row 2 resolve matter -->
+                  <!-- other settings -->
+                  <div class="ui divider resolve-row"></div>
+                </div>
+              </div> <!-- matters row -->
+
+              <div class="ui row divided">
+                <div class="ui column sixteen wide">
+                  <label><b>Environmental Mircobiota</b></label>
+                  <div class="field">
+                    <div class="ui env labels">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="ui row divided">
+                <div class="ui column four wide">
+                  <label><b>Time (Mins)</b></label>
+                  <div class="field">9.3</div>
+                </div>
+                <div class="ui column four wide">
+                  <label><b>Medium</b></label>
+                  <div class="field">Long-Medium-Name</div>
+                </div>
+              </div>
+            </div>
+          </p>
         </div>
         <div class="title">
           <i class="dropdown icon"></i>

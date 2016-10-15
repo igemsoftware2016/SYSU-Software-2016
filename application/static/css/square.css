@@ -79,3 +79,8 @@ p.description {
     background-color: white;
     min-height: 269px;
 }
+
+.ui.column.nickname {
+    font-size: 1.5em;
+    font-weight: 600;
+}

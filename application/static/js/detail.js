@@ -274,4 +274,72 @@ $(document).ready(function() {
             });
         });
     });
+
+    // get detail 1 saved data
+    $.ajax({
+        url: "/get_state_1_saved",
+        type: "GET",
+        dataType: "json",
+        contentType: 'charset=utf-8',
+        cache: false,
+        data: {
+            design_id: $("#design-id").text()
+        },
+        success: function(r) {
+            if (r.code) {
+                showErrMsg(r.message);
+                return false;
+            } else {
+                if (r.ret) {
+                    if (r.ret.mode == "make") {
+                        $(r.ret.input).each(function(n, el) {
+                            var $line = $('<tr class="make-line">\
+                            <td class="left aligned">\
+                              {{name}}\
+                            </td>\
+                            <td class="center aligned">\
+                              {{lower}}\
+                            </td>\
+                            <td class="center aligned">\
+                              {{upper}}\
+                            </td>\
+                            <td class="center aligned">\
+                              <div class="ui toggle checkbox max">\
+                                <input type="checkbox">\
+                                <label></label>\
+                              </div>\
+                            </td>\
+                          </tr>');
+                            var $line = $('.make-line').eq(-1);
+                            $line.find("input").eq(0).val(el.name);
+                            $line.find("input").eq(1).val(el.lower);
+                            $line.find("input").eq(2).val(el.upper);
+                            if (el.maxim) {
+                                $line.find(".ui.checkbox").checkbox("set checked");
+                            }
+                            $("#add-make").click();
+                        });
+                        $('.make-line').eq(-1).find("button.remove-add").click();
+                    } else if (r.ret.mode == "resolve") {
+                        $(r.ret.input).each(function(n, el) {
+                            var $line = $('.resolve-line').eq(-1);
+                            $line.find("input").eq(0).val(el.name);
+                            $line.find("input").eq(1).val(el.conc);
+                            $("#add-resolve").click();
+                        });
+                        $('.resolve-line').eq(-1).find("button.remove-resolve").click();
+                    }
+
+                    $("#time").val(r.ret.other.time);
+                    $("#medium-slt").dropdown("set value", r.ret.other.medium);
+                    $(r.ret.other.env).each(function(n, el) {
+                        var color = colors[Math.floor(Math.random() * colors.length)];
+                        $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                            el + '</span><i class="icon env close"></i></a>');
+                    });
+                    $("#medium-slt").dropdown("set selected", r.ret.other.medium);
+                }
+            }
+        }
+    });
 });

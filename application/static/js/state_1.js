@@ -511,5 +511,5 @@ $(document).ready(function() {
             },
             error: AjaxFail
         });
-    })
+    });
 });
