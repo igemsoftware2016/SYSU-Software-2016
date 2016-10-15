@@ -244,18 +244,20 @@ def save_state1(cur_design, data_dict):
             new_resolve_matter = resolve_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
             new_resolve_matter.save()
             tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
-            cur_data.resolve = tmplist
+            cur_data.resolve_matter = tmplist
 
     d_order = data_dict.get('other')
     cur_data.reaction_time = float(d_order.get('time'))
     cur_data.medium = mediumDB.query.filter_by(id = int(d_order.get('medium'))).first()
 
     for floras in d_order.get('env'):
+        # myPrint(floras)
         flora = floraDB.query.filter_by(name = floras).first()
         if not flora:
             continue
-
+        # myPrint(cur_data.flora)
         tmplist = libs_list_insert(cur_data.flora, flora.id)
+        # myPrint(tmplist)
         if tmplist is not None:
             cur_data.flora = tmplist
 
@@ -282,6 +284,7 @@ def save_state(state_id):
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
+            myPrint(request.json)
             save_state1(cur_design, request.json)
         
         elif state_id == 2:
@@ -344,6 +347,7 @@ def get_state_saved(state_id):
             ret["mode"] = cur_design.design_mode
             cur_data = cur_design.state1_data
             ret["other"] = {"medium": cur_data.medium_id, "time": cur_data.reaction_time, "env": []}
+            # myPrint(cur_data.flora)
             for x in libs_list_query(cur_data.flora):
                 ret["other"]["env"].append(floraDB.query.filter_by(id = x).first().name)
             ret["input"] = []
@@ -354,7 +358,7 @@ def get_state_saved(state_id):
             else:
                 for x in libs_list_query(cur_data.resolve_matter):
                     tmp_matter = resolve_matter.query.filter_by(id = x).first()
-                    ret["input"].append({"name": tmp_matter.matter.name, "begin": tmp_matter.begin})
+                    ret["input"].append({"name": tmp_matter.matter.matter_name, "begin": tmp_matter.begin})
             return libs_success(ret)
 
         elif state_id == 2:
@@ -437,7 +441,7 @@ def get_state_saved(state_id):
                                                 }
             ret["CDS_Info"] = {}
             ret["term_Info"] = {}
-            
+
             return libs_success(ret)
 
         elif state_id == 5:
@@ -449,6 +453,8 @@ def process_local_calc(design_id):
     cur_design = design.query.filter_by(id = design_id).first()
     if cur_design is None:
         return jsonify({"state": 0})
+
+    # Receive from local
     if request.method == 'POST':
         if request.json.get("code") != 0:
             return libs_errorMsg("Local calculate failed")
@@ -470,6 +476,7 @@ def process_local_calc(design_id):
                         cur_enzy.rbs = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
                     cur_bact.enzyme = libs_list_insert(cur_bact.enzyme, cur_enzy.id)
                 cur_data.bacteria = libs_list_insert(cur_data.bacteria, cur_bact.id)
+
         elif cur_design.state == 3:
             plot_data = request.json.get(data)
             for i in plot_data.keys():
@@ -479,6 +486,7 @@ def process_local_calc(design_id):
     ret = dict()
     ret["state"] = cur_design.state
 
+    # Send to local
     if cur_design.state == 2:
         cur_data = cur_design.state1_data
         if cur_data is None:
@@ -493,6 +501,8 @@ def process_local_calc(design_id):
             for x in libs_list_query(cur_data.resolve_matter):
                 ret["matters"].append(resolve_matter.query.filter_by(id = x).first().matter.matter_code)
         ret["medium"] = []
+        myPrint(cur_data.medium.matters)
+        myPrint(cur_data.medium.concentration)
         for x in libs_list_query(cur_data.medium.matters):
             ret["medium"].append({"code": matterDB.query.filter_by(id = x).first().matter_code, "con": libs_dict_query(cur_data.medium.concentration, x)})
         return jsonify(ret)
@@ -514,6 +524,8 @@ def process_local_calc(design_id):
                 tmpret["enzyme"].append(enzyme.query.filter_by(id = e).first().name)
             ret["bacteria"].append(tmpret)
         return jsonify(ret)
+
+    return libs_errorMsg("Now not calculating state")
 
 
 @app.route('/search/matters/<matter_name>')

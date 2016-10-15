@@ -22,10 +22,10 @@ def libs_list_query(list_string):
 # Generai dirty dictionary processor
 def libs_dict_insert(dict_string, key, value):
     l = json.loads(dict_string)
-    l[key] = value
+    l[str(key)] = value
     ret = json.dumps(l)
     return ret
 def libs_dict_query(dict_string, key):
     l = json.loads(dict_string)
-    return l[key]
+    return l[str(key)]
 ####################################
