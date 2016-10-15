@@ -413,11 +413,7 @@ def get_state_saved(state_id):
                                         "RBS": rbs.query.filter_by(id = libs_list_query(cur_enzy.rbs)[cur_enzy.detected_rbs]).first().id,
                                         "CDS": 1,
                                         "term": 1,
-                                        "mRNA_lower" : 0,
-                                        "mRNA_upper" : 10,
                                         "mRNA_s" : cur_enzy.mRNA_s,
-                                        "protein_lower" : 0,
-                                        "protein_upper" : 10,
                                         "protein_s" : cur_enzy.protein_s,
                                         "strength": {}
                                     }
@@ -443,6 +439,10 @@ def get_state_saved(state_id):
                         ret_enzy["strength"]["RBS"] = []
                         for rbss in all_rbs:
                             ret_enzy["strength"]["RBS"].append({"s": rbss.strength, "info": rbss.id})
+                        ret_enzy["strength"]["mRNA_lower"] = 0
+                        ret_enzy["strength"]["mRNA_upper"] = 10
+                        ret_enzy["strength"]["protein_lower"] = 0
+                        ret_enzy["strength"]["protein_upper"] = 10
                         ret_plas["pathway"].append(ret_enzy)
                     ret_bact["plasmid"].append(ret_plas)    
                 ret["bacteria"].append(ret_bact)
@@ -511,7 +511,7 @@ def process_local_calc(design_id):
                 origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
                 cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name")[0 : enzy.get("name").find('-')], floraDB.query.filter_by(code = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name")[0 : enzy.get("name").find('_')], floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
                         cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
                         cur_promo.save()
