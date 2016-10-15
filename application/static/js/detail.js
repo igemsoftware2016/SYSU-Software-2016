@@ -25,125 +25,6 @@ $(document).ready(function() {
       $(".button.redraw2").click();
     }, 600); 
   });
-  
-
-  // var ctx = document.getElementById("myChart-2");
-  // var data = {
-  //   labels: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0', '9.5', '10.0'],
-  //   datasets: [{
-  //     label: "CL",
-  //     fill: false, // 
-  //     lineTension: 0.4,
-  //     backgroundColor: "rgba(237,174,73,0.4)",
-  //     borderColor: "rgba(237,174,73,1)",
-  //     borderCapStyle: 'butt',
-  //     borderDash: [],
-  //     borderDashOffset: 0.0,
-  //     borderJoinStyle: 'miter',
-  //     pointBorderColor: "rgba(237,174,73,1)",
-  //     pointBackgroundColor: "#fff",
-  //     pointBorderWidth: 1,
-  //     pointHoverRadius: 5,
-  //     pointHoverBackgroundColor: "rgba(237,174,73,1)",
-  //     pointHoverBorderColor: "rgba(237,174,730,1)",
-  //     pointHoverBorderWidth: 2,
-  //     pointRadius: 1,
-  //     pointHitRadius: 10,
-  //     pointStyle: "round",
-  //     data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  //     spanGaps: false,
-  //   }]
-  // };
-  // window.myLineChart_2 = new Chart(ctx, {
-  //   type: 'line',
-  //   data: data,
-  //   options: {
-  //     title: {
-  //       display: true,
-  //       text: 'Dynamic Performance'
-  //     },
-  //     maintainAspectRatio: false,
-  //     fullWidth: false,
-  //     legend: {
-  //       position: "left",
-  //       display: false
-  //     },
-  //     scales: {
-  //       yAxes: [{
-  //         scaleLabel: {
-  //           display: true,
-  //           labelString: 'Output'
-  //         }
-  //       }],
-  //     }
-  //   }
-  // });
-
-
-  // $($("#marker-1").parent()).click(function() {
-  //   var now_id = $("#marker-1").attr("_id");
-  //   if (!now_id) {
-  //     return false;
-  //   }
-  //   setPopup(now_id); // set four popup
-  //   setRange(now_id); // set four range
-
-  //   $("img.promoter").attr("src", "/static/img/promoter-orange.png");
-  //   $("img.RBS").attr("src", "/static/img/RBS-orange.png");
-  //   $("img.CDS").attr("src", "/static/img/CDS-orange.png");
-  //   $("img.teminator").attr("src", "/static/img/teminator-orange.png");
-  //   $(".ui.row.component").hide();
-  //   $(".ui.row.component").fadeIn();
-  // });
-  // // green one
-  // $($("#marker-2").parent()).click(function() {
-  //   var now_id = $("#marker-2").attr("_id");
-  //   if (!now_id) {
-  //     return false;
-  //   }
-  //   setPopup(now_id); // set four popup
-  //   setRange(now_id); // set four range
-  //   $("img.promoter").attr("src", "/static/img/promoter-green.png");
-  //   $("img.RBS").attr("src", "/static/img/RBS-green.png");
-  //   $("img.CDS").attr("src", "/static/img/CDS-green.png");
-  //   $("img.teminator").attr("src", "/static/img/teminator-green.png");
-  //   $(".ui.row.component").hide();
-  //   $(".ui.row.component").fadeIn();
-  // });
-  // // blue one
-  // $($("#marker-3").parent()).click(function() {
-  //   var now_id = $("#marker-3").attr("_id");
-  //   if (!now_id) {
-  //     return false;
-  //   }
-  //   setPopup(now_id); // set four popup
-  //   setRange(now_id); // set four range
-  //   $("img.promoter").attr("src", "/static/img/promoter-blue.png");
-  //   $("img.RBS").attr("src", "/static/img/RBS-blue.png");
-  //   $("img.CDS").attr("src", "/static/img/CDS-blue.png");
-  //   $("img.teminator").attr("src", "/static/img/teminator-blue.png");
-  //   $(".ui.row.component").hide();
-  //   $(".ui.row.component").fadeIn();
-  // });
-  // $("#marker-1").mouseenter(function() {
-  //   $("#highlight-1").show();
-  // }).mouseleave(function() {
-  //   $("#highlight-1").hide();
-  // });
-  // $("#marker-2").mouseenter(function() {
-  //   $("#highlight-2").show();
-  // }).mouseleave(function() {
-  //   $("#highlight-2").hide();
-  // });
-  // $("#marker-3").mouseenter(function() {
-  //   $("#highlight-3").show();
-  // }).mouseleave(function() {
-  //   $("#highlight-3").hide();
-  // });
-
-  // $("#highlight-1").hide();
-  // $("#highlight-2").hide();
-  // $("#highlight-3").hide();
 
   // step 2 end   ///////////////////
 
@@ -278,7 +159,7 @@ $(document).ready(function() {
     swal({
       title: '<b>Describe this design</b>',
       html: '<div class="ui form"><div class="field"><textarea rows="3" class="description"></textarea></div></div>' +
-        '<div class="ui toggle checkbox"><input type="checkbox" class="help"><label>Wanted someone help</label></div>',
+        '<div class="ui toggle checkbox"><input type="checkbox" class="help"><label>Wants someone help</label></div>',
       // input: 'textarea',
       showCancelButton: true,
       confirmButtonText: 'Submit',
@@ -314,12 +195,13 @@ $(document).ready(function() {
             });
             return false;
           } else {
-            location.reload();
-            // swal({
-            //     type: 'success',
-            //     title: 'Done',
-            //     html: 'This design could be visited by public now.'
-            // });
+            swal({
+                type: 'success',
+                title: 'Done',
+                html: 'This design could be visited by public now.'
+            }).then(function() {
+              location.reload();
+            });
           }
         },
         error: function() {
@@ -361,7 +243,13 @@ $(document).ready(function() {
             });
             return false;
           } else {
-            location.reload();
+            swal({
+                type: 'success',
+                title: 'Done',
+                html: 'This design is private now.'
+            }).then(function() {
+              location.reload();
+            });
           }
         },
         error: function() {

@@ -746,7 +746,7 @@ def report():
 
 @app.route('/set_design_shared', methods=['POST'])
 def setDesignShared():
-    d = design.query.filter_by(id = request.json.get("_id"))
+    d = design.query.filter_by(id = request.json.get("_id")).first_or_404()
     if not d or not request.json.get("shared"):
         return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
     d.shared = request.json.get("shared")
@@ -794,8 +794,8 @@ def getUserNum(_id):
     else:
         return {}
 
-@app.route('/state1_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET'])
-def state1_chart(promoter, rbs, mrna, protein):
+@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET'])
+def state2_chart(promoter, rbs, mrna, protein):
     k1 = promoter
     k2 = rbs
     d1 = mrna

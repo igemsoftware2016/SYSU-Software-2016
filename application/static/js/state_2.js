@@ -241,7 +241,7 @@ $(document).ready(function() {
 
     var clIndex = 0;
     $(slist).each(function(n, el) {
-      console.log(slist[clIndex].s, el.s, val);
+      // console.log(slist[clIndex].s, el.s, val);
       if (parseFloat(slist[clIndex].s) < parseFloat(val) ||
         parseFloat(el.s - val) < parseFloat(slist[clIndex].s - val)) {
         // console.log("change");
@@ -285,7 +285,7 @@ $(document).ready(function() {
     // window.myLineChart_2.update();
 
     $.ajax({
-      url: "/state1_chart/" + prom + '/' + RBS + '/' + mRNA + '/' + protein,
+      url: "/state2_chart/" + prom + '/' + RBS + '/' + mRNA + '/' + protein,
       type: "GET",
       dataType: "json",
       contentType: 'charset=utf-8',
@@ -300,7 +300,7 @@ $(document).ready(function() {
           });
           return false;
         } else {
-          window.myLineChart_2.data.datasets[0].data = data.ret;
+          window.myLineChart_2.data.datasets[0].data = data.ret.y;
           window.myLineChart_2.update();
         }
       },
