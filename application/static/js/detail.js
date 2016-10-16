@@ -303,7 +303,9 @@ $(document).ready(function() {
     },
     success: function(r) {
       if (r.code) {
-        showErrMsg(r.message);
+        swal(r.message, "", "error").then(function() {
+          window.location.href = "/profile";
+        });
         return false;
       } else {
         if (r.ret) {

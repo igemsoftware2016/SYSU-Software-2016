@@ -7,13 +7,13 @@
 {% block container %}
 
 <!-- put code here with-->
-<span id="design-id" style="display: none;">{{design_id}}</span> <!-- given by jinja2 -->
+<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
 <div class="ui five steps sticky">
   <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
     <i class="circle icon"></i>
     <div class="content">
       <div class="title">
-        Search
+        Settings
       </div>
     </div>
   </a>
@@ -21,7 +21,7 @@
     <i class="circle icon"></i>
     <div class="content">
     <div class="title">
-        Adjustment
+        Solution
       </div>
     </div>
   </a>
@@ -54,7 +54,7 @@
   <div class="ui row">
     <div class="ui column three wide"></div> <!-- offset -->
     <div class="ui column five wide">
-      <button class="ui blue button fluid">Download PDF</button>
+      <a class="ui blue button fluid" href="/static/pdf/{{design.id}}.pdf" target="_blank">Download PDF</a>
     </div>
     <div class="ui column three wide"></div> <!-- offset -->
     <div class="ui column two wide">
@@ -69,7 +69,7 @@
     <div class="ui column fluid pdf">
       <!-- PDF viewer -->
       <div class="media pdf" style="background-color: rgb(255, 255, 255); height: 100%">
-        <iframe width="100%" height="100%" src="/static/pdf/test.pdf"></iframe>
+        <iframe width="100%" height="100%" src="/static/pdf/{{design.id}}.pdf"></iframe>
       </div>
     </div>
   </div>

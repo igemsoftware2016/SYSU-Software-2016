@@ -178,7 +178,6 @@ $(document).ready(function() {
           return el.info == path.prom;
         })[0];
       $('.ui.range.promoter').range({
-        min: 0,
         max: prom_upper,
         start: prom.s,
         step: 0.01,
@@ -194,7 +193,6 @@ $(document).ready(function() {
           return el.info == path.RBS;
         })[0];
       $('.ui.range.RBS').range({
-        min: 0,
         max: RBS_upper,
         start: RBS.s,
         step: 0.01,
@@ -208,7 +206,6 @@ $(document).ready(function() {
         mRNA_upper = path.strength.mRNA_upper,
         mRNA = path.mRNA_s;
       $('.ui.range.mRNA').range({
-        min: 0,
         max: mRNA_upper,
         start: mRNA,
         step: 0.01,
@@ -222,7 +219,6 @@ $(document).ready(function() {
         protein_upper = path.strength.protein_upper,
         protein = path.protein_s;
       $('.ui.range.protein').range({
-        min: 0,
         max: protein_upper,
         start: protein,
         step: 1,
@@ -268,11 +264,21 @@ $(document).ready(function() {
   var set_comp = function(selector, info) {
       var $popup = $(selector);
       $popup.find(".name").text(info.name);
-      $popup.find(".type").text(info.type);
+      // $popup.find(".type").text(info.type);
       $popup.find(".BBa").text(info.BBa);
-      $popup.find(".intro").text(info.Introduction);
-      $popup.find("a.NCBI").attr("href", "#" + info.NCBI);
-      $popup.find("a.FASTA").attr("href", "#" + info.FASTA);
+      $popup.find(".intro").text((info.Introduction?info.Introduction:"No intoduction yet."));
+      if(info.name && info.name != '-') {
+        $popup.find("a.NCBI").attr("href", "https://www.ncbi.nlm.nih.gov/gquery/?term=" + info.name);
+        $popup.find("a.NCBI").removeClass("disabled");
+      } else {
+        $popup.find("a.NCBI").addClass("disabled");
+      }
+      if(info.BBa && info.BBa != '-') {
+        $popup.find("a.FASTA").attr("href", "http://parts.igem.org/fasta/parts/" + info.BBa);
+        $popup.find("a.FASTA").removeClass("disabled");
+      } else {
+        $popup.find("a.FASTA").addClass("disabled");
+      }
       // console.log(selector, info);
     }
     // draw the line chart when click redraw

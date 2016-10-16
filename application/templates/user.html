@@ -67,9 +67,9 @@
           <div class="bar"></div>
           <div class="label">
             {% if design.state == 1 %}
-            Search
+            Settings
             {% elif design.state == 2 %}
-            Adjustment
+            Solution
             {% elif design.state == 3 %}
             Simulation
             {% elif design.state == 4 %}
@@ -92,7 +92,7 @@
         <div class="ui tiny circular image">
           <img src="/static/img/icon/{{user.icon}}.jpg">
         </div>
-        <div class="ui column fuild center aligned nickname">{{ session.get('nickname') }}</div>
+        <div class="ui column fuild center aligned nickname">{{ user.nickname }}</div>
         <div class="ui divider"></div>
         <div class="ui row equal width">
           <div class="ui mini statistic column">

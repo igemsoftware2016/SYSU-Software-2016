@@ -115,6 +115,8 @@ def router_state(design_id, state_id):
     cur_design = design.query.filter_by(id = design_id).first()
     if cur_design is None:
         return redirect(url_for('router_profile'))
+    if cur_design.owner_id != session['user']:
+        abort(403)
     session['design'] = design_id
     if state_id > cur_design.state:
         return redirect(url_for('router_state', design_id = design_id, state_id = cur_design.state))
@@ -137,7 +139,7 @@ def router_state(design_id, state_id):
         return render_template('state_3.html', design_id = design_id)
 
     elif state_id == 4:
-        return render_template('state_4.html', design_id = design_id)
+        return render_template('state_4.html', design = cur_design)
 
     return render_template('state_%r.html' % state_id, design_id = design_id)
 
@@ -171,22 +173,25 @@ def route_user(user_id):
     return render_template('user.html', title='Square', designs = designs, info = info, num=num, user=u)
 
 @app.route('/design/<int:design_id>')
-@login_required
+# @login_required
 def designDetail(design_id):
     d = design.query.filter_by(id=design_id).first_or_404()
-    u = user.query.filter_by(id=session['user']).first()
 
     otherInfo = {}
     l = json.loads(d.liked_by)
     # myPrint(l, session['user'])
     otherInfo['icon'] = d.owner.icon
     otherInfo['like_num'] = len(l)
-    otherInfo['liked'] = (session['user'] in l)
+    otherInfo['liked'] = (session.get('user') in l)
     otherInfo['datetime'] = d.design_time.strftime("%Y-%m-%d %H:%M")
-    l = json.loads(u.mark)
+    if session.get('user'):
+        u = user.query.filter_by(id=session['user']).first()
+        l = json.loads(u.mark)
+        otherInfo['marked'] = (str(d.id) in l)
+    else:
+        otherInfo['marked'] = False
     # myPrint(l, d.id, (str(d.id) in l))
-    otherInfo['marked'] = (str(d.id) in l)
-    otherInfo['myCreation'] = (d.owner == session["user"])
+    otherInfo['myCreation'] = (d.owner == session.get('user'))
     return render_template("detail.html", title="Design detail", design = d, info=otherInfo)
 
 @app.errorhandler(404)
@@ -214,7 +219,7 @@ def test_s(state):
             "name": "secondpl"
         }]
         return render_template('state_2.html', bacteria = dict_bacteria, plasmid = dict_plasmid, design_id = 233)
-    return render_template("state_%s.html" % state, design_id=233)
+    return render_template("state_%s.html" % state, design_id=233, design=design.query.filter_by(id=1).first())
 
 @app.route("/save_test", methods=["POST"])
 def save_test():

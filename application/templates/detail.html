@@ -7,6 +7,7 @@
 
 {% block container %}
 <span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span><!-- given by jinja2 -->
 <!-- put code here with-->
 <div class="ui column grid centered">
   <div class="ui banner one column fluid centered">
@@ -22,7 +23,7 @@
           <div class="ui row">
             <div class="eleven wide column">
               <h3 class="ui header">
-                <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="ui rounded image mini">&nbsp;
+                <img src="/static/img/icon/{{design.owner.icon}}.jpg" class="ui rounded image mini">&nbsp;
                 <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
                 [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
                 {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
@@ -32,6 +33,11 @@
             </div>
 
             <div class="five wide column right aligned">
+              {% if design.owner_id == session.get("user") %}
+              <a class="ui icon button tiny basic black" title="Edit" href="/state/{{design.id}}/{{design.state}}">
+                <i class="paint brush sign icon"></i>
+              </a>
+              {% endif %}
               <div class="ui labeled button mini like">
                 <div class="ui red button" title="{% if not info['liked'] %}Like it{% else %}Liked{% endif %}">
                   <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
@@ -47,7 +53,7 @@
               <button class="ui icon button tiny basic share {% if design.shared %}brown{% else %}gray{% endif %}" title="{% if design.shared %}Shared{% else %}Share it now!{% endif %}">
                 <i class="share sign icon"></i>
               </button>
-              <button class="ui icon button tiny basic delete red">
+              <button class="ui icon button tiny basic delete red" title="Delete">
                 <i class="delete sign icon"></i>
               </button>
               {% endif %}
@@ -65,9 +71,9 @@
           <div class="bar"></div>
           <div class="label">
             {% if design.state == 1 %}
-            Search
+            Settings
             {% elif design.state == 2 %}
-            Adjustment
+            Solution
             {% elif design.state == 3 %}
             Simulation
             {% elif design.state == 4 %}
@@ -82,7 +88,7 @@
       <div class="ui styled fluid accordion">
         <div class="title active">
           <i class="dropdown icon"></i>
-          Search
+          Settings
         </div>
         <div class="content active">
           <p class="transition visible">
@@ -144,7 +150,7 @@
         </div>
         <div class="title state-2">
           <i class="dropdown icon"></i>
-          Adjustment
+          Solution
         </div>
         <div class="content">
           <p class="transition hidden">
@@ -236,10 +242,10 @@
                                 <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">promoter</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -248,8 +254,8 @@
                                 <b>Learn More infomation:</b>
                               </div>
                               <div class="ui column fliud info-btns">
-                                <a class="ui button gray mini NCBI">NCBI</a>
-                                <a class="ui button gray mini FASTA">FASTA</a>
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
                               </div>
                             </div>
                           </div>
@@ -268,10 +274,10 @@
                                 <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">RBS</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -280,8 +286,8 @@
                                 <b>Learn More infomation:</b>
                               </div>
                               <div class="ui column fliud info-btns">
-                                <a class="ui button gray mini NCBI">NCBI</a>
-                                <a class="ui button gray mini FASTA">FASTA</a>
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
                               </div>
                             </div>
                           </div>
@@ -300,10 +306,10 @@
                                 <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">CDS</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -312,8 +318,8 @@
                                 <b>Learn More infomation:</b>
                               </div>
                               <div class="ui column fliud info-btns">
-                                <a class="ui button gray mini NCBI">NCBI</a>
-                                <a class="ui button gray mini FASTA">FASTA</a>
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
                               </div>
                             </div>
                           </div>
@@ -332,10 +338,10 @@
                                 <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">gene</span>
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">teminator</span>
                               </div>
                               <div class="ui column fliud">
-                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -344,8 +350,8 @@
                                 <b>Learn More infomation:</b>
                               </div>
                               <div class="ui column fliud info-btns">
-                                <a class="ui button gray mini NCBI">NCBI</a>
-                                <a class="ui button gray mini FASTA">FASTA</a>
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
                               </div>
                             </div>
                           </div>
