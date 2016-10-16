@@ -2,6 +2,7 @@
 #include <vector>
 
 using std::endl;
+using std::string;
 
 class promoter{
 public:
@@ -22,7 +23,7 @@ std::vector<promoter> v;
 promoter search_strength(double target, int l, int r){
 	if (r - l <= 1) return v[l];
 	int mid = (l + r) / 2;
-	if (v[mid].strength() < target) return search_strength(target, mid, r);
+	if (v[mid].strength < target) return search_strength(target, mid, r);
 	return search_strength(target, l, mid);
 }
 

@@ -20,8 +20,8 @@ void current_memory() {
 ifstream fin("data.dat");
 ifstream qin("query.txt");
 ifstream oin("org-data.dat");
-ifstream kin("org-kcat-fake.txt");
-ifstream gin("mer-g-fake.txt");
+ifstream kin("org-kcat.txt");
+ifstream gin("mer-g.txt");
 
 using std :: ofstream;
 ofstream marout("mar_total.txt");
@@ -637,42 +637,42 @@ void dfs_pattern_init(const set <string> & s, set < full_result > & ret) {
 
 void res_evalue(const set < full_result > & ret) {
 	auto best = ret.begin(); double best_score = 0.0;
-//	for (auto i = ret.begin(); i != ret.end(); ++ i) {
+	for (auto i = ret.begin(); i != ret.end(); ++ i) {
 
-//		set <string> orgs = i -> org_list;
-//		map < string, set <string> > ins = i -> insert_gene;
+		set <string> orgs = i -> org_list;
+		map < string, set <string> > ins = i -> insert_gene;
 
-//		map <string, double> u;
-//		map <string , double> c;
+		map <string, double> u;
+		map <string , double> c;
 
-//		SmartPtr <opt_com_nlp> nlp = new opt_com_nlp(orgs, ins, u, c);
-//		SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
+		SmartPtr <opt_com_nlp> nlp = new opt_com_nlp(orgs, ins, u, c);
+		SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
 
-//		app -> Options() -> SetStringValue("hessian_approximation", "limited-memory");
-//		app -> Options() -> SetStringValue("jac_c_constant", "yes");
-//		app -> Options() -> SetStringValue("jac_d_constant", "yes");
-//		app -> Options() -> SetStringValue("print_user_options", "yes");
-//		app -> Options() -> SetIntegerValue("print_level", 0);
-//		app -> Options() -> SetNumericValue("max_cpu_time", 300.0);
+		app -> Options() -> SetStringValue("hessian_approximation", "limited-memory");
+		app -> Options() -> SetStringValue("jac_c_constant", "yes");
+		app -> Options() -> SetStringValue("jac_d_constant", "yes");
+		app -> Options() -> SetStringValue("print_user_options", "yes");
+		app -> Options() -> SetIntegerValue("print_level", 0);
+		app -> Options() -> SetNumericValue("max_cpu_time", 300.0);
 
-//		ApplicationReturnStatus status;
-//		status = app -> Initialize();
-//		
-//		if (status != Solve_Succeeded) {
-//			cout << "ERROR : Ipopt Initialization" << endl;
-//		}
+		ApplicationReturnStatus status;
+		status = app -> Initialize();
+		
+		if (status != Solve_Succeeded) {
+			cout << "ERROR : Ipopt Initialization" << endl;
+		}
 
-//		status = app -> OptimizeTNLP(nlp);
-//		
-//		if (ret.begin() == i) {
-//			best_score = nlp -> obj;
-//		}
-//		
-//		if (nlp -> obj < best_score) {
-//			best_score = nlp -> obj;
-//			best = i;
-//		}
-//	}
+		status = app -> OptimizeTNLP(nlp);
+		
+		if (ret.begin() == i) {
+			best_score = nlp -> obj;
+		}
+		
+		if (nlp -> obj < best_score) {
+			best_score = nlp -> obj;
+			best = i;
+		}
+	}
 	
 	fin_res << best -> org_list.size() << endl;
 	for (auto j = best -> org_list.begin(); j != best -> org_list.end(); ++ j) {

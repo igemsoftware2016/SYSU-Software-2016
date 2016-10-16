@@ -13,29 +13,29 @@ HIGHLY RECOMMANDED:
 
 Open terminal at the working directory.
 
-	sudo apt update
-	sudo apt upgrade
-	sudo apt-get install gcc g++ gfortran subversion patch wget
-	svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
-	unzip OpenBLAS-0.2.19.zip
-	cd ./CoinIpopt/ThirdParty/Mumps
-	./get.Mumps
-	cd ../Metis
-	./get.Metis
+	$sudo apt update
+	$sudo apt upgrade
+	$sudo apt-get install gcc g++ gfortran subversion patch wget
+	$svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
+	$unzip OpenBLAS-0.2.19.zip
+	$cd ./CoinIpopt/ThirdParty/Mumps
+	$./get.Mumps
+	$cd ../Metis
+	$./get.Metis
 
 ======== INSTALL ========
 
 Open terminal at the working directory.
 
-	cd ./OpenBLAS-0.2.19
-	make
-	make PREFIX=/where/to/install install
-	cd ../CoinIpopt
-	./configure --prefix=/where/to/install -with-blas="-L/where/to/install/lib -lopenblas"
-	make
-	make install
-	cd ..
-	rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
+	$cd ./OpenBLAS-0.2.19
+	$make
+	$make PREFIX=/where/to/install install
+	$cd ../CoinIpopt
+	$./configure --prefix=/where/to/install -with-blas="-L/where/to/install/lib -lopenblas"
+	$make
+	$make install
+	$cd ..
+	$rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
 
 ======== MAKE ========
 
@@ -51,6 +51,6 @@ Replace with
 
 Open terminal at the working directory.
 
-	make
+	$make
 
 

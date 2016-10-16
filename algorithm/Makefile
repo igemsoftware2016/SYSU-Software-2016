@@ -7,7 +7,13 @@ OPTL=-Wl,--rpath -Wl,/home/ngzm/2016_SYSU_iGEM/algorithm/lib
 
 INCLUDES=-I./include -I./include/coin
 
-all: get-common OptCom-test dOptCom
+all: get-common OptCom-test dOptCom promoter rbs
+
+promoter:
+	$(CC) $(CFLAG) -o promoter promoter.cpp
+
+rbs:
+	$(CC) $(CFLAG) -o rbs rbs.cpp
 
 data-fake: data-fake.cpp
 	$(CC) $(CFLAG) $(INCLUDES) -o $@ $^
@@ -39,4 +45,4 @@ clean:
 	-rm opt-test
 	-rm OptCom-test
 	-rm *.o
-	-rm dOptCom
+	-rm dOptCom promoter rbs
