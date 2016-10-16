@@ -219,7 +219,7 @@ class state2_data(db.Model):
         m.update(src)
         self.md5 = m.hexdigest()
     def __init__(self):
-        self.md5 = ''
+        self.state1_md5 = ''
         self.bacteria = '[]'
     def __repr__(self):
         return '<State 2 data %r>' % self.id

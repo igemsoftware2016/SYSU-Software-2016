@@ -381,9 +381,10 @@ $(document).ready(function() {
   });
 
   $.ajax({
-    url: "/getState2Info",
+    url: "/get_state_2_saved",
     type: "GET",
     dataType: "json",
+    data: {"design_id": $("#design-id").text()},
     contentType: 'charset=utf-8',
     cache: false,
     success: function(data) {

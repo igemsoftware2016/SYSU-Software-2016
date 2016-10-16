@@ -137,13 +137,13 @@ def router_state(design_id, state_id):
         if cur_design.enzyme_info is None:
             return redirect(url_for('router_profile'))
         if cur_design.enzyme_info.state3_matter_plot == '{}':
-            return render_template('wait.html', design_id = design_id)
-        return render_template('state_3.html', design_id = design_id)
+            return render_template('wait.html', design = cur_design)
+        return render_template('state_3.html', design = cur_design)
 
     elif state_id == 4:
         return render_template('state_4.html', design = cur_design)
 
-    return render_template('state_%r.html' % state_id, design_id = design_id)
+    return render_template('state_%r.html' % state_id, design = cur_design)
 
 
 @app.route('/square')

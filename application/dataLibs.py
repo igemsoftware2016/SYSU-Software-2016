@@ -301,16 +301,24 @@ def save_state1(cur_design, data_dict):
 def save_state2(cur_design, data_dict):
     for bact in data_dict["bacteria"]:
         cur_bact = used_bacteria.query.filter_by(id = bact["_id"]).first()      # Bacteria layer
+        print(cur_bact.id)
         if cur_bact is None:
             continue
         enzy_info = enzyme_info()
         for plas in bact["plasmid"]:
             for enzy in plas["pathway"]:
-                cur_enzy = enzyme.query.filter_by(name = enzy["name"]).first()  # Enzyme layer
+                # print(enzy["name"])
+                cur_enzy = enzyme.query.filter_by(id = enzy["_id"]).first()  # Enzyme layer
                 if cur_enzy is None:
+                    print ('Enzyme not found')
                     continue
                 # All message within enzyme
-                enzy_info.insert_info(cur_enzy.id, libs_list_query(cur_enzy.promoter).index(id = enzy["prom"]), libs_list_query(cur_enzy.rbs).index(id = enzy["RBS"]), enzy["mRNA_s"], enzy["protein_s"])
+                # print(enzy_info.detected_dict)
+                print(cur_enzy.id)
+                print(cur_enzy.promoter)
+                print(enzy["prom"])
+                enzy_info.insert_info(cur_enzy.id, enzy["prom"], enzy["RBS"], enzy["mRNA_s"], enzy["protein_s"])
+                print(enzy_info.detected_dict)
         enzy_info.refresh_md5()
         past_info = enzyme_info.query.filter_by(md5 = enzy_info.md5).first()
         if past_info:
@@ -430,7 +438,6 @@ def get_state_saved(state_id):
         ret = dict()
         ret["time"] = cur_design.state1_data.reaction_time
         ret["bacteria"] = []
-        _id = 1
         total_pro = []
         total_rbs = []
         # myPrint(cur_data)
@@ -439,12 +446,12 @@ def get_state_saved(state_id):
             cur_bact = used_bacteria.query.filter_by(id = bact).first()
             if cur_bact is None:
                 break
-            ret_bact = {"name": cur_bact.flora.name, "_id": _id}
-            _id += 1
+            print(bact)
+            ret_bact = {"name": cur_bact.flora.name, "_id": cur_bact.id}
             ret_bact["plasmid"] = []
             plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
             # print(plasmid_count)
-            enzy_info = cur_data.enzyme_info
+            enzy_info = cur_design.enzyme_info
             for i in range(plasmid_count):
                 cur_plas = plasmidDB.query.filter_by(id = i + 1).first()
                 ret_plas = {"_id": i + 1, "name": cur_plas.name, "pathway": []}
@@ -452,17 +459,22 @@ def get_state_saved(state_id):
                     if len(libs_list_query((cur_bact.enzyme))) <= i * 3 + j:
                         break
                     cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
-                    det_promo = 0
-                    det_rbs = 0
-                    det_mrna = 5
-                    det_prot = 5
+                    print (cur_enzy.promoter)
+                    print (cur_enzy.rbs)
+                    det_promo = libs_list_query(cur_enzy.promoter)[0]
+                    det_rbs = libs_list_query(cur_enzy.rbs)[0]
+                    det_mrna = 1.4
+                    det_prot = 6.0
                     if enzy_info:
+                        # print('I have a enzy_info')
                         det_promo = enzy_info.value()[cur_enzy.id]["detected_promoter"]
                         det_rbs = enzy_info.value()[cur_enzy.id]["detected_rbs"]
                         det_mrna = enzy_info.value()[cur_enzy.id]["mRNA_s"]
                         det_prot = enzy_info.value()[cur_enzy.id]["protein_s"]
+                    # else:
+                    #     print('I dont have a enzy_info')
                     ret_enzy =  {
-                                    "_id": j + 1,
+                                    "_id": cur_enzy.id,
                                     "name": cur_enzy.name[0 : cur_enzy.name.find('_')],
                                     "prom": det_promo,
                                     "RBS": det_rbs,
@@ -538,7 +550,7 @@ def get_state_saved(state_id):
 
     elif state_id == 3:
         ret = {"time": cur_design.state1_data.reaction_time, "datasets" : []}
-        plot_dict = libs_dict_query_all(cur_design.state3_matter_plot)
+        plot_dict = libs_dict_query_all(cur_design.enzyme_info.state3_matter_plot)
         for reac_name in plot_dict.keys():
             ret["datasets"].append({"name": reac_name, "data": plot_dict[reac_name]})
         return libs_success(ret)
@@ -566,7 +578,7 @@ def process_local_calc(design_id):
             return libs_errorMsg("Local calculate failed")
         if cur_design.state == 2:
 
-            print(request.json)
+            # print(request.json)
             cur_data = state2_data()
             # myPrint(cur_data)
             for bact in request.json.get("bacteria"):
@@ -578,6 +590,7 @@ def process_local_calc(design_id):
                         cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
                         cur_promo.save()
                         tmpprolist = libs_list_insert(cur_enzy.promoter, cur_promo.id)
+                        # print(tmpprolist)
                         if tmpprolist:
                             cur_enzy.promoter = tmpprolist
                     for rbss in enzy.get("rbs"):
@@ -600,11 +613,11 @@ def process_local_calc(design_id):
 
         elif cur_design.state == 3:
             plot_data = request.json.get("data")
-            cur_design.state3_matter_plot = '{}'
+            cur_design.enzyme_info.state3_matter_plot = '{}'
             for i in plot_data.keys():
-                tmpplot = libs_dict_insert(cur_design.state3_matter_plot, i, plot_data[i])
+                tmpplot = libs_dict_insert(cur_design.enzyme_info.state3_matter_plot, i, plot_data[i])
                 if tmpplot:
-                    cur_design.state3_matter_plot = tmpplot
+                    cur_design.enzyme_info.state3_matter_plot = tmpplot
 
         db.session.commit()
         return libs_success()
