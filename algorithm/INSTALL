@@ -15,7 +15,7 @@ Open terminal at the working directory.
 
 	$sudo apt update
 	$sudo apt upgrade
-	$sudo apt-get install gcc g++ gfortran subversion patch wget
+	$sudo apt-get install gcc g++ gfortran subversion patch wget cmake
 	$svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
 	$unzip OpenBLAS-0.2.19.zip
 	$cd ./CoinIpopt/ThirdParty/Mumps
