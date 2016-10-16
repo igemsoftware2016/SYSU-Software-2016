@@ -41,11 +41,13 @@ public:
 	virtual bool get_bounds_info(Index n, Number* x_l, Number* x_u,
 		Index m, Number* g_l, Number* g_u);
 
+	/* a starting point for iterations*/
 	virtual bool get_starting_point(Index n, bool init_x, Number* x,
 		bool init_z, Number* z_L, Number* z_U,
 		Index m, bool init_lambda,
 		Number* lambda);
 
+	/* evalue obj_value */
 	virtual bool eval_f(Index n, const Number* x, bool new_x, Number& obj_value);
 
 	virtual bool eval_grad_f(Index n, const Number* x, bool new_x, Number* grad_f);
@@ -67,9 +69,11 @@ public:
 	double obj;
 
 private:
+	/* each row of the matrix represent a substance*/
 	vector <string> s_mat_m_mer_name;
 	vector <int> s_mat_m_mer_cnt;
 	vector <double> s_mat_n_c;
+	/* each row of the matrix represent a substance*/
 	map <string, double> feed;
 
 	map < int, map <int, int> > s_mat;
@@ -80,12 +84,10 @@ private:
 	vector < map < int, map <int, int> > > s1_mat, s2_mat;
 	vector < int > s1_mat_n, s1_mat_m, s2_mat_m;
 	int s2_mat_n;
-	//vector < vector <string> > s1_mat_n_mer, s2_mat_n_mer;
 
 	opt_com_nlp(const opt_com_nlp&);
 	opt_com_nlp& operator=(const opt_com_nlp&);
 	
-//	void debug_print(ofstream &);
 };
 
 #endif

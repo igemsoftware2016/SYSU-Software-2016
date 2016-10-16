@@ -53,4 +53,7 @@ Open terminal at the working directory.
 
 	$make
 
+======== Download Our Data package ========
+
+	Extract to /where/to/install
 

@@ -2,38 +2,6 @@
 
 using namespace Ipopt;
 
-//void opt_com_nlp :: debug_print(ofstream & log) {
-
-//	log << s_mat_m << ' ' << s_mat_n << endl;
-//	for (int i = 0; i < s_mat_m; ++ i) {
-//		for (int j = 0; j < s_mat_n; ++ j)
-//			if (s_mat[i][j] >= 0)
-//				log << s_mat[i][j] << "  ";
-//			else log << s_mat[i][j] << " ";
-//		log << endl;
-//	}
-
-//	log << endl;
-
-//	for (int i = 0; i < org_size; ++ i) {
-//		log << i << ' ' << s1_mat_m[i] << ' ' << s1_mat_n[i] << endl;
-//		for (int x = 0; x < s1_mat_m[i]; ++ x) {
-//			for (int y = 0; y < s1_mat_n[i]; ++ y)
-//				log << s1_mat[i][x][y] << ' ';
-//			log << endl;
-//		}
-//	}
-
-//	for (int i = 0; i < org_size; ++ i) {
-//		log << i << ' ' << s2_mat_m[i] << ' ' << s2_mat_n << endl;
-//		for (int x = 0; x < s2_mat_m[i]; ++ x) {
-//			for (int y = 0; y < s2_mat_n; ++ y)
-//				log << s2_mat[i][x][y] << ' ';
-//			log << endl;
-//		}
-//	}
-//}
-
 opt_com_nlp :: opt_com_nlp(set <string> orgs, map < string, set <string> > ins,
 	map <string, double> u, map <string , double> c) {
 

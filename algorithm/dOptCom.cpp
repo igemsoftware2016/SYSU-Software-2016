@@ -84,18 +84,8 @@ int main() {
 
 		status = app->OptimizeTNLP(nlp);
 
-/*		if (status == Solve_Succeeded) {
-			Index iter_count = app->Statistics()->IterationCount();
-			std::cout << std::endl << std::endl << "*** The problem solved in " << iter_count << " iterations!" << std::endl;
-	
-			Number final_obj = app->Statistics()->FinalObjective();
-			std::cout << std::endl << std::endl << "*** The final value of the objective function is " << final_obj << '.' << std::endl;
-		}*/
-
-		for (auto i = nlp -> ct.begin(); i != nlp -> ct.end(); ++ i) {
-			//cout << i -> first << ' ' << i -> second << endl;
+		for (auto i = nlp -> ct.begin(); i != nlp -> ct.end(); ++ i)
 			ct[i -> first] += i -> second;
-		}
 
 		dopt_res << time_slice << endl;
 		for (auto i = ct.begin(); i != ct.end(); ++ i)

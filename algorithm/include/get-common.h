@@ -40,7 +40,7 @@ using std :: sort;
 #ifndef WINDOWS
 //
 // Base on a linux/unix api. So I'm not going to
-// test the memory on windows.
+// test the memory usage on windows.
 //
 #define memory_check
 #endif
@@ -79,7 +79,7 @@ struct sub_data {
 	
 	sub_data() {circle_flag = false;}
 	//
-	// every substance is a node of the whole network, the edges are the ecs
+	// every substance is a node of the whole network, the edges are the ezs
 	// that counld produce it. The network is the oppsite of the reaction
 	// chains.
 	//
@@ -91,7 +91,9 @@ inline double my_abs(double x) {
 
 struct org_data{
 	set < string> ec_list;
+	// ezs that owned by this org
 	set < string > t_sub_list;
+	// substance that coulb be transported
 	map < string, double > kcat;
 	string name;
 	bool usable;
@@ -108,21 +110,17 @@ struct org_data{
 
 		return t_sub_list.size() < b.t_sub_list.size();
 	}
-
-	//
-	// list of ecs, that org got.
-	//
 };
 
 struct ec_data{
 	set < string > org_list;
+	//
+	// orgs that have this ez.
+	//
 	string begin, end, kcat_org;
 	double kcat, begin_coff, end_coff;
 	
 	ec_data() {kcat = -99999;}
-	//
-	// orgs that have this ec.
-	//
 };
 
 struct ec_path_result {
@@ -177,7 +175,8 @@ struct ec_path_results {
 struct full_result {
 	set < string > org_list;
 	map < string, set <string> > insert_gene;
-	
+	//orgs that used, and genes they inserted
+
 	bool operator < (const full_result & b) const {
 		if (org_list != b.org_list)
 			return org_list < b.org_list;

@@ -3,6 +3,13 @@
 
 #include <ctime>
 
+////////////////////////////////////////////////////////////////////////////////
+//
+//
+// A timer, for perfomance testing
+//
+//
+
 struct timer {
 	clock_t t;
 	void start() {t = clock();}
