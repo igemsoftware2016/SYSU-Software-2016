@@ -1,0 +1,10 @@
+Thaw a tube of NEB Express Competent E. coli cells on ice until the last ice crystals disappear. Mix gently and carefully pipette 50 SIL of cells into a transformation tube on ice.
+Add 1-5 SIL containing 1 pg-100 ng of plasmid DNA to the cell mixture. Carefully flick the tube 4-5 times to mix cells and DNA. Do not vortex.
+Place the mixture on ice for 30 minutes. Do not mix.
+Heat shock at exactly 42IAC for exactly 60 seconds. Do not mix
+Place on ice for 5 minutes. Do not mix.
+Pipette 950 SIL of room temperature SOC into the mixture.
+Place at 37IAC for 60 minutes. Shake vigorously (250 rpm) or rotate.
+Warm selection plates to 37IAC.
+Mix the cells thoroughly by flicking the tube and inverting, then perform several 10-fold serial dilutions in SOC.
+Spread 50-100 SIL of each dilution onto a selection plate and incubate overnight at 37IAC. Alternatively, incubate at 30IAC for 24-36 hours or at 25IAC for 48 hours.

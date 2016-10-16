@@ -900,7 +900,7 @@ def getUserNum(_id):
 
 
 # Usage: draw state 2's chart and send it to front end
-@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
+#@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
 def state2_chart(promoter, rbs, mrna, protein):
     k1 = promoter
     k2 = rbs
@@ -934,38 +934,43 @@ def protocol_pdf(design_id):
     <html>
         <head>
             <title> protocol </title>
+            <meta charset="utf-8">
         </head>
         <body>
             <div>
     """
 
-    for i in xrange(1, 5):
-        file_object = open(os.path.join(basedir, 'static/protocol/exp1/part' + str(i) + '/1.txt'))
-        try:
-            all_the_text = file_object.read( )
-        finally:
-            file_object.close( )
-        protocol_html += "<h1>exp1 part" + str(i) + "</h1>"
-        protocol_html += '<div>' + all_the_text + '</div>'
+    protocol_html += "<div> <h1> Exp1 </h1> </div>"
+    exp1_part_name = ["Plasmid construction", "Transfomation", "Coculture", "Concentration measurement", "DNA Sequences"]
+    exp2_part_name = ["Plasmid construction", "Transfomation", "Fluorescence measurement", "DNA Sequences"]
 
     for i in xrange(1, 6):
-        file_object = open(os.path.join(basedir, 'static/protocol/exp2/part' + str(i) + '/1.txt'))
+        file_object = open(os.path.join(basedir, 'application/static/protocol/'+ exp1_part_name[i - 1] + '/1.txt'))
         try:
             all_the_text = file_object.read( )
         finally:
             file_object.close( )
-        protocol_html += "<h1>exp2 part" + str(i) + "</h1>"
-        protocol_html += '<div>' + all_the_text + '</div>'
+        protocol_html += "<div><h2>" + exp1_part_name[i - 1] + "</h2></div>"
+        protocol_html += '<div><p>' + all_the_text + '</p></div>'
+
+    protocol_html += "<div> <h1> Exp2 </h1> </div>"
+    for i in xrange(1, 5):
+        file_object = open(os.path.join(basedir, 'application/static/protocol/' + exp2_part_name[i - 1] + '/1.txt'))
+        try:
+            all_the_text = file_object.read( )
+        finally:
+            file_object.close( )
+        protocol_html += "<div><h2>" + exp2_part_name[i - 1] + "</h2></div>"
+        protocol_html += '<div><p>' + all_the_text + '</p></div>'
 
     protocol_html += """
             </div>
         </body>
     </html>
     """
-    
-    print (protocol_html)
 
-    pdfkit.from_string(protocol_html, os.path.join(basedir, 'static/pdf/' + filename))
+    pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
     res = {}
     res["name"] = str(design_id) + ".pdf"
-    return libs_success(res)
+    #return libs_success(res)
+    return True

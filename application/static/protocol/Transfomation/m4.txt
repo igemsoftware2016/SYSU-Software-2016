@@ -1,0 +1,6 @@
+Remove cells from -80°„C freezer and thaw in your hand.
+Add 1-5 ¶Ãl containing 1 pg-100 ng of plasmid DNA to the cell mixture. Carefully flick the tube 4-5 times to mix cells and DNA. Do not vortex.
+Place the mixture on ice for 2 minutes. Do not mix.
+Heat shock at exactly 42°„C for exactly 30 seconds. Do not mix.
+Place on ice for 2 minutes. Do not mix.
+Pipette 950 ¶Ãl of room temperature SOC into the mixture. Immediately spread 50-100 ¶Ãl onto a selection plate and incubate overnight at 37-42°„C. 
