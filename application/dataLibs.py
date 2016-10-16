@@ -299,12 +299,12 @@ def save_state1(cur_design, data_dict):
 #   cur_design: reference of current design
 #   data_dict: dict of all saved data
 def save_state2(cur_design, data_dict):
+    enzy_info = enzyme_info()
     for bact in data_dict["bacteria"]:
+        print(bact["_id"])
         cur_bact = used_bacteria.query.filter_by(id = bact["_id"]).first()      # Bacteria layer
-        print(cur_bact.id)
         if cur_bact is None:
             continue
-        enzy_info = enzyme_info()
         for plas in bact["plasmid"]:
             for enzy in plas["pathway"]:
                 # print(enzy["name"])
@@ -319,13 +319,13 @@ def save_state2(cur_design, data_dict):
                 print(enzy["prom"])
                 enzy_info.insert_info(cur_enzy.id, enzy["prom"], enzy["RBS"], enzy["mRNA_s"], enzy["protein_s"])
                 print(enzy_info.detected_dict)
-        enzy_info.refresh_md5()
-        past_info = enzyme_info.query.filter_by(md5 = enzy_info.md5).first()
-        if past_info:
-            cur_design.enzyme_info = past_info
-        else:
-            cur_design.enzyme_info = enzy_info
-            enzy_info.save()
+    enzy_info.refresh_md5()
+    past_info = enzyme_info.query.filter_by(md5 = enzy_info.md5).first()
+    if past_info:
+        cur_design.enzyme_info = past_info
+    else:
+        cur_design.enzyme_info = enzy_info
+        enzy_info.save()
 
 
 # Usage: Central router for saving data from web's process
@@ -446,7 +446,7 @@ def get_state_saved(state_id):
             cur_bact = used_bacteria.query.filter_by(id = bact).first()
             if cur_bact is None:
                 break
-            print(bact)
+            # print(bact)
             ret_bact = {"name": cur_bact.flora.name, "_id": cur_bact.id}
             ret_bact["plasmid"] = []
             plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
@@ -459,18 +459,19 @@ def get_state_saved(state_id):
                     if len(libs_list_query((cur_bact.enzyme))) <= i * 3 + j:
                         break
                     cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
-                    print (cur_enzy.promoter)
-                    print (cur_enzy.rbs)
+                    # print (cur_enzy.promoter)
+                    # print (cur_enzy.rbs)
                     det_promo = libs_list_query(cur_enzy.promoter)[0]
                     det_rbs = libs_list_query(cur_enzy.rbs)[0]
                     det_mrna = 1.4
                     det_prot = 6.0
+                    # print(enzy_info.value())
                     if enzy_info:
                         # print('I have a enzy_info')
-                        det_promo = enzy_info.value()[cur_enzy.id]["detected_promoter"]
-                        det_rbs = enzy_info.value()[cur_enzy.id]["detected_rbs"]
-                        det_mrna = enzy_info.value()[cur_enzy.id]["mRNA_s"]
-                        det_prot = enzy_info.value()[cur_enzy.id]["protein_s"]
+                        det_promo = enzy_info.value()[str(cur_enzy.id)]["detected_promoter"]
+                        det_rbs = enzy_info.value()[str(cur_enzy.id)]["detected_rbs"]
+                        det_mrna = enzy_info.value()[str(cur_enzy.id)]["mRNA_s"]
+                        det_prot = enzy_info.value()[str(cur_enzy.id)]["protein_s"]
                     # else:
                     #     print('I dont have a enzy_info')
                     ret_enzy =  {
