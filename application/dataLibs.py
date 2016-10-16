@@ -269,7 +269,7 @@ def save_state1(cur_design, data_dict):
             qmatter = matterDB.query.filter_by(matter_name = m.get('name')).first()
             if qmatter is None:
                 continue
-            new_resolve_matter = resolve_matter.query.filter_by(matter_id = qmatter.id, begin = float(m.get('begin')))
+            new_resolve_matter = resolve_matter.query.filter_by(matter_id = qmatter.id, begin = float(m.get('begin'))).first()
             if new_resolve_matter is None:
                 new_resolve_matter = resolve_matter(qmatter, float(m.get('begin')))
                 new_resolve_matter.save()
@@ -382,6 +382,9 @@ def commit_state(state_id):
         
         elif state_id == 2:
             save_state2(cur_design, request.json)
+
+        elif state_id == 3:
+            protocol_pdf(request.json['design_id'])
         
         if state_id == 5:
             return libs_errorMsg("No next step")
@@ -868,6 +871,7 @@ def upload_file(design_id, state_id):
             else:
                 cur_design.state5_upload_file = True
                 cur_design.state5_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            db.session.commit()
             return libs_success()
 
         return libs_errorMsg("Upload failed")
@@ -948,7 +952,7 @@ def getUserNum(_id):
 
 
 # Usage: draw state 2's chart and send it to front end
-#@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
+@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
 def state2_chart(promoter, rbs, mrna, protein):
     k1 = promoter
     k2 = rbs

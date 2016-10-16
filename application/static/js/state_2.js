@@ -419,6 +419,7 @@ $(document).ready(function() {
           $("#bacteria-slt").dropdown("set selected", bacteria_list[0]._id);
           $("#plasmid-slt").dropdown("set selected", bacteria_list[0].plasmid[0]._id);
           $("#marker-1").click();
+          $(".button.redraw2").click();
           $(".ui.dimmer.active").removeClass("active");
           // console.log("select!");
         }, 1000);
@@ -428,9 +429,9 @@ $(document).ready(function() {
   });
 
   // modify by address
-  $(".ui.button.save").click(function() {
-    console.log(bacteria_list);
-  });
+  // $(".ui.button.save").click(function() {
+  //   console.log(bacteria_list);
+  // });
 
   $("#save-btn").click(function() {
     $.ajax({

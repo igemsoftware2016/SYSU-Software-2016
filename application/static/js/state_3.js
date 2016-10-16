@@ -47,7 +47,7 @@ $(document).ready(function() {
         options: {
             title: {
                 display: true,
-                text: 'Dynamic Performance'
+                text: ''
             },
             maintainAspectRatio: false,
             fullWidth: false,
@@ -59,7 +59,7 @@ $(document).ready(function() {
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Output'
+                        labelString: 'Concentration (mol/L)'
                     }
                 }]
             },
@@ -108,33 +108,67 @@ $(document).ready(function() {
         $(this).toggleClass("active");
     });
 
+    $.ajax({
+        url: "/get_state_3_saved",
+        type: "GET",
+        dataType: "json",
+        data: {
+            "design_id": $("#design-id").text()
+        },
+        contentType: 'charset=utf-8',
+        cache: false,
+        success: function(data) {
+            if (data.code) {
+                swal({
+                    title: "Ooo",
+                    text: data.message,
+                    type: "error",
+                    confirmButtonText: "Okay"
+                });
+                return false;
+            } else {
+                var labels = [];
+                for (var i = 0; i < 21; i++) {
+                    labels.push((i / 21.0 * data.ret.time).toFixed(1));
+                }
+                window.myLineChart.data.labels = labels;
+                $(data.ret.datasets).each(function(n, el) {
+                    var ds = datasetGene(el.name, el.data);
+                    // console.log(ds);
+                    window.myLineChart.data.datasets.push(ds);
+                })
+                window.myUpdate();
+            }
+        },
+        error: AjaxFail
+    });
+
     // build chart test
     $(".next.button").click(function() {
-        ret = {
-            time: 19.4,
-            datasets: [{
-                name: "CL",
-                data: [0, 500, 680, 610, 510, 400, 270, 120, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            }, {
-                name: "TetR",
-                data: [0, 320, 500, 600, 605, 612, 619, 623, 629, 631, 638, 640, 647, 659, 672, 710, 801, 964, 1218, 1521, 1900]
-            }, {
-                name: "UVR8-TetR",
-                data: [0.0, 24.0, 48.0, 71.0, 95.0, 119.0, 143.0, 167.0, 190.0, 214.0, 238.0, 262.0, 286.0, 310.0, 333.0, 357.0, 381.0, 405.0, 429.0, 452.0, 476.0]
-            }]
-        };
-        // labels: [0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 0.100];
-        var labels = [];
-        for(var i=0; i<21; i++) {
-          labels.push((i/21.0*ret.time).toFixed(1));
-        }
-        window.myLineChart.data.labels = labels;
-        $(ret.datasets).each(function(n, el) {
-            var ds = datasetGene(el.name, el.data);
-            // console.log(ds);
-            window.myLineChart.data.datasets.push(ds);
-        })
-        window.myUpdate();
+        $.ajax({
+            url: "/commit_state_3",
+            type: "POST",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                "design_id": $("#design-id").text()
+            }),
+            cache: false,
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                } else {
+                    window.location.href = r.ret;
+                }
+            },
+            error: AjaxFail
+        });
     });
 
 });

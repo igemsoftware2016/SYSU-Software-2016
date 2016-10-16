@@ -126,6 +126,7 @@ def router_state(design_id, state_id):
         for ms in mediumDB.query.all():
             if ms.name != "user_inserted":
                 mlist.append({"id": ms.id, "value": ms.name})
+        myPrint(cur_design.state1_upload_file)
         return render_template('state_1.html', design = cur_design, medium_list = mlist)
 
     elif state_id == 2:
