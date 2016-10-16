@@ -957,21 +957,21 @@ def state2_chart(promoter, rbs, mrna, protein):
 
 
 # Usage: generate pdf protocol of state 5
-@app.route('/protocol_pdf/<int:design_id>', methods=['GET', 'POST'])
+#@app.route('/protocol_pdf/<int:design_id>', methods=['GET', 'POST'])
 def protocol_pdf(design_id):
 
     #sudo apt-get install wkhtmltopdf
     filename = str(design_id) + ".pdf"
 
-    protocol_html = """
-    <html>
-        <head>
-            <title> protocol </title>
-            <meta charset="utf-8">
-        </head>
-        <body>
-            <div>
-    """
+    protocol_html = '\
+    <html>\
+        <head>\
+            <title> protocol </title>\
+            <meta charset="utf-8">\
+        </head>\
+        <body>\
+            <div>\
+    '
 
     protocol_html += "<div> <h1> Exp1 </h1> </div>"
     exp1_part_name = ["Plasmid construction", "Transfomation", "Coculture", "Concentration measurement", "DNA Sequences"]
@@ -984,24 +984,27 @@ def protocol_pdf(design_id):
         finally:
             file_object.close( )
         protocol_html += "<div><h2>" + exp1_part_name[i - 1] + "</h2></div>"
-        protocol_html += '<div><p>' + all_the_text + '</p></div>'
+        protocol_html += '<div style="padding-left:50px"><p>' + all_the_text + '</p></div>'
 
     protocol_html += "<div> <h1> Exp2 </h1> </div>"
     for i in xrange(1, 5):
         file_object = open(os.path.join(basedir, 'application/static/protocol/' + exp2_part_name[i - 1] + '/1.txt'))
         try:
-            all_the_text = file_object.read( )
+            all_the_text = file_object.read()
         finally:
             file_object.close( )
         protocol_html += "<div><h2>" + exp2_part_name[i - 1] + "</h2></div>"
-        protocol_html += '<div><p>' + all_the_text + '</p></div>'
+        protocol_html += '<div style="padding-left:50px"><p>' + all_the_text + '</p></div>'
 
-    protocol_html += """
-            </div>
-        </body>
-    </html>
-    """
+    protocol_html += '\
+            </div>\
+        </body>\
+    </html>\
+    '
 
+    protocol_html.encode("utf-8")
+    protocol_html = protocol_html.strip().replace('\n', "<br />")
+    #protocol_html.replace('\r', "<br />")
     pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
     res = {}
     res["name"] = str(design_id) + ".pdf"

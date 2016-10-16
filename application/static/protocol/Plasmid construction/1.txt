@@ -50,4 +50,3 @@ Add water to 10 ul
 Ligate 16C/30 min, heat kill 80C/20 min
 Transform with 1-2 ul of product
 Note: For linearized plasmid backbones provided by iGEM HQ, a plasmid backbone with an insert of BBa_J04450 was used as template. As a result any red colonies that appear during your ligation may be due to the template as a background. Digesting with Dpn1 before use should reduce this occurrence.
-

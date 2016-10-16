@@ -1,10 +1,10 @@
-Thaw a tube of T7 Express Crystal Competent E. coli cells on ice until the last ice crystals disappear. Mix gently and carefully pipette 50 ¶Ãl of cells into a transformation tube on ice.
-Add 1-5 ¶Ãl containing 1 pg-100 ng of plasmid DNA to the cell mixture. Carefully flick the tube 4-5 times to mix cells and DNA. Do not vortex.
+Thaw a tube of T7 Express Crystal Competent E. coli cells on ice until the last ice crystals disappear. Mix gently and carefully pipette 50 l of cells into a transformation tube on ice.
+Add 1-5 l containing 1 pg-100 ng of plasmid DNA to the cell mixture. Carefully flick the tube 4-5 times to mix cells and DNA. Do not vortex.
 Place the mixture on ice for 30 minutes. Do not mix.
-Heat shock at exactly 42°„C for exactly 10 seconds. Do not mix.
+Heat shock at exactly 42 for exactly 10 seconds. Do not mix.
 Place on ice for 5 minutes. Do not mix.
-Pipette 950 ¶Ãl of room temperature SOC into the mixture.
-Place at 37°„C for 60 minutes. Shake vigorously (250 rpm) or rotate.
-Warm selection plates to 37°„C.
+Pipette 950 l of room temperature SOC into the mixture.
+Place at 37 for 60 minutes. Shake vigorously (250 rpm) or rotate.
+Warm selection plates to 37.
 Mix the cells thoroughly by flicking the tube and inverting, then perform several 10-fold serial dilutions in SOC.
-Spread 50-100 ¶Ãl of each dilution onto a selection plate and incubate overnight at 37°„C. Alternatively, incubate at 30°„C for 24-36 hours or at 25°„C for 48 hours.
+Spread 50-100 l of each dilution onto a selection plate and incubate overnight at 37C. Alternatively, incubate at 30 for 24-36 hours or at 25 for 48 hours.

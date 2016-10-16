@@ -1,7 +1,7 @@
-Adjust the salt concentration of the ¦Â-Agarase I treated solution for isopropanol precipitation of DNA (0.5 M NaCl, 0.3 M NaOAc, 2.5 M NH4OAc or 0.8 M LiCl).
+Adjust the salt concentration of the -Agarase I treated solution for isopropanol precipitation of DNA (0.5 M NaCl, 0.3 M NaOAc, 2.5 M NH4OAc or 0.8 M LiCl).
 Chill on ice for 15 minutes.
 Centrifuge at 15,000 X g for 15 minutes to pellet any remaining undigested carbohydrates.
-Remove the DNA-containing supernatant. Precipitate with 2 volumes of isopropanol. To ensure quantitative yields of small quantities of DNA (< 100 ng), carrier RNA (1 ¦Ìg) can be added to the solution.
+Remove the DNA-containing supernatant. Precipitate with 2 volumes of isopropanol. To ensure quantitative yields of small quantities of DNA (< 100 ng), carrier RNA (1 g) can be added to the solution.
 Mix thoroughly, chill and centrifuge at 15,000 X g for 15 minutes.
 Remove the supernatant, wash the pellet with cold 70% isopropanol and dry the pellet at room temperature.
 The pellet can be resuspended in TE or any buffer necessary for subsequent manipulation.
