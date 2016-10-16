@@ -143,7 +143,7 @@ class design(db.Model):
         self.state5_saved_data = '{}'
         self.state5_upload_file = False
     def __repr__(self):
-        return '<Design %r> %r' % (self.id, self.d)
+        return '<Design %r> %s' % (self.id, self.design_name)
     def save(self):
         db.session.add(self)
         db.session.commit()

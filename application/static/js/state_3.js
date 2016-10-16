@@ -111,7 +111,7 @@ $(document).ready(function() {
     // build chart test
     $(".next.button").click(function() {
         ret = {
-            labels: ['0.0', '0.5', '1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0', '7.5', '8.0', '8.5', '9.0', '9.5', '10.0'],
+            time: 19.4,
             datasets: [{
                 name: "CL",
                 data: [0, 500, 680, 610, 510, 400, 270, 120, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -123,7 +123,12 @@ $(document).ready(function() {
                 data: [0.0, 24.0, 48.0, 71.0, 95.0, 119.0, 143.0, 167.0, 190.0, 214.0, 238.0, 262.0, 286.0, 310.0, 333.0, 357.0, 381.0, 405.0, 429.0, 452.0, 476.0]
             }]
         };
-        window.myLineChart.data.labels = ret.labels;
+        // labels: [0.00, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 0.100];
+        var labels = [];
+        for(var i=0; i<21; i++) {
+          labels.push((i/21.0*ret.time).toFixed(1));
+        }
+        window.myLineChart.data.labels = labels;
         $(ret.datasets).each(function(n, el) {
             var ds = datasetGene(el.name, el.data);
             // console.log(ds);

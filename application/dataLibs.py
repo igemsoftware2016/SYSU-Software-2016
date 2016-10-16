@@ -74,7 +74,7 @@ def getNeedHelp():
 
 # Usage: Query all public designs
 def getPublic(_id = None):
-    ret = design.query.filter_by(shared = True)
+    ret = design.query.filter_by(shared = True).all()
     otherInfo = {}
     if _id:                                                      # Get specified ID's public design
         # u = user.query.filter_by(id = _id).first()
