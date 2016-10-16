@@ -121,8 +121,8 @@ class design(db.Model):
     state2_data_id = db.Column(db.Integer, db.ForeignKey("state2_data.id"))
     state2_data = db.relationship('state2_data', backref = db.backref('owners', lazy = 'dynamic'))
     # state3 data region
-    # state3_matter_list = db.Column(db.String(300))              # Matter's name for drawing Diagram (With dirty list)
-    state3_matter_plot = db.Column(db.String(1000))             # Diagram's 20 points for each Matters (With dirty dict)
+    enzyme_info_id = db.Column(db.Integer, db.ForeignKey('enzyme_info.id'))
+    enzyme_info = db.relationship('enzyme_info', backref = db.backref('all_s2data', lazy = 'dynamic'))
     # state5 data region
     state5_saved_data = db.Column(db.String(5000))
     state5_upload_file = db.Column(db.Boolean)
@@ -139,7 +139,6 @@ class design(db.Model):
         self.shared = False
         self.needHelp = False
         self.state1_upload_file = False
-        state3_matter_plot = "{}"
         self.state5_saved_data = '{}'
         self.state5_upload_file = False
     def __repr__(self):
@@ -159,7 +158,7 @@ class state1_data(db.Model):
     resolve_matter = db.Column(db.String(320))                      # All matters for decomposing (With dirty list)
     md5 = db.Column(db.String(60))                                  # All data's md5 (For multi used of the calculating result)
     def refresh_md5(self):                                          # Refresh the md5 hash with all the data
-        src = self.design_mode + str(self.reaction_time) + str(self.medium_id) + self.flora + self.make_matter + self.resolve_matter
+        src = str(self.reaction_time) + str(self.medium_id) + self.flora + self.make_matter + self.resolve_matter
         m = hashlib.md5()
         m.update(src)
         self.md5 = m.hexdigest()
@@ -178,15 +177,12 @@ class state1_data(db.Model):
 
 class make_matter(db.Model):
     id = db.Column(db.Integer, primary_key = True)                      # Index
-    data_id = db.Column(db.Integer, db.ForeignKey('state1_data.id'))    # By which the make-matter was created
-    data = db.relationship('state1_data', backref = db.backref('maked_set', lazy = 'dynamic'))
     matter_id = db.Column(db.Integer, db.ForeignKey('matterDB.id'))     # Based on which matter
     matter = db.relationship('matterDB', backref = db.backref('maked_set', lazy = 'dynamic'))
     lower = db.Column(db.Float)                                         # Lower bound 
     upper = db.Column(db.Float)                                         # Upper bound
     maxim = db.Column(db.Boolean)                                       # Is maximum bound exists
-    def __init__(self, data, matter, lower, upper, maxim):
-        self.data = data
+    def __init__(self, matter, lower, upper, maxim):
         self.matter = matter
         self.lower = lower
         self.upper = upper
@@ -200,13 +196,10 @@ class make_matter(db.Model):
 
 class resolve_matter(db.Model):
     id = db.Column(db.Integer, primary_key = True)                      # Index
-    data_id = db.Column(db.Integer, db.ForeignKey('state1_data.id'))    # By which the make-matter was created
-    data = db.relationship('state1_data', backref = db.backref('resolved_set', lazy = 'dynamic'))
     matter_id = db.Column(db.Integer, db.ForeignKey('matterDB.id'))     # Based on which matter
     matter = db.relationship('matterDB', backref = db.backref('resolved_set', lazy = 'dynamic'))
     begin = db.Column(db.Float)                                         # Beginning concentration
-    def __init__(self, data, matter, begin):
-        self.data = data
+    def __init__(self, matter, begin):
         self.matter = matter
         self.begin = begin
     def __repr__(self):
@@ -218,6 +211,7 @@ class resolve_matter(db.Model):
 
 class state2_data(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
+    state1_md5 = db.Column(db.String(60))           # Source data's md5
     bacteria = db.Column(db.String(320))            # All used bacteria (With dirty list)
     def refresh_md5(self):
         src = bacteria
@@ -254,14 +248,10 @@ class enzyme(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(60))                 # Enzyme's name
     sequence = db.Column(db.String(500))            # Enzyme's CDS sequence
-    promoter = db.Column(db.String(320))            # Enzyme's adapted promoter (With dirty list)
-    detected_promoter = db.Column(db.Integer)       # User's detected promoter
+    promoter = db.Column(db.String(320))            # Enzyme's adapted promot
     rbs = db.Column(db.String(320))                 # Enzyme's adapted rbs (With dirty list)
-    detected_rbs = db.Column(db.Integer)            # User's detected RBS
     from_bact_id = db.Column(db.Integer, db.ForeignKey('floraDB.id'))
     from_bact = db.relationship('floraDB', backref = db.backref('used_enzyme', lazy = 'dynamic'))   # Where the enzyme from
-    mRNA_s = db.Column(db.Float)
-    protein_s = db.Column(db.Float)
     def __init__(self, sequence, name, from_bact):
         self.sequence = sequence
         self.name = name
@@ -274,6 +264,34 @@ class enzyme(db.Model):
         self.protein_s = 1.4
     def __repr__(self):
         return '<Enzyme %r>' % self.name
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+class enzyme_info(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    detected_dict = db.Column(db.String(1000))      # Every enzyme's detected promoter and RBS's dict (With dirty dict)
+    md5 = db.Column(db.String(60))
+    state3_matter_plot = db.Column(db.String(1000))             # Diagram's 20 points for each Matters (With dirty dict)
+    def insert_info(self, enzyme_id, detected_promoter, detected_rbs, mRNA_s, protein_s):
+        tmpdict = libs_dict_insert(self.detected_dict, enzyme_id,
+            {
+                "detected_promoter": detected_promoter,
+                "detected_rbs": detected_rbs,
+                "mRNA_s": mRNA_s,
+                "protein_s": protein_s
+            })
+        if tmpdict:
+            self.detected_dict = tmpdict
+    def value(self):
+        return libs_dict_query_all(self.detected_dict)
+    def refresh_md5(self):
+        m = hashlib.md5()
+        m.update(self.detected_dict)
+        self.md5 = m.hexdigest()
+    def __init__(self):
+        self.detected_dict = '{}'
+        self.state3_matter_plot = '{}'
     def save(self):
         db.session.add(self)
         db.session.commit()

@@ -16,8 +16,8 @@ $(document).ready(function() {
   var ctx = document.getElementById("myChart-2");
   var time_2 = parseFloat($("#design-time").text());
   var labels = [];
-  for(var i=0; i<21; i++) {
-      labels.push((i/21.0*time_2).toFixed(1));
+  for (var i = 0; i < 21; i++) {
+    labels.push((i / 21.0 * time_2).toFixed(1));
   }
   var data = {
     labels: labels,
@@ -51,7 +51,7 @@ $(document).ready(function() {
     options: {
       title: {
         display: true,
-        text: 'Dynamic Performance'
+        text: 'Protein Expression'
       },
       maintainAspectRatio: false,
       fullWidth: false,
@@ -63,7 +63,7 @@ $(document).ready(function() {
         yAxes: [{
           scaleLabel: {
             display: true,
-            labelString: 'Output'
+            labelString: 'Concentration (mol/L)'
           }
         }],
         // xAxes: [{
@@ -266,14 +266,14 @@ $(document).ready(function() {
       $popup.find(".name").text(info.name);
       // $popup.find(".type").text(info.type);
       $popup.find(".BBa").text(info.BBa);
-      $popup.find(".intro").text((info.Introduction?info.Introduction:"No intoduction yet."));
-      if(info.name && info.name != '-') {
+      $popup.find(".intro").text((info.Introduction ? info.Introduction : "No intoduction yet."));
+      if (info.name && info.name != '-') {
         $popup.find("a.NCBI").attr("href", "https://www.ncbi.nlm.nih.gov/gquery/?term=" + info.name);
         $popup.find("a.NCBI").removeClass("disabled");
       } else {
         $popup.find("a.NCBI").addClass("disabled");
       }
-      if(info.BBa && info.BBa != '-') {
+      if (info.BBa && info.BBa != '-') {
         $popup.find("a.FASTA").attr("href", "http://parts.igem.org/fasta/parts/" + info.BBa);
         $popup.find("a.FASTA").removeClass("disabled");
       } else {
@@ -429,5 +429,61 @@ $(document).ready(function() {
   // modify by address
   $(".ui.button.save").click(function() {
     console.log(bacteria_list);
+  });
+
+  $("#save-btn").click(function() {
+    $.ajax({
+      url: "/save_state_2",
+      type: "POST",
+      dataType: "json",
+      contentType: 'application/json; charset=utf-8',
+      cache: false,
+      data: JSON.stringify({
+        "design_id": $("#design-id").text(),
+        "bacteria": bacteria_list
+      }),
+      success: function(r) {
+        if (r.code) {
+          showErrMsg(r.message);
+          return false;
+        } else {
+          swal({
+            title: "Done",
+            type: "success",
+            confirmButtonText: "Okay"
+          });
+        }
+      },
+      error: AjaxFail
+    });
+  })
+
+  // next step
+  $("#next-step").click(function() {
+    $.ajax({
+      url: "/commit_state_2",
+      type: "POST",
+      dataType: "json",
+      contentType: 'application/json; charset=utf-8',
+      cache: false,
+      data: JSON.stringify({
+        "design_id": $("#design-id").text(),
+        "bacteria": bacteria_list
+      }),
+      success: function(r) {
+        if (r.code) {
+          swal({
+            title: "Ooo",
+            text: r.message,
+            type: "error",
+            confirmButtonText: "Okay"
+          });
+          return false;
+        } else {
+          window.location.href = r.ret;
+        }
+      },
+      error: AjaxFail
+    });
   });
 })
