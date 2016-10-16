@@ -44,14 +44,14 @@ def getAllPosts(_id=None):
             # myPrint(l, session['user'])
             otherInfo[r.id]['icon'] = r.owner.icon
             otherInfo[r.id]['like_num'] = len(l)
-            otherInfo[r.id]['liked'] = (session['user'] in l)
+            otherInfo[r.id]['liked'] = (session.get('user') in l)
             otherInfo[r.id]['datetime'] = r.design_time.strftime("%Y-%m-%d %H:%M")
             if session.get('user'):
                 l = json.loads(user.query.filter_by(id = session['user']).first().mark)
                 otherInfo[r.id]['marked'] = (str(r.id) in l)
             else:
                 otherInfo[r.id]['marked'] = False
-            otherInfo[r.id]['myCreation'] = (r.owner_id == session["user"])
+            otherInfo[r.id]['myCreation'] = (r.owner_id == session.get('user'))
             # myPrint(r.design_mode)
     else:
         ret = design.query.all()
@@ -234,6 +234,7 @@ def get_steps():
     #                 'code': 0,
     #                 'ret': 5
     #                 })
+    # return libs_success(3)
     design_query = design.query.filter_by(id = request.args.get('_id')).first()
     # design_query = None
     if design_query is None:
@@ -381,27 +382,27 @@ def commit_state(state_id):
             cur_design.state += 1
 
         db.session.commit()
-        return libs_success("/state/%d/%d" % (state_id, cur_design.state))
+        return libs_success("/state/%s/%s" % (request.json['design_id'], cur_design.state))
     # cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
     # cur_design.state += 1 #for test
     # db.session.commit()
     # return jsonify({"code": 0, "state": cur_design.state})
-
 # Usage: Fetch a state's saved data for webpage showing
 # Input:
 #   state_id: state's ID in URL
-@app.route('/get_state_<int:state_id>_saved')
-@login_required
+@app.route('/get_state_<int:state_id>_saved', methods = ['GET'])
+# @login_required
 def get_state_saved(state_id):
-    cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
-    if cur_design is None:
-        return libs_errorMsg("Design not found")
-    if cur_design.owner_id != session['user']:
-        return libs_errorMsg('Not your design')
-    if state_id > cur_design.state:
-        return libs_errorMsg('Not reach that step yet')
-    if cur_design.state1_data is None:
-        return libs_success()
+    if request.method == 'GET':
+        cur_design = design.query.filter_by(id = request.args.get('design_id')).first()
+        if cur_design is None:
+            return libs_errorMsg("Design not found")
+        if cur_design.owner_id != session.get('user') and not cur_design.shared:
+            return libs_errorMsg('Not your design')
+        if state_id > cur_design.state:
+            return libs_errorMsg('Not reach that step yet')
+        if cur_design.state1_data is None:
+            return libs_success({"mode": cur_design.design_mode})
 
     if state_id == 1:
         ret = dict()
@@ -701,6 +702,36 @@ def search_bact_name(bact_name):
                     "results": results
                     })
 
+@app.route('/search/category/<qStr>')
+def search_category(qStr):
+    def get_user(x):
+        return {
+            "title": x.nickname,
+            "url": "/user/%d" % x.id
+        }
+    def get_design(x):
+        if not x.shared and x.owner_id != session.get('user'):
+            return None
+        return {
+            "title": x.design_name,
+            "description": "Products" if x.design_mode=="make" else "Substrates",
+            "url": "/design/%d" % x.id
+        }
+    users = filter(lambda x: x is not None, [get_user(x) for x in user.query.filter(user.nickname.ilike('%'+qStr+'%')).all()])
+    designs = filter(lambda x: x is not None, [get_design(x) for x in design.query.filter(design.design_name.ilike('%'+qStr+'%')).all()])
+    return jsonify({
+        "sucess": True,
+        "results": {
+            "users": {
+                "name": "Users",
+                "results": users
+            },
+            "designs": {
+                "name": "Designs",
+                "results": designs
+            }
+        }
+        })
 
 # Usage: Router for set like
 @app.route('/set_like', methods=['POST'])
@@ -840,7 +871,8 @@ def upload_file(design_id, state_id):
 @app.route('/report', methods=['POST'])
 def report():
     # save report
-    myPrint(request.json)
+    r = report(request.json.get('design_id'), request.json.get('reason'))
+    r.save()
     return libs_success()
 
 
@@ -851,6 +883,7 @@ def setDesignShared():
     if not d or not request.json.get("shared"):
         return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
     d.shared = request.json.get("shared")
+    d.description = request.json.get("description")
     db.session.commit()
     return libs_success()
 

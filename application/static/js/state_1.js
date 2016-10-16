@@ -178,7 +178,7 @@ $(document).ready(function() {
         isMake = false;
     }
 
-    if($('#design-file').text() === "True") {
+    if ($('#design-file').text() === "True") {
         $('.ui.dimmer.upload').dimmer('show');
     }
 
@@ -278,11 +278,24 @@ $(document).ready(function() {
     // set up ajax package
     var setUpPackage = function() {
         var inputs = [],
-            flora = [];
+            flora = [],
+            err = false;
 
         if (isMake) {
             $(".make-line").each(function(n, el) {
-                var line = $(el).find("input");
+                var line = $(el).find("input"),
+                    name = $(line[0]).val(),
+                    lower = $(line[1]).val(),
+                    upper = $(line[2]).val();
+                if (!(name && lower && upper)) {
+                    swal("", "Some parameters have not been defined.", "info");
+                    err = true;
+                    return false;
+                }
+                if (lower < 0 || upper < 0 || (lower - upper >= 0)) {
+                    console.log(lower, upper, (lower - upper >= 0));
+                    swal("", "Some bounds are illegal.", "info");
+                }
                 inputs.push({
                     name: $(line[0]).val(),
                     lower: $(line[1]).val(),
@@ -293,6 +306,11 @@ $(document).ready(function() {
         } else {
             $(".resolve-line").each(function(n, el) {
                 var line = $(el).find("input");
+                if (!($(line[0]).val() && $(line[1]).val())) {
+                    swal("", "Some parameters have not been defined.", "info");
+                    err = true;
+                    return false;
+                }
                 inputs.push({
                     name: $(line[0]).val(),
                     begin: $(line[1]).val()
@@ -310,7 +328,12 @@ $(document).ready(function() {
             env: flora
         }
 
-        return {
+        if(!(other.time && other.medium && flora.length)) {
+            swal("", "Some parameters have not been defined.", "info");
+            return false;
+        }
+
+        return err? false: {
             design_id: $("#design-id").text(),
             mode: (isMake ? "make" : "resolve"),
             inputs: inputs,
@@ -344,32 +367,33 @@ $(document).ready(function() {
             PostInit: function() {
                 document.getElementById('save-btn').onclick = function() {
                     if (isUpload == false) {
-                        $.ajax({
-                            url: "/save_state_1",
-                            type: "POST",
-                            dataType: "json",
-                            contentType: 'application/json; charset=utf-8',
-                            cache: false,
-                            data: JSON.stringify(setUpPackage()),
-                            success: function(r) {
-                                if (r.code) {
-                                    swal({
-                                        title: "Ooo",
-                                        text: r.message,
-                                        type: "error",
-                                        confirmButtonText: "Okay"
-                                    });
-                                    return false;
-                                } else {
-                                    swal({
-                                        title: "Done",
-                                        type: "success",
-                                        confirmButtonText: "Okay"
-                                    });
-                                }
-                            },
-                            error: AjaxFail
-                        });
+                        var pack = setUpPackage();
+                        console.log(pack);
+                        if (!pack) {
+                            return false;
+                        } else {
+                            $.ajax({
+                                url: "/save_state_1",
+                                type: "POST",
+                                dataType: "json",
+                                contentType: 'application/json; charset=utf-8',
+                                cache: false,
+                                data: JSON.stringify(pack),
+                                success: function(r) {
+                                    if (r.code) {
+                                        showErrMsg(r.message);
+                                        return false;
+                                    } else {
+                                        swal({
+                                            title: "Done",
+                                            type: "success",
+                                            confirmButtonText: "Okay"
+                                        });
+                                    }
+                                },
+                                error: AjaxFail
+                            });
+                        }
                     } else {
                         uploader.start();
                         // $(".dimmer.upload").dimmer("hide");
@@ -486,28 +510,34 @@ $(document).ready(function() {
                         });
                         $('.resolve-line').eq(-1).find("button.remove-resolve").click();
                     }
-                    
-                    $("#time").val(r.ret.other.time);
-                    $("#medium-slt").dropdown("set value", r.ret.other.medium);
-                    $(r.ret.other.env).each(function(n, el) {
-                        var color = colors[Math.floor(Math.random() * colors.length)];
-                        $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
-                            el + '</span><i class="icon env close"></i></a>');
-                    });
-                    $("#medium-slt").dropdown("set selected", r.ret.other.medium);
+
+                    if (r.ret.other) {
+                        $("#time").val(r.ret.other.time);
+                        $("#medium-slt").dropdown("set value", r.ret.other.medium);
+                        $(r.ret.other.env).each(function(n, el) {
+                            var color = colors[Math.floor(Math.random() * colors.length)];
+                            $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                                el + '</span><i class="icon env close"></i></a>');
+                        });
+                        $("#medium-slt").dropdown("set selected", r.ret.other.medium);
+                    }
                 }
             }
         }
     });
 
     $("#next-step").click(function() {
+        var pack = setUpPackage();
+        if (!pack) {
+            return false;
+        }
         $.ajax({
             url: "/commit_state_1",
             type: "POST",
             dataType: "json",
             contentType: 'application/json; charset=utf-8',
             cache: false,
-            data: JSON.stringify(setUpPackage()),
+            data: JSON.stringify(pack),
             success: function(r) {
                 if (r.code) {
                     swal({

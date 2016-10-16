@@ -3,7 +3,8 @@ $(document).ready(function() {
     // $("body").backstretch("destroy", false);
 
     $.extend($.fn.api.settings.api, {
-        categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
+        // categorySearch: 'http://api.semantic-ui.com/search/category/{query}'
+        categorySearch: '/search/category/{query}'
     });
 
     window.colors = ['orange', 'yellow', 'olive', 'green', 'teal', 'blue', 'violet', 'purple', 'pink', 'brown'];
@@ -19,7 +20,7 @@ $(document).ready(function() {
     $('.menu > .ui.dropdown').dropdown({
         on: "hover"
     });
-    
+
     var lastScroll = 0;
     $(window).scroll(function(event) {
         // console.log($(document).scrollTop());
@@ -122,13 +123,22 @@ $(document).ready(function() {
         console.log("no steps");
     }
 
-    window.showErrMsg = function(msg) {
-        swal({
-            title: "Ooo",
-            text: msg,
-            type: "error",
-            confirmButtonText: "Okay"
-        });
+    window.showErrMsg = function(msg, text) {
+        if (text) {
+            swal({
+                title: msg,
+                text: text,
+                type: "error",
+                confirmButtonText: "Okay"
+            });
+        } else {
+            swal({
+                title: "Ooo",
+                text: msg,
+                type: "error",
+                confirmButtonText: "Okay"
+            });
+        }
     }
 
 

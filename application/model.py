@@ -287,7 +287,7 @@ class enzyme_info(db.Model):
         return libs_dict_query_all(self.detected_dict)
     def refresh_md5(self):
         m = hashlib.md5()
-        m.update(detected_dict)
+        m.update(self.detected_dict)
         self.md5 = m.hexdigest()
     def __init__(self):
         self.detected_dict = '{}'
@@ -338,12 +338,13 @@ class rbs(db.Model):
 class report(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     design_id = db.Column(db.Integer)               # Which design was reported
-    by_user_id = db.Column(db.Integer)              # By whom the design was reported
-    def __init__(self, design, user):
+    # by_user_id = db.Column(db.Integer)              # By whom the design was reported
+    reason = db.Column(db.String(300))
+    def __init__(self, design, reason):
         self.design_id = design
-        self.by_user_id = user
+        self.reason = reason
     def __repr__(self):
-        return '<Report of design %r>' % self.design_id
+        return '<Report of design %r>: %r' % (self.design_id, self.reason)
     def save(self):
         db.session.add(self)
         db.session.commit()
