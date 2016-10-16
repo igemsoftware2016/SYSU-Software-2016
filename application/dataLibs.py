@@ -253,14 +253,25 @@ def save_state1(cur_design, data_dict):
     d_input = data_dict.get('inputs')
     if data_dict.get('mode') == 'make':     # Product mode's matter params
         for m in d_input:
-            new_make_matter = make_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
-            new_make_matter.save()
+            qmatter = matterDB.query.filter_by(matter_name = m.get('name')).first()
+            if qmatter is None:
+                continue
+            new_make_matter = make_matter.query.filter_by(matter_id = qmatter.id, lower = float(m.get('lower')), upper = float(m.get('upper')), maxim = bool(m.get('maxim'))).first()
+            if new_make_matter is None:
+                new_make_matter = make_matter(qmatter, float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
+                new_make_matter.save()
             tmplist = libs_list_insert(cur_data.make_matter, new_make_matter.id)
             cur_data.make_matter = tmplist
+
     elif data_dict.get('mode') == 'resolve': # Resolve mode's matter params
         for m in d_input:
-            new_resolve_matter = resolve_matter(cur_data, matterDB.query.filter_by(matter_name = m.get('name')).first(), float(m.get('begin')))
-            new_resolve_matter.save()
+            qmatter = matterDB.query.filter_by(matter_name = m.get('name')).first()
+            if qmatter is None:
+                continue
+            new_resolve_matter = resolve_matter.query.filter_by(matter_id = qmatter.id, begin = float(m.get('begin')))
+            if new_resolve_matter is None:
+                new_resolve_matter = resolve_matter(qmatter, float(m.get('begin')))
+                new_resolve_matter.save()
             tmplist = libs_list_insert(cur_data.resolve_matter, new_resolve_matter.id)
             cur_data.resolve_matter = tmplist
 
@@ -278,6 +289,7 @@ def save_state1(cur_design, data_dict):
 
     if cur_design.state1_data:
         db.session.delete(cur_design.state1_data)
+    cur_data.refresh_md5()
     cur_design.state1_data = cur_data
 
 
@@ -290,15 +302,21 @@ def save_state2(cur_design, data_dict):
         cur_bact = used_bacteria.query.filter_by(id = bact["_id"]).first()      # Bacteria layer
         if cur_bact is None:
             continue
+        enzy_info = enzyme_info()
         for plas in bact["plasmid"]:
             for enzy in plas["pathway"]:
                 cur_enzy = enzyme.query.filter_by(name = enzy["name"]).first()  # Enzyme layer
                 if cur_enzy is None:
                     continue
-                cur_enzy.mRNA_s = enzy["mRNA_s"]                                # All message within enzyme
-                cur_enzy.protein_s = enzy["protein_s"]
-                cur_enzy.detected_promoter = libs_list_query(cur_enzy.promoter).index(id = enzy["prom"])
-                cur_enzy.detected_rbs = libs_list_query(cur_enzy.rbs).index(id = enzy["RBS"])
+                # All message within enzyme
+                enzy_info.insert_info(cur_enzy.id, libs_list_query(cur_enzy.promoter).index(id = enzy["prom"]), libs_list_query(cur_enzy.rbs).index(id = enzy["RBS"]), enzy["mRNA_s"], enzy["protein_s"])
+        enzy_info.refresh_md5()
+        past_info = enzyme_info.query.filter_by(md5 = enzy_info.md5).first()
+        if past_info:
+            cur_design.enzyme_info = past_info
+        else:
+            cur_design.enzyme_info = enzy_info
+            enzy_info.save()
 
 
 # Usage: Central router for saving data from web's process
@@ -320,7 +338,6 @@ def save_state(state_id):
             return libs_errorMsg("Invalid state id!")
 
         if state_id == 1:
-            # myPrint(request.json)
             save_state1(cur_design, request.json)
         
         elif state_id == 2:
@@ -350,6 +367,9 @@ def commit_state(state_id):
 
         if state_id == 1:
             save_state1(cur_design, request.json)
+            past_state2_data = state2_data.query.filter_by(state1_md5 = cur_design.state1_data.md5).first()
+            if past_state2_data:
+                cur_design.state2_data = past_state2_data
         
         elif state_id == 2:
             save_state2(cur_design, request.json)
@@ -422,7 +442,8 @@ def get_state_saved(state_id):
             _id += 1
             ret_bact["plasmid"] = []
             plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
-            print(plasmid_count)
+            # print(plasmid_count)
+            enzy_info = cur_data.enzyme_info
             for i in range(plasmid_count):
                 cur_plas = plasmidDB.query.filter_by(id = i + 1).first()
                 ret_plas = {"_id": i + 1, "name": cur_plas.name, "pathway": []}
@@ -430,15 +451,24 @@ def get_state_saved(state_id):
                     if len(libs_list_query((cur_bact.enzyme))) <= i * 3 + j:
                         break
                     cur_enzy = enzyme.query.filter_by(id = libs_list_query(cur_bact.enzyme)[i * 3 + j]).first()
+                    det_promo = 0
+                    det_rbs = 0
+                    det_mrna = 5
+                    det_prot = 5
+                    if enzy_info:
+                        det_promo = enzy_info.value()[cur_enzy.id]["detected_promoter"]
+                        det_rbs = enzy_info.value()[cur_enzy.id]["detected_rbs"]
+                        det_mrna = enzy_info.value()[cur_enzy.id]["mRNA_s"]
+                        det_prot = enzy_info.value()[cur_enzy.id]["protein_s"]
                     ret_enzy =  {
                                     "_id": j + 1,
                                     "name": cur_enzy.name[0 : cur_enzy.name.find('_')],
-                                    "prom": promoter.query.filter_by(id = libs_list_query(cur_enzy.promoter)[cur_enzy.detected_promoter]).first().id,
-                                    "RBS": rbs.query.filter_by(id = libs_list_query(cur_enzy.rbs)[cur_enzy.detected_rbs]).first().id,
+                                    "prom": det_promo,
+                                    "RBS": det_rbs,
                                     "CDS": 1,
                                     "term": 1,
-                                    "mRNA_s" : cur_enzy.mRNA_s,
-                                    "protein_s" : cur_enzy.protein_s,
+                                    "mRNA_s" : det_mrna,
+                                    "protein_s" : det_prot,
                                     "strength": {}
                                 }
                     all_pro = []
@@ -562,6 +592,7 @@ def process_local_calc(design_id):
                 if tmpbactlist:
                     cur_data.bacteria = tmpbactlist
                 # print(cur_data.bacteria)
+            cur_data.state1_md5 = cur_design.state1_data.md5
             if cur_design.state2_data:
                 db.session.delete(cur_design.state2_data)
             cur_design.state2_data = cur_data
@@ -727,7 +758,7 @@ def upload_file(design_id, state_id):
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            filename = "design-" + str(design_id) + ".xls"
+            filename = "design-" + str(design_id) + "-state-" + str(state_id) + ".xls"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if state_id == 1:
                 book = open_workbook(os.path.join(app.config['UPLOAD_FOLDER'], filename))

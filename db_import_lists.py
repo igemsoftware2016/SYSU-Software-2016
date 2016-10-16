@@ -24,9 +24,10 @@ while True:
 		break
 fr.close()
 
-medium_list = ['Escherichia coli-2.0.txt']
+medium_list = ['Escherichia coli.txt', 'Bacillus megaterium.txt']
+medium_path = os.path.join(nowdir, 'medium')
 for filename in medium_list:
-	file = open(os.path.join(nowdir, filename), 'r')
+	file = open(os.path.join(medium_path, filename), 'r')
 	new_medium = mediumDB(filename[0 : filename.rfind('.')])
 	while True:
 		line = file.readline()
