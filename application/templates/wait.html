@@ -60,10 +60,9 @@
   <div class="ui row">
     <div class="ui four wide column"></div>
     <div class="ui eight wide column piled segment">
-      <p>Your sample is just uploaded. It needs to be calculated. Here is your Design ID : </p>
-      <pre><code class="language-bash">XXXX-XXXX-XXXX-XXXX</code></pre>
-      <p>To complete the calculation, open your terminal, run command:</p>
-      <pre><code class="language-bash">python xxx.py &lt;Design ID&gt;</code></pre>
+      <p>Your sample is just uploaded. It needs to be calculated. Here is your Design ID : <b>{{design.id}}<b></p>
+      <p>To complete the calculation, please <a href="">install satellite plugin</a> and run terminal command:</p>
+      <pre><code class="language-bash">python satellite.py {{design.id}}</code></pre>
       <p>Or <a href="/design/{{design.id}}">shared your Design.</a></p>
     </div>
   </div>

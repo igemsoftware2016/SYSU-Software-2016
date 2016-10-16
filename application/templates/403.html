@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/404.css">
+{% endblock %}
+
+
+{% block topbg %}
+<div style="position: absolute; left: 50%;">
+  <div style="position: relative; left: -50%;">
+    <div class="earth"></div>
+  </div>
+</div>
+<img src="/static/img/403.png" id="title-404" width="542" height="182">
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/404.js"></script>
+{% endblock %}

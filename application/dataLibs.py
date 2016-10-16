@@ -674,15 +674,16 @@ def process_local_calc(design_id):
 # Input: matters name after URL
 @app.route('/search/matters/<matter_name>')
 def search_matters_name(matter_name):
-    querier = matterDB.query.filter(matterDB.matter_name.ilike('%'+matter_name+'%'))
-    if querier.first() is None:
+    querier = matterDB.query.filter(matterDB.matter_code.ilike('%'+matter_name+'%')).all()
+    querier += matterDB.query.filter(matterDB.matter_name.ilike('%'+matter_name+'%')).all()
+    if not len(querier):
         return jsonify({
                         "success": False
                         })
     results = []
     counter = 1
     for m in querier:
-        ares = {"title": m.matter_name}
+        ares = {"title": m.matter_name, "description": m.matter_code}
         results.append(ares)
         counter += 1
         if counter >= 10:

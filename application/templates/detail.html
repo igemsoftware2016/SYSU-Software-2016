@@ -190,8 +190,8 @@
                   <plasmid sequencelength="360" plasmidheight="375" plasmidwidth="375" viewbox="0 0 375 375">
                     <plasmidtrack trackstyle="fill:#ccc" width="5" radius="120"></plasmidtrack>
                     <plasmidtrack trackstyle="fill:rgba(225,225,225,0.5)" radius="110">
-                      <tracklabel text="HSP70" labelstyle='font-size:20px;font-weight:400'></tracklabel>
-                      <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel>
+                      <tracklabel text="HSP70" labelstyle='font-size:20px;font-weight:400' id="plasmid-title"></tracklabel>
+                      {# <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel> #}
 
                       <!-- draw the main markers and labels -->
                       <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
@@ -215,7 +215,7 @@
                       <!-- draw the scales -->
                       <trackscale interval="5" style='stroke:#999' direction="in" ticksize="3"></trackscale>
                       <trackscale interval="5" style='stroke:#999' ticksize="3"></trackscale>
-                      <trackscale interval="30" style="stroke:#f00" direction="in" showlabels="1" labelstyle="fill:#999;stroke:none;text-anchor:middle;alignment-baseline:middle;font-size:10px"></trackscale>
+                      <trackscale interval="30" style="stroke:#f00" direction="in" showlabels="0" labelstyle="fill:#999;stroke:none;text-anchor:middle;alignment-baseline:middle;font-size:10px"></trackscale>
                     </plasmidtrack>
                   </plasmid>
                 </div>
@@ -245,7 +245,7 @@
                                 <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">promoter</span>
                               </div>
                               <div class="ui column fliud">
-                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -277,7 +277,7 @@
                                 <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">RBS</span>
                               </div>
                               <div class="ui column fliud">
-                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -309,7 +309,7 @@
                                 <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">CDS</span>
                               </div>
                               <div class="ui column fliud">
-                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
@@ -341,7 +341,7 @@
                                 <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">teminator</span>
                               </div>
                               <div class="ui column fliud">
-                              <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
                               </div>
                               <div class="ui column fliud">
                                 <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
