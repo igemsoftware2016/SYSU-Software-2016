@@ -465,6 +465,7 @@ def get_state_saved(state_id):
                     det_rbs = libs_list_query(cur_enzy.rbs)[0]
                     det_mrna = 1.4
                     det_prot = 6.0
+                    myPrint(enzy_info.detected_dict)
                     if enzy_info:
                         # print('I have a enzy_info')
                         det_promo = enzy_info.value()[cur_enzy.id]["detected_promoter"]
@@ -947,7 +948,7 @@ def getUserNum(_id):
 
 
 # Usage: draw state 2's chart and send it to front end
-#@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
+@app.route('/state2_chart/<float:promoter>/<float:rbs>/<float:mrna>/<float:protein>', methods=['GET', 'POST'])
 def state2_chart(promoter, rbs, mrna, protein):
     k1 = promoter
     k2 = rbs
