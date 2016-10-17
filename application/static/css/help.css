@@ -27,3 +27,7 @@ img {
     max-width: 800px;
     height: auto;
 }
+
+p {
+    line-height: 2em;
+}

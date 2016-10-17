@@ -9,6 +9,7 @@
 <span id="design-id" style="display: none;">{% if design.id %}{{ design.id }}{% endif %}</span>
 <span id="design-mode" style="display: none;">{% if design.design_mode %}{{ design.design_mode }}{% endif %}</span>
 <span id="design-file" style="display: none;">{{ design.state1_upload_file }}</span>
+<span id="design-state" style="display: none;">{{design.state}}</span>
 <div class="ui five steps sticky">
   <a class="active step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
     <i class="circle icon"></i>

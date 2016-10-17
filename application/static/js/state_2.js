@@ -444,6 +444,7 @@ $(document).ready(function() {
   // });
 
   $("#save-btn").click(function() {
+    console.log(bacteria_list);
     if (parseInt($("#design-state").text()) <= 2) {
       $.ajax({
         url: "/save_state_2",
@@ -506,47 +507,10 @@ $(document).ready(function() {
       });
     }
   });
-});
 
-
-// next step
-$("#next-step").click(function() {
-  if (parseInt($("#design-state").text()) <= 2) {
-    $.ajax({
-      url: "/commit_state_2",
-      type: "POST",
-      dataType: "json",
-      contentType: 'application/json; charset=utf-8',
-      cache: false,
-      data: JSON.stringify({
-        "design_id": $("#design-id").text(),
-        "bacteria": bacteria_list
-      }),
-      success: function(r) {
-        if (r.code) {
-          swal({
-            title: "Ooo",
-            text: r.message,
-            type: "error",
-            confirmButtonText: "Okay"
-          });
-          return false;
-        } else {
-          window.location.href = r.ret;
-        }
-      },
-      error: AjaxFail
-    });
-  } else {
-    swal({
-      title: 'Trying saving a previous step',
-      text: "Subsequent steps will be reset!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'Yes, commit it!',
-      focusCancel: true
-    }).then(function() {
+  // next step
+  $("#next-step").click(function() {
+    if (parseInt($("#design-state").text()) <= 2) {
       $.ajax({
         url: "/commit_state_2",
         type: "POST",
@@ -572,6 +536,42 @@ $("#next-step").click(function() {
         },
         error: AjaxFail
       });
-    });
-  }
-})
+    } else {
+      swal({
+        title: 'Trying saving a previous step',
+        text: "Subsequent steps will be reset!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Yes, commit it!',
+        focusCancel: true
+      }).then(function() {
+        $.ajax({
+          url: "/commit_state_2",
+          type: "POST",
+          dataType: "json",
+          contentType: 'application/json; charset=utf-8',
+          cache: false,
+          data: JSON.stringify({
+            "design_id": $("#design-id").text(),
+            "bacteria": bacteria_list
+          }),
+          success: function(r) {
+            if (r.code) {
+              swal({
+                title: "Ooo",
+                text: r.message,
+                type: "error",
+                confirmButtonText: "Okay"
+              });
+              return false;
+            } else {
+              window.location.href = r.ret;
+            }
+          },
+          error: AjaxFail
+        });
+      });
+    }
+  });
+});
