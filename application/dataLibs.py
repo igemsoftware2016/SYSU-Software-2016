@@ -395,12 +395,12 @@ def commit_state(state_id):
 
         elif state_id == 3:
             protocol_html = protocol_pdf(request.json['design_id'])
-            os.system('echo "%s" > tmp_protocol.html' % protocol_html)
+            os.system('echo "%s" > ' % protocol_html + os.path.join(basedir, 'application') + '/tmp_protocol.html')
             # print_pro = open('tmp_protocol.html', 'w')
             # print_pro.write(protocol_html)
             # print_pro.close()
             # print("wkhtmltopdf ./tmp_protocol.html " + os.path.join(basedir, 'application/static/pdf/%s.pdf' % cur_design.id))
-            os.system("wkhtmltopdf ./tmp_protocol.html " + os.path.join(basedir, 'application/static/pdf/%s.pdf' % cur_design.id))
+            os.system("python " + os.path.join(basedir, 'application') + "/protocol_pdf.py %s" % cur_design.id)
         
         if state_id == 5:
             return libs_errorMsg("No next step")
