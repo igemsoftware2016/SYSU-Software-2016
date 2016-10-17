@@ -4,6 +4,7 @@ import random
 import datetime, pytz
 import hashlib
 
+# Table of all users
 class user(db.Model):
     id = db.Column(db.Integer, primary_key = True)          
     nickname = db.Column(db.String(60))                 # User's nickname, shown at the top of pages
@@ -28,6 +29,7 @@ class user(db.Model):
         db.session.commit()
 
 
+# Table of all matters (for search & select)
 class matterDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     matter_name = db.Column(db.String(120))         # Matter's name
@@ -42,6 +44,7 @@ class matterDB(db.Model):
         db.session.commit()
 
 
+# Table of all medium (including matters and concentration information)
 class mediumDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     name = db.Column(db.String(100))                # Medium's name
@@ -65,6 +68,7 @@ class mediumDB(db.Model):
         db.session.commit()
 
 
+# Table of all bacteria
 class floraDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     code = db.Column(db.String(100))                # Bacteria's code name in database
@@ -78,11 +82,11 @@ class floraDB(db.Model):
         db.session.add(self)
         db.session.commit()
 
-
+# Table of all plasmid
 class plasmidDB(db.Model):
     id = db.Column(db.Integer, primary_key = True)  # Index
     name = db.Column(db.String(60))                 # Plasmid's name
-    sequence = db.Column(db.String(5000))            # Plasmid's sequence
+    sequence = db.Column(db.String(5000))           # Plasmid's sequence
     def __init__(self, name, sequence):
         self.name = name
         self.sequence = sequence
@@ -93,6 +97,7 @@ class plasmidDB(db.Model):
         db.session.commit()
 
 
+# The terminal for sequence
 terminalDB = {
     "name": "A 202 Terminator",
     "Introduction": "double terminator (B0010-B0012)",
@@ -101,6 +106,7 @@ terminalDB = {
 }
 
 
+# Table for design's information
 class design(db.Model):
     id = db.Column(db.Integer, primary_key = True)              # Index
     design_name = db.Column(db.String(60))                      # Name of the design
