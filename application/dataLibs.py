@@ -361,7 +361,7 @@ def save_state(state_id):
             cur_design.state5_saved_data = json.dumps(request.json)
             cur_design.state5_upload_file = False
 
-        cur_design.state_id = state_id
+        cur_design.state = state_id
         db.session.commit()
         return libs_success()
 
