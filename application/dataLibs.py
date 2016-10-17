@@ -394,7 +394,12 @@ def commit_state(state_id):
             cur_design.state5_upload_file = False
 
         elif state_id == 3:
-            protocol_pdf(request.json['design_id'])
+            protocol_html = protocol_pdf(request.json['design_id'])
+            print_pro = open('tmp_protocol.html', 'w')
+            print_pro.write(protocol_html)
+            print_pro.close()
+            print("wkhtmltopdf ./tmp_protocol.html " + os.path.join(basedir, 'application/static/pdf/%s.pdf' % cur_design.id))
+            os.system("wkhtmltopdf ./tmp_protocol.html " + os.path.join(basedir, 'application/static/pdf/%s.pdf' % cur_design.id))
         
         if state_id == 5:
             return libs_errorMsg("No next step")
@@ -1037,8 +1042,10 @@ def protocol_pdf(design_id):
     protocol_html.encode("utf-8")
     protocol_html = protocol_html.strip().replace('\n', "<br />")
     #protocol_html.replace('\r', "<br />")
-    pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
+
+    # pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
+
     res = {}
     res["name"] = str(design_id) + ".pdf"
     #return libs_success(res)
-    return True
+    return protocol_html
