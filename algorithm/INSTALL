@@ -1,59 +1,62 @@
 These instructions are for UNIX-like systems only.
+### Hardware
 
-REQUIRED:
-	hardisk:	20G
+#### REQUIRED:
+	Hardisk:	20G
 	Memory:		3G
 	CPU:		Intel I5-2500k / AMD Phenom II X4
 
-HIGHLY RECOMMANDED:
+#### HIGHLY RECOMMANDED:
 	Memory:		4G memory or better
-	CPU:		Intel I7 / AMD Fx8350 or better
+	Storage:	20G SSD
 
-======== Get All the Code ========
-
-Open terminal at the working directory.
-
-	$sudo apt update
-	$sudo apt upgrade
-	$sudo apt-get install gcc g++ gfortran subversion patch wget cmake
-	$svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
-	$unzip OpenBLAS-0.2.19.zip
-	$cd ./CoinIpopt/ThirdParty/Mumps
-	$./get.Mumps
-	$cd ../Metis
-	$./get.Metis
-
-======== INSTALL ========
+### Get All the Code
 
 Open terminal at the working directory.
 
-	$cd ./OpenBLAS-0.2.19
-	$make
-	$make PREFIX=/where/to/install install
-	$cd ../CoinIpopt
-	$./configure --prefix=/where/to/install -with-blas="-L/where/to/install/lib -lopenblas"
-	$make
-	$make install
-	$cd ..
-	$rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
+about Package manager: Usually, your Package manager is apt(for ubuntu/debian), yum(for fedora) or brew(for mac)
+do not run the commands below with sudo if you're using mac OS
+```
+$sudo (Your Package manager) update
+$sudo (Your Package manager) upgrade
+$sudo (Your Package manager) install gcc g++ gfortran subversion patch wget cmake unzip
+cd /where/to/install
+$svn co https://projects.coin-or.org/svn/Ipopt/stable/3.12 CoinIpopt
+$unzip OpenBLAS-0.2.19.zip
+$cd ./CoinIpopt/ThirdParty/Mumps
+$./get.Mumps
+$cd ../Metis
+$./get.Metis
+```
 
-======== MAKE ========
+### INSTALL
 
-Edit Makefile.
+Open terminal at the working directory.
+```
+$cd ./OpenBLAS-0.2.19
+$make
+$make PREFIX=/where/to/install install
+$cd ../CoinIpopt
+$./configure --prefix=/where/to/install -with-blas="-L/where/to/install/lib -lopenblas"
+$make
+$make install
+$cd ..
+$rm -rf ./CoinIpopt ./OpenBLAS-0.2.19
+```
+
+### MAKE
+
+Edit `Makefile`
 
 Find
 
-/home/ngzm/2016_SYSU_iGEM/algorithm
+`/home/ngzm/2016_SYSU_iGEM/algorithm`
 
 Replace with
 
-/where/to/install
+`/where/to/install`
 
 Open terminal at the working directory.
-
-	$make
-
-======== Download Our Data package ========
-
-	Extract to /where/to/install
-
+```
+$make
+```
