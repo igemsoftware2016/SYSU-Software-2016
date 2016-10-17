@@ -1,0 +1,45 @@
+body {
+    background-color: #2f2f2f;
+}
+
+#main-container {
+    margin-top: 54px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-radius: 5px;
+    /*radius: 5px;*/
+    min-height: 100%;
+    background-color: rgba(255,255,255,1);
+    position: relative;
+}
+
+#main-container > .ui.steps {
+    z-index: 99;
+    /*float: left;*/
+    /*position: fixed;*/
+    /*top: 0;*/
+}
+
+.ui.column.grid.state {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-bottom: 5vh;
+}
+
+.ui.search .prompt {
+    border-radius: .28571429rem;
+}
+
+.field > label {
+    padding-top: -5px;
+}
+
+/* hidden input button */
+input.hidden {
+    display: none;
+}
+
+.idea.icon:hover {
+    cursor: pointer;
+}

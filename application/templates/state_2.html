@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/range.css">
+<link rel="stylesheet" type="text/css" href="/static/css/state_2.css">
+{% endblock %}
+
+
+{% block container %}
+<span id="design-id" style="display: none;">{{design.id}}</span><!-- given by jinja2 -->
+<span id="design-state" style="display: none;">{{design.state}}</span>
+<span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span><!-- given by jinja2 -->
+<span id="design-state-2-not" style="display: none;">{{design.state2_data == None}}</span>
+<div class="ui five steps sticky">
+  <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Settings
+      </div>
+    </div>
+  </a>
+  <a class="active step" href="{% if design.state >= 2 %}/state/{{design.id}}/2{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+    <div class="title">
+        Solution
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 3 %}/state/{{design.id}}/3{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Simulation
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 4 %}/state/{{design.id}}/4{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Protocol
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 5 %}/state/{{design.id}}/5{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Experimental results
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- put code here with-->
+<div class="ui column grid state">
+<div class="ui active inverted dimmer">
+  <div class="ui large text loader">Loading</div>
+</div>
+  <div class="ui row">
+    <div class="ui six wide column">
+      <div class="ui column">
+        <label><b>Chassis</b></label>
+        <div class="ui fluid search dropdown selection" id="bacteria-slt">
+          <i class="dropdown icon"></i>
+          <input class="search" autocomplete="off" tabindex="0">
+          <div class="default text">bacteria</div>
+          <div class="menu transition hidden" tabindex="-1">
+            {# {% for b in bacteria %}
+            <div class="item" data-value="{{b._id}}">{{b.name}}</div>
+            {% endfor %} #}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="six wide column">
+      <div class="ui column">
+        <label><b>Plasmid</b></label>
+        <div class="ui fluid search dropdown selection" id="plasmid-slt">
+          <i class="dropdown icon"></i>
+          <input class="search" autocomplete="off" tabindex="0">
+          <div class="default text">plasmid</div>
+          <div class="menu transition hidden" tabindex="-1">
+            {# {% for p in plasmid %}
+            <div class="item" data-value="{{p._id}}">{{p.name}}</div>
+            {% endfor %} #}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ui row">
+    <!-- plasmid -->
+    <div class="ui column six wide plasmid">
+      <plasmid sequencelength="360" plasmidheight="375" plasmidwidth="375" viewbox="0 0 375 375">
+        <plasmidtrack trackstyle="fill:#ccc" width="5" radius="120"></plasmidtrack>
+        <plasmidtrack trackstyle="fill:rgba(225,225,225,0.5)" radius="110">
+          <tracklabel text="HSP70" labelstyle='font-size:20px;font-weight:400' id="plasmid-title"></tracklabel>
+          {# <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel> #}
+
+          <!-- draw the main markers and labels -->
+          <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
+            <markerlabel type="path" class="mdlabel white" text="path1" id="path-text-1"></markerlabel>
+          </trackmarker>
+          <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
+            <markerlabel type="path" class="mdlabel white" text="path2" id="path-text-2"></markerlabel>
+          </trackmarker>
+          <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
+            <markerlabel type="path" class="mdlabel white" text="path3" id="path-text-3"></markerlabel>
+          </trackmarker>
+          <trackmarker start="270" end="340" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+            <markerlabel type="path" class="mdlabel white" text="Essential part"></markerlabel>
+          </trackmarker>
+
+          <!-- draw the marker regions -->
+          <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
+          <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
+          <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
+
+          <!-- draw the scales -->
+          <trackscale interval="5" style='stroke:#999' direction="in" ticksize="3"></trackscale>
+          <trackscale interval="5" style='stroke:#999' ticksize="3"></trackscale>
+          <trackscale interval="30" style="stroke:#f00" direction="in" showlabels="0" labelstyle="fill:#999;stroke:none;text-anchor:middle;alignment-baseline:middle;font-size:10px"></trackscale>
+        </plasmidtrack>
+      </plasmid>
+    </div>
+
+    <div class="ui column ten wide">
+      <canvas id="myChart-2"></canvas>
+    </div>
+  </div>
+
+  <div class="ui row">
+    <div class="ui column six wide">
+      <div class="ui equal width grid">
+        <div class="ui row component">
+          <div class="ui column">
+            <img class="ui tiny Rounded image promoter" src="/static/img/promoter-orange.png">
+            <div class="ui popup component">
+              <div class="ui one column grid">
+                <div class="ui row">
+                  <h4 class="ui horizontal divider header">
+                    <i class="tags icon"></i>
+                    Part Infomation
+                  </h4>
+                  <div class="ui column fliud">
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">promoter</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Learn More infomation:</b>
+                  </div>
+                  <div class="ui column fliud info-btns">
+                    <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                    <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui column">
+            <img class="ui tiny Rounded image RBS" src="/static/img/RBS-orange.png">
+            <div class="ui popup component">
+              <div class="ui one column grid">
+                <div class="ui row">
+                  <h4 class="ui horizontal divider header">
+                    <i class="tags icon"></i>
+                    Part Infomation
+                  </h4>
+                  <div class="ui column fliud">
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">RBS</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Learn More infomation:</b>
+                  </div>
+                  <div class="ui column fliud info-btns">
+                    <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                    <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui column">
+            <img class="ui tiny Rounded image CDS" src="/static/img/CDS-orange.png">
+            <div class="ui popup component">
+              <div class="ui one column grid">
+                <div class="ui row">
+                  <h4 class="ui horizontal divider header">
+                    <i class="tags icon"></i>
+                    Part Infomation
+                  </h4>
+                  <div class="ui column fliud">
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">CDS</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Learn More infomation:</b>
+                  </div>
+                  <div class="ui column fliud info-btns">
+                    <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                    <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui column">
+            <img class="ui tiny Rounded image teminator" src="/static/img/teminator-orange.png">
+            <div class="ui popup component">
+              <div class="ui one column grid">
+                <div class="ui row">
+                  <h4 class="ui horizontal divider header">
+                    <i class="tags icon"></i>
+                    Part Infomation
+                  </h4>
+                  <div class="ui column fliud">
+                    <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">teminator</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa">BBa_C0051</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                  </div>
+                  <div class="ui column fliud">
+                    <b>Learn More infomation:</b>
+                  </div>
+                  <div class="ui column fliud info-btns">
+                    <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                    <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui column ten wide">
+      <div class="ui two column grid">
+        <div class="ui row">
+          <div class="ui column">
+            Promoter strength: <span class="promoter num"></span>
+            <div class="ui range promoter"></div>
+          </div>
+          <div class="ui column">
+            RBS strength: <span class="RBS num"></span>
+            <div class="ui range RBS"></div>
+          </div>
+        </div>
+        <div class="ui row">
+          <div class="ui column">
+            Decomposition rate of mRNA: <span class="mRNA num"></span>
+            <div class="ui range mRNA"></div>
+          </div>
+          <div class="ui column">
+            decomposition rate of protein: <span class="protein num"></span>
+            <div class="ui range protein"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui row">
+    <div class="ui column right aligned">
+      <button class="ui orange button big redraw2">Draw</button>
+      <button class="ui blue button big" id="save-btn">Save</button>
+      <button class="ui green button big" id="next-step">Next Step</button>
+    </div>
+  </div>
+</div> <!-- state_2 grid -->
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/angularplasmid.complete.min.js"></script>
+<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+<script type="text/javascript" src="/static/js/range.js"></script>
+<script type="text/javascript" src="/static/js/state_2.js"></script>
+{% endblock %}

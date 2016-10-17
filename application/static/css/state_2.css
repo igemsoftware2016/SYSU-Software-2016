@@ -1,0 +1,70 @@
+body {
+    background-color: #2f2f2f;
+}
+
+#main-container {
+    margin-top: 54px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-radius: 5px;
+    /*radius: 5px;*/
+    min-height: 100%;
+    background-color: rgba(255,255,255,1);
+    position: relative;
+}
+
+#main-container > .ui.steps {
+    z-index: 99;
+    /*float: left;*/
+    /*position: fixed;*/
+    /*top: 0;*/
+}
+
+.ui.column.grid.state {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-bottom: 5vh;
+    padding-top: 2vh;
+}
+
+.ui.search > .prompt {
+    border-radius: .28571429rem;
+}
+/*  begin  from  here  */
+
+/* plasmid style */
+.plasmid {
+    overflow: hidden;
+}
+.mdlabel {font-size:12px}
+.white {fill:#fff}
+g {cursor: default;}
+#marker-1:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-2:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+#marker-3:hover {
+    stroke: rgba(255,255,255,0.6);
+    stroke-width: 2px;
+}
+
+/* componets row */
+.ui.row.component {
+    border: 0.5px solid rgba(156,156,156,0.3);
+    margin-top: 1rem;
+    border-bottom: 3px solid black;
+    padding-bottom: 1px;
+}
+
+.ui.popup.component {
+    min-width: 200px;
+}
+
+.info-btns {
+    padding-top: 10px;
+}

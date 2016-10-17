@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/help.css">
+{% endblock %}
+
+{% block container %}
+<div class="ui grid" id="main-container">
+  <div class="ui row">
+    <div class="ui column one wide">
+    </div>
+    <div class="ui column fourteen wide">
+      <h1 class="ui huge header" id="qna" style="margin: 20px 0 50px 0; font-size: 6em; text-align: right;"> Help </h1>
+      <div class="ui list">
+        <div class="item">
+          <div class="ui huge header">User guide</div>
+          <div class="ui list animated">
+            <div class="ui item small header"> <a href="#sign-up-and-log-in">Sign up and Log in</a> </div>
+            <div class="ui item small header"> <a href="#profile">My Profile page</a> </div>
+            <div class="ui item small header"> <a href="#square">Square page</a> </div>
+            <div class="ui item small header"> <a href="#search-box">Search Box on top menu</a> </div>
+            <div class="ui item small header"> <a href="#design-detail">Design detail</a> </div>
+            <div class="ui item small header"> <a href="#others-profile">Other's profile</a> </div>
+            <div class="ui item small header"> <a href="#settings">Settings</a> </div>
+            <div class="ui item small header"> <a href="#feedback-quest">Feedback</a> </div>
+            <div class="ui item small header"> <a href="#quest7">Question seven</a> </div>
+            <div class="ui item small header"> <a href="#quest8">Question eight</a> </div>
+            <div class="ui item small header"> <a href="#quest9">Question nine</a> </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="ui huge header">FAQ</div>
+          <div class="ui list animated">
+            <div class="ui item small header"> <a href="#quest1">Question one</a> </div>
+            <div class="ui item small header"> <a href="#quest2">Question two</a> </div>
+            <div class="ui item small header"> <a href="#quest3">Question three</a> </div>
+            <div class="ui item small header"> <a href="#quest4">Question four</a> </div>
+            <div class="ui item small header"> <a href="#quest5">Question five</a> </div>
+            <div class="ui item small header"> <a href="#quest6">Question six</a> </div>
+            <div class="ui item small header"> <a href="#quest7">Question seven</a> </div>
+            <div class="ui item small header"> <a href="#quest8">Question eight</a> </div>
+            <div class="ui item small header"> <a href="#quest9">Question nine</a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui column one wide"> </div>
+    <div class="ui column fourteen wide">
+      <div class="ui medium header"><a class="quest" id="sign-up-and-log-in" name="sign-up-and-log-in">Sign up and Log in</a></div>
+      <div class="ui">
+        <p>如果你是老用户，可以点击主页的LOG IN tab来进行登陆。<br />
+          如果你是CRAFT的新用户，你可以在主页 craft.sysusoftware.info 用你的邮箱注册CRAFT账户，以使用CRAFT Designer或在CRAFT Square中与他人互动或协助他人的搜索或模拟运算。<br />
+          或者，你可以先在guest mode中浏览他人的Design，从中获取一些灵感或帮助。<br />
+          <img src="/static/img/help/index.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="profile" name="profile">Profile page</a></div>
+      <div class="ui">
+        <p>在这里列出了你所有的设计、以及你mark的设计。<br />
+          <img src="/static/img/help/profile.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="square" name="square">Square page</a></div>
+      <div class="ui">
+        <p>你可以在这里发现所有公开的Desgin，并给予它们Like或mark他们。当然，如果发现有人试图使用CRAFT制造危险物质，你也可以在square上提供举报，后台服务会受到举报并进行处理。<br />
+          <img src="/static/img/help/square.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="search-box" name="search-box">Search Box on top menu</a></div>
+      <div class="ui">
+        <p>你可以在这里搜索所有相关的用户或公开的Design。<br />
+          <img src="/static/img/help/searchbox.png">
+          </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="design-detail" name="design-detail">Design detail</a></div>
+      <div class="ui">
+        <p>点击Square或Profile的Design name可以打开design detail页，并在这里查看该design每一步的详情。<br />
+          <img src="/static/img/help/detail.png"><br />
+        如果它是你的Design，你可以在这里对它的设计详情进行修改，也可以分享或取消分享该share，甚至删除该design。<br />
+          <img src="/static/img/help/detail2.png"></p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="settings" name="settings">Settings</a></div>
+      <div class="ui">
+        <p>你可以通过顶部菜单的下拉栏进入settings页，以修改你的个人头像或更换nickname或密码。</p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="others-profile" name="others-profile">Other's profile</a></div>
+      <div class="ui">
+        <p>你可以在Square或profile中点击他人的nickname以进入他人的profile，以查看他的所有设计和所有mark。</p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="feedback-quest" name="feedback-quest">Feedback</a></div>
+      <div class="ui">
+        <p>在任何页面的右手边，都有标识为邮箱的feedback按钮。你可以随时随地以邮件的形式向我们发送feedback。</p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="quest7" name="quest7">Question seven</a></div>
+      <div class="ui">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="quest8" name="quest8">Question eight</a></div>
+      <div class="ui">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="quest9" name="quest9">Question nine</a></div>
+      <div class="ui">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+{% endblock %}
