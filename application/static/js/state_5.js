@@ -50,7 +50,7 @@ $(document).ready(function() {
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
                 <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <div class="ui basic label">AU </div>\
               </div>\
             </td>\
             <td class="right aligned">\
@@ -70,7 +70,7 @@ $(document).ready(function() {
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
                 <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <div class="ui basic label">AU </div>\
               </div>\
             </td>\
             <td class="right aligned">\
