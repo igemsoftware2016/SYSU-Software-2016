@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 #from flask.ext.login import LoginManager
-from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY, UPLOAD_FOLDER, ALLOWED_EXTENSIONS
+from config import SQLALCHEMY_DATABASE_URI, SECRET_KEY, UPLOAD_FOLDER
 import os, sys
 
 app = Flask(__name__)

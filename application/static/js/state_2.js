@@ -1,8 +1,8 @@
 $(document).ready(function() {
   $('.ui.sidebar')
-    .sidebar({
-      context: $('.bottom.segment')
-    });
+  .sidebar({
+    context: $('.bottom.segment')
+  });
 
   // range items
   $('.ui.range').range({
@@ -158,9 +158,9 @@ $(document).ready(function() {
 
   // set popup
   var setPopup = function(now_id) {
-      nowPath = $.grep($(nowPla.pathway), function(p) {
-        return p._id == now_id;
-      })[0];
+    nowPath = $.grep($(nowPla.pathway), function(p) {
+      return p._id == now_id;
+    })[0];
       // console.log(el);
       set_comp(".ui.promoter + .popup", getProm(nowPath.prom));
       set_comp(".ui.RBS + .popup", getRBS(nowPath.RBS));
@@ -168,15 +168,15 @@ $(document).ready(function() {
       set_comp(".ui.teminator + .popup", getTerm(nowPath.term));
     }
     // set range
-  var setRange = function(now_id) {
+    var setRange = function(now_id) {
       var path = $.grep($(nowPla.pathway), function(p) {
         return p._id == now_id;
       })[0];
       var prom_lower = path.strength.promoter_lower,
-        prom_upper = path.strength.promoter_upper,
-        prom = $.grep(path.strength.promoter, function(el) {
-          return el.info == path.prom;
-        })[0];
+      prom_upper = path.strength.promoter_upper,
+      prom = $.grep(path.strength.promoter, function(el) {
+        return el.info == path.prom;
+      })[0];
       $('.ui.range.promoter').range({
         max: prom_upper,
         start: prom.s,
@@ -188,10 +188,10 @@ $(document).ready(function() {
         }
       });
       var RBS_lower = path.strength.RBS_lower,
-        RBS_upper = path.strength.RBS_upper,
-        RBS = $.grep(path.strength.RBS, function(el) {
-          return el.info == path.RBS;
-        })[0];
+      RBS_upper = path.strength.RBS_upper,
+      RBS = $.grep(path.strength.RBS, function(el) {
+        return el.info == path.RBS;
+      })[0];
       $('.ui.range.RBS').range({
         max: RBS_upper,
         start: RBS.s,
@@ -203,8 +203,8 @@ $(document).ready(function() {
         }
       });
       var mRNA_lower = path.strength.mRNA_lower,
-        mRNA_upper = path.strength.mRNA_upper,
-        mRNA = path.mRNA_s;
+      mRNA_upper = path.strength.mRNA_upper,
+      mRNA = path.mRNA_s;
       $('.ui.range.mRNA').range({
         max: mRNA_upper,
         start: mRNA,
@@ -216,8 +216,8 @@ $(document).ready(function() {
         }
       });
       var protein_lower = path.strength.protein_lower,
-        protein_upper = path.strength.protein_upper,
-        protein = path.protein_s;
+      protein_upper = path.strength.protein_upper,
+      protein = path.protein_s;
       $('.ui.range.protein').range({
         max: protein_upper,
         start: protein,
@@ -231,29 +231,29 @@ $(document).ready(function() {
     }
     // find the closest strength one and set popup
     // modify the package(will be send when save) at the same time
-  var setClosestInfo = function(val, type, slist) {
-    if (type === "mRNA") {
-      nowPath.mRNA_s = val;
-      return true;
-    } else if (type === "protein") {
-      nowPath.protein_s = val;
-      return true;
-    }
+    var setClosestInfo = function(val, type, slist) {
+      if (type === "mRNA") {
+        nowPath.mRNA_s = val;
+        return true;
+      } else if (type === "protein") {
+        nowPath.protein_s = val;
+        return true;
+      }
 
-    var clIndex = 0;
-    $(slist).each(function(n, el) {
+      var clIndex = 0;
+      $(slist).each(function(n, el) {
       // console.log(slist[clIndex].s, el.s, val);
       if (parseFloat(slist[clIndex].s) < parseFloat(val) ||
         parseFloat(el.s - val) < parseFloat(slist[clIndex].s - val)) {
         // console.log("change");
-        clIndex = n;
-      }
-    });
+      clIndex = n;
+    }
+  });
 
-    if (type === "prom") {
-      set_comp(".ui.promoter + .popup", getProm(slist[clIndex].info));
-      nowPath.prom = slist[clIndex].info;
-    } else if (type === "RBS") {
+      if (type === "prom") {
+        set_comp(".ui.promoter + .popup", getProm(slist[clIndex].info));
+        nowPath.prom = slist[clIndex].info;
+      } else if (type === "RBS") {
       // console.log(slist);
       set_comp(".ui.RBS + .popup", getRBS(slist[clIndex].info));
       nowPath.RBS = slist[clIndex].info;
@@ -262,8 +262,8 @@ $(document).ready(function() {
 
   // set component
   var set_comp = function(selector, info) {
-      var $popup = $(selector);
-      $popup.find(".name").text(info.name);
+    var $popup = $(selector);
+    $popup.find(".name").text(info.name);
       // $popup.find(".type").text(info.type);
       $popup.find(".BBa").text(info.BBa);
       $popup.find(".intro").text((info.Introduction ? info.Introduction : "No intoduction yet."));
@@ -282,12 +282,12 @@ $(document).ready(function() {
       // console.log(selector, info);
     }
     // draw the line chart when click redraw
-  $(".button.redraw2").click(function() {
-    redrawChart_2();
-  });
+    $(".button.redraw2").click(function() {
+      redrawChart_2();
+    });
 
-  window.redrawChart_2 = function() {
-    var prom = $(".promoter.num").text(),
+    window.redrawChart_2 = function() {
+      var prom = $(".promoter.num").text(),
       RBS = $(".RBS.num").text(),
       mRNA = $(".mRNA.num").text(),
       protein = $(".protein.num").text();
@@ -325,11 +325,11 @@ $(document).ready(function() {
    * define the change callback function
    * to modify the plasmid
    */
-  var promoter_info, RBS_info,
-    CDS_info, term_info,
-    bacteria_list;
-  var nowBac, nowPla, nowPath;
-  $("#bacteria-slt").dropdown({
+   var promoter_info, RBS_info,
+   CDS_info, term_info,
+   bacteria_list;
+   var nowBac, nowPla, nowPath;
+   $("#bacteria-slt").dropdown({
     onChange: function(value, text, $selectedItem) {
       // console.log(value, text, $selectedItem);
       $(bacteria_list).each(function(n, bac) {
@@ -380,28 +380,30 @@ $(document).ready(function() {
     on: "click"
   });
 
-  $.ajax({
-    url: "/get_state_2_saved",
-    type: "GET",
-    dataType: "json",
-    data: {"design_id": $("#design-id").text()},
-    contentType: 'charset=utf-8',
-    cache: false,
-    success: function(data) {
-      if (data.code) {
-        swal({
-          title: "Ooo",
-          text: data.message,
-          type: "error",
-          confirmButtonText: "Okay"
-        });
-        return false;
-      } else {
-        promoter_info = data.ret.promoter_Info;
-        RBS_info = data.ret.RBS_Info;
-        CDS_info = data.ret.CDS_Info;
-        term_info = data.ret.term_Info;
-        bacteria_list = data.ret.bacteria;
+  if(parseInt($("#design-state").text()) >= 2) {
+    
+    $.ajax({
+      url: "/get_state_2_saved",
+      type: "GET",
+      dataType: "json",
+      data: {"design_id": $("#design-id").text()},
+      contentType: 'charset=utf-8',
+      cache: false,
+      success: function(data) {
+        if (data.code) {
+          swal({
+            title: "Ooo",
+            text: data.message,
+            type: "error",
+            confirmButtonText: "Okay"
+          });
+          return false;
+        } else {
+          promoter_info = data.ret.promoter_Info;
+          RBS_info = data.ret.RBS_Info;
+          CDS_info = data.ret.CDS_Info;
+          term_info = data.ret.term_Info;
+          bacteria_list = data.ret.bacteria;
 
         // redraw drowdown
         $("#bacteria-slt").find(".item").remove();
@@ -427,6 +429,7 @@ $(document).ready(function() {
     },
     error: AjaxFail
   });
+  }
 
   // modify by address
   // $(".ui.button.save").click(function() {

@@ -7,6 +7,7 @@
 
 {% block container %}
 <span id="design-id" style="display: none;">{{design.id}}</span><!-- given by jinja2 -->
+<span id="design-state" style="display: none;">{{design.state}}</span>
 <span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span><!-- given by jinja2 -->
 <div class="ui five steps sticky">
   <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">

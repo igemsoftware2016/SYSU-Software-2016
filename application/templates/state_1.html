@@ -6,9 +6,9 @@
 
 {% block container %}
 <!-- put code here with-->
-<span id="design-id" style="display: none;">{% if design.id %}{{ design.id }}{% endif %}</span> <!-- given by jinja2 -->
-<span id="design-mode" style="display: none;">{% if design.design_mode %}{{ design.design_mode }}{% endif %}</span> <!-- given by jinja2 -->
-<span id="design-file" style="display: none;">{{ design.state1_upload_file }}</span> <!-- given by jinja2 -->
+<span id="design-id" style="display: none;">{% if design.id %}{{ design.id }}{% endif %}</span>
+<span id="design-mode" style="display: none;">{% if design.design_mode %}{{ design.design_mode }}{% endif %}</span>
+<span id="design-file" style="display: none;">{{ design.state1_upload_file }}</span>
 <div class="ui five steps sticky">
   <a class="active step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
     <i class="circle icon"></i>
@@ -241,7 +241,7 @@
           <div class="center">
             <h2 class="ui inverted icon header">
               <i class="file icon"></i>
-              <span>Using file!</span>
+              <span><a href="/static/upload/design-{{design.id}}-state-1.xls" target="_blank">Using file!</a></span>
             </h2>
           </div>
         </div>

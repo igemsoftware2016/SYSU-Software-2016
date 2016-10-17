@@ -70,9 +70,9 @@ $(document).ready(function() {
                 results: 'results',
                 title: 'title'
                     // description: 'description'
-            },
-            minCharacters: 1
-        });
+                },
+                minCharacters: 1
+            });
     });
 
     $("#add-resolve").click(function() {
@@ -85,9 +85,9 @@ $(document).ready(function() {
                 results: 'results',
                 title: 'title'
                     // description: 'description'
-            },
-            minCharacters: 1
-        });
+                },
+                minCharacters: 1
+            });
     });
 
     $(document).on('click', '.remove-add', function() {
@@ -116,7 +116,7 @@ $(document).ready(function() {
         swal({
             title: 'Name and select mode',
             html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
-                '<div class="ui buttons"><button class="ui button mode-btn make">Products</button><div class="or"></div><button class="ui button mode-btn resolve">Substrates</button></div>',
+            '<div class="ui buttons"><button class="ui button mode-btn make">Products</button><div class="or"></div><button class="ui button mode-btn resolve">Substrates</button></div>',
             preConfirm: function(result) {
                 return new Promise(function(resolve, reject) {
                     var name = $("#design-name-input").val();
@@ -167,7 +167,7 @@ $(document).ready(function() {
                 'Enjoy the design time!',
                 '',
                 'success'
-            );
+                );
         });
     } else if ($("#design-mode").text() == "make") {
         $(".resolve-row").hide();
@@ -226,7 +226,7 @@ $(document).ready(function() {
                 'Done!',
                 '',
                 'success'
-            );
+                );
         });
     })
 
@@ -278,15 +278,15 @@ $(document).ready(function() {
     // set up ajax package
     var setUpPackage = function() {
         var inputs = [],
-            flora = [],
-            err = false;
+        flora = [],
+        err = false;
 
         if (isMake) {
             $(".make-line").each(function(n, el) {
                 var line = $(el).find("input"),
-                    name = $(line[0]).val(),
-                    lower = $(line[1]).val(),
-                    upper = $(line[2]).val();
+                name = $(line[0]).val(),
+                lower = $(line[1]).val(),
+                upper = $(line[2]).val();
                 if (!(name && lower && upper)) {
                     swal("", "Some parameters have not been defined.", "info");
                     err = true;
@@ -353,7 +353,7 @@ $(document).ready(function() {
             max_file_size: '100mb',
             mime_types: [{
                 title: "excel files",
-                extensions: "xls,xlsx"
+                extensions: "xls"
             }]
         },
 
@@ -404,6 +404,7 @@ $(document).ready(function() {
 
             FilesAdded: function(up, files) {
                 isUpload = true;
+                $("#design-file").text("False");
                 $(".dimmer.upload").dimmer("show");
                 $(files).each(function(n, file) {
                     if (n == 0)
@@ -439,6 +440,8 @@ $(document).ready(function() {
                     text: "File is uploaded.",
                     type: "success",
                     confirmButtonText: "Okay"
+                }).then(function() {
+                    location.reload();
                 });
             }
         }
@@ -453,80 +456,92 @@ $(document).ready(function() {
     });
 
     // get saved state data
-    $.ajax({
-        url: "/get_state_1_saved",
-        type: "GET",
-        dataType: "json",
-        contentType: 'charset=utf-8',
-        cache: false,
-        data: {
-            design_id: $("#design-id").text()
-        },
-        success: function(r) {
-            if (r.code) {
-                showErrMsg(r.message);
-                return false;
-            } else {
-                if (r.ret) {
-                    // do something with reload
-                    // test now
-                    // r = {
-                    //     "code": 0,
-                    //     "ret": {
-                    //         "design_id": 2,
-                    //         "input": [{
-                    //             name: "bbbb111",
-                    //             conc: 9.23
-                    //         }, {
-                    //             name: "QQQ",
-                    //             conc: 2.1
-                    //         }],
-                    //         "mode": "resolve",
-                    //         "other": {
-                    //             "env": ["AMMONIUM", "D-ALANINE"],
-                    //             "medium": "May",
-                    //             "time": 2.9
-                    //         }
-                    //     }
-                    // }
-                    if (r.ret.mode == "make") {
-                        $(r.ret.input).each(function(n, el) {
-                            var $line = $('.make-line').eq(-1);
-                            $line.find("input").eq(0).val(el.name);
-                            $line.find("input").eq(1).val(el.lower);
-                            $line.find("input").eq(2).val(el.upper);
-                            if (el.maxim) {
-                                $line.find(".ui.checkbox").checkbox("set checked");
-                            }
-                            $("#add-make").click();
-                        });
-                        $('.make-line').eq(-1).find("button.remove-add").click();
-                    } else if (r.ret.mode == "resolve") {
-                        $(r.ret.input).each(function(n, el) {
-                            var $line = $('.resolve-line').eq(-1);
-                            $line.find("input").eq(0).val(el.name);
-                            $line.find("input").eq(1).val(el.begin);
-                            $("#add-resolve").click();
-                        });
-                        $('.resolve-line').eq(-1).find("button.remove-resolve").click();
-                    }
+    if($("#design-file").text() === "False") {
+        $.ajax({
+            url: "/get_state_1_saved",
+            type: "GET",
+            dataType: "json",
+            contentType: 'charset=utf-8',
+            cache: false,
+            data: {
+                design_id: $("#design-id").text()
+            },
+            success: function(r) {
+                if (r.code) {
+                    showErrMsg(r.message);
+                    return false;
+                } else {
+                    if (r.ret) {
+                        if (r.ret.mode == "make") {
+                            $(r.ret.input).each(function(n, el) {
+                                var $line = $('.make-line').eq(-1);
+                                $line.find("input").eq(0).val(el.name);
+                                $line.find("input").eq(1).val(el.lower);
+                                $line.find("input").eq(2).val(el.upper);
+                                if (el.maxim) {
+                                    $line.find(".ui.checkbox").checkbox("set checked");
+                                }
+                                $("#add-make").click();
+                            });
+                            $('.make-line').eq(-1).find("button.remove-add").click();
+                        } else if (r.ret.mode == "resolve") {
+                            $(r.ret.input).each(function(n, el) {
+                                var $line = $('.resolve-line').eq(-1);
+                                $line.find("input").eq(0).val(el.name);
+                                $line.find("input").eq(1).val(el.begin);
+                                $("#add-resolve").click();
+                            });
+                            $('.resolve-line').eq(-1).find("button.remove-resolve").click();
+                        }
 
-                    if (r.ret.other) {
-                        $("#time").val(r.ret.other.time);
-                        $("#medium-slt").dropdown("set value", r.ret.other.medium);
-                        $(r.ret.other.env).each(function(n, el) {
-                            var color = colors[Math.floor(Math.random() * colors.length)];
-                            $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
-                                el + '</span><i class="icon env close"></i></a>');
-                        });
-                        $("#medium-slt").dropdown("set selected", r.ret.other.medium);
+                        if (r.ret.other) {
+                            $("#time").val(r.ret.other.time);
+                            $("#medium-slt").dropdown("set value", r.ret.other.medium);
+                            $(r.ret.other.env).each(function(n, el) {
+                                var color = colors[Math.floor(Math.random() * colors.length)];
+                                $('.env.labels').append('<a class="ui env label ' + color + '"><span>' +
+                                    el + '</span><i class="icon env close"></i></a>');
+                            });
+                            $("#medium-slt").dropdown("set selected", r.ret.other.medium);
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
+    
 
     $("#next-step").click(function() {
+        if($("#design-file").text() === "True") {
+            $.ajax({
+                url: "/commit_state_1",
+                type: "POST",
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                cache: false,
+                data: JSON.stringify({
+                    "design_id": $("#design-id").text()
+                }),
+                success: function(r) {
+                    if (r.code) {
+                        swal({
+                            title: "Ooo",
+                            text: r.message,
+                            type: "error",
+                            confirmButtonText: "Okay"
+                        });
+                        return false;
+                    } else {
+                        window.location.href = r.ret;
+                    }
+                },
+                error: AjaxFail
+            });
+            return True;
+        } else if (isUpload) {
+            swal("", "Click save button to upload file first.", "info");
+            return false;
+        }
         var pack = setUpPackage();
         if (!pack) {
             return false;

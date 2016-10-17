@@ -6,8 +6,9 @@
 
 
 {% block container %}
-<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
-<span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span><!-- given by jinja2 -->
+<span id="design-id" style="display: none;">{{design.id}}</span>
+<span id="design-state" style="display: none;">{{design.state}}</span>
+<span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span>
 <!-- put code here with-->
 <div class="ui column grid centered">
   <div class="ui banner one column fluid centered">
@@ -86,13 +87,26 @@
       </div> <!-- design card -->
 
       <div class="ui styled fluid accordion">
-        <div class="title active">
+        <div class="title active step-1">
           <i class="dropdown icon"></i>
           Settings
         </div>
-        <div class="content active">
+        <div class="content active step-1">
           <p class="transition visible">
-            <div class="ui grid">
+            <span id="design-file-1" style="display: none;">{{ design.state1_upload_file }}</span>
+            <div class="ui grid upload-1">
+              <div class="ui row">
+                <div class="column fluid center aligned">
+                  <h2 class="ui icon header">
+                    <i class="file icon"></i>
+                    <div class="content">
+                      <a href="/static/upload/design-{{design.id}}-state-1.xls" target="_blank">Using file!</a>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="ui grid none-upload-1">
               <div class="ui row">
                 <div class="column">
                   <div class="ui row make-row">
@@ -148,11 +162,11 @@
             </div>
           </p>
         </div>
-        <div class="title state-2">
+        <div class="title step-2">
           <i class="dropdown icon"></i>
           Solution
         </div>
-        <div class="content">
+        <div class="content step-2">
           <p class="transition hidden">
             <div class="ui column grid state">
               <div class="ui row">
@@ -394,20 +408,22 @@
             </div>
           </p> {# step 2 #}
         </div>
-        <div class="title">
+        <div class="title step-3">
           <i class="dropdown icon"></i>
           Simulation
         </div>
-        <div class="content">
+        <div class="content step-3">
           <p class="transition hidden">
             <div class="ui column grid state">
               <div class="ui four wide column">
                 <div class="ui inverted vertical menu fluid" id="state-3-menu">
+                  <!-- <div class="item title"><b>Substance(s)</b></div> -->
                 </div>
               </div>
               <div class="twelve wide column fluid">
                 <div class="ui segment" id="state-3-content">
                   <div class="ui grid">
+
                     <div class="ui row equal width">
                       <div class="ui column center aligned">
                         <canvas id="myChart-3"></canvas>
@@ -419,23 +435,20 @@
             </div> <!-- state grid -->
           </p>
         </div>
-        <div class="title">
+        <div class="title step-4">
           <i class="dropdown icon"></i>
           Promoter
         </div>
-        <div class="content">
+        <div class="content step-4">
           <p class="transition hidden">
-            <button class="ui green button">
-              <i class="download icon"></i>
-              Download Protocal
-            </button>
+          <a class="ui blue button" href="/static/pdf/{{design.id}}.pdf" target="_blank"><i class="download icon"></i>Download PDF</a>
           </p>
         </div>
-        <div class="title">
+        <div class="title step-5">
           <i class="dropdown icon"></i>
           Experimental results
         </div>
-        <div class="content">
+        <div class="content step-5">
           <p class="transition hidden">实验数据反馈</p>
         </div>
       </div>
@@ -451,5 +464,6 @@
 <script type="text/javascript" src="/static/js/Chart.min.js"></script>
 <script type="text/javascript" src="/static/js/range.js"></script>
 <script type="text/javascript" src="/static/js/state_2.js"></script>
+<script type="text/javascript" src="/static/js/state_3.js"></script>
 <script type="text/javascript" src="/static/js/detail.js"></script>
 {% endblock %}

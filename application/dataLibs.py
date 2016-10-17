@@ -3,7 +3,7 @@ from __future__ import print_function
 from flask import Flask, render_template, abort, redirect, session, url_for, request, jsonify
 from jinja2 import TemplateNotFound
 from application import app, db
-from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS, basedir
+from config import UPLOAD_FOLDER, basedir
 # from flask.ext.login import logout_user
 # from .forms import LoginForm
 from model import *
@@ -38,6 +38,7 @@ def getAllPosts(_id=None):
         else:
             ret = [x for x in u.design_set]
         ret += filter(lambda x: x.shared and x not in ret, [design.query.filter_by(id=x).first() for x in json.loads(u.mark)])
+        ret = ret[::-1]
         for r in ret:
             otherInfo[r.id] = {}
             l = json.loads(r.liked_by)
@@ -177,12 +178,6 @@ def libs_setMark(user_id, design_id, isMark):
 # Usage: For debug only: print message to stderr
 def myPrint(*str):
     print(str, file=sys.stderr)
-
-
-# Usage: Check upload file's name
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 # Usage: Return specified user's basic personal information
@@ -372,10 +367,11 @@ def commit_state(state_id):
         # myPrint("I'm in!")
         cur_design = design.query.filter_by(id = request.json['design_id']).first()
         if cur_design.owner_id != session['user']:
-            return jsonify({"code": 1})
+            return libs_errorMsg("Not your design.")
 
         if state_id == 1:
-            save_state1(cur_design, request.json)
+            if not cur_design.state1_upload_file:
+                save_state1(cur_design, request.json)
             past_state2_data = state2_data.query.filter_by(state1_md5 = cur_design.state1_data.md5).first()
             if past_state2_data:
                 cur_design.state2_data = past_state2_data
@@ -806,7 +802,7 @@ def upload_file(design_id, state_id):
 
     if request.method == 'POST':
         file = request.files['file']
-        if file and allowed_file(file.filename):
+        if file:
             filename = "design-" + str(design_id) + "-state-" + str(state_id) + ".xls"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             if state_id == 1:

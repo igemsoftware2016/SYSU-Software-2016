@@ -35,13 +35,13 @@ $(document).ready(function() {
         }
         return ret;
     }
-    var ctx = document.getElementById("myChart");
+    var ctx = document.getElementById("myChart-3");
     var dataSets = [];
     var data = {
         labels: [],
         datasets: dataSets
     };
-    window.myLineChart = new Chart(ctx, {
+    window.myLineChart_3 = new Chart(ctx, {
         type: 'line',
         data: data,
         options: {
@@ -77,14 +77,14 @@ $(document).ready(function() {
     });
 
     window.myUpdate = function() {
-        window.myLineChart.update(true);
+        window.myLineChart_3.update(true);
         $(".item.legend").each(function(n, el) {
             if (!$(el).hasClass("active")) {
                 $(el).click();
             }
         });
         $("#state-3-menu").empty();
-        $("#state-3-menu").append(myLineChart.generateLegend());
+        $("#state-3-menu").append(myLineChart_3.generateLegend());
         $(".item.legend").on("click", function() {
             $(this).toggleClass("active");
         });
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
     window.updateDataset = function(e, datasetIndex) {
         var index = datasetIndex;
-        var ci = window.myLineChart;
+        var ci = window.myLineChart_3;
         var meta = ci.getDatasetMeta(index);
 
         // See controller.isDatasetVisible comment
@@ -102,46 +102,48 @@ $(document).ready(function() {
         ci.update();
     };
 
-    $("#state-3-menu").append(myLineChart.generateLegend());
+    $("#state-3-menu").append(myLineChart_3.generateLegend());
 
     $(".item.legend").on("click", function() {
         $(this).toggleClass("active");
     });
 
-    $.ajax({
-        url: "/get_state_3_saved",
-        type: "GET",
-        dataType: "json",
-        data: {
-            "design_id": $("#design-id").text()
-        },
-        contentType: 'charset=utf-8',
-        cache: false,
-        success: function(data) {
-            if (data.code) {
-                swal({
-                    title: "Ooo",
-                    text: data.message,
-                    type: "error",
-                    confirmButtonText: "Okay"
-                });
-                return false;
-            } else {
-                var labels = [];
-                for (var i = 0; i < 21; i++) {
-                    labels.push((i / 21.0 * data.ret.time).toFixed(1));
-                }
-                window.myLineChart.data.labels = labels;
-                $(data.ret.datasets).each(function(n, el) {
-                    var ds = datasetGene(el.name, el.data);
+    if(parseInt($("#design-state").text()) >= 3) {
+        $.ajax({
+            url: "/get_state_3_saved",
+            type: "GET",
+            dataType: "json",
+            data: {
+                "design_id": $("#design-id").text()
+            },
+            contentType: 'charset=utf-8',
+            cache: false,
+            success: function(data) {
+                if (data.code) {
+                    swal({
+                        title: "Ooo",
+                        text: data.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                } else {
+                    var labels = [];
+                    for (var i = 0; i < 21; i++) {
+                        labels.push((i / 21.0 * data.ret.time).toFixed(1));
+                    }
+                    window.myLineChart_3.data.labels = labels;
+                    $(data.ret.datasets).each(function(n, el) {
+                        var ds = datasetGene(el.name, el.data);
                     // console.log(ds);
-                    window.myLineChart.data.datasets.push(ds);
+                    window.myLineChart_3.data.datasets.push(ds);
                 })
-                window.myUpdate();
-            }
-        },
-        error: AjaxFail
-    });
+                    window.myUpdate();
+                }
+            },
+            error: AjaxFail
+        });
+    }
 
     // build chart test
     $(".next.button").click(function() {
