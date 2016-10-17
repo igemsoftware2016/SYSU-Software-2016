@@ -247,4 +247,110 @@ $(document).ready(function() {
   } else {
     $(".none-upload-1").remove();
   }
+
+  var abs600 = '<tr class="abs600">\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_abs600"> ahahahah </div>\
+              </div>\
+            </td>\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_abs600"> ahahahah </div>\
+              </div>\
+            </td>\
+          </tr>';
+  var fl = '<tr class="fl">\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_fl"> ahahahah </div>\
+              </div>\
+            </td>\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_fl"> ahahahah </div>\
+              </div>\
+            </td>\
+          </tr>';
+  var compund = '<tr class="compund">\
+            <td class="center aligned">\
+              <div class="ui search name fluid standard">\
+                <div class="ui icon input fluid">\
+                  <div class="state5_compund">Search matters...</div>\
+                </div>\
+                <div class="results"></div>\
+              </div>\
+            </td>\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_compund">Search matters...</div>\
+              </div>\
+            </td>\
+            <td class="center aligned">\
+              <div class="ui right labeled input fluid">\
+                <div class="state5_compund">Search matters...</div>\
+              </div>\
+            </td>\
+          </tr>'
+
+  if ($("#design-file-5").text() === "False") {
+    $(".upload-5").remove();
+
+        $.ajax({
+            url: "/get_state_5_saved",
+            type: "GET",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: {design_id: $("#design-id").text()},
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                }
+                var abs600_data = r.ret.inputs.abs600;
+                var fl_data = r.ret.inputs.fl;
+                var compund_data = r.ret.inputs.compund;
+                $(abs600_data).each(function (n, el) {
+                    $('.abs600:last .state5_abs600:eq(0)').text(el.time);
+                    $('.abs600:last .state5_abs600:eq(1)').text(el.abs600);
+                    $("#abs600").append(abs600);
+                });
+                $(fl_data).each(function (n, el) {
+                    $('.fl:last .state5_fl:eq(0)').text(el.time);
+                    $('.fl:last .state5_fl:eq(1)').text(el.fl);
+                    $("#fl").append(fl);
+                });
+                $(compund_data).each(function (n, el) {
+                    $('.ui.name.search').search({
+                        apiSettings: {
+                            url: '/search/matters/{query}'
+                        },
+                        fields: {
+                            results: 'results',
+                            title: 'title',
+                            description: 'description'
+                        },
+                        minCharacters: 1
+                    });
+                    $('.compund:last .state5_compund:eq(0)').text(el.compund);
+                    $('.compund:last .state5_compund:eq(1)').text(el.time);
+                    $('.compund:last .state5_compund:eq(2)').text(el.concentration);
+                    $("#co-culture").append(compund);
+                });
+                $('.abs600:last').remove();
+                $('.fl:last').remove();
+                $('.compund:last').remove();
+            }
+        });
+
+  } else {
+    $(".non-upload-5").remove();
+  }
+
 });

@@ -23,14 +23,14 @@ $(document).ready(function() {
             </td>\
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
-                <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <input type="number" placeholder="Enter Time">\
+                <div class="ui basic label">Mins </div>\
               </div>\
             </td>\
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
                 <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <div class="ui basic label">mol/L </div>\
               </div>\
             </td>\
             <td class="right aligned">\
@@ -43,8 +43,8 @@ $(document).ready(function() {
     var abs600='<tr class="abs600">\
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
-                <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <input type="number" placeholder="Enter Time">\
+                <div class="ui basic label">Mins </div>\
               </div>\
             </td>\
             <td class="center aligned">\
@@ -63,8 +63,8 @@ $(document).ready(function() {
     var fl = '<tr class="fl">\
             <td class="center aligned">\
               <div class="ui right labeled input fluid">\
-                <input type="number" placeholder="Weight..">\
-                <div class="ui basic label">Unit </div>\
+                <input type="number" placeholder="Enter Time">\
+                <div class="ui basic label">Mins </div>\
               </div>\
             </td>\
             <td class="center aligned">\
@@ -78,7 +78,7 @@ $(document).ready(function() {
                 <i class="minus icon"></i>\
               </button>\
             </td>\
-          </tr> </tbody>';
+          </tr>';
 
     $("#add-compund").click(function() {
         $("#co-culture").append(compund);
