@@ -95,7 +95,6 @@ server {
         }
 }
 ```
-#Start the service
 
 Run the command to start CRAFT web service:
 ```
