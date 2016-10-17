@@ -22,3 +22,8 @@
 a.quest, a:hover.quest{
     color:black;
 }
+
+img {
+    max-width: 800px;
+    height: auto;
+}

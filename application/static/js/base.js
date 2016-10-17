@@ -100,27 +100,8 @@ $(document).ready(function() {
           });
         }
       },
-      error: function() {
-        /* test !!! */
-        // ret = 3; /* 1~5 -> 0~4*/
-        // ret -= 1;
-        // // console.log(steps.find(".step"));
-        // $(steps.find(".step")).each(function(n, el) {
-        //     // console.log(el);
-        //     if (n < ret) {
-        //         $(el).children(".icon").addClass("green check"); /* done */
-        //     } else if (n === ret) {
-        //         $(el).children(".icon").addClass("info"); /* now doing */
-        //     } else {
-        //         $(el).addClass("disabled");
-        //         $(el).children(".icon").addClass("help"); /* todo */
-        //     }
-        // });
-        AjaxFail();
-      }
+      error: AjaxFail
     });
-  } else {
-    console.log("no steps");
   }
 
   window.showErrMsg = function(msg, text) {
@@ -268,5 +249,6 @@ $(document).ready(function() {
   });
 
   $(".ui.progress").progress();
+
 
 });
