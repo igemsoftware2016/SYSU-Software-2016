@@ -25,6 +25,16 @@ $(document).ready(function() {
     $("div.content.step-" + i).hide();
   }
 
+  if($("#design-state-2-not").text() === "True") {
+    $("div.title.step-2").hide();
+    $("div.content.step-2").hide();
+  }
+
+  if($("#design-state-3-not").text() === "True") {
+    $("div.title.step-3").hide();
+    $("div.content.step-3").hide();
+  }
+
   // step 2 begin ///////////////////
   $(".step-2.title").click(function() {
     setTimeout(function() {

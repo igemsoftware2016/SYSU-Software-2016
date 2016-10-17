@@ -897,10 +897,11 @@ def report():
 @app.route('/set_design_shared', methods=['POST'])
 def setDesignShared():
     d = design.query.filter_by(id = request.json.get("_id")).first_or_404()
-    if not d or not request.json.get("shared"):
+    if not d or request.json.get("shared") is None:
         return libs_errorMsg("Error Design: %s" % request.json.get("_id"))
     d.shared = request.json.get("shared")
     d.description = request.json.get("description")
+    d.needHelp = request.json.get("needHelp")
     db.session.commit()
     return libs_success()
 
@@ -944,6 +945,7 @@ def getUserNum(_id):
         num["design"] = len([x for x in u.design_set])
         num["mark"] = len(json.loads(u.mark))
         num["share"] = len(filter(lambda x: x.shared, u.design_set))
+        myPrint(u.mark)
         return num
     else:
         return {}

@@ -9,6 +9,8 @@
 <span id="design-id" style="display: none;">{{design.id}}</span>
 <span id="design-state" style="display: none;">{{design.state}}</span>
 <span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span>
+<span id="design-state-2-not" style="display: none;">{{design.state2_data == None}}</span>
+<span id="design-state-3-not" style="display: none;">{{design.enzyme_info == None or design.enzyme_info.state3_matter_plot == '{}'}}</span>
 <!-- put code here with-->
 <div class="ui column grid centered">
   <div class="ui banner one column fluid centered">
@@ -441,7 +443,15 @@
         </div>
         <div class="content step-4">
           <p class="transition hidden">
-          <a class="ui blue button" href="/static/pdf/{{design.id}}.pdf" target="_blank"><i class="download icon"></i>Download PDF</a>
+            <a class="ui blue button" href="/static/pdf/{{design.id}}.pdf" target="_blank"><i class="download icon"></i>Download PDF</a>
+            <div class="ui row">
+              <div class="ui column fluid pdf">
+                <!-- PDF viewer -->
+                <div class="media pdf" style="background-color: rgb(255, 255, 255); height: 500px">
+                  <iframe width="100%" height="100%" src="/static/pdf/{{design.id}}.pdf"></iframe>
+                </div>
+              </div>
+            </div>
           </p>
         </div>
         <div class="title step-5">

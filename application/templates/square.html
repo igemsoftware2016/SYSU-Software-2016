@@ -85,62 +85,60 @@
   </div>
   <!-- personal info & help wanted -->
   <div class="ui column four wide">
-    <div class="ui right rail">
-      <div class="ui row sticky">
-        <div class="ui segment center aligned">
-          <div class="ui tiny circular image">
-            <img src="/static/img/icon/{% if session.get('user') %}{{session.get('icon')}}{% else %}guest{% endif %}.jpg">
+    <div class="ui row sticky">
+      <div class="ui segment center aligned">
+        <div class="ui tiny circular image">
+          <img src="/static/img/icon/{% if session.get('user') %}{{session.get('icon')}}{% else %}guest{% endif %}.jpg">
+        </div>
+        <div class="ui column fuild center aligned nickname">{% if session.get('nickname') %}{{ session.get('nickname') }}{% else %}Guest{% endif %}</div>
+        <div class="ui divider"></div>
+        <div class="ui row equal width">
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.design }}{% else %}-{% endif %}
+            </div>
+            <div class="label">
+              Design
+            </div>
           </div>
-          <div class="ui column fuild center aligned nickname">{% if session.get('nickname') %}{{ session.get('nickname') }}{% else %}Guest{% endif %}</div>
-          <div class="ui divider"></div>
-          <div class="ui row equal width">
-            <div class="ui mini statistic column">
-              <div class="value">
-                {% if session.get("user") %}{{ num.design }}{% else %}-{% endif %}
-              </div>
-              <div class="label">
-                Design
-              </div>
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.mark }}{% else %}-{% endif %}
             </div>
-            <div class="ui mini statistic column">
-              <div class="value">
-                {% if session.get("user") %}{{ num.mark }}{% else %}-{% endif %}
-              </div>
-              <div class="label">
-                Marked
-              </div>
+            <div class="label">
+              Marked
             </div>
-            <div class="ui mini statistic column">
-              <div class="value">
-                {% if session.get("user") %}{{ num.share }}{% else %}-{% endif %}
-              </div>
-              <div class="label">
-                Share
-              </div>
+          </div>
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.share }}{% else %}-{% endif %}
+            </div>
+            <div class="label">
+              Share
             </div>
           </div>
         </div>
-        <!-- help wanted -->
-        <div class="ui segment">
-          <h4 class="ui horizontal divider header">
-            ASK FOR HELP
-          </h4>
+      </div>
+      <!-- help wanted -->
+      <div class="ui segment">
+        <h4 class="ui horizontal divider header">
+          ASK FOR HELP
+        </h4>
 
-          <div class="ui row">
-            {% for h in help %}
-            <!-- one asking -->
-            <div class="ui column fluid popup-bro">
-              <a href="/design/{{h.owner.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Solution search{% else %}Simulation{% endif %}!</a>
-            </div>
-            <div class="ui popup">
-              <h4>{{ h.design_name }}</h4>
-              {{ h.description }}
-            </div>
-            {% endfor %}
+        <div class="ui row">
+          {% for h in help %}
+          <!-- one asking -->
+          <div class="ui column fluid popup-bro">
+            <a href="/design/{{h.owner.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Solution search{% else %}Simulation{% endif %}!</a>
           </div>
-
-
+          <div class="ui popup">
+            <h4>{{ h.design_name }}</h4>
+            {{ h.description }}
+          </div>
+          {% endfor %}
         </div>
+
+
       </div>
     </div>
 

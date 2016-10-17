@@ -380,7 +380,8 @@ $(document).ready(function() {
     on: "click"
   });
 
-  if(parseInt($("#design-state").text()) >= 2) {
+  if(parseInt($("#design-state").text()) >= 2 && 
+    $("#design-state-2-not").text() == "False") {
     
     $.ajax({
       url: "/get_state_2_saved",
