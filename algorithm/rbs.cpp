@@ -80,11 +80,11 @@ void init_data(string bact_path, string enzy_name){
 
 	//initialize current series and rRNA
 	string init_series = "ATACAGGATATCTAGAGAAAGANNNGANNNACTAGATG"; //A template of RBS & starter
-	for (int i = 0; i < init_series.length(); i++){
+	for (size_t i = 0; i < init_series.length(); i++){
 		current.push_back(reverse_map[init_series[i]]);
 	}
 	string init_rRNA = "CGCCTGGGG";
-	for (int i = 0; i < init_rRNA.length(); i++){
+	for (size_t i = 0; i < init_rRNA.length(); i++){
 		rRNA.push_back(reverse_map[init_rRNA[i]]);
 	}
 	std::ifstream fin(bact_path.data());
@@ -161,7 +161,7 @@ bool next_series(int start){
 
 //Check if bases can be paired
 bool paired(int x, int y){
-	return x + y == 3 || x == 1 && y == 3 || x == 3 && y == 1; //AT & CG & UG
+	return x + y == 3 || (x == 1 && y == 3) || (x == 3 && y == 1); //AT & CG & UG
 }
 
 double min(double x, double y){
@@ -173,11 +173,11 @@ inline double Ghairpin(int i, int j) {
 	double Ginitiation, Gbonuses;
 	const double CGinitiation[10] = {0, 0, 0, 5.7, 5.6, 5.6, 5.4, 5.9, 5.6, 6.4};
 	Ginitiation = n <= 9 ? CGinitiation[n] : 6.4 + 1.75 * cR * cT * log(n / 9.0) / log(ce);
-	if (pair_map[current[i + 1]] == 'U' && pair_map[current[j - 1]] == 'U' || 
-	    pair_map[current[i + 1]] == 'G' && pair_map[current[j - 1]] == 'A' ||
-	    pair_map[current[i + 1]] == 'A' && pair_map[current[j - 1]] == 'G'  ) Gbonuses = -0.8; else Gbonuses = 0;
-	if (pair_map[current[i]] == 'G' && pair_map[current[j]] == 'U' ||
-		pair_map[current[i]] == 'U' && pair_map[current[j]] == 'G'  ) Gbonuses += -2.2;
+	if ((pair_map[current[i + 1]] == 'U' && pair_map[current[j - 1]] == 'U') || 
+	    (pair_map[current[i + 1]] == 'G' && pair_map[current[j - 1]] == 'A') ||
+	    (pair_map[current[i + 1]] == 'A' && pair_map[current[j - 1]] == 'G')  ) Gbonuses = -0.8; else Gbonuses = 0;
+	if ((pair_map[current[i]] == 'G' && pair_map[current[j]] == 'U') ||
+		(pair_map[current[i]] == 'U' && pair_map[current[j]] == 'G')  ) Gbonuses += -2.2;
 	return Ginitiation + Gbonuses;
 }
 
@@ -187,17 +187,18 @@ inline double Ginterior(int i, int d, int e, int j)  {
 	double Goinitiation = n1 + n2 > 6 ? 2.0 + 1.75 * cR * cT * log((n1 + n2) / 6.0) / log(ce) : CGoinitiation[n1 + n2];
 	double Goasymm = 0.48 * std::abs(n1 - n2);
 	int N = 0;
-	if (pair_map[current[i]] == 'A' && pair_map[current[j]] == 'U' || 
-		pair_map[current[i]] == 'U' && pair_map[current[j]] == 'A' ||
-		pair_map[current[i]] == 'G' && pair_map[current[j]] == 'U' || 
-		pair_map[current[i]] == 'U' && pair_map[current[j]] == 'G'  ) N++;
-	if (pair_map[current[d]] == 'A' && pair_map[current[e]] == 'U' || 
-		pair_map[current[d]] == 'U' && pair_map[current[e]] == 'A' ||
-		pair_map[current[d]] == 'G' && pair_map[current[e]] == 'U' || 
-		pair_map[current[d]] == 'U' && pair_map[current[e]] == 'G'  ) N++;
+	if ((pair_map[current[i]] == 'A' && pair_map[current[j]] == 'U') || 
+		(pair_map[current[i]] == 'U' && pair_map[current[j]] == 'A') ||
+		(pair_map[current[i]] == 'G' && pair_map[current[j]] == 'U') || 
+		(pair_map[current[i]] == 'U' && pair_map[current[j]] == 'G')  ) N++;
+	if ((pair_map[current[d]] == 'A' && pair_map[current[e]] == 'U') || 
+		(pair_map[current[d]] == 'U' && pair_map[current[e]] == 'A') ||
+		(pair_map[current[d]] == 'G' && pair_map[current[e]] == 'U') || 
+		(pair_map[current[d]] == 'U' && pair_map[current[e]] == 'G')  ) N++;
 	double Gaugu = 0.2 * N;
-	int m1, m2;
-	for (int i = i + 1; i <= d - 1; i++) if (pair_map[current[i]] == 'U') m1++;
+	int m1, m2; m1 = m2 = 0;
+	int pre_i = i;
+	for (int i = pre_i + 1; i <= d - 1; i++) if (pair_map[current[i]] == 'U') m1++;
 	for (int i = e + 1; i <= j - 1; i++) if (pair_map[current[i]] == 'U') m2++;
 	double Guubonus = -0.7 * min(m1, m2);
 	return Goinitiation + Goasymm + Gaugu + Guubonus;
@@ -257,7 +258,7 @@ void clear_score_map(int start, int length){
 	int l = start, r = start + length - 1;
 	for (int i = 0; i < all_length - 1; i++){
 		for (int j = i + 1; j < all_length; j++){
-			if (i <= l && j >= l || i <= r && j >= r || i >= l && j <= r){
+			if ((i <= l && j >= l )||(i <= r && j >= r)||(i >= l && j <= r)){
 				score_map['o'][i][j] = MAX_INT;
 				score_map['b'][i][j] = MAX_INT;
 				score_map['m'][i][j] = MAX_INT;
@@ -335,7 +336,7 @@ double RBS(){
 	double allGmrna = Gmrna(0, all_length - 1);
 	double Gstart = check_starter(starter_pos);
 	double minGms = MAX_INT;
-	int minLoc;
+	int minLoc = 19;
 	for (int loc = 19; loc < 25; loc++){
 		int s = 25 - loc;
 		double Gms = s >= 5 ? 0.048 * pow(s - 5, 2) + 0.24 * (s - 5) : 12.2 / pow(1 + pow(ce, 2.5 * (s - 3)), 3);
@@ -438,7 +439,7 @@ void print_sample(){
 }
 
 void debug_calc_series(string s){
-	for (int i = 0; i < s.length(); i++){
+	for (size_t i = 0; i < s.length(); i++){
 		current[i] = reverse_map[s[i]];
 	}
 	cout << "Total: " << RBS() << endl;

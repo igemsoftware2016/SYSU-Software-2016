@@ -9,11 +9,11 @@ INCLUDES=-I./include -I./include/coin
 
 all: get-common OptCom-test dOptCom promoter rbs
 
-promoter:
-	$(CC) $(CFLAG) -o promoter promoter.cpp
+promoter: promoter.cpp
+	$(CC) $(CFLAG) -o $@ $^
 
-rbs:
-	$(CC) $(CFLAG) -o rbs rbs.cpp
+rbs: rbs.cpp
+	$(CC) $(CFLAG) -o $@ $^
 
 data-fake: data-fake.cpp
 	$(CC) $(CFLAG) $(INCLUDES) -o $@ $^
@@ -45,4 +45,4 @@ clean:
 	-rm opt-test
 	-rm OptCom-test
 	-rm *.o
-	-rm dOptCom promoter rbs
+	-rm dOptCom promoter rbs @^
