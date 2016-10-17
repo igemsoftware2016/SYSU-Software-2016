@@ -129,8 +129,14 @@ $(document).ready(function() {
             compund: []
         };
         
+        var vaild = true;
+        
         $(".abs600").each(function(n, el) {
             var line = $(el).find("input");
+            if (!($(line[0]).val() && $(line[1]).val()))
+                vaild = false;
+            if ($(line[0]).val() < 0 || $(line[1]).val() < 0)
+                vaild = false;
             inputs.abs600.push({
                 time: $(line[0]).val(),
                 abs600: $(line[1]).val()
@@ -139,6 +145,10 @@ $(document).ready(function() {
 
         $(".fl").each(function(n, el) {
             var line = $(el).find("input");
+            if (!($(line[0]).val() && $(line[1]).val()))
+                vaild = false;
+            if ($(line[0]).val() < 0 || $(line[1]).val() < 0)
+                vaild = false;
             inputs.fl.push({
                 time: $(line[0]).val(),
                 fl: $(line[1]).val()
@@ -147,17 +157,24 @@ $(document).ready(function() {
 
         $(".compund").each(function(n, el) {
             var line = $(el).find("input");
+            if (!($(line[0]).val() && $(line[1]).val() && $(line[2]).val()))
+                vaild = false;
+            if ($(line[1]).val() < 0 || $(line[2]).val() < 0)
+                vaild = false;
             inputs.compund.push({
                 compund: $(line[0]).val(),
                 time: $(line[1]).val(),
-                concentration: $(line[1]).val()
+                concentration: $(line[2]).val()
             });
         });
 
-        return {
-            design_id: $("#design-id").text(),
-            inputs: inputs,
-        };
+        if (vaild)
+            return {
+                design_id: $("#design-id").text(),
+                inputs: inputs,
+            };
+        else
+            return false;
     }
 
     $(".dimmer.upload").dimmer({
@@ -170,6 +187,64 @@ $(document).ready(function() {
     $('#upload-all-file').change(function() {
         $('.upload span').text($('#upload-all-file').val());
     });
+
+    if ($('#design-file-5').text() === "True") {
+        $('.ui.dimmer.upload').dimmer('show');
+        console.log("A");
+    } else {
+        $.ajax({
+            url: "/get_state_5_saved",
+            type: "GET",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            cache: false,
+            data: {design_id: $("#design-id").text()},
+            success: function(r) {
+                if (r.code) {
+                    swal({
+                        title: "Ooo",
+                        text: r.message,
+                        type: "error",
+                        confirmButtonText: "Okay"
+                    });
+                    return false;
+                }
+                var abs600_data = r.ret.inputs.abs600;
+                var fl_data = r.ret.inputs.fl;
+                var compund_data = r.ret.inputs.compund;
+                $(abs600_data).each(function (n, el) {
+                    $('.abs600:last input:eq(0)').val(el.time);
+                    $('.abs600:last input:eq(1)').val(el.abs600);
+                    $("#abs600").append(abs600);
+                });
+                $(fl_data).each(function (n, el) {
+                    $('.fl:last input:eq(0)').val(el.time);
+                    $('.fl:last input:eq(1)').val(el.fl);
+                    $("#fl").append(fl);
+                });
+                $(compund_data).each(function (n, el) {
+                    $('.ui.name.search').search({
+                        apiSettings: {
+                            url: '/search/matters/{query}'
+                        },
+                        fields: {
+                            results: 'results',
+                            title: 'title',
+                            description: 'description'
+                        },
+                        minCharacters: 1
+                    });
+                    $('.compund:last input:eq(0)').val(el.compund);
+                    $('.compund:last input:eq(1)').val(el.time);
+                    $('.compund:last input:eq(2)').val(el.concentration);
+                    $("#co-culture").append(compund);
+                });
+                $('.abs600:last').remove();
+                $('.fl:last').remove();
+                $('.compund:last').remove();
+            }
+        });
+    }
 
     var uploader = new plupload.Uploader({
         runtimes : 'html5,flash,silverlight,html4',
@@ -196,13 +271,18 @@ $(document).ready(function() {
             PostInit: function() {
                 document.getElementById('submit').onclick = function() {
                     if (isUpload == false) {
+                        var upload_data = setUpPackage();
+                        if (!upload_data) {
+                            swal("", "Invalid parameters", "info");
+                            return;
+                        }
                         $.ajax({
-                            url: "/submit",
+                            url: "/save_state_5",
                             type: "POST",
                             dataType: "json",
                             contentType: 'application/json; charset=utf-8',
                             cache: false,
-                            data: JSON.stringify(setUpPackage()),
+                            data: JSON.stringify(upload_data),
                             success: function(r) {
                                 if (r.code) {
                                     swal({
@@ -214,9 +294,11 @@ $(document).ready(function() {
                                     return false;
                                 } else {
                                     swal({
-                                    title: "Done",
-                                    type: "success",
-                                    confirmButtonText: "Okay"
+                                        title: "Done",
+                                        type: "success",
+                                        confirmButtonText: "Okay"
+                                    }).then(function(){
+                                        window.location.href='/design/' + $('#design-id').text();
                                     });
                                 }
                             }

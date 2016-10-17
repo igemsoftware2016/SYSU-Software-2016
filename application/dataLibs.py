@@ -410,6 +410,8 @@ def get_state_saved(state_id):
             return libs_errorMsg('Not reach that step yet')
         if cur_design.state1_data is None:
             return libs_success({"mode": cur_design.design_mode})
+        if cur_design.state5_saved_data is None:
+            return libs_success({"design_id":str(request.args.get('design_id')),"inputs":{"abs600":[],"fl":[],"compund":[]}})
 
     if state_id == 1:
         ret = dict()
@@ -790,7 +792,7 @@ def deleteDesign():
 @login_required
 def upload_file(design_id, state_id):
 
-    if not design.query.filter_by(id = state_id).first():
+    if not design.query.filter_by(id = design_id).first():
         return libs_errorMsg("No such design")
     if state_id != 1 and state_id != 5:
         return libs_errorMsg("Invalid state")

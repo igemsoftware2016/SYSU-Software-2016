@@ -7,6 +7,7 @@
 {% block container %}
 <!-- put code here with-->
 <span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<span id="design-file-5" style="display: none;">{{ design.state5_upload_file }}</span>
 <div class="ui five steps sticky">
   <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
     <i class="circle icon"></i>
