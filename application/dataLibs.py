@@ -252,6 +252,7 @@ def save_state1(cur_design, data_dict):
             qmatter = matterDB.query.filter_by(matter_name = m.get('name')).first()
             if qmatter is None:
                 continue
+            print (bool(m.get('maxim')))
             new_make_matter = make_matter.query.filter_by(matter_id = qmatter.id, lower = float(m.get('lower')), upper = float(m.get('upper')), maxim = bool(m.get('maxim'))).first()
             if new_make_matter is None:
                 new_make_matter = make_matter(qmatter, float(m.get('lower')), float(m.get('upper')), bool(m.get('maxim')))
@@ -287,6 +288,9 @@ def save_state1(cur_design, data_dict):
         db.session.delete(cur_design.state1_data)
     cur_data.refresh_md5()
     cur_design.state1_data = cur_data
+    past_state2_data = state2_data.query.filter_by(state1_md5 = cur_design.state1_data.md5).first()
+    if past_state2_data:
+        cur_design.state2_data = past_state2_data
 
 
 # Usage: Save state2's input data (detected promoter, RBS and others)
@@ -343,14 +347,21 @@ def save_state(state_id):
 
         if state_id == 1:
             save_state1(cur_design, request.json)
+            cur_design.state2_data = None
+            cur_design.enzyme_info = None
+            cur_design.state5_saved_data = '{}'
+            cur_design.state5_upload_file = False
         
         elif state_id == 2:
             save_state2(cur_design, request.json)
+            cur_design.state5_saved_data = '{}'
+            cur_design.state5_upload_file = False
 
         elif state_id == 5:
             cur_design.state5_saved_data = json.dumps(request.json)
             cur_design.state5_upload_file = False
 
+        cur_design.state_id = state_id
         db.session.commit()
         return libs_success()
 
@@ -372,12 +383,15 @@ def commit_state(state_id):
         if state_id == 1:
             if not cur_design.state1_upload_file:
                 save_state1(cur_design, request.json)
-            past_state2_data = state2_data.query.filter_by(state1_md5 = cur_design.state1_data.md5).first()
-            if past_state2_data:
-                cur_design.state2_data = past_state2_data
+            cur_design.state2_data = None
+            cur_design.enzyme_info = None
+            cur_design.state5_saved_data = '{}'
+            cur_design.state5_upload_file = False
         
         elif state_id == 2:
             save_state2(cur_design, request.json)
+            cur_design.state5_saved_data = '{}'
+            cur_design.state5_upload_file = False
 
         elif state_id == 3:
             protocol_pdf(request.json['design_id'])
@@ -385,8 +399,7 @@ def commit_state(state_id):
         if state_id == 5:
             return libs_errorMsg("No next step")
 
-        if state_id == cur_design.state:
-            cur_design.state += 1
+        cur_design.state = state_id + 1
 
         db.session.commit()
         return libs_success("/state/%s/%s" % (request.json['design_id'], cur_design.state))
@@ -921,7 +934,7 @@ def setDesignNeedHelp():
 @app.route('/setDesignName', methods=['POST'])
 @login_required
 def setDesignName():
-    myPrint(request.json)
+    # myPrint(request.json)
     designID = request.json.get("_id")
     d = design.query.filter_by(id=designID).first()
     if not d:
