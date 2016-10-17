@@ -216,10 +216,11 @@ $(document).ready(function() {
                 $line.find("td").eq(0).text(el.name);
                 $line.find("td").eq(1).text(el.lower);
                 $line.find("td").eq(2).text(el.upper);
+                $line.find(".ui.checkbox").checkbox();
                 if (el.maxim) {
-                  $line.find(".ui.checkbox").checkbox("set checked");
+                  $line.find(".ui.checkbox").checkbox("check");
                 }
-                $line.find(".ui.checkbox").checkbox("set disabled");
+                // $line.find(".ui.checkbox").addClass("disabled");
                 $("#make-tbody").append($line);
               });
             } else if (r.ret.mode == "resolve") {
