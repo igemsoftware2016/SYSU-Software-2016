@@ -29,6 +29,8 @@ std::unordered_map<char, std::vector< std::vector<double> > > score_map;
 std::map<int, char> pair_map;
 std::map<char, int> reverse_map;
 
+string cds_recorder;
+
 //initialize const values/maps
 
 const double Gmultiinit = 10.1;
@@ -85,13 +87,11 @@ void init_data(string bact_path, string enzy_name){
 	for (int i = 0; i < init_rRNA.length(); i++){
 		rRNA.push_back(reverse_map[init_rRNA[i]]);
 	}
-	// cout << bact_path.data() << endl;
 	std::ifstream fin(bact_path.data());
 	string tmp;
 	int n;
 	fin >> tmp;
 	fin >> n;
-	// cout << n << endl;
 	string reac_name;
 	for (int i = 0; i < n; i++){
 		string enzy_tmp;
@@ -101,13 +101,11 @@ void init_data(string bact_path, string enzy_name){
 		for (int j = 0; j < enzy_n; j++){
 			string reac_tmp;
 			fin >> reac_tmp;
-		}
-		if (enzy_name == enzy_tmp){
-			reac_name = reac_tmp;
+			if (enzy_name == enzy_tmp)
+				reac_name = reac_tmp;
 		}
 	}
 	fin >> n;
-	// cout << n << endl;
 	for (int i = 0; i < n; i++){
 		string reac_tmp;
 		fin >> reac_tmp;
@@ -115,20 +113,20 @@ void init_data(string bact_path, string enzy_name){
 		fin >> tmp_series;
 		if (reac_tmp == reac_name){
 			tmp_series = tmp_series.substr(3, tmp_series.length() - 3);
-			// cout << tmp_series << endl;
-			// cout << tmp_series.length() << endl;
+			cds_recorder = tmp_series;
 			for (int j = 0; j < 35; j++){
 				current.push_back(reverse_map[tmp_series[j]]);
-				// cout << current[j + 38] << ' ';
 			}
-			break;
 		}
 		while (tmp_series[tmp_series.length() - 1] < 97){
 			fin >> tmp_series;
+			if (reac_tmp == reac_name){
+				cds_recorder += tmp_series;
+			}
 		}
+		if (reac_tmp == reac_name) break;
 	}
 	
-	// cout << endl;
 	fin.close();
 }
 
@@ -212,28 +210,14 @@ double Gmulti(int i, int j){
 
 //Calculating energy's recrusion
 double search_struct(int left, int right, char type){
-	//cout << left << ' ' << right << ' ' << type << endl;
 	if (score_map[type][left][right] < MAX_INT) {
-		// cout << left << ' ' << right << ' ' << type << endl;
-		// cout << score_map[type][left][right] << endl;
 		return score_map[type][left][right];
 	}
 	if (left >= right) {
 		score_map[type][left][right] = 0;
-		// cout << left << ' ' << right << ' ' << type << endl;
-		// cout << score_map[type][left][right] << endl;
 		return score_map[type][left][right];
 	}
-	// if (type == 'b' && right - left <= 2) {
-	// 	score_map[type][left][right] = Ghairpin(left, right);
-	// 	// cout << left << ' ' << right << ' ' << type << endl;
-	// 	// cout << score_map[type][left][right] << endl;
-	// 	return score_map[type][left][right];
-	// }
-	//cout << left << ' ' << right << ' ' << type << endl;
-	// if (left == 70 && right == 72){
-	// 	cout << endl;
-	// }
+
 	double min_energy;
 	if (type == 'o'){
 		min_energy = 0;
@@ -264,8 +248,6 @@ double search_struct(int left, int right, char type){
 			}
 		}
 	}
-	//cout << left << ' ' << right << ' ' << type << endl;
-	//cout << min_energy << endl;
 	score_map[type][left][right] = min_energy;
 	return min_energy;
 }
@@ -392,28 +374,7 @@ bool illegal_series(){
 	if (cntstr.find("GUG") < 35) return true;
 	return false;
 }
-/*
-void qsort(int l, int r){
-	int i = l, j = r;
-	std::vector<int> t, x;
-	t.resize(all_length + 1);
-	x.resize(all_length + 1);
-	x = all_solve[(l + r) / 2];
-	do{
-		while (all_solve[i][73] < x[73]) i++;
-		while (all_solve[j][73] > x[73]) j--;
-		if (i <= j){
-			t = all_solve[i];
-			all_solve[i] = all_solve[j];
-			all_solve[j] = t;
-			i++;
-			j--;
-		}
-	} while (i <= j);
-	if (i < r) qsort(i, r);
-	if (l < j) qsort(l, j);
-}
-*/
+
 bool my_cmp(const std::vector<int> x, const std::vector<int> y) {
 	assert(x.size() >= 74);
 	assert(y.size() >= 74);
@@ -466,7 +427,8 @@ void print_series(std::ofstream &fout, std::vector<int> v){
 void print_sample(){
 	std::ofstream fout("RBS_output.txt");
 	int vn = all_solve.size();
-	cout << vn << endl;
+	// cout << vn << endl;
+	fout << cds_recorder << endl;
 	print_series(fout, all_solve[0]);
 	print_series(fout, all_solve[(vn - 1) / 4]);
 	print_series(fout, all_solve[(vn - 1) / 2]);
@@ -483,13 +445,13 @@ void debug_calc_series(string s){
 }
 
 int main(int argc, char* argv[]){
-	// if (argc < 2){
-	// 	cout << "Usage: ./rbs [name_of_bacteria] [name_of_enzyme]" << endl;
-	// }
-	// init_data(argv[1]);
-	init_data("aact1035194-hmpcyc.txt", "EC-2.7.7.77_0_pum_0");
-	// calc_bound();
-	// print_sample();
+	if (argc < 2){
+		cout << "Usage: ./rbs [name_of_bacteria] [name_of_enzyme]" << endl;
+	}
+	init_data(argv[1], argv[2]);
+	// init_data("aact1035194-hmpcyc.txt", "EC-2.7.7.77_0_pum_0");
+	calc_bound();
+	print_sample();
 
-	debug_calc_series("AUACAGGAUAUCUAGAGAAGGGAAUCAAAAACUAGAUGACAAUUUCAAUCAGCGCGGUAAUUUUAGCCGGCGG");
+	// debug_calc_series("AUACAGGAUAUCUAGAGAAGGGAAUCAAAAACUAGAUGACAAUUUCAAUCAGCGCGGUAAUUUUAGCCGGCGG");
 }

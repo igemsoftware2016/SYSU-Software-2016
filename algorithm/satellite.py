@@ -7,73 +7,36 @@ import os
 MAX_INT = 2000000000
 
 if __name__ == "__main__":
+	if len(sys.argv) < 2:
+		print("\nUsage: \npython run_calculate.py [your designID]\n")
+		os._exit(0)
 	designID = sys.argv[1]
-	if not designID:
-		print("Usage: python run_calculate.py [your designID]")
-		os._exit()
 	connector = httplib.HTTPConnection("127.0.0.1:5000")
 	url = '/process/' + designID
 	connector.request(method="GET",url=url)
 	response = connector.getresponse()
 	response_text = response.read()
+	# print response_text
 	response_object = json.loads(response_text)
-	# The json should be:
-	# state1:
-	# {
-	# 	"state": 1,
-	# 	"mode": "synthetic",
-	# 	"matters": ["C001", "C002", "C003"],
-	# 	"medium": [
-	# 		{
-	# 			"code": "C004",
-	# 			"con": 0.1
-	# 		},
-	# 		{
-	# 			"code": "C005",
-	# 			"con": 0.5
-	# 		}
-	# 	]
-	# }
-	# state2:
-	# {
-	# 	"state": 2, 
-	# 	"bacteria":[
-	# 		{
-	# 			"code": "C001",
-	# 			"enzyme":["E001", "E002"]
-	# 		}
-	# 	],
-	# 	"initial_matters":[
-	# 		{
-	# 			"code": "C004",
-	# 			"con": 0.1
-	# 		},
-	# 		{
-	# 			"code": "C005",
-	# 			"con": 0.5
-	# 		}
-	# 	],
-	# 	"insert_matters":[
-	# 		{
-	# 			"code": "C001",
-	# 			"con": 0.1
-	# 		},
-	# 		{
-	# 			"code": "C002",
-	# 			"con": 0.2
-	# 		}
-	# 		{
-	# 			"code": "C003",
-	# 			"con": 0.3
-	# 		}
-	# 	]
-	# }
-	# TODO: read Kcat
-	Kcat = []
 
-	state = response_object.get('state')
+	Kcat = {}
+	kcat_file = open('kcat_kcat.txt', 'r')
+	while True:
+		line = kcat_file.readline().strip()
+		if line:
+			tname = line[0 : line.find(',')]
+			try:
+				tkcat = float(line[line.rfind(',') + 1 : ])
+			except Exception, e:
+				tkcat = 1
+			Kcat[tname] = tkcat
+		else:
+			break
+	# print(Kcat)
+
+	state = int(response_object.get('state'))
 	print("The design is now state " + str(state))
-	if 'state' == 1:
+	if state == 2:
 		# Print data for search & opt-com part
 		mode = response_object.get('mode')
 		matters = response_object.get('matters')
@@ -82,7 +45,7 @@ if __name__ == "__main__":
 		search_file.write(mode + '\n')
 		search_file.write(str(len(matters)) + '\n')
 		for m in matters:
-			search_file.write(m + '\n')
+			search_file.write(m.get('code') + '\n')
 		search_file.write(str(len(medium)) + '\n')
 		for m in medium:
 			search_file.write(m.get('code') + ' ' + str(m.get('con')) + '\n')
@@ -100,6 +63,7 @@ if __name__ == "__main__":
 			batt_name = tmp[0]
 			gene_count = int(tmp[1])
 			tmpenz = search_res.readline().split()
+			bact_set = {}
 			bact_set["name"] = batt_name
 			bact_set["enzyme"] = []
 			for j in range(0, gene_count):
@@ -107,7 +71,7 @@ if __name__ == "__main__":
 				batt_from = tmpenz[j * 2 + 1]
 
 				# Cauculate sum energy
-				enzyme_Kcat = Kcat.get(enzyme_name)
+				enzyme_Kcat = Kcat.get(enzyme_name[enzyme_name.find('-') + 1 : enzyme_name.find('_')])
 				if enzyme_Kcat is None:
 					enzyme_Kcat = 1
 				Ktarget = 6 * matters[j % len(matters)].get('con') / enzyme_Kcat
@@ -118,11 +82,12 @@ if __name__ == "__main__":
 				pro_input = open('promoter_input.txt', 'w')
 				rbs_seq_set = []
 				pro_seq_set = []
+				enzy_seq = rbs_res.readline().strip()
 				for k in range(0, 5):
-					rbs_seq = rbs_res.readline()
+					rbs_seq = rbs_res.readline().strip()
 					if rbs_seq is None:
 						break
-					rbs_strength = float(rbs_res.readline())
+					rbs_strength = float(rbs_res.readline().strip())
 					rbs_seq_set.append({"sequence": rbs_seq, "strength": rbs_strength})
 					# Dump promoter strength
 					pro_input.write(str(Ktarget / rbs_strength) + '\n')
@@ -134,27 +99,34 @@ if __name__ == "__main__":
 					os.system('./promoter')
 					promoter_res = open('promoter_res.txt', 'r')
 					for k in range(0, 5):
-						pro_seq = promoter_res.readline()
-						pro_strength = float(promoter_res.readline())
+						pro_seq = promoter_res.readline().strip()
+						pro_strength = float(promoter_res.readline().strip())
 						pro_seq_set.append({"sequence": pro_seq, "strength": pro_strength})
 					promoter_res.close()
-				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "promoter": pro_seq_set, "rbs": rbs_seq_set}) #TODO: GET CDS SEQUENCE
+				# enzy_seq = "this_is_testing_enzyme_sequence_ACGTACGT"
+				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "sequence": enzy_seq, "promoter": pro_seq_set, "rbs": rbs_seq_set})
 			all_bact_set.append(bact_set)
 		search_res.close()
 		print("Calculation finished. Sending data to server...")
 		all_set = {"code": 0, "bacteria": all_bact_set}
 
-		#send post request to server
-		headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
-		sent_data = urllib.urlencode(all_set)
-		connector.request(method = "POST", url, sent_data, headers)
-		sent_response = json.loads(connector.getresponse().read())
-		if sent_response.get("code") == 0:
-			print("Data have been successfully sent.")
-		else:
-			print("Error occurred. Contact administrator for more help.")
+		# print(all_set)
 
-	if 'state' == 2:
+		#send post request to server
+		headers = {"Content-type": "application/json; charset=UTF-8", "Accept": "*/*"}
+		sent_data = json.dumps(all_set)
+		connector.request("POST", url, sent_data, headers)
+		try:
+			sent_response = json.loads(connector.getresponse().read())
+			if sent_response.get("code") == 0:
+				print("Data have been successfully sent.")
+			else:
+				print("Error occurred. Contact administrator for more help.")
+		except:
+			print("Upload failed. Contact administrator for more help.")
+
+
+	elif state == 3:
 		batt_list = response_object.get('bacteria')
 		dopt_input = open("dopt.txt", "w")
 		dopt_input.write(str(len(batt_list)) + '\n')
@@ -181,30 +153,30 @@ if __name__ == "__main__":
 		dopt_res = open("dopt_res.txt", "r")
 		res_point = dict()
 		mattern = 0
-		readtmp = dopt_res.readline()
-		for i in range(20):
+		readtmp = dopt_res.readline().strip()
+		for i in range(21):
 			if readtmp is None:
 				break
 			if i == 0:
-				readtmp = dopt_res.readline()
-				while readtmp != "2":
+				readtmp = dopt_res.readline().strip()
+				while readtmp != "1":
 					tmpset = readtmp.split()
-					res_point[tmpset[0]] = [0 for i in range(20)]
+					res_point[tmpset[0]] = [0 for i in range(21)]
 					res_point[tmpset[0]][0] = float(tmpset[1])
 					mattern += 1
-					readtmp = dopt_res.readline()
+					readtmp = dopt_res.readline().strip()
 			else:
 				for j in range(mattern):
-					readtmp = dopt_res.readline()
+					readtmp = dopt_res.readline().strip()
 					tmpset = readtmp.split()
 					res_point[tmpset[0]][i] = float(tmpset[1])
-				readtmp = dopt_res.readline()
+				readtmp = dopt_res.readline().strip()
 		dopt_res.close()
 
-		headers = {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Accept": "*/*"}
+		headers = {"Content-type": "application/json; charset=UTF-8", "Accept": "*/*"}
 		sent_res = {"code":0, "data": res_point}
-		sent_data = urllib.urlencode(sent_res)
-		connector.request(method = "POST", url, sent_data, headers)
+		sent_data = json.dumps(sent_res)
+		connector.request("POST", url, sent_data, headers)
 		sent_response = json.loads(connector.getresponse().read())
 		if sent_response.get("code") == 0:
 			print("Data successfully sent.")

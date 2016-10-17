@@ -36,7 +36,7 @@ int main(){
 		double stren;
 		fdata >> seq;
 		fdata >> stren;
-		v.push_bach(promoter(seq, stren));
+		v.push_back(promoter(seq, stren));
 	}
 	fdata.close();
 
@@ -44,7 +44,7 @@ int main(){
 	std::ofstream fout("promoter_res.txt");
 	double strength;
 	while (fin >> strength){
-		promoter result = search_strength(target, 0, v.size());
+		promoter result = search_strength(strength, 0, v.size());
 		fout << result.sequence << endl << result.strength << endl;
 	}
 	fin.close();
