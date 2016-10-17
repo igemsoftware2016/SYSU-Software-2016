@@ -29,6 +29,12 @@ It provides concise and convenient user interface, where you can customize your 
 ### Back end
 - flask - http://flask.pocoo.org/
 - wkhtmltopdf - http://wkhtmltopdf.org
+- flask sqlalchemy - http://flask-sqlalchemy.pocoo.org/2.1/
+- xlrd
+- pytz
+- pdfkit
+- uwsgi
+- nginx
 
 ## Installation
 ### Normal
@@ -38,7 +44,64 @@ For general users, they can visit our website (http://craft.sysusoftware.info/sq
 ### Advanced
 #### Website Installation
 **UNIX-Like**
-todo
+
+Web server software(such as Nginx or Apache) and UWSGI are required.
+
+First of all, fetch package for the target machine and extract all the files.
+```
+wget ......
+tar -xvsf xxxxxx.tar.gz
+```
+
+Run the command below to install all packages that our web application depended. Root permission is required.
+```
+cd xxxxxx
+pip install -r requirement.txt
+```
+
+However, package "wkhtmltopdf" have extra steps to finish the installation. Follow the commands below to complete it (Take CentOS for example, root permission is required):
+```
+yum install wkhtmltopdf
+yum install xorg-x11-server-Xvfb
+echo -e '#!/bin/bash\nxvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*' > /usr/bin/wkhtmltopdf.sh
+chmod a+x /usr/bin/wkhtmltopdf.sh
+ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf
+```
+For Debian/Ubuntu, replace 'yum' by 'apt-get'.
+
+Configure of web server software and UWSGI
+Add a .ini file for UWSGI at the directory you extract all the program's files with configuration below:
+```
+[uwsgi]
+    socket = 127.0.0.1:[Your port]
+    processes = 2
+    threads = 2
+    master = true
+    plugins = python
+    pythonpath = [The directory you extract all files]
+    module = run
+    callable = app
+    memory-report = true
+    logto = /var/log/uwsgi/CRAFT.log
+```
+Add a new configuration file for web server software. For example, add a .conf file at Nginx's configuration directory (`/etc/nginx/conf.d/`) with a new virtual server:
+```
+server {
+        listen 80;
+        server_name     [Your IP address or domain];
+        location / {
+                include uwsgi_params;
+                uwsgi_pass      127.0.0.1:[Your UWSGI's port];
+        }
+}
+```
+#Start the service
+
+Run the command to start CRAFT web service:
+```
+uwsgi -d /var/log/uwsgi/CRAFT.log --ini ./uwsgi_config.ini
+```
+Visit your [Your IP address or domain]
 **Windows**
 1. Download and install [Python 2.7](https://www.python.org/downloads/) and [wkhtmltopdf for windows](http://wkhtmltopdf.org/downloads.html).
 2. Add the directory path of binary executable files (the default is `C:\Program Files\wkhtmltopdf\bin`) into system `Path` variable.
