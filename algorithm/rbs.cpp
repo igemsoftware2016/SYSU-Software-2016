@@ -16,6 +16,7 @@ Last update: 2016.10.8
 #include <map>
 #include <cmath>
 #include <cassert>
+#include <iomanip>
 #define MAX_INT 2000000000
 
 using std::cout;
@@ -87,6 +88,7 @@ void init_data(string bact_path, string enzy_name){
 	for (size_t i = 0; i < init_rRNA.length(); i++){
 		rRNA.push_back(reverse_map[init_rRNA[i]]);
 	}
+	bact_path += ".txt";
 	std::ifstream fin(bact_path.data());
 	string tmp;
 	int n;
@@ -128,10 +130,13 @@ void init_data(string bact_path, string enzy_name){
 	}
 	
 	fin.close();
+
+	cout << "Data initialized." << endl;
 }
 
 //Enumerate next RBS sequence
 bool next_series(int start){
+	// cout << "Goto next series" << endl;
 	int pointer = 0;
 	current[start]++;
 	int tmp[6];
@@ -147,10 +152,18 @@ bool next_series(int start){
 		tmp[pointer]++;
 	}
 
+	int runcnt = 0;
 	for (int i = 0; i < 6; i++){
-		cout << tmp[i];
+		// cout << tmp[i];
+		runcnt += pow(4, i) * tmp[i];
 	}
-	cout << endl;
+	if (tmp[0] == 0){
+		cout << '\r';
+		cout.precision(3);
+		cout << std::fixed;
+		cout << "Calculating all RBS's strength bound.. " << double(runcnt / pow(4, 6)) * 100.0 << '%';
+		cout.flush();
+	}
 
 	for (int i = 0; i < 3; i++){
 		current[start + i] = tmp[i];
@@ -197,9 +210,8 @@ inline double Ginterior(int i, int d, int e, int j)  {
 		(pair_map[current[d]] == 'U' && pair_map[current[e]] == 'G')  ) N++;
 	double Gaugu = 0.2 * N;
 	int m1, m2; m1 = m2 = 0;
-	int pre_i = i;
-	for (int i = pre_i + 1; i <= d - 1; i++) if (pair_map[current[i]] == 'U') m1++;
-	for (int i = e + 1; i <= j - 1; i++) if (pair_map[current[i]] == 'U') m2++;
+	for (int loop_i = i + 1; loop_i <= d - 1; ++loop_i) if (pair_map[current[loop_i]] == 'U') m1++;
+	for (int loop_i = e + 1; loop_i <= j - 1; ++loop_i) if (pair_map[current[loop_i]] == 'U') m2++;
 	double Guubonus = -0.7 * min(m1, m2);
 	return Goinitiation + Goasymm + Gaugu + Guubonus;
 }
@@ -348,10 +360,10 @@ double RBS(){
 	}
 	double Gstandby = - std::abs(allGmrna - Gmrna(0, minLoc - 5) - Gmrna(minLoc - 1, all_length - 1));
 
-	cout << "Gmrna: " <<  allGmrna << endl;
-	cout << "Gstart: " << Gstart << endl;
-	cout << "minGms: " << minGms << endl;
-	cout << "Gstandby: " << Gstandby << endl;
+	// cout << "Gmrna: " <<  allGmrna << endl;
+	// cout << "Gstart: " << Gstart << endl;
+	// cout << "minGms: " << minGms << endl;
+	// cout << "Gstandby: " << Gstandby << endl;
 	//if (-Gstandby > 6) return -MAX_INT - 1;
 	return allGmrna + Gstart + minGms + Gstandby;
 }
@@ -412,7 +424,7 @@ void calc_bound(){
 			current.pop_back();
 		}
 	}
-	cout << "calc fin" << endl; 
+	cout << endl << "Calculation finished." << endl; 
 	sort(all_solve.begin(), all_solve.end(), my_cmp);
 }
 
@@ -449,8 +461,9 @@ int main(int argc, char* argv[]){
 	if (argc < 2){
 		cout << "Usage: ./rbs [name_of_bacteria] [name_of_enzyme]" << endl;
 	}
+	// cout << argv[1] << endl << argv[2] << endl;
 	init_data(argv[1], argv[2]);
-	// init_data("aact1035194-hmpcyc.txt", "EC-2.7.7.77_0_pum_0");
+	// init_data("aact1035194-hmpcyc", "EC-2.7.7.77_0_pum_0");
 	calc_bound();
 	print_sample();
 
