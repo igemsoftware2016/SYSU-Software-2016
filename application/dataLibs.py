@@ -1046,32 +1046,31 @@ def protocol_pdf(design_id):
     # Insert DNA Sequence
     protocol_html += "<div><h2>DNA Sequences</h2></div>"
     protocol_html += '<div style="padding-left:50px"><p>All the vectors are constructed by standard biobricks and backbones.</p></div>'
+    det_dict = libs_dict_query_all(cur_design.enzyme_info.detected_dict)
     cur_data = cur_design.state2_data
-    enzyme_list = []
+
     for bact in libs_list_query(cur_data.bacteria):
         cur_bact = used_bacteria.query.filter_by(id = bact).first()
         if cur_bact is None:
             continue
-        for enzy in libs_list_query(cur_bact.enzyme):
-            enzyme_list.append(enzy)
-    det_dict = libs_dict_query_all(cur_design.enzyme_info.detected_dict)
-    plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
-    for plas in xrange(1, plasmid_count + 1):
-        cur_plas = plasmidDB.query.filter_by(id = plas).first()        
-        protocol_html += "<div><h3>" + cur_plas.name + '</h3></div><div style="padding-left:50px"><p style="word-break: break-all;">'
-        protocol_html += cur_plas.sequence
-        for enzy in enzyme_list:
-            cur_enzy = enzyme.query.filter_by(id = enzy).first()
-            if cur_enzy is None:
-                continue
-            cur_promo = promoter.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_promoter"))).first()
-            if cur_promo is None:
-                continue
-            cur_rbs = rbs.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_rbs"))).first()
-            if cur_rbs is None:
-                continue
-            protocol_html += cur_promo.sequence + cur_rbs.sequence + cur_enzy.sequence + terminalDB["sequence"]
-        protocol_html += "</p></div>"
+        enzyme_list = libs_list_query(cur_bact.enzyme)
+        plasmid_count = int(math.ceil(len(enzyme_list) / 3.0))
+        for plas in xrange(1, plasmid_count + 1):
+            cur_plas = plasmidDB.query.filter_by(id = plas).first()
+            protocol_html += "<div><h3>" + cur_bact.flora.name + ' - ' + cur_plas.name + '</h3></div><div style="padding-left:50px"><p style="word-break: break-all;">'
+            protocol_html += cur_plas.sequence
+            for enzy in enzyme_list:
+                cur_enzy = enzyme.query.filter_by(id = enzy).first()
+                if cur_enzy is None:
+                    continue
+                cur_promo = promoter.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_promoter"))).first()
+                if cur_promo is None:
+                    continue
+                cur_rbs = rbs.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_rbs"))).first()
+                if cur_rbs is None:
+                    continue
+                protocol_html += cur_promo.sequence + cur_rbs.sequence + cur_enzy.sequence + terminalDB["sequence"]
+            protocol_html += "</p></div>"
 
     protocol_html += '\
             </div>\
