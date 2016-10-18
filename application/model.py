@@ -276,7 +276,7 @@ class enzyme(db.Model):
 
 class enzyme_info(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    detected_dict = db.Column(db.String(1000))      # Every enzyme's detected promoter and RBS's dict (With dirty dict)
+    detected_dict = db.Column(db.String(1000))                  # Every enzyme's detected promoter and RBS's ID dict (With dirty dict)
     md5 = db.Column(db.String(60))
     state3_matter_plot = db.Column(db.String(1000))             # Diagram's 20 points for each Matters (With dirty dict)
     def insert_info(self, enzyme_id, detected_promoter, detected_rbs, mRNA_s, protein_s):

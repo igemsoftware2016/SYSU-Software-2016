@@ -395,12 +395,12 @@ def commit_state(state_id):
 
         elif state_id == 3:
             protocol_html = protocol_pdf(request.json['design_id'])
-            os.system('echo "%s" > ' % protocol_html + os.path.join(basedir, 'application') + '/tmp_protocol.html')
+            # os.system('echo "%s" > ' % protocol_html + os.path.join(basedir, 'application') + '/tmp_protocol.html')
             # print_pro = open('tmp_protocol.html', 'w')
             # print_pro.write(protocol_html)
             # print_pro.close()
             # print("wkhtmltopdf ./tmp_protocol.html " + os.path.join(basedir, 'application/static/pdf/%s.pdf' % cur_design.id))
-            os.system("python " + os.path.join(basedir, 'application') + "/protocol_pdf.py %s" % cur_design.id)
+            # os.system("python " + os.path.join(basedir, 'application') + "/protocol_pdf.py %s" % cur_design.id)
         
         if state_id == 5:
             return libs_errorMsg("No next step")
@@ -1001,6 +1001,10 @@ def protocol_pdf(design_id):
     #sudo apt-get install wkhtmltopdf
     filename = str(design_id) + ".pdf"
 
+    cur_design = design.query.filter_by(id = design_id).first()
+    if cur_design is None:
+        return ''
+
     protocol_html = '\
     <html>\
         <head>\
@@ -1011,28 +1015,59 @@ def protocol_pdf(design_id):
             <div>\
     '
 
-    protocol_html += "<div> <h1> Exp1 </h1> </div>"
-    exp1_part_name = ["Plasmid construction", "Transfomation", "Coculture", "Concentration measurement", "DNA Sequences"]
-    exp2_part_name = ["Plasmid construction", "Transfomation", "Fluorescence measurement", "DNA Sequences"]
+    protocol_html += "<div> <h1> Strength measurement </h1> </div>"
+    exp1_part_name = ["Plasmid construction", "Transfomation", "Fluorescence measurement"]
+    exp2_part_name = ["Plasmid construction", "Transfomation", "Coculture", "Concentration measurement"]
 
-    for i in xrange(1, 6):
-        file_object = open(os.path.join(basedir, 'application/static/protocol/'+ exp1_part_name[i - 1] + '/1.txt'))
+    protocol_html += '<div style="padding-left:50px"><p>Obey local laws and regulations. Strictly follow stanard experiment procedures.</p></div>'
+    for i in xrange(1, 4):
+        file_object = open(os.path.join(basedir, 'application/static/protocol/' + exp1_part_name[i - 1] + '/1.txt'))
         try:
-            all_the_text = file_object.read( )
+            all_the_text = file_object.read()
         finally:
             file_object.close( )
         protocol_html += "<div><h2>" + exp1_part_name[i - 1] + "</h2></div>"
         protocol_html += '<div style="padding-left:50px"><p>' + all_the_text + '</p></div>'
 
-    protocol_html += "<div> <h1> Exp2 </h1> </div>"
+    protocol_html += "<div> <h1> System construction and conformation </h1> </div>"
+    protocol_html += '<div style="padding-left:50px"><p>Obey local laws and regulations. Strictly follow stanard experiment procedures.</p></div>'
     for i in xrange(1, 5):
-        file_object = open(os.path.join(basedir, 'application/static/protocol/' + exp2_part_name[i - 1] + '/1.txt'))
+        file_object = open(os.path.join(basedir, 'application/static/protocol/'+ exp2_part_name[i - 1] + '/1.txt'))
         try:
-            all_the_text = file_object.read()
+            all_the_text = file_object.read( )
         finally:
             file_object.close( )
         protocol_html += "<div><h2>" + exp2_part_name[i - 1] + "</h2></div>"
         protocol_html += '<div style="padding-left:50px"><p>' + all_the_text + '</p></div>'
+    # Insert DNA Sequence
+    protocol_html += "<div><h2>DNA Sequences</h2></div>"
+    protocol_html += '<div style="padding-left:50px"><p>All the vectors are constructed by standard biobricks and backbones.</p></div>'
+    cur_data = cur_design.state2_data
+    enzyme_list = []
+    for bact in libs_list_query(cur_data.bacteria):
+        cur_bact = used_bacteria.query.filter_by(id = bact).first()
+        if cur_bact is None:
+            continue
+        for enzy in libs_list_query(cur_bact.enzyme):
+            enzyme_list.append(enzy)
+    det_dict = libs_dict_query_all(cur_design.enzyme_info.detected_dict)
+    plasmid_count = int(math.ceil(len(libs_list_query(cur_bact.enzyme)) / 3.0))
+    for plas in xrange(1, plasmid_count + 1):
+        cur_plas = plasmidDB.query.filter_by(id = plas).first()        
+        protocol_html += "<div><h3>" + cur_plas.name + '</h3></div><div style="padding-left:50px"><p style="word-break: break-all;">'
+        protocol_html += cur_plas.sequence
+        for enzy in enzyme_list:
+            cur_enzy = enzyme.query.filter_by(id = enzy).first()
+            if cur_enzy is None:
+                continue
+            cur_promo = promoter.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_promoter"))).first()
+            if cur_promo is None:
+                continue
+            cur_rbs = rbs.query.filter_by(id = int(det_dict.get(str(enzy)).get("detected_rbs"))).first()
+            if cur_rbs is None:
+                continue
+            protocol_html += cur_promo.sequence + cur_rbs.sequence + cur_enzy.sequence + terminalDB["sequence"]
+        protocol_html += "</p></div>"
 
     protocol_html += '\
             </div>\
@@ -1044,9 +1079,9 @@ def protocol_pdf(design_id):
     protocol_html = protocol_html.strip().replace('\n', "<br />")
     #protocol_html.replace('\r', "<br />")
 
-    # pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
+    pdfkit.from_string(protocol_html, os.path.join(basedir, 'application/static/pdf/' + filename))
 
     res = {}
     res["name"] = str(design_id) + ".pdf"
     #return libs_success(res)
-    return protocol_html
+    # return protocol_html
