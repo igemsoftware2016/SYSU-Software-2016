@@ -1,5 +1,5 @@
 #main-container {
-    margin-top: 54px;
+    margin-top: 68px;
     border-left: 2px solid black;
     border-right: 2px solid black;
     border-bottom: 2px solid black;
@@ -8,6 +8,8 @@
     min-height: 100%;
     background-color: rgba(255,255,255,1);
     position: relative;
+    padding-bottom: 30px;
+    margin-bottom: 54px;
 }
 
 #qa {
@@ -30,4 +32,8 @@ img {
 
 p {
     line-height: 2em;
+}
+
+.ui.item + .ui.item {
+    padding-top: 5px;
 }

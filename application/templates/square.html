@@ -7,14 +7,6 @@
 {% block container %}
 <div class="ui column grid centered">
   <div class="ui banner one column fluid centered">
-    <!-- <div class="ui column grid centered bottom">
-      <div class="ui five wide column center aligned fluid">
-        <a class="ui inverted grey basic button huge" href="/square">CRAFT Square</a>
-      </div>
-      <div class="ui five wide column center aligned fluid">
-        <a class="ui inverted grey basic button huge" href="/new_design">CRAFT Designer</a>
-      </div>
-    </div> -->
   </div>
 </div> <!-- top banner -->
 
@@ -30,7 +22,7 @@
               <h3 class="ui header">
                 <img src="/static/img/icon/{{info[design.id]['icon']}}.jpg" class="ui rounded image mini">&nbsp;
                 <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - <a href="/design/{{design.id}}" class="design-name">{{design.design_name}}</a>
-                [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
+                [{% if design.design_mode == "make" %}Synthesis{% elif design.design_mode == "resolve" %}Decomposition{% endif %}]
                 {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
                 {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
               </h3>

@@ -367,6 +367,15 @@ $(document).ready(function() {
           $("#marker-2").hide();
           $("#marker-3").hide();
           $("#plasmid-title").text(plas.name);
+          if(plas.name == "pSB1K3") {
+            $("#dynamic-part").find("textPath").text("KanR");
+          } else if(plas.name == "pSB1C3") {
+            $("#dynamic-part").find("textPath").text("CamR");
+          } else if(plas.name == "pSB1T3") {
+            $("#dynamic-part").find("textPath").text("TetR");
+          } else {
+            $("#dynamic-part").find("textPath").text("Essential part");
+          }
           $(plas.pathway).each(function(n, el) {
             $("#path-text-" + (n + 1)).find("textPath").text(el.name);
             $("#marker-" + (n + 1)).fadeIn();
