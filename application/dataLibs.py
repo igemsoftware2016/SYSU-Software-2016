@@ -220,7 +220,7 @@ def new_design():
 # Input: 
 #   _id: GET method's args, representing design's ID
 @app.route('/get_steps')
-@login_required
+# @login_required
 def get_steps():
     # test!
     # myPrint("----- _id:%s" % request.args.get('_id'))
@@ -905,15 +905,17 @@ def upload_file(design_id, state_id):
 
 # Usage: report invalid or suspected designs to website's administrator
 @app.route('/report', methods=['POST'])
-def report():
+@login_required
+def router_report():
     # save report
-    r = report(request.json.get('design_id'), request.json.get('reason'))
+    r = report(int(request.json.get('design_id')), request.json.get('reason'))
     r.save()
     return libs_success()
 
 
 # Usage: set user's own design to "shared" status
 @app.route('/set_design_shared', methods=['POST'])
+@login_required
 def setDesignShared():
     d = design.query.filter_by(id = request.json.get("_id")).first_or_404()
     if not d or request.json.get("shared") is None:
@@ -927,6 +929,7 @@ def setDesignShared():
 
 # Usage: set user's own design to "need someone's help" status
 @app.route('/set_design_need_help', methods=['POST'])
+@login_required
 def setDesignNeedHelp():
     d = design.query.filter_by(id = request.json.get("_id"))
     if not d or not request.json.get("shared"):
