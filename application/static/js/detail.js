@@ -296,27 +296,7 @@ $(document).ready(function() {
 
   if ($("#design-file-5").text() === "False") {
     $(".upload-5").remove();
-        var cur_step = 1;
-        $.ajax({
-            url:"/get_steps",
-            type:"GET",
-            dataType: "json",
-            contentType: 'application/json; charset=utf-8',
-            cache: false,
-            data: {_id: $("#design-id").text()},
-            success: function (r) {
-                if (r.code) {
-                    swal({
-                        title: "Ooo",
-                        text: r.message,
-                        type: "error",
-                        confirmButtonText: "Okay"
-                    });
-                    return false;
-                }
-                cur_step = r.ret;
-            }
-        });
+        var cur_step = parseInt($("#design-state").text());
 
         if (cur_step >= 5)
         $.ajax({
