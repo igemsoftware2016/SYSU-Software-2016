@@ -190,7 +190,9 @@ $(document).ready(function() {
 
     if ($('#design-file-5').text() === "True") {
         $('.ui.dimmer.upload').dimmer('show');
+        $('#dimmer-content').html('<a href="/static/upload/design-' + $("#design-id").text() +'-state-5.xls"> design-' + $("#design-id").text() +'-state-5.xls</a>');
         console.log("A");
+        isUpload = true;
     } else {
         $.ajax({
             url: "/get_state_5_saved",
@@ -257,7 +259,7 @@ $(document).ready(function() {
         filters : {
             max_file_size : '100mb',
             mime_types: [
-                {title : "excel files", extensions : "xls,xlsx"}
+                {title : "excel files", extensions : "xls"}
             ]
         },
 
@@ -339,6 +341,17 @@ $(document).ready(function() {
                     text: err.message,
                     type: "error",
                     confirmButtonText: "Okay"
+                });
+            },
+            
+            UploadComplete: function(up, files) {
+                swal({
+                    title: "Done",
+                    text: "File is uploaded.",
+                    type: "success",
+                    confirmButtonText: "Okay"
+                }).then(function() {
+                    window.location.href='/design/' + $('#design-id').text();
                 });
             }
         }
