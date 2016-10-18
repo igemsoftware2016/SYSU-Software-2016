@@ -8,6 +8,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -22,6 +23,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+application/static/pdf/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -57,3 +60,7 @@ docs/_build/
 target/
 *.pyc
 *.db
+venv/pip-selfcheck.json
+venv/local/include
+algorithm/aact1035194-hmpcyc.txt
+algorithm/rbs
