@@ -905,9 +905,10 @@ def upload_file(design_id, state_id):
 
 # Usage: report invalid or suspected designs to website's administrator
 @app.route('/report', methods=['POST'])
-@login_required
 def router_report():
     # save report
+    if not session.get('user'):
+        return libs_errorMsg('Please login before reporting!')
     r = report(int(request.json.get('design_id')), request.json.get('reason'))
     r.save()
     return libs_success()
