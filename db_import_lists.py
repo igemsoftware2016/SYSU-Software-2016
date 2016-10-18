@@ -8,7 +8,8 @@ while True:
 	line = f.readline()
 	if line:
 		new_matter = matterDB(line[0:line.find('|')].strip(), line[line.find('|') + 1:].strip())
-		new_matter.save()
+		#new_matter.save()
+		db.session.add(new_matter)
 	else:
 		break
 f.close()
@@ -19,7 +20,8 @@ while True:
 	if line:
 		line2 = fr.readline()
 		new_flora = floraDB(line[2 : len(line) - 1], line2.strip())
-		new_flora.save()
+		#new_flora.save()
+		db.session.add(new_flora)
 	else:
 		break
 fr.close()
@@ -41,7 +43,8 @@ for filename in medium_list:
 				new_medium.concentration = libs_dict_insert(new_medium.concentration, new_matter.id, line[0 : line.find('\t')])
 		else:
 			break
-	new_medium.save()
+	#new_medium.save()
+	db.session.add(new_medium)
 	file.close()
 
 plasmid_list = ['pSB1C3.txt', 'pSB1K3.txt', 'pSB1T3.txt', 'pSB1AK3.txt', 'pSB1AT3.txt']
@@ -56,5 +59,8 @@ for filename in plasmid_list:
 		else:
 			break
 	new_plasmid = plasmidDB(filename[0 : filename.rfind('.')], sequence)
-	new_plasmid.save()
+	#new_plasmid.save()
+	db.session.add(new_plasmid)
 	file.close()
+	
+db.session.commit()
