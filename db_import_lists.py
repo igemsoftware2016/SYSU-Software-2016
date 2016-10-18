@@ -26,7 +26,7 @@ while True:
 		break
 fr.close()
 
-medium_list = ['Escherichia coli.txt', 'Bacillus megaterium.txt']
+medium_list = ['Glucose&Ammonium phosphate, monobasic.txt', 'sucrose&Ammonium phosphate, monobasic.txt']
 medium_path = os.path.join(nowdir, 'medium')
 for filename in medium_list:
 	file = open(os.path.join(medium_path, filename), 'r')
