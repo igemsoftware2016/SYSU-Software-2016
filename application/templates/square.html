@@ -5,6 +5,7 @@
 
 
 {% block container %}
+<span id="bg-img" style="display: none;">square_banner1.1.png</span>
 <div class="ui column grid centered">
   <div class="ui banner one column fluid centered">
   </div>
@@ -121,7 +122,7 @@
           {% for h in help %}
           <!-- one asking -->
           <div class="ui column fluid popup-bro">
-            <a href="/design/{{h.owner.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Solution search{% else %}Simulation{% endif %}!</a>
+            <a href="/design/{{h.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Solution search{% else %}Simulation{% endif %}!</a>
           </div>
           <div class="ui popup">
             <h4>{{ h.design_name }}</h4>

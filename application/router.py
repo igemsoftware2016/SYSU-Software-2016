@@ -152,7 +152,7 @@ def router_square():
     ds, info = getPublic(session.get('user'))
     helpList = getNeedHelp()
     num = getUserNum(session.get('user'))
-    designs = sorted(ds, key = lambda x: info[x.id]['like_num'], reverse = True)
+    designs = sorted(ds[::-1], key = lambda x: info[x.id]['like_num'], reverse = True)
     return render_template('square.html', title='Square', designs = designs, info = info, help = helpList, num=num)
 
 @app.route('/help')

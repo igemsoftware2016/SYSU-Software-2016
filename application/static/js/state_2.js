@@ -51,7 +51,7 @@ $(document).ready(function() {
     options: {
       title: {
         display: true,
-        text: 'Protein Expression'
+        text: ''
       },
       maintainAspectRatio: false,
       fullWidth: false,
@@ -63,7 +63,7 @@ $(document).ready(function() {
         yAxes: [{
           scaleLabel: {
             display: true,
-            labelString: 'Concentration (mol/L)'
+            labelString: 'Expression Level (mol/L)'
           }
         }],
         // xAxes: [{
@@ -225,7 +225,7 @@ $(document).ready(function() {
         min: 0.01,
         max: protein_upper,
         start: protein,
-        step: 1,
+        step: 0.01,
         onChange: function(val) {
           // console.log(val);
           $(".protein.num").text(val.toFixed(2));
