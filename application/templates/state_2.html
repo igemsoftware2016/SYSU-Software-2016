@@ -103,23 +103,31 @@
           {# <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel> #}
 
           <!-- draw the main markers and labels -->
-          <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
+          <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
             <markerlabel type="path" class="mdlabel white" text="path1" id="path-text-1"></markerlabel>
           </trackmarker>
-          <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
+          <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
             <markerlabel type="path" class="mdlabel white" text="path2" id="path-text-2"></markerlabel>
           </trackmarker>
-          <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
+          <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
             <markerlabel type="path" class="mdlabel white" text="path3" id="path-text-3"></markerlabel>
           </trackmarker>
-          <trackmarker start="270" end="340" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
-            <markerlabel type="path" class="mdlabel white" text="Essential part"></markerlabel>
+          <trackmarker start="260" end="310" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+            <markerlabel type="path" class="mdlabel white" text="rep(pMB1)"></markerlabel>
+          </trackmarker>
+          <trackmarker start="315" end="45" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+            <markerlabel type="path" class="mdlabel white" text="Essential part" id="dynamic-part"></markerlabel>
+          </trackmarker>
+
+          <!-- draw the region boundaries lines for each marker -->
+          <trackmarker start="265" markerstyle="stroke:rgba(60,60,60,0.9)" class="boundary" wadjust="20">
+              <markerlabel class="smlabel" text="Ori" vadjust="32"></markerlabel>
           </trackmarker>
 
           <!-- draw the marker regions -->
-          <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
-          <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
-          <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
+          <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
+          <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
+          <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
 
           <!-- draw the scales -->
           <trackscale interval="5" style='stroke:#999' direction="in" ticksize="3"></trackscale>

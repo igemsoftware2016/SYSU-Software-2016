@@ -28,7 +28,7 @@
               <h3 class="ui header">
                 <img src="/static/img/icon/{{design.owner.icon}}.jpg" class="ui rounded image mini">&nbsp;
                 <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
-                [{% if design.design_mode == "make" %}Products{% elif design.design_mode == "resolve" %}Substrates{% endif %}]
+                [{% if design.design_mode == "make" %}Synthesis{% elif design.design_mode == "resolve" %}Decomposition{% endif %}]
                 {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
                 {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
 
@@ -210,23 +210,31 @@
                       {# <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel> #}
 
                       <!-- draw the main markers and labels -->
-                      <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
+                      <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
                         <markerlabel type="path" class="mdlabel white" text="path1" id="path-text-1"></markerlabel>
                       </trackmarker>
-                      <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
+                      <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
                         <markerlabel type="path" class="mdlabel white" text="path2" id="path-text-2"></markerlabel>
                       </trackmarker>
-                      <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
+                      <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
                         <markerlabel type="path" class="mdlabel white" text="path3" id="path-text-3"></markerlabel>
                       </trackmarker>
-                      <trackmarker start="270" end="340" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
-                        <markerlabel type="path" class="mdlabel white" text="Essential part"></markerlabel>
+                      <trackmarker start="260" end="310" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+                        <markerlabel type="path" class="mdlabel white" text="rep(pMB1)"></markerlabel>
+                      </trackmarker>
+                      <trackmarker start="315" end="45" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+                        <markerlabel type="path" class="mdlabel white" text="Essential part" id="dynamic-part"></markerlabel>
+                      </trackmarker>
+
+                      <!-- draw the region boundaries lines for each marker -->
+                      <trackmarker start="265" markerstyle="stroke:rgba(60,60,60,0.9)" class="boundary" wadjust="20">
+                        <markerlabel class="smlabel" text="Ori" vadjust="32"></markerlabel>
                       </trackmarker>
 
                       <!-- draw the marker regions -->
-                      <trackmarker start="0" end="70" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
-                      <trackmarker start="90" end="160" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
-                      <trackmarker start="180" end="250" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
+                      <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
+                      <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
+                      <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
 
                       <!-- draw the scales -->
                       <trackscale interval="5" style='stroke:#999' direction="in" ticksize="3"></trackscale>
@@ -461,97 +469,97 @@
         <div class="content step-5">
           <p class="transition hidden">
 
-  <span id="design-file-5" style="display: none;">{{ design.state5_upload_file }}</span>
-  <div class="ui grid upload-5">
-    <div class="ui row">
-      <div class="column fluid center aligned">
-        <h2 class="ui icon header">
-          <i class="file icon"></i>
-          <div class="content">
-            <a href="/static/upload/design-{{design.id}}-state-5.xls" target="_blank">Using file!</a>
-          </div>
-        </h2>
-      </div>
-    </div>
-  </div>
-
-  <div class="ui column grid state non-upload-5">
-    <div class="ui row make-row">
-      <div class="ui column fluid">
-        <table class="ui very basic table">
-          <thead> <tr>
-            <th class="six wide"> Compound </th>
-            <th class="five wide"> Time (Mins)</th>
-            <th class="five wide"> Concentrations (mol/L) </th>
-          </tr> </thead>
-          <tbody id="co-culture"> <tr class="compund">
-            <td class="center aligned">
-              <div class="ui search name fluid standard">
-                <div class="ui icon input fluid">
-                  <div class="state5_compund">Search matters...</div>
+            <span id="design-file-5" style="display: none;">{{ design.state5_upload_file }}</span>
+            <div class="ui grid upload-5">
+              <div class="ui row">
+                <div class="column fluid center aligned">
+                  <h2 class="ui icon header">
+                    <i class="file icon"></i>
+                    <div class="content">
+                      <a href="/static/upload/design-{{design.id}}-state-5.xls" target="_blank">Using file!</a>
+                    </div>
+                  </h2>
                 </div>
-                <div class="results"></div>
               </div>
-            </td>
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_compund">Search matters...</div>
-              </div>
-            </td>
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_compund">Search matters...</div>
-              </div>
-            </td>
-          </tr> </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="ui row make-row">
-      <div class="ui column eight wide">
-        <table class="ui very basic table">
-          <thead> <tr>
-            <th class="seven wide"> Time (Mins)</th>
-            <th class="seven wide"> ABS600 </th>
-          </tr> </thead>
-          <tbody id="abs600"> <tr class="abs600">
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_abs600"> ahahahah </div>
-              </div>
-            </td>
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_abs600"> ahahahah </div>
-              </div>
-            </td>
-          </tr> </tbody>
-        </table>
-      </div>
+            </div>
 
-      <div class="ui column eight wide">
-        <table class="ui very basic table">
-          <thead> <tr>
-            <th class="seven wide"> Time (Mins)</th>
-            <th class="seven wide"> Fluorescence Intensity </th>
-          </tr> </thead>
-          <tbody id="fl"> <tr class="fl">
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_fl"> ahahahah </div>
+            <div class="ui column grid state non-upload-5">
+              <div class="ui row make-row">
+                <div class="ui column fluid">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="six wide"> Compound </th>
+                      <th class="five wide"> Time (Mins)</th>
+                      <th class="five wide"> Concentrations (mol/L) </th>
+                    </tr> </thead>
+                    <tbody id="co-culture"> <tr class="compund">
+                      <td class="center aligned">
+                        <div class="ui search name fluid standard">
+                          <div class="ui icon input fluid">
+                            <div class="state5_compund">Search matters...</div>
+                          </div>
+                          <div class="results"></div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_compund">Search matters...</div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_compund">Search matters...</div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
               </div>
-            </td>
-            <td class="center aligned">
-              <div class="ui right labeled input fluid">
-                <div class="state5_fl"> ahahahah </div>
-              </div>
-            </td>
-          </tr> </tbody>
-        </table>
-      </div>
-    </div>
+              <div class="ui row make-row">
+                <div class="ui column eight wide">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="seven wide"> Time (Mins)</th>
+                      <th class="seven wide"> ABS600 </th>
+                    </tr> </thead>
+                    <tbody id="abs600"> <tr class="abs600">
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_abs600"> ahahahah </div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_abs600"> ahahahah </div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
 
-  </div>
+                <div class="ui column eight wide">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="seven wide"> Time (Mins)</th>
+                      <th class="seven wide"> Fluorescence Intensity </th>
+                    </tr> </thead>
+                    <tbody id="fl"> <tr class="fl">
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_fl"> ahahahah </div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_fl"> ahahahah </div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
 
 
           </p>

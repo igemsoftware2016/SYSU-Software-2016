@@ -116,7 +116,7 @@ $(document).ready(function() {
     swal({
       title: 'Name and select mode',
       html: '<div class="ui input mini fluid focus"><input type="text" placeholder="Design Name" id="design-name-input"></div><br>' +
-        '<div class="ui buttons"><button class="ui button mode-btn make">Products</button><div class="or"></div><button class="ui button mode-btn resolve">Substrates</button></div>',
+        '<div class="ui buttons"><button class="ui button mode-btn make">Synthesis</button><div class="or"></div><button class="ui button mode-btn resolve">Decomposition</button></div>',
       preConfirm: function(result) {
         return new Promise(function(resolve, reject) {
           var name = $("#design-name-input").val();

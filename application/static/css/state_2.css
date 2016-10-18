@@ -38,6 +38,7 @@ body {
     overflow: hidden;
 }
 .mdlabel {font-size:12px}
+.smlabel {font-size:8px}
 .white {fill:#fff}
 g {cursor: default;}
 #marker-1:hover {
