@@ -44,7 +44,7 @@ for filename in medium_list:
 	new_medium.save()
 	file.close()
 
-plasmid_list = ['pSB1C3.txt', 'pSB1K3.txt', 'pSB1AK3.txt', 'pSB1AT3.txt', 'pSB1T3.txt']
+plasmid_list = ['pSB1C3.txt', 'pSB1K3.txt', 'pSB1T3.txt', 'pSB1AK3.txt', 'pSB1AT3.txt']
 plasmid_path = os.path.join(nowdir, 'plasmid')
 for filename in plasmid_list:
 	file = open(os.path.join(plasmid_path, filename), 'r')
