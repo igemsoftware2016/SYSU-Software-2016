@@ -511,8 +511,8 @@ def get_state_saved(state_id):
                         if tmppro:
                             all_pro.append(tmppro)
                     total_pro.extend(all_pro)
-                    ret_enzy["strength"]["promoter_lower"] = all_pro[0].strength
-                    ret_enzy["strength"]["promoter_upper"] = all_pro[len(all_pro) - 1].strength
+                    ret_enzy["strength"]["promoter_lower"] = min(all_pro, key = lambda x: x.strength).strength
+                    ret_enzy["strength"]["promoter_upper"] = max(all_pro, key = lambda x: x.strength).strength
                     ret_enzy["strength"]["promoter"] = []
                     for pro in all_pro:
                         ret_enzy["strength"]["promoter"].append({"s": pro.strength, "info": pro.id})
@@ -522,8 +522,8 @@ def get_state_saved(state_id):
                         if tmprbs:
                             all_rbs.append(tmprbs)
                     total_rbs.extend(all_rbs)
-                    ret_enzy["strength"]["RBS_lower"] = all_rbs[0].strength
-                    ret_enzy["strength"]["RBS_upper"] = all_rbs[len(all_rbs) - 1].strength
+                    ret_enzy["strength"]["RBS_lower"] = min(all_rbs, key = lambda x: x.strength).strength
+                    ret_enzy["strength"]["RBS_upper"] = max(all_rbs, key = lambda x: x.strength).strength
                     ret_enzy["strength"]["RBS"] = []
                     for rbss in all_rbs:
                         ret_enzy["strength"]["RBS"].append({"s": rbss.strength, "info": rbss.id})
@@ -606,16 +606,16 @@ def process_local_calc(design_id):
                 origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
                 cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence").upper(), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
-                        cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
+                        cur_promo = promoter(pro.get("sequence").upper(), float(pro.get("strength")))
                         cur_promo.save()
                         tmpprolist = libs_list_insert(cur_enzy.promoter, cur_promo.id)
                         # print(tmpprolist)
                         if tmpprolist:
                             cur_enzy.promoter = tmpprolist
                     for rbss in enzy.get("rbs"):
-                        cur_rbs = rbs(rbss.get("sequence"), rbss.get("strength"))
+                        cur_rbs = rbs(rbss.get("sequence").upper(), rbss.get("strength"))
                         cur_rbs.save()
                         tmprbslist = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
                         if tmprbslist:
