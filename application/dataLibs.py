@@ -606,16 +606,16 @@ def process_local_calc(design_id):
                 origin_bact = floraDB.query.filter_by(code = bact.get("name")).first()
                 cur_bact = used_bacteria(origin_bact)
                 for enzy in bact.get("enzyme"):
-                    cur_enzy = enzyme(enzy.get("sequence"), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
+                    cur_enzy = enzyme(enzy.get("sequence").upper(), enzy.get("name"), floraDB.query.filter_by(code = enzy.get("from")).first())
                     for pro in enzy.get("promoter"):
-                        cur_promo = promoter(pro.get("sequence"), float(pro.get("strength")))
+                        cur_promo = promoter(pro.get("sequence").upper(), float(pro.get("strength")))
                         cur_promo.save()
                         tmpprolist = libs_list_insert(cur_enzy.promoter, cur_promo.id)
                         # print(tmpprolist)
                         if tmpprolist:
                             cur_enzy.promoter = tmpprolist
                     for rbss in enzy.get("rbs"):
-                        cur_rbs = rbs(rbss.get("sequence"), rbss.get("strength"))
+                        cur_rbs = rbs(rbss.get("sequence").upper(), rbss.get("strength"))
                         cur_rbs.save()
                         tmprbslist = libs_list_insert(cur_enzy.rbs, cur_rbs.id)
                         if tmprbslist:
