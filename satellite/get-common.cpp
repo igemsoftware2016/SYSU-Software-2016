@@ -176,7 +176,7 @@ void get_common() {
 	map < string, sub_data > :: iterator k;
 	//if (work_type == "synthetic") {
 		for (k = sub_map.begin(); k != sub_map.end(); ++ k) {
-			if ( k -> second.org.size() >= (9 * org_map.size() / 10) ) {
+			if ( k -> second.org.size() >= (6 * org_map.size() / 10) ) {
 				k -> second.circle_flag = true;
 				cout << k -> first << endl;
 			}
