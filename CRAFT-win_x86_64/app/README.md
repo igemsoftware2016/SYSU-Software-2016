@@ -1,114 +1,89 @@
-# CRAFT
-Community-based Retro-synthetic Analysis Functional plaTform
+Ladies and gentlemen, welcome to **CRAFT**!
 
-## Overview
-CRAFT is a integrated software for crafting synthetic biological system from design, validation to share. 
-It provides concise and convenient user interface, where you can customize your own synthetic biological system by using specific algorithms to search appropriate circuits and simulate and your validation experiment will be supported with our standard protocols. Your also can share your designs in user community, help others by searching solutions or sharing your computing resources, or upload your experiment data to improve the accuracy of our model.
+For normal usage, which means you just want to experience how you can create a design in several minutes and hanging in our "CRAFT Square", click here(http://craft.sysusoftware.info) and enjoy yourselves.
 
-## Dependences
-### Algorithm
-- gcc g++ gfortran
-- subversion
-- patch
-- wget
-- cmake
-- ipopt - https://projects.coin-or.org/Ipopt
-- openblas - http://www.openblas.net/
+If you want to deploy CRAFT on your machine, please follow these  guides below.😆
 
-### Front end
- - Semantic UI - http://semantic-ui.com/
- - jQuery - https://jquery.com/
- - Chart.js - http://www.chartjs.org/
- - Sweetalert2 - https://limonte.github.io/sweetalert2/
- - AngularPlasmid - https://github.com/vixis/angularplasmid
- - Plax - http://cameronmcefee.com/blog/plax
- - Backstretch - http://srobbin.com/jquery-plugins/backstretch/
- - jQuery-MD5 - https://github.com/placemarker/jQuery-MD5
- - Semantic-UI-range - https://github.com/tyleryasaka/semantic-ui-range
+NOTE: For all platforms, the server will listen on port 5000 when it is running.
 
-### Back end
-- flask - http://flask.pocoo.org/
-- wkhtmltopdf - http://wkhtmltopdf.org
-- flask sqlalchemy - http://flask-sqlalchemy.pocoo.org/2.1/
-- xlrd
-- pytz
-- pdfkit
-- uwsgi
-- nginx
+## CRAFT Website Deployment
 
-## Installation
-### Normal
-For general users, they can visit our website (http://craft.sysusoftware.info/square) and view the designs on the square, or register in our software and design their own synthetic biological system with CRAFT Designer.
+### Windows
+To deploy the server on your Windows machine, just make sure [Python 2.7](https://www.python.org/downloads/) and [wkhtmltopdf](http://wkhtmltopdf.org/downloads.html) are installed, and then download CRAFT-win-x86_64.zip, unzip it and double click setup.bat.
 
+If it prompts a error that "Can't find Python27.dll in system", type this following commands in cmd(make sure that python is available in cmd):
 
-### Advanced
-#### Website Installation
-**UNIX-Like**
-
-Web server software(such as Nginx or Apache) and UWSGI are required.
-
-First of all, fetch package for the target machine and extract all the files.
 ```
-wget ......
-tar -xvsf xxxxxx.tar.gz
+cd <your local path>\CRAFT-win_x86_64\app
+python -m pip install -r requirements.txt
+python run.py
 ```
 
-Run the command below to install all packages that our web application depended. Root permission is required.
-```
-cd xxxxxx
-pip install -r requirement.txt
+### Linux
+We provided 64 bit version, and test on two different linux system.
+
+#### CentOS 7 - x86_64
+
+To deploy the server, do the following steps:
+0. Install some package dependencies.(unzip wkhtmltopdf urw-fonts libXext openssl-devel)
+1. Download CRAFT-linux-x86_64.zip.
+2. Unzip it to anywhere you like to hold the server files.
+3. Get into the CRAFT-linux-x86_64 folder.
+4. Execute `setup.sh` to build environment.
+5. Run `run_server.sh`.
+
+You can execute this following commands in bash to finish the job:
+```bash
+sudo yum install unzip wkhtmltopdf urw-fonts libXext openssl-devel
+wget https://github.com/igemsoftware2016/SYSU-Software-2016/releases/download/1.0.0/CRAFT-linux-x86_64.zip
+unzip CRAFT-linux-x86_64.zip
+cd CRAFT-linux-x86_64
+sudo bash setup.sh
+bash run_server.sh
 ```
 
-However, package "wkhtmltopdf" have extra steps to finish the installation. Follow the commands below to complete it (Take CentOS for example, root permission is required):
-```
-yum install wkhtmltopdf
-yum install xorg-x11-server-Xvfb
-echo -e '#!/bin/bash\nxvfb-run -a --server-args="-screen 0, 1024x768x24" /usr/bin/wkhtmltopdf -q $*' > /usr/bin/wkhtmltopdf.sh
-chmod a+x /usr/bin/wkhtmltopdf.sh
-ln -s /usr/bin/wkhtmltopdf.sh /usr/local/bin/wkhtmltopdf
-```
-For Debian/Ubuntu, replace 'yum' by 'apt-get'.
 
-Configure of web server software and UWSGI
-Add a .ini file for UWSGI at the directory you extract all the program's files with configuration below:
-```
-[uwsgi]
-    socket = 127.0.0.1:[Your port]
-    processes = 2
-    threads = 2
-    master = true
-    plugins = python
-    pythonpath = [The directory you extract all files]
-    module = run
-    callable = app
-    memory-report = true
-    logto = /var/log/uwsgi/CRAFT.log
-```
-Add a new configuration file for web server software. For example, add a .conf file at Nginx's configuration directory (`/etc/nginx/conf.d/`) with a new virtual server:
-```
-server {
-        listen 80;
-        server_name     [Your IP address or domain];
-        location / {
-                include uwsgi_params;
-                uwsgi_pass      127.0.0.1:[Your UWSGI's port];
-        }
-}
+#### Ubuntu - x86_64
+
+To deploy the server on ubuntu, there are also a few steps:
+0. Install some package dependencies.(unzip wkhtmltopdf)
+1. Download CRAFT-linux-x86_64.zip.
+2. Unzip it to anywhere you like to hold the server files.
+3. Get into the CRAFT-linux-x86_64 folder.
+4. Execute `setup.sh` to build environment.
+5. Run `run_server.sh`.
+
+You can execute this following commands in bash to finish the job:
+```bash
+sudo apt-get install unzip wkhtmltopdf
+wget https://github.com/igemsoftware2016/SYSU-Software-2016/releases/download/1.0.0/CRAFT-linux-x86_64.zip
+unzip CRAFT-linux-x86_64.zip
+cd CRAFT-linux-x86_64
+sudo bash setup.sh
+bash run_server.sh
 ```
 
-Run the command to start CRAFT web service:
+
+### Mac
+For Mac users, execute these commands and follow the hints to finish the installation.
+
+```bash
+wget https://github.com/igemsoftware2016/SYSU-Software-2016/releases/download/1.0.0/CRAFT-mac-x86_64.zip
+unzip CRAFT-mac-x86_64.zip
+cd CRAFT-mac-x86_64
+sudo bash setup.sh
+bash run_server.sh
 ```
-uwsgi -d /var/log/uwsgi/CRAFT.log --ini ./uwsgi_config.ini
-```
-Visit your [Your IP address or domain]
-**Windows**
-1. Download and install [Python 2.7](https://www.python.org/downloads/) and [wkhtmltopdf for windows](http://wkhtmltopdf.org/downloads.html).
-2. Add the directory path of binary executable files (the default is `C:\Program Files\wkhtmltopdf\bin`) into system `Path` variable.
-3. Download the latest release package and unzip it to anywhere you like.
-4. Double click the setup.bat at the root of unziped floder.
-5. Point your browser to `http://127.0.0.1:5000`.
-#### Satellite Plugin Installation
-These instructions are for UNIX-like systems only. Not supports for windows yet. 
+
+Now please open your browser window and visit http://127.0.0.1:5000. And you will see the index page of CRAFT.
+
+You can log in with username: `test@test.com` and password: `test` or click `Guest Mode` to travel the whole CRAFT world!😆
+
+
+## Satellite Plugin Installation (optional)
+**Satellite** is a distributed plugin for CRAFT. It will pull calculation tasks from CRAFT -- our [online website](http://craft.sysusoftware.info).
+It won't interact with local server.
+These instructions are for Linux systems only. Windows and MacOS are not supported yet.
 
  **HARDWARE REQUIRED:**
 ```
@@ -171,8 +146,7 @@ Open terminal at the working directory.
 ```
 $make
 ```
-## Documentation
-Please visit our online help page：[CRAFT HELP](http://craft.sysusoftware.info/help)
-## About
-Developed by SYSU-Software team.
-Base on GPL-3.0 licence.
+
+***
+We will continue working hard on it to improve the user experience.
+Thank you!
