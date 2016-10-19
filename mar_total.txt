@@ -9800,7 +9800,7 @@ CPD-11561|40096
 L-Tryptophan|16828
 IPA imine|IPA imine
 IPA imine dimer|IPA imine dimer
-131914|violacein
+violacein|131914
 PVA|90906
 Protoviolaceinic acid|90897
 FadP|FadP
