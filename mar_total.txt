@@ -9797,3 +9797,17 @@ CPD66-17|9150
 CPD66-18|CPD66-18
 CPD-14394|74265
 CPD-11561|40096
+L-Tryptophan|16828
+IPA imine|IPA imine
+IPA imine dimer|IPA imine dimer
+131914|violacein
+PVA|90906
+Protoviolaceinic acid|90897
+FadP|FadP
+RhIR|RhIR
+GFP|GFP
+IP|IP
+RFP|RFP
+MF-alpha|MF-alpha
+TetR|TetR
+Lux|Lux
