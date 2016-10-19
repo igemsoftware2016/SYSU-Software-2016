@@ -108,7 +108,7 @@ Visit your [Your IP address or domain]
 4. Double click the setup.bat at the root of unziped floder.
 5. Point your browser to `http://127.0.0.1:5000`.
 #### Satellite Plugin Installation
-These instructions are for UNIX-like systems only. Not supports for windows yet. 
+These instructions are for Linux systems only. Not supports for windows yet. 
 
  **HARDWARE REQUIRED:**
 ```
@@ -120,6 +120,10 @@ CPU:		Intel I5-2500k / AMD Phenom II
 Memory:		6G memory or better
 Storage:	20G SSD
 ```
+
+**alert**
+
+'/where/to/install' is the absolute path where you unzip the release zip package.
 
 **Get All the Code**
 
