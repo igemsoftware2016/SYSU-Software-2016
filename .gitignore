@@ -2,3 +2,6 @@
 ./algorithm/get-common
 ./algorithm/res.txt
 
+venv/
+*.db
+*.pyc
