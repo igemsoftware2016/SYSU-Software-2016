@@ -113,11 +113,11 @@ These instructions are for UNIX-like systems only. Not supports for windows yet.
  **HARDWARE REQUIRED:**
 ```
 Hardisk:	20G
-Memory:		3G
+Memory:		4G
 CPU:		Intel I5-2500k / AMD Phenom II 
 
 ** Highly recommended **
-Memory:		4G memory or better
+Memory:		6G memory or better
 Storage:	20G SSD
 ```
 
