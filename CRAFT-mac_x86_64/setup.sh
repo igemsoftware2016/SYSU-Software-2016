@@ -27,5 +27,10 @@ python2 -m pip install pdfkit
 popd
 popd
 
-echo "Done"
-echo "python2 data/app/run.py to run server"
+echo "================================"
+echo "Please manually install ./data/wkhtmltox-0.12.3_osx-cocoa-x86-64.pkg to finish the installation."
+echo "If you faced permission problem while installing, please check"
+echo "    System Preferences > Security & Privacy > General > Allow apps downloaded from"
+echo "And switch it to \"Allow any way\"."
+echo " "
+echo "Please run runserver.sh to run the server :-)"
