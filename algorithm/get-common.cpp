@@ -637,8 +637,9 @@ void dfs_pattern_init(const set <string> & s, set < full_result > & ret) {
 
 void res_evalue(const set < full_result > & ret) {
 	auto best = ret.begin(); double best_score = 0.0;
+	int counter = 0;
 	for (auto i = ret.begin(); i != ret.end(); ++ i) {
-
+		cout << (100.0 * (counter ++) / ret.size()) << '%' << endl;
 		set <string> orgs = i -> org_list;
 		map < string, set <string> > ins = i -> insert_gene;
 

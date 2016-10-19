@@ -1,3 +1,4 @@
+#!/usr/bin
 import httplib
 import urllib
 import json
@@ -8,7 +9,7 @@ MAX_INT = 2000000000
 
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
-		print("\nUsage: \npython satellite.py [your designID]\n")
+		print("\nUsage: \npython run_calculate.py [your designID]\n")
 		os._exit(0)
 	designID = sys.argv[1]
 	connector = httplib.HTTPConnection("127.0.0.1:5000")
@@ -77,20 +78,30 @@ if __name__ == "__main__":
 				Ktarget = 6 * matters[j % len(matters)].get('con') / enzyme_Kcat
 
 				# Calculate rbs strength
+				# print(batt_from + ' ' + enzyme_name)
 				os.system('./rbs ' + batt_from + ' ' + enzyme_name);
 				rbs_res = open('RBS_output.txt', 'r')
 				pro_input = open('promoter_input.txt', 'w')
 				rbs_seq_set = []
 				pro_seq_set = []
 				enzy_seq = rbs_res.readline().strip()
+				weight = 1.0
 				for k in range(0, 5):
 					rbs_seq = rbs_res.readline().strip()
 					if rbs_seq is None:
 						break
 					rbs_strength = float(rbs_res.readline().strip())
+					if rbs_strength < 0:
+						rbs_strength *= -1
 					rbs_seq_set.append({"sequence": rbs_seq, "strength": rbs_strength})
 					# Dump promoter strength
-					pro_input.write(str(Ktarget / rbs_strength) + '\n')
+					pro_stren = 1 / rbs_strength
+					if pro_stren < 0:
+						pro_stren *= -1
+					if k == 0:
+						while pro_stren * weight < 0.05:
+							weight *= 10
+					pro_input.write(str(pro_stren * weight) + '\n')
 				rbs_res.close()
 				pro_input.close()
 
@@ -101,7 +112,7 @@ if __name__ == "__main__":
 					for k in range(0, 5):
 						pro_seq = promoter_res.readline().strip()
 						pro_strength = float(promoter_res.readline().strip())
-						pro_seq_set.append({"sequence": pro_seq, "strength": pro_strength})
+						pro_seq_set.insert(0, {"sequence": pro_seq, "strength": pro_strength})
 					promoter_res.close()
 				# enzy_seq = "this_is_testing_enzyme_sequence_ACGTACGT"
 				bact_set["enzyme"].append({"name": enzyme_name, "from": batt_from, "sequence": enzy_seq, "promoter": pro_seq_set, "rbs": rbs_seq_set})
@@ -154,15 +165,15 @@ if __name__ == "__main__":
 		res_point = dict()
 		mattern = 0
 		readtmp = dopt_res.readline().strip()
-		for i in range(21):
+		for i in range(1, 21):
 			if readtmp is None:
 				break
 			if i == 0:
 				readtmp = dopt_res.readline().strip()
-				while readtmp != "1":
+				while readtmp != "2":
 					tmpset = readtmp.split()
 					res_point[tmpset[0]] = [0 for i in range(21)]
-					res_point[tmpset[0]][0] = float(tmpset[1])
+					res_point[tmpset[0]][0] = float(tmpset[len(tmpset) - 1])
 					mattern += 1
 					readtmp = dopt_res.readline().strip()
 			else:

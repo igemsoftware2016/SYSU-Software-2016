@@ -57,7 +57,7 @@ int main() {
 
 	ofstream dopt_res("dopt_res.txt");
 
-	for (int time_slice = 1; time_slice <= 20; ++ time_slice) {
+	for (int time_slice = 0; time_slice <= 20; ++ time_slice) {
 		map <string, double> u;
 
 		for (auto k = u_tot.begin(); k != u_tot.end(); ++ k) {

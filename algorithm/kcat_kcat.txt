@@ -1,0 +1,445 @@
+1.1.1.1,alcohol dehydrogenase,75 min(-1),kcat,1.25
+1.1.1.2,alcohol dehydrogenase (NADP+),72 min-1,kcat,1.2
+1.1.1.21,aldehyde reductase,1.1-7.6 min(-1),kcat,0.126
+1.1.1.21,aldehyde reductase,1.4+/-0.16 min(-1),kcat,0.023
+1.1.1.21,aldehyde reductase,142 min(-1),kcat,2.36
+1.1.1.21,aldehyde reductase,142 min-1,kcat,2.36
+1.1.1.25,shikimate dehydrogenase,399 s(-1),kcat,399
+1.1.1.28,D-lactate dehydrogenase,31 s(-1),kcat,31
+1.1.1.37,malate dehydrogenase,20 s-1,kcat,20
+1.1.1.62,17beta-estradiol 17-dehydrogenase,0.19 s(-1),kcat,0.19
+1.1.3.15,(S)-2-hydroxy-acid oxidase,13 min(-1),kcat,0.21
+1.1.3.4,glucose oxidase,10(2) s-1,kcat,10
+1.10.2.2,quinol-cytochrome-c reductase,15.7 sec(-1),kcat,100
+1.10.3.1,catechol oxidase,15 +/- 1.5 min(-1),kcat,0.25
+1.10.3.1,catechol oxidase,´íÎó:509,kcat,NA
+1.10.3.2,laccase,0.30 min(-1),kcat,0.005
+1.10.3.2,laccase,155.4 min(-1),kcat,2.59
+1.10.3.2,laccase,2.1 x 10(3 s(-1),kcat,2100
+1.10.3.2,laccase,2.54 s(-1),kcat,2.54
+1.10.3.2,laccase,2468.0 s(-1),kcat,2468
+1.10.3.2,laccase,6.85 s(-1),kcat,6.85
+1.10.3.2,laccase,6.85 s(-1),kcat,6.85
+1.10.3.2,laccase,´íÎó:509,kcat,NA
+1.10.3.2,laccase,´íÎó:509,kcat,NA
+1.11.1.14,lignin peroxidase,2.8 s-1,kcat,2.8
+1.11.1.14,lignin peroxidase,41.7 s(-1),kcat,41.7
+1.11.1.15,peroxiredoxin,165 s-1,kcat,165
+1.11.1.15,peroxiredoxin,37.0 s(-1),kcat,37
+1.11.1.6,catalase,1-3 s(-1),kcat,2
+1.11.1.6,catalase,10(-3 min(-1),kcat,NA
+1.11.1.6,catalase,10(-6) s-1,kcat,NA
+1.11.1.6,catalase,1100 s(-1),kcat,1100
+1.11.1.6,catalase,2.6 x 10(4 s-1,kcat,26000
+1.11.1.6,catalase,3450 s-1,kcat,3450
+1.11.1.6,catalase,7010 s(-1),kcat,7010
+1.11.1.6,catalase,7200 s(-1),kcat,7200
+1.11.1.6,catalase,8850 s(-1),kcat,8850
+1.11.1.7,peroxidase,10(5) min(-1),kcat,1666
+1.11.1.7,peroxidase,500 s(-1),kcat,500
+1.11.1.7,peroxidase,500 s(-1),kcat,500
+1.11.1.7,peroxidase,s(-1),kcat,NA
+1.11.1.7,peroxidase,s(-1),kcat,NA
+1.11.1.8,iodide peroxidase,´íÎó:509,kcat,NA
+1.11.1.9,glutathione peroxidase,186 +/- 9 min-1,kcat,3.1
+1.11.2.1,unspecific peroxygenase,36 s(-1),kcat,36
+1.12.7.2,ferredoxin hydrogenase,10(7) s-1,kcat,1000000
+1.12.7.2,ferredoxin hydrogenase,2900 min(-1),kcat,48.3
+1.13.11.12,linoleate 13S-lipoxygenase,25 +/- 1 s-1,kcat,25
+1.13.11.33,arachidonate 15-lipoxygenase,s-1,kcat,NA
+1.14.13.115,angelicin synthase,112 +/- 14 min(-1),kcat,1.86
+1.14.13.30,leukotriene-B4 20-monooxygenase,11 min(-1),kcat,0.183
+1.14.13.67,quinine 3-monooxygenase,0.108 min(-1),kcat,0.0018
+1.14.13.68,4-hydroxyphenylacetaldehyde oxime monooxygenase,0.04 s(-1),kcat,0.04
+1.14.13.9,kynurenine 3-monooxygenase,5.0 s(-1),kcat,5
+1.14.14.1,unspecific monooxygenase,0.06 s-1,kcat,0.06
+1.14.14.1,unspecific monooxygenase,0.08 s(-1),kcat,0.08
+1.14.14.1,unspecific monooxygenase,0.12 min(-1),kcat,0.002
+1.14.14.1,unspecific monooxygenase,0.14 min(-1),kcat,0.0023
+1.14.14.1,unspecific monooxygenase,1.3 min-1,kcat,0.02166
+1.14.14.1,unspecific monooxygenase,1.5 min(-1),kcat,0.025
+1.14.14.1,unspecific monooxygenase,1.5 min-1,kcat,0.025
+1.14.14.1,unspecific monooxygenase,1000 s(-1),kcat,1000
+1.14.14.1,unspecific monooxygenase,16 min(-1),kcat,0.26
+1.14.14.1,unspecific monooxygenase,2.46 +/- 0.09 min-1,kcat,0.041
+1.14.14.1,unspecific monooxygenase,3.8 /min,kcat,0.66
+1.14.14.1,unspecific monooxygenase,3.8 min(-1),kcat,0.66
+1.14.14.1,unspecific monooxygenase,33.6 min(-1),kcat,0.56
+1.14.15.1,camphor 5-monooxygenase,30 min-1,kcat,0.5
+1.14.15.11,pentalenic acid synthase,15.01 +/- 0.6 min(-1),kcat,0.25
+1.14.15.6,cholesterol monooxygenase (side-chain-cleaving),2.8 min-1,kcat,0.046
+1.14.15.6,cholesterol monooxygenase (side-chain-cleaving),2.8 min-1,kcat,0.046
+1.14.15.6,cholesterol monooxygenase (side-chain-cleaving),min(-1),kcat,NA
+1.14.16.1,phenylalanine 4-monooxygenase,8 s-1,kcat,8
+1.14.16.4,tryptophan 5-monooxygenase,7.5 s-1,kcat,7.5
+1.16.3.1,ferroxidase,0.6 min-1,kcat,0.01
+1.17.3.2,xanthine oxidase,31.56 min-1,kcat,0.526
+1.18.1.2,ferredoxin-NADP+ reductase,30 min(-1),kcat,0.5
+1.18.1.2,ferredoxin-NADP+ reductase,5 s(-1),kcat,5
+1.18.1.2,ferredoxin-NADP+ reductase,´íÎó:509,kcat,NA
+1.2.1.16,succinate-semialdehyde dehydrogenase [NAD(P)+],30.0 s(-1),kcat,30
+1.2.1.16,succinate-semialdehyde dehydrogenase [NAD(P)+],4.77 s(-1),kcat,4.77
+1.3.1.6,fumarate reductase (NADH),9.0 s(-1),kcat,9
+1.3.1.6,fumarate reductase (NADH),min-1,kcat,NA
+1.3.99.3,acyl-CoA dehydrogenase,3.5 s-1,kcat,3.5
+1.4.3.1,D-aspartate oxidase,s(-1),kcat,NA
+1.4.3.21,primary-amine oxidase,0.690 +/- 0.010 s(-1),kcat,0.69
+1.4.3.4,monoamine oxidase,600 min(-1),kcat,10
+1.4.9.1,methylamine dehydrogenase (amicyanin),s(-1),kcat,NA
+1.5.3.2,N-methyl-L-amino-acid oxidase,4 min-1,kcat,0.046
+1.6.2.2,cytochrome-b5 reductase,1 s(-1),kcat,1
+1.6.2.4,NADPH-hemoprotein reductase,0.55 min-1,kcat,0.009
+1.6.2.4,NADPH-hemoprotein reductase,28 min(-1),kcat,0.467
+1.6.2.4,NADPH-hemoprotein reductase,50 min-1,kcat,0.8333
+1.6.5.2,NAD(P)H dehydrogenase (quinone),10(3) min(-1),kcat,16.667
+1.6.5.2,NAD(P)H dehydrogenase (quinone),70 s-1,kcat,70
+1.6.5.5,NADPH:quinone reductase,0.076 s(-1),kcat,0.076
+1.6.5.6,p-benzoquinone reductase (NADPH),1.7 s(-1),kcat,1.7
+1.6.99.3,NADH dehydrogenase,207 +/- 10 s-1,kcat,207
+1.7.2.1,nitrite reductase (NO-forming),0.17 /min,kcat,0.0034
+1.7.2.1,nitrite reductase (NO-forming),0.22 min-1,kcat,0.336
+1.7.2.1,nitrite reductase (NO-forming),115 /min,kcat,1.91
+1.7.99.4,nitrate reductase,1.4 s(-1),kcat,1.4
+1.8.1.12,trypanothione-disulfide reductase,´íÎó:509,kcat,NA
+1.8.1.7,glutathione-disulfide reductase,37 s(-1),kcat,37
+1.8.1.7,glutathione-disulfide reductase,69 +/- 2 s-1,kcat,69
+1.8.1.9,thioredoxin-disulfide reductase,105 min(-1),kcat,1.75
+1.8.1.9,thioredoxin-disulfide reductase,20 s-1,kcat,20
+1.8.1.9,thioredoxin-disulfide reductase,23 s(-1),kcat,23
+1.8.1.9,thioredoxin-disulfide reductase,2800 min-1,kcat,46.667
+1.8.1.9,thioredoxin-disulfide reductase,79 min(-1),kcat,1.31
+1.8.1.9,thioredoxin-disulfide reductase,<2 /min,kcat,0.003
+1.9.3.1,cytochrome-c oxidase,15 s-1,kcat,15
+1.9.3.1,cytochrome-c oxidase,18 s-1,kcat,18
+1.9.3.1,cytochrome-c oxidase,5 min-1,kcat,0.083
+1.9.3.1,cytochrome-c oxidase,77 s-1,kcat,77
+1.9.3.1,cytochrome-c oxidase,>100 s(-1),kcat,100
+1.9.3.1,cytochrome-c oxidase,s(-1),kcat,NA
+1.97.1.4,[formate-C-acetyltransferase]-activating enzyme,1 min-1,kcat,0.0166
+2.1.1.249,dimethylamine-corrinoid protein Co-methyltransferase,7.8 s(-1),kcat,7.8
+2.1.1.41,sterol 24-C-methyltransferase,0.6 min(-1),kcat,0.01
+2.1.1.43,histone-lysine N-methyltransferase,2.3 min(-1),kcat,0.0383
+2.1.2.1,glycine hydroxymethyltransferase,0.98 +/- 0.06 s(-1),kcat,0.98
+2.2.1.7,1-deoxy-D-xylulose-5-phosphate synthase,0.1 s(-1),kcat,0.1
+2.3.1.57,diamine N-acetyltransferase,5.2 s(-1),kcat,5.2
+2.3.2.12,peptidyltransferase,0.69 min(-1),kcat,0.0115
+2.3.2.12,peptidyltransferase,1.15 min(-1),kcat,0.019
+2.3.2.12,peptidyltransferase,2.0 min-1,kcat,0.033
+2.3.2.12,peptidyltransferase,24.8 min(-1),kcat,0.41
+2.3.2.13,protein-glutamine gamma-glutamyltransferase,10 (+/- 3) s-1,kcat,10
+2.3.3.1,citrate (Si)-synthase,0.54 s-1,kcat,0.54
+2.4.1.104,o-dihydroxycoumarin 7-O-glucosyltransferase,275 s-1,kcat,275
+2.4.1.17,glucuronosyltransferase,1.9 s(-1),kcat,1.9
+2.4.1.207,xyloglucan:xyloglucosyl transferase,3.2 x 10(-2 s(-1),kcat,0.032
+2.4.1.254,cyanidin-3-O-glucoside 2''-O-glucuronosyltransferase,34 s(-1),kcat,34
+2.4.1.7,sucrose phosphorylase,´íÎó:509,kcat,NA
+2.4.2.1,purine-nucleoside phosphorylase,1.6 s(-1),kcat,1.6
+2.4.2.1,purine-nucleoside phosphorylase,1.72 s-1,kcat,1.72
+2.4.2.1,purine-nucleoside phosphorylase,173 min(-1),kcat,2.88
+2.4.2.1,purine-nucleoside phosphorylase,41 s-1,kcat,41
+2.4.2.26,protein xylosyltransferase,2.18 min(-1),kcat,0.036
+2.4.2.36,NAD+-diphthamide ADP-ribosyltransferase,0.05 min-1,kcat,0.00083
+2.5.1.18,glutathione transferase,0.035 +/-0.003 s(-1),kcat,0.035
+2.5.1.18,glutathione transferase,0.22 s-1,kcat,0.22
+2.5.1.18,glutathione transferase,1.2 s-1,kcat,1.2
+2.5.1.18,glutathione transferase,1.5 +/- 0. 1 10 s(-1),kcat,1.5
+2.5.1.18,glutathione transferase,14.3 s(-1),kcat,14.3
+2.5.1.19,3-phosphoshikimate 1-carboxyvinyltransferase,28.3 s(-1),kcat,28.3
+2.5.1.2,thiamine pyridinylase,34 s-1,kcat,34
+2.5.1.58,protein farnesyltransferase,(3.1 +/- 0.3)x10(-3 s(-1),kcat,0.00031
+2.6.1.1,aspartate transaminase,105 s(-1),kcat,105
+2.6.1.19,4-aminobutyrate-2-oxoglutarate transaminase,9.6 s-1,kcat,9.6
+2.6.1.19,4-aminobutyrate-2-oxoglutarate transaminase,9.6 s-1,kcat,NA
+2.6.1.2,alanine transaminase,12.1 s(-1),kcat,12.1
+2.6.1.7,kynurenine-oxoglutarate transaminase,0.002 s-1,kcat,0.002
+2.7.1.1,hexokinase,142 +/- 3 min(-1),kcat,
+2.7.1.32,choline kinase,153 s-1,kcat,
+2.7.1.32,choline kinase,74 s(-1),kcat,
+2.7.1.6,galactokinase,164 s(-1),kcat,
+2.7.1.91,sphinganine kinase,3900 s-1,kcat,
+2.7.1.91,sphinganine kinase,402 /s,kcat,
+2.7.10.1,receptor protein-tyrosine kinase,0.37 s-1,kcat,
+2.7.10.1,receptor protein-tyrosine kinase,´íÎó:510,kcat,
+2.7.11.1,non-specific serine/threonine protein kinase,0.32 s-1,kcat,
+2.7.11.1,non-specific serine/threonine protein kinase,2.2 s-1,kcat,
+2.7.11.17,Ca2+/calmodulin-dependent protein kinase,0.02 s(-1),kcat,
+3.1.1.1,carboxylesterase,1.6 min(-1),kcat,
+3.1.1.1,carboxylesterase,39758 s(-1),kcat,
+3.1.1.14,chlorophyllase,566 min(-1),kcat,
+3.1.1.23,acylglycerol lipase,0.93 min(-1),kcat,
+3.1.1.3,triacylglycerol lipase,212 /min,kcat,
+3.1.1.7,acetylcholinesterase,5300 s-1,kcat,
+3.1.1.73,feruloyl esterase,3.8 s(-1),kcat,
+3.1.1.8,cholinesterase,670 min-1,kcat,
+3.1.1.84,cocaine esterase,7.8 s-1,kcat,
+3.1.11.1,exodeoxyribonuclease I,6.2 x 10(2 min-1,kcat,
+3.1.11.5,exodeoxyribonuclease V,s-1,kcat,
+3.1.11.5,exodeoxyribonuclease V,s-1,kcat,
+3.1.13.1,exoribonuclease II,min-1,kcat,
+3.1.2.6,hydroxyacylglutathione hydrolase,727 +/- 16 s-1,kcat,
+3.1.21.1,deoxyribonuclease I,0.03 s(-1),kcat,
+3.1.21.1,deoxyribonuclease I,0.14 min(-1),kcat,
+3.1.26.11,tRNase Z,7.4 s-1,kcat,
+3.1.27.1,ribonuclease T2,45 min-1,kcat,
+3.1.27.10,rRNA endonuclease,55 min-1,kcat,
+3.1.27.3,ribonuclease T1,0.91 s-1,kcat,
+3.1.3.1,alkaline phosphatase,1010 s-1,kcat,
+3.1.3.16,protein-serine/threonine phosphatase,2.4 +/- 0.2 sec-1,kcat,
+3.1.3.2,acid phosphatase,60 s(-1),kcat,
+3.1.3.26,4-phytase,1394 s(-1),kcat,
+3.1.3.26,4-phytase,37.8 s(-1),kcat,
+3.1.3.3,phosphoserine phosphatase,min(-1),kcat,
+3.1.3.43,[pyruvate dehydrogenase (acetyl-transferring)]-phosphatase,0.4 s(-1),kcat,
+3.1.3.48,protein-tyrosine-phosphatase,20-70 s-1,kcat,
+3.1.3.48,protein-tyrosine-phosphatase,3.2 s-1,kcat,
+3.1.3.96,pseudouridine 5'-phosphatase,1.6 s-1,kcat,
+3.1.31.1,micrococcal nuclease,95 s(-1),kcat,
+3.1.8.1,aryldialkylphosphatase,10(4) s(-1),kcat,
+3.2.1.14,chitinase,0.0048+/-0.0005 s(-1),kcat,
+3.2.1.14,chitinase,0.69 s(-1),kcat,
+3.2.1.17,lysozyme,0.11 s-1,kcat,
+3.2.1.179,gellan tetrasaccharide unsaturated glucuronyl hydrolase,112 s(-1),kcat,
+3.2.1.18,exo-alpha-sialidase,10(-4) s-1,kcat,
+3.2.1.21,beta-glucosidase,98 s(-1),kcat,
+3.2.1.23,beta-galactosidase,157 s(-1),kcat,
+3.2.1.24,alpha-mannosidase,1828 s(-1),kcat,
+3.2.1.26,beta-fructofuranosidase,24167 s(-1),kcat,
+3.2.1.36,hyaluronoglucuronidase,214 min-1,kcat,
+3.2.1.73,licheninase,0.03 s-1,kcat,
+3.2.2.22,rRNA N-glycosylase,0.4 min(-1),kcat,
+3.2.2.22,rRNA N-glycosylase,200 min(-1),kcat,
+3.2.2.5,NAD+ glycohydrolase,24 h-1,kcat,
+3.4.11.18,methionyl aminopeptidase,320-1556 min-1,kcat,
+3.4.11.2,membrane alanyl aminopeptidase,´íÎó:508,kcat,
+3.4.11.21,aspartyl aminopeptidase,s(-1),kcat,
+3.4.11.B7,arginyl aminopeptidase PH1704,2200 min(-1),kcat,
+3.4.14.5,dipeptidyl-peptidase IV,50.3 s-1,kcat,
+3.4.14.9,tripeptidyl-peptidase I,2.94 s(-1),kcat,
+3.4.15.1,peptidyl-dipeptidase A,15.0 versus 37.0 s-1,kcat,
+3.4.16.2,lysosomal Pro-Xaa carboxypeptidase,207 min-1,kcat,
+3.4.16.2,lysosomal Pro-Xaa carboxypeptidase,53 s-1,kcat,
+3.4.16.4,serine-type D-Ala-D-Ala carboxypeptidase,69 s(-1),kcat,
+3.4.16.5,carboxypeptidase C,1454 min-1,kcat,
+3.4.17.12,carboxypeptidase M,388 min-1,kcat,
+3.4.17.20,Carboxypeptidase U,0.61 s-1,kcat,
+3.4.17.3,lysine carboxypeptidase,1024 min-1,kcat,
+3.4.21.1,chymotrypsin,0.105+/-0.004 min(-1),kcat,
+3.4.21.1,chymotrypsin,2.4 s-1,kcat,
+3.4.21.20,cathepsin G,2.0 /s,kcat,
+3.4.21.20,cathepsin G,6.35 sec-1,kcat,
+3.4.21.22,coagulation factor IXa,163 min-1,kcat,
+3.4.21.22,coagulation factor IXa,2.4 s-1,kcat,
+3.4.21.27,coagulation factor XIa,170 s(-1),kcat,
+3.4.21.27,coagulation factor XIa,350 s-1,kcat,
+3.4.21.27,coagulation factor XIa,46 s-1,kcat,
+3.4.21.34,plasma kallikrein,200 s-1,kcat,
+3.4.21.37,leukocyte elastase,10(-3) s-1,kcat,
+3.4.21.38,coagulation factor XIIa,0.033 s-1,kcat,
+3.4.21.38,coagulation factor XIIa,0.041 min-1,kcat,
+3.4.21.38,coagulation factor XIIa,15 /s,kcat,
+3.4.21.4,trypsin,0.91 s-1,kcat,
+3.4.21.5,thrombin,0.01 s-1,kcat,
+3.4.21.5,thrombin,1.1 x 10(4 s(-1),kcat,
+3.4.21.5,thrombin,1.14 x 10(5 s(-1),kcat,
+3.4.21.5,thrombin,1.2 s-1,kcat,
+3.4.21.5,thrombin,1.5 s(-1),kcat,
+3.4.21.5,thrombin,10(4) s(-1),kcat,
+3.4.21.5,thrombin,10(7) sec(-1),kcat,
+3.4.21.5,thrombin,107 s-1,kcat,
+3.4.21.5,thrombin,120 s-1,kcat,
+3.4.21.5,thrombin,123 +/- 10 s-1,kcat,
+3.4.21.5,thrombin,130 s-1,kcat,
+3.4.21.5,thrombin,145 s-1,kcat,
+3.4.21.5,thrombin,16 s(-1),kcat,
+3.4.21.5,thrombin,17 s-1,kcat,
+3.4.21.5,thrombin,180 s-1,kcat,
+3.4.21.5,thrombin,3.3 x 10(7 s(-1),kcat,
+3.4.21.5,thrombin,340 s-1,kcat,
+3.4.21.5,thrombin,35.8 +/- 6.4 s-1,kcat,
+3.4.21.5,thrombin,50 s-1,kcat,
+3.4.21.5,thrombin,84.4 +/- 6.6 s-1,kcat,
+3.4.21.5,thrombin,97 +/- 8 s-1,kcat,
+3.4.21.53,Endopeptidase La,0.02 sec-1,kcat,
+3.4.21.53,Endopeptidase La,13.3 +/- 1.6 min-1,kcat,
+3.4.21.53,Endopeptidase La,2.0 min-1,kcat,
+3.4.21.53,Endopeptidase La,8.8 s(-1),kcat,
+3.4.21.53,Endopeptidase La,9.6 +/- 2.0 min(-1),kcat,
+3.4.21.6,coagulation factor Xa,1 min-1,kcat,
+3.4.21.6,coagulation factor Xa,11 s-1,kcat,
+3.4.21.6,coagulation factor Xa,12 s-1,kcat,
+3.4.21.6,coagulation factor Xa,1240 min-1,kcat,
+3.4.21.6,coagulation factor Xa,14 s-1,kcat,
+3.4.21.6,coagulation factor Xa,149 min-1,kcat,
+3.4.21.6,coagulation factor Xa,150 min(-1),kcat,
+3.4.21.6,coagulation factor Xa,2.6 min-1,kcat,
+3.4.21.6,coagulation factor Xa,2391 min-1,kcat,
+3.4.21.6,coagulation factor Xa,37 s-1,kcat,
+3.4.21.6,coagulation factor Xa,6-7 s-1,kcat,
+3.4.21.68,t-Plasminogen activator,0.0078 s-1,kcat,
+3.4.21.7,plasmin,0.0005 s-1,kcat,
+3.4.21.7,plasmin,0.0022 s-1,kcat,
+3.4.21.7,plasmin,0.0028 s-1,kcat,
+3.4.21.7,plasmin,0.008 s-1,kcat,
+3.4.21.7,plasmin,0.01 s-1,kcat,
+3.4.21.7,plasmin,0.017 s-1,kcat,
+3.4.21.7,plasmin,0.02 s-1,kcat,
+3.4.21.7,plasmin,0.02 sec-1,kcat,
+3.4.21.7,plasmin,0.05 s-1,kcat,
+3.4.21.7,plasmin,0.1 s-1,kcat,
+3.4.21.7,plasmin,0.36 s-1,kcat,
+3.4.21.7,plasmin,0.479 s-1,kcat,
+3.4.21.7,plasmin,0.82 /sec,kcat,
+3.4.21.7,plasmin,0.82 s-1,kcat,
+3.4.21.7,plasmin,0.93 /sec,kcat,
+3.4.21.7,plasmin,0.96 s(-1),kcat,
+3.4.21.7,plasmin,1.36 min-1,kcat,
+3.4.21.7,plasmin,11.0 +/- 1.0 s-1,kcat,
+3.4.21.7,plasmin,2.0 min-1,kcat,
+3.4.21.7,plasmin,22.7 s-1,kcat,
+3.4.21.7,plasmin,27.9 +/- 0.3 s-1,kcat,
+3.4.21.7,plasmin,28 +/- 2 min(-1),kcat,
+3.4.21.7,plasmin,3.58 sec-1,kcat,
+3.4.21.7,plasmin,38 min-1,kcat,
+3.4.21.7,plasmin,5 s-1,kcat,
+3.4.21.73,u-Plasminogen activator,3.4 min-1,kcat,
+3.4.21.73,u-Plasminogen activator,5.60 min-1,kcat,
+3.4.21.79,Granzyme B,12 s(-1),kcat,
+3.4.21.89,Signal peptidase I,0.73 s-1,kcat,
+3.4.21.9,enteropeptidase,0.1 s-1,kcat,
+3.4.21.9,enteropeptidase,133 s(-1),kcat,
+3.4.21.9,enteropeptidase,25 sec(-1),kcat,
+3.4.21.9,enteropeptidase,92 s(-1),kcat,
+3.4.22.1,cathepsin B,75 s(-1),kcat,
+3.4.22.2,papain,10(-4 s(-1),kcat,
+3.4.22.2,papain,19.51 s(-1),kcat,
+3.4.22.2,papain,26 s-1,kcat,
+3.4.22.2,papain,34 s-1,kcat,
+3.4.22.2,papain,>700 s(-1),kcat,
+3.4.22.39,adenain,1.79 s-1,kcat,
+3.4.22.56,caspase-3,0.55+/-0.01 s(-1),kcat,
+3.4.22.56,caspase-3,1.02 +/- 0.06 s(-1),kcat,
+3.4.22.56,caspase-3,1.02 +/- 0.06 s(-1),kcat,
+3.4.22.66,calicivirin,0.65 min-1,kcat,
+3.4.23.1,pepsin A,288 (+/- 40) s-1,kcat,
+3.4.23.15,renin,0.15 /s,kcat,
+3.4.23.15,renin,0.22 s-1,kcat,
+3.4.23.15,renin,10.0 s-1,kcat,
+3.4.23.15,renin,2.3 s-1,kcat,
+3.4.23.40,Phytepsin,0.42-4.2 s(-1),kcat,
+3.4.23.45,memapsin 1,10(4) sec(-1),kcat,
+3.4.23.45,memapsin 1,9.3 min(-1),kcat,
+3.4.23.5,cathepsin D,1.4 x 10(-3 s-1,kcat,
+3.4.23.B4,Feline immunodeficiency virus protease,0.29 +/- 0.02 s-1,kcat,
+3.4.24.11,neprilysin,10(2 s(-1),kcat,
+3.4.24.11,neprilysin,127 min-1,kcat,
+3.4.24.11,neprilysin,#NAME?,kcat,
+3.4.24.16,neurolysin,14.03 s(-1),kcat,
+3.4.24.17,stromelysin 1,4.1 x 10(-4 s(-1),kcat,
+3.4.24.23,matrilysin,5.0 s-1,kcat,
+3.4.24.27,thermolysin,7 min-1,kcat,
+3.4.24.28,bacillolysin,0.70 +/- 0.09 s(-1),kcat,
+3.4.24.67,choriolysin H,0.67 min-1,kcat,
+3.4.24.71,endothelin-converting enzyme 1,5.82 +/- 0.21 min-1,kcat,
+3.4.24.87,ADAMTS13 endopeptidase,0.14 s(-1),kcat,
+3.4.24.87,ADAMTS13 endopeptidase,8.70 x 10(4 s(-1),kcat,
+3.4.24.B9,ADAM9 endopeptidase,10(-2) min(-1),kcat,
+3.4.25.1,proteasome endopeptidase complex,-0.05 s(-1),kcat,
+3.5.1.11,penicillin amidase,0.8 s-1,kcat,
+3.5.1.11,penicillin amidase,54 s(-1),kcat,
+3.5.1.13,aryl-acylamidase,195 min(-1),kcat,
+3.5.1.4,amidase,166 sec-1,kcat,
+3.5.1.4,amidase,4.92 s(-1),kcat,
+3.5.1.88,peptide deformylase,38 +/- 2 s(-1),kcat,
+3.5.1.98,histone deacetylase,0.1 s(-1),kcat,
+3.5.2.3,dihydroorotase,0.06 s-1,kcat,
+3.5.2.3,dihydroorotase,8 s(-1),kcat,
+3.5.2.6,beta-lactamase,0.015 s(-1),kcat,
+3.5.2.6,beta-lactamase,0.2 s(-1),kcat,
+3.5.2.6,beta-lactamase,0.2 s(-1),kcat,
+3.5.2.6,beta-lactamase,0.5 s-1,kcat,
+3.5.2.6,beta-lactamase,10(-4) s-1,kcat,
+3.5.2.6,beta-lactamase,113 versus 415 s-1,kcat,
+3.5.2.6,beta-lactamase,202 s-1,kcat,
+3.5.2.6,beta-lactamase,234 s-1,kcat,
+3.5.2.6,beta-lactamase,s(-1),kcat,
+3.5.4.11,pterin deaminase,s(-1),kcat,
+3.5.5.1,nitrilase,27.0 s(-1),kcat,
+3.6.1.13,ADP-ribose diphosphatase,23 s(-1),kcat,
+3.6.1.15,nucleoside-triphosphate phosphatase,´íÎó:508,kcat,
+3.6.1.3,adenosinetriphosphatase,0.051 s(-1),kcat,
+3.6.1.3,adenosinetriphosphatase,0.08 s(-1),kcat,
+3.6.1.3,adenosinetriphosphatase,0.1 s-1,kcat,
+3.6.1.3,adenosinetriphosphatase,1.7 x 10(-3 s(-1),kcat,
+3.6.1.3,adenosinetriphosphatase,127 min-1,kcat,
+3.6.1.3,adenosinetriphosphatase,3 min-1,kcat,
+3.6.1.3,adenosinetriphosphatase,415 s(-1),kcat,
+3.6.1.3,adenosinetriphosphatase,6.7 min(-1),kcat,
+3.6.1.3,adenosinetriphosphatase,7.9 s-1,kcat,
+3.6.1.3,adenosinetriphosphatase,80 s-1,kcat,
+3.6.3.51,mitochondrial protein-transporting ATPase,100 min-1,kcat,
+3.6.4.1,myosin ATPase,0.03 s(-1),kcat,
+3.6.4.1,myosin ATPase,0.03 s(-1),kcat,
+3.6.4.1,myosin ATPase,9.3 s-1,kcat,
+3.6.4.10,non-chaperonin molecular chaperone ATPase,0.24 min(-1),kcat,
+3.6.4.13,RNA helicase,s-1,kcat,
+3.6.4.9,chaperonin ATPase,0.13 s-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,0.05 /min,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,0.085 s-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,0.17 min-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,0.8 min-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,2 s-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,3-5 min-1,kcat,
+3.6.5.1,heterotrimeric G-protein GTPase,4.3 +/- 0.2 min-1,kcat,
+3.6.5.2,small monomeric GTPase,0.13 min-1,kcat,
+4.1.1.11,aspartate 1-decarboxylase,0.57 s-1,kcat,
+4.1.1.20,Diaminopimelate decarboxylase,55 s(-1),kcat,
+4.1.1.3,Oxaloacetate decarboxylase,250 s(-1),kcat,
+4.1.1.39,Ribulose-bisphosphate carboxylase,0.5 s(-1),kcat,
+4.1.1.82,phosphonopyruvate decarboxylase,0.05 s-1,kcat,
+4.1.1.82,phosphonopyruvate decarboxylase,0.3 s-1,kcat,
+4.1.2.13,fructose-bisphosphate aldolase,95 s-1,kcat,
+4.1.99.1,tryptophanase,1.37+/-0.06 s(-1),kcat,
+4.1.99.3,deoxyribodipyrimidine photo-lyase,3.4 min-1,kcat,
+4.2.1.1,carbonate dehydratase,1.2 x 104 s-1,kcat,
+4.2.1.1,carbonate dehydratase,10(3) s(-1),kcat,
+4.2.1.1,carbonate dehydratase,10(4) s-1,kcat,
+4.2.1.1,carbonate dehydratase,10(5) s(-1),kcat,
+4.2.1.1,carbonate dehydratase,10(6 s(-1),kcat,
+4.2.1.1,carbonate dehydratase,10(6) s(-1),kcat,
+4.2.1.1,carbonate dehydratase,130000 s-1,kcat,
+4.2.1.1,carbonate dehydratase,6.4 x 10(5 s(-1),kcat,
+4.2.1.1,carbonate dehydratase,6.4x10(5 s(-1),kcat,
+4.2.1.1,carbonate dehydratase,9.4 x 10(5 s(-1),kcat,
+4.2.1.1,carbonate dehydratase,´íÎó:509,kcat,
+4.2.1.18,methylglutaconyl-CoA hydratase,s(-1),kcat,
+4.2.1.42,galactarate dehydratase,3.5 s-1,kcat,
+4.2.2.19,chondroitin B lyase,190 s(-1),kcat,
+4.2.3.118,2-methylisoborneol synthase,0.83 s(-1),kcat,
+4.2.3.143,kunzeaol synthase,0.03 s-1,kcat,
+4.2.3.22,germacradienol synthase,´íÎó:509,kcat,
+4.2.3.4,3-dehydroquinate synthase,19 s-1,kcat,
+4.2.3.67,cis-muuroladiene synthase,0.18 s(-1),kcat,
+4.2.3.9,aristolochene synthase,0.015 s(-1),kcat,
+4.2.99.21,isochorismate lyase,min(-1),kcat,
+4.3.3.7,4-hydroxy-tetrahydrodipicolinate synthase,1.20+/-0.01 s(-1),kcat,
+4.4.1.1,cystathionine gamma-lyase,12 s(-1),kcat,
+4.4.1.14,1-aminocyclopropane-1-carboxylate synthase,8.2 x 10(-3 s(-1),kcat,
+4.4.1.5,lactoylglutathione lyase,7.8 s(-1),kcat,
+4.6.1.1,adenylate cyclase,1100 s-1,kcat,
+4.99.1.1,ferrochelatase,18-29 min-1,kcat,
+5.1.1.1,alanine racemase,10(-3) s(-1),kcat,
+5.1.1.4,proline racemase,2600 s(-1),kcat,
+5.3.2.1,Phenylpyruvate tautomerase,10 s(-1),kcat,
+5.3.2.6,2-hydroxymuconate tautomerase,10(3 s(-1),kcat,
+5.3.3.1,steroid DELTA-isomerase,0.8 min(-1),kcat,
+5.3.4.1,Protein disulfide-isomerase,0.26 +/- 0.02 min-1,kcat,
+5.4.99.5,Chorismate mutase,5.5+/-0.2 s(-1),kcat,
+5.4.99.9,UDP-galactopyranose mutase,5.7 s(-1),kcat,
+6.1.1.1,tyrosine-tRNA ligase,1.49 s(-1),kcat,
+6.1.1.27,O-phospho-L-serine-tRNA ligase,0.151 s(-1),kcat,
+6.1.1.5,isoleucine-tRNA ligase,0.35 s-1,kcat,
+6.2.1.4,succinate-CoA ligase (GDP-forming),0.23 s-1,kcat,
+6.2.1.45,E1 ubiquitin-activating enzyme,0.15+/-0.02 s(-1),kcat,
+6.3.1.8,Glutathionylspermidine synthase,415 +/- 78 min-1,kcat,
+6.3.1.9,trypanothione synthase,3.4 s(-1),kcat,
+6.3.2.4,D-Alanine-D-alanine ligase,644 min-1,kcat,

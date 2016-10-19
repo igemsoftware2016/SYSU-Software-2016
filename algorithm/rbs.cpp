@@ -88,18 +88,22 @@ void init_data(string bact_path, string enzy_name){
 	for (size_t i = 0; i < init_rRNA.length(); i++){
 		rRNA.push_back(reverse_map[init_rRNA[i]]);
 	}
-	bact_path += ".txt";
+	bact_path = "cds/" + bact_path + ".txt";
 	std::ifstream fin(bact_path.data());
 	string tmp;
 	int n;
 	fin >> tmp;
 	fin >> n;
 	string reac_name;
+	bool parser = false;
 	for (int i = 0; i < n; i++){
 		string enzy_tmp;
 		int enzy_n;
 		fin >> enzy_tmp;
 		fin >> enzy_n;
+		if (enzy_name == enzy_tmp && enzy_n == 0){
+			parser = true;
+		}
 		for (int j = 0; j < enzy_n; j++){
 			string reac_tmp;
 			fin >> reac_tmp;
@@ -107,13 +111,16 @@ void init_data(string bact_path, string enzy_name){
 				reac_name = reac_tmp;
 		}
 	}
+	// cout << "A" << parser << endl;
 	fin >> n;
+	// cout << "B" << n << endl;
 	for (int i = 0; i < n; i++){
 		string reac_tmp;
 		fin >> reac_tmp;
 		string tmp_series;
 		fin >> tmp_series;
-		if (reac_tmp == reac_name){
+		if (parser || (reac_tmp == reac_name)){
+			cout << "Parser OK" << endl;
 			tmp_series = tmp_series.substr(3, tmp_series.length() - 3);
 			cds_recorder = tmp_series;
 			for (int j = 0; j < 35; j++){
@@ -122,15 +129,15 @@ void init_data(string bact_path, string enzy_name){
 		}
 		while (tmp_series[tmp_series.length() - 1] < 97){
 			fin >> tmp_series;
-			if (reac_tmp == reac_name){
+			if (parser || (reac_tmp == reac_name)){
 				cds_recorder += tmp_series;
 			}
 		}
-		if (reac_tmp == reac_name) break;
+		if (reac_tmp == reac_name || parser) break;
 	}
 	
 	fin.close();
-
+	// cout << current.size() << endl;
 	cout << "Data initialized." << endl;
 }
 
@@ -410,7 +417,7 @@ void calc_bound(){
 			all_solve.push_back(current);
 			//cout << all_solve.size() << endl; 
 			current.pop_back();
-		}		
+		}
 
 		//Change starter
 		current[35] = reverse_map['G'];
@@ -425,6 +432,8 @@ void calc_bound(){
 		}
 	}
 	cout << endl << "Calculation finished." << endl; 
+	// cout << all_solve[0].size() << endl;
+	// cout << all_solve.size() << endl;
 	sort(all_solve.begin(), all_solve.end(), my_cmp);
 }
 
@@ -469,3 +478,4 @@ int main(int argc, char* argv[]){
 
 	// debug_calc_series("AUACAGGAUAUCUAGAGAAGGGAAUCAAAAACUAGAUGACAAUUUCAAUCAGCGCGGUAAUUUUAGCCGGCGG");
 }
+
