@@ -12,7 +12,7 @@ if __name__ == "__main__":
 		print("\nUsage: \npython run_calculate.py [your designID]\n")
 		os._exit(0)
 	designID = sys.argv[1]
-	connector = httplib.HTTPConnection("127.0.0.1:5000")
+	connector = httplib.HTTPConnection("craft.sysusoftware.info")
 	url = '/process/' + designID
 	connector.request(method="GET",url=url)
 	response = connector.getresponse()
