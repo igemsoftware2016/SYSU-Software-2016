@@ -511,8 +511,8 @@ def get_state_saved(state_id):
                         if tmppro:
                             all_pro.append(tmppro)
                     total_pro.extend(all_pro)
-                    ret_enzy["strength"]["promoter_lower"] = all_pro.min()
-                    ret_enzy["strength"]["promoter_upper"] = all_pro.max()
+                    ret_enzy["strength"]["promoter_lower"] = min(all_pro, key = lambda x: x.strength).strength
+                    ret_enzy["strength"]["promoter_upper"] = max(all_pro, key = lambda x: x.strength).strength
                     ret_enzy["strength"]["promoter"] = []
                     for pro in all_pro:
                         ret_enzy["strength"]["promoter"].append({"s": pro.strength, "info": pro.id})
@@ -522,8 +522,8 @@ def get_state_saved(state_id):
                         if tmprbs:
                             all_rbs.append(tmprbs)
                     total_rbs.extend(all_rbs)
-                    ret_enzy["strength"]["RBS_lower"] = all_rbs.min()
-                    ret_enzy["strength"]["RBS_upper"] = all_rbs.max()
+                    ret_enzy["strength"]["RBS_lower"] = min(all_rbs, key = lambda x: x.strength).strength
+                    ret_enzy["strength"]["RBS_upper"] = max(all_rbs, key = lambda x: x.strength).strength
                     ret_enzy["strength"]["RBS"] = []
                     for rbss in all_rbs:
                         ret_enzy["strength"]["RBS"].append({"s": rbss.strength, "info": rbss.id})
