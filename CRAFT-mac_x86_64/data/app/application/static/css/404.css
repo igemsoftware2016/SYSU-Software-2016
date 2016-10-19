@@ -1,0 +1,74 @@
+.title-img {
+    height: 160px;
+    margin-top: 12vmin;
+    position: relative;
+}
+
+.title-img > img {
+    width: 70%;
+    height: auto;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0; right: 0;
+    bottom: 0;
+}
+
+div#shell {
+    display: block;
+    float: left;
+    position: relative;
+    margin: 0 auto;
+    width: 1px;
+    height: 1px;
+    background-color: rgba(0,0,0,0.3);
+    z-index: -2;
+}
+/* star 1 */
+img#star-1 {
+    position: absolute;
+    z-index: -1;
+    top: 26vh;
+    left: 14vw;
+}
+/* rock */
+img#star-2 {
+    position: absolute;
+    z-index: -1;
+    top: 43vh;
+    left: 76vw;
+}
+/* rocket */
+img#star-3 {
+    position: absolute;
+    z-index: -1;
+    top: 64vh;
+    left: 4vw;
+}
+
+#title-404 {
+    position: absolute;
+    z-index: 10;
+    bottom: 10vh;
+    left: calc(50vw - 542px/2);
+}
+
+@keyframes circle {
+    from { transform:rotate(0deg); }
+    to { transform:rotate(360deg); }
+}
+
+.earth {
+    background-image: url("../img/404-earth.png");
+    background-size: 100% 100%;
+    width: 120vh;
+    height: 120vh;
+    margin: calc(-120vh/2 - 5vh) auto 0 auto;
+    animation: circle 100s linear infinite;
+    /*transform-origin:50% 200px;*/
+    z-index: 1;
+}
+
+#top-bg {
+    height: 100%;
+}

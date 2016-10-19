@@ -1,0 +1,238 @@
+.main.menu {
+    margin-top: 4em;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    transition: box-shadow 0.5s ease, padding 0.5s ease;
+}
+
+.ui.fixed.menu, .ui[class*="top fixed"].menu {
+    top: 0px;
+    left: 0px;
+    right: auto;
+    bottom: auto;
+    max-height: 54px; /* danger */
+    z-index: 1000;
+}
+
+body {
+    /*background:url("../img/login_bg.jpg") no-repeat center center fixed;*/
+    background-color: rgb(1,3,14);
+    /*background-size: 100% 100%;*/
+    /*-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
+    height: 100%;
+    scroll: auto;
+}
+
+#main-container {
+    /*background-color:lightgray;*/
+    min-height:100%;
+    position: relative;
+    min-width: 1127px!important;
+}
+
+.footer.segment {
+    color: white;
+    margin-top: 100px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.ui.vertical.segment {
+    background-color: rgba(0,0,0,0.4);
+    -webkit-transition:background-color 0.3s linear;
+    -moz-transition:background-color 0.3s linear;
+    -o-transition:background-color 0.3s linear;
+    transition:background-color 0.3s linear;
+}
+
+.footer.segment:hover {
+    background-color: rgba(0,0,0,0.9);
+}
+
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+    border-radius: 3px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(63,63,63,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(63,63,63,0.4);
+}
+
+#top-menu {
+    background-color: rgba(0,0,0,0.4);
+    -webkit-transition:background-color 0.3s linear;
+    -moz-transition:background-color 0.3s linear;
+    -o-transition:background-color 0.3s linear;
+    transition:background-color 0.3s linear;
+}
+
+#top-menu:hover {
+    background-color: rgba(0,0,0,0.9);
+    /*border-bottom: 1px solid;*/
+    /*box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);*/
+}
+
+@font-face {
+    font-family: "Futura";
+    src: url("../fonts/Futura.ttf");
+    /*src: url("../fonts/Futura-T-OT-Book_19064.ttf");*/
+}
+
+@font-face {
+    font-family: "Generica";
+    src: url("../fonts/Generica.ttf");
+    /*src: url("../fonts/Futura-T-OT-Book_19064.ttf");*/
+}
+
+body {
+    font-family: "Futura";
+}
+
+.ui.button {
+    font-family: "Futura";
+    font-weight: 900;
+    font-size: 1.2em;
+}
+
+
+nav a {
+    position: relative;
+    display: inline-block;
+    margin: none;
+    outline: none;
+    color: #fff;
+    text-decoration: none;
+    /*text-transform: uppercase;*/
+    /*letter-spacing: 1px;*/
+    /*font-weight: 400;*/
+    text-shadow: 0 0 1px rgba(255,255,255,0.3);
+    /*font-size: 0.9em;*/
+}
+
+*,
+*:after,
+*::before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+nav a:hover,
+nav a:focus {
+    outline: none;
+}
+
+/* Effect 14: border switch */
+.cl-effect-14 a {
+    padding: 0 10px;
+    height: 25px;
+    line-height: 25px;
+}
+
+.cl-effect-14 a::before,
+.cl-effect-14 a::after {
+    position: absolute;
+    width: 25px;
+    height: 1px;
+    background: #fff;
+    content: '';
+    opacity: 0.2;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.cl-effect-14 a::before {
+    top: 0;
+    left: 0;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: 0 0;
+    -moz-transform-origin: 0 0;
+    transform-origin: 0 0;
+}
+
+.cl-effect-14 a::after {
+    right: 0;
+    bottom: 0;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: 100% 0;
+    -moz-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+}
+
+.cl-effect-14 a:hover::before,
+.cl-effect-14 a:hover::after,
+.cl-effect-14 a:focus::before,
+.cl-effect-14 a:focus::after {
+    opacity: 1;
+}
+
+.cl-effect-14 a:hover::before,
+.cl-effect-14 a:focus::before {
+    left: 50%;
+    -webkit-transform: rotate(0deg) translateX(-50%);
+    -moz-transform: rotate(0deg) translateX(-50%);
+    transform: rotate(0deg) translateX(-50%);
+}
+
+.cl-effect-14 a:hover::after,
+.cl-effect-14 a:focus::after {
+    right: 50%;
+    -webkit-transform: rotate(0deg) translateX(50%);
+    -moz-transform: rotate(0deg) translateX(50%);
+    transform: rotate(0deg) translateX(50%);
+}
+
+
+#to-top {
+    position: fixed;
+    right: 5vw;
+    bottom: 20vh;
+    display: none;
+}
+
+#feedback {
+    position: fixed;
+    right: 5vw;
+    bottom: 15vh;
+    display: none;
+    display: inline-block;
+}
+
+
+/* for test */
+.test {
+    border: 3px solid black;
+    /*overflow: hidden;*/
+}
+/* for test */
+
+
+.ui.steps.sticky {
+    margin-top: 0;
+}
+

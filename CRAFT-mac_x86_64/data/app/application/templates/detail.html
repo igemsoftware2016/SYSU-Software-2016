@@ -1,0 +1,582 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/range.css">
+<link rel="stylesheet" type="text/css" href="/static/css/detail.css">
+{% endblock %}
+
+
+{% block container %}
+<span id="design-id" style="display: none;">{{design.id}}</span>
+<span id="design-state" style="display: none;">{{design.state}}</span>
+<span id="design-time" style="display: none;">{{design.state1_data.reaction_time}}</span>
+<span id="design-state-2-not" style="display: none;">{{design.state2_data == None}}</span>
+<span id="design-state-3-not" style="display: none;">{{design.enzyme_info == None or design.enzyme_info.state3_matter_plot == '{}'}}</span>
+<!-- put code here with-->
+<div class="ui column grid centered">
+  <div class="ui banner one column fluid centered">
+  </div>
+</div> <!-- top banner -->
+
+<div class="ui column grid">
+  <!-- designs -->
+  <div class="ui column sixteen wide main">
+    <div class="ui segment main">
+      <div class="design card {% if not info['myCreation'] %}my{% endif %}">
+        <div class="ui column grid design" design-id="{{design.id}}">
+          <div class="ui row">
+            <div class="eleven wide column">
+              <h3 class="ui header">
+                <img src="/static/img/icon/{{design.owner.icon}}.jpg" class="ui rounded image mini">&nbsp;
+                <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - {{design.design_name}}
+                [{% if design.design_mode == "make" %}Synthesis{% elif design.design_mode == "resolve" %}Decomposition{% endif %}]
+                {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
+                {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
+
+              </h3>
+            </div>
+
+            <div class="five wide column right aligned">
+              {% if design.owner_id == session.get("user") %}
+              <a class="ui icon button tiny basic black" title="Edit" href="/state/{{design.id}}/{{design.state}}">
+                <i class="paint brush sign icon"></i>
+              </a>
+              {% endif %}
+              <div class="ui labeled button mini like">
+                <div class="ui red button" title="{% if not info['liked'] %}Like it{% else %}Liked{% endif %}">
+                  <i class="{% if not info['liked'] %}empty{% endif %} heart icon"></i>
+                </div>
+                <a class="ui basic red left pointing label">
+                  {{ info['like_num'] }}
+                </a>
+              </div>
+              <button class="ui icon button tiny basic orange mark" title="{% if not info['marked'] %}Mark it{% else %}Marked{% endif %}">
+                <i class="{% if not info['marked'] %}empty{% endif %} star icon"></i>
+              </button>
+              {% if design.owner_id == session.get("user") %}
+              <button class="ui icon button tiny basic share {% if design.shared %}brown{% else %}gray{% endif %}" title="{% if design.shared %}Shared{% else %}Share it now!{% endif %}">
+                <i class="share sign icon"></i>
+              </button>
+              <button class="ui icon button tiny basic delete red" title="Delete">
+                <i class="delete sign icon"></i>
+              </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="description">
+          <p class="design description">
+            {% if design.description %}{{ design.description }}{% else %}No Description{% endif %}
+          </p>
+          <p class="time">{{ info.datetime }}</p>
+        </div>
+        <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
+          <div class="bar"></div>
+          <div class="label">
+            {% if design.state == 1 %}
+            Settings
+            {% elif design.state == 2 %}
+            Solution
+            {% elif design.state == 3 %}
+            Simulation
+            {% elif design.state == 4 %}
+            Promoter
+            {% elif design.state == 5 %}
+            Experimental results
+            {% endif %}
+          </div>
+        </div>
+      </div> <!-- design card -->
+
+      <div class="ui styled fluid accordion">
+        <div class="title active step-1">
+          <i class="dropdown icon"></i>
+          Settings
+        </div>
+        <div class="content active step-1">
+          <p class="transition visible">
+            <span id="design-file-1" style="display: none;">{{ design.state1_upload_file }}</span>
+            <div class="ui grid upload-1">
+              <div class="ui row">
+                <div class="column fluid center aligned">
+                  <h2 class="ui icon header">
+                    <i class="file icon"></i>
+                    <div class="content">
+                      <a href="/static/upload/design-{{design.id}}-state-1.xls" target="_blank">Using file!</a>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div class="ui grid none-upload-1">
+              <div class="ui row">
+                <div class="column">
+                  <div class="ui row make-row">
+                    <div class="ui column">
+                      <table class="ui very basic table">
+                        <thead>
+                          <tr>
+                            <th class="two wide">Targets</th>
+                            <th class="two wide">Lower bound (mol/L)</th>
+                            <th class="two wide">Upper bound (mol/L)</th>
+                            <th class="four wide">Concentration MAX</th>
+                          </tr>
+                        </thead>
+                        <tbody id="make-tbody">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> <!-- row 1 make matter -->
+                  <div class="ui row resolve-row">
+                    <div class="ui column fluid">
+                      <table class="ui very basic table">
+                        <thead>
+                          <tr>
+                            <th class="one wide">Targets</th>
+                            <th class="three wide">Concentration (mol/L)</th>
+                          </tr>
+                        </thead>
+                        <tbody id="resolve-tbody">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div> <!-- row 2 resolve matter -->
+                </div>
+              </div> <!-- matters row -->
+
+              <div class="ui row">
+                <div class="ui column sixteen wide">
+                  <label><b>Environmental Mircobiota</b></label>
+                  <div class="field ui env labels">
+                  </div>
+                </div>
+              </div>
+              <div class="ui row divided">
+                <div class="ui column two wide">
+                  <label><b>Time (Mins)</b></label>
+                  <div class="field time"></div>
+                </div>
+                <div class="ui column four wide">
+                  <label><b>Medium</b></label>
+                  <div class="field medium"></div>
+                </div>
+              </div>
+            </div>
+          </p>
+        </div>
+        <div class="title step-2">
+          <i class="dropdown icon"></i>
+          Solution
+        </div>
+        <div class="content step-2">
+          <p class="transition hidden">
+            <div class="ui column grid state">
+              <div class="ui row">
+                <div class="ui six wide column">
+                  <div class="ui column">
+                    <label><b>Chassis</b></label>
+                    <div class="ui fluid search dropdown selection" id="bacteria-slt">
+                      <i class="dropdown icon"></i>
+                      <input class="search" autocomplete="off" tabindex="0">
+                      <div class="default text">bacteria</div>
+                      <div class="menu transition hidden" tabindex="-1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="six wide column">
+                  <div class="ui column">
+                    <label><b>Plasmid</b></label>
+                    <div class="ui fluid search dropdown selection" id="plasmid-slt">
+                      <i class="dropdown icon"></i>
+                      <input class="search" autocomplete="off" tabindex="0">
+                      <div class="default text">plasmid</div>
+                      <div class="menu transition hidden" tabindex="-1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="ui row">
+                <!-- plasmid -->
+                <div class="ui column six wide plasmid">
+                  <plasmid sequencelength="360" plasmidheight="375" plasmidwidth="375" viewbox="0 0 375 375">
+                    <plasmidtrack trackstyle="fill:#ccc" width="5" radius="120"></plasmidtrack>
+                    <plasmidtrack trackstyle="fill:rgba(225,225,225,0.5)" radius="110">
+                      <tracklabel text="HSP70" labelstyle='font-size:20px;font-weight:400' id="plasmid-title"></tracklabel>
+                      {# <tracklabel text="360 bp" labelstyle='font-size:10px' vadjust="20"></tracklabel> #}
+
+                      <!-- draw the main markers and labels -->
+                      <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-1">
+                        <markerlabel type="path" class="mdlabel white" text="path1" id="path-text-1"></markerlabel>
+                      </trackmarker>
+                      <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-2">
+                        <markerlabel type="path" class="mdlabel white" text="path2" id="path-text-2"></markerlabel>
+                      </trackmarker>
+                      <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.9)" arrowendlength="4" arrowstartlength="-4" id="marker-3">
+                        <markerlabel type="path" class="mdlabel white" text="path3" id="path-text-3"></markerlabel>
+                      </trackmarker>
+                      <trackmarker start="260" end="310" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+                        <markerlabel type="path" class="mdlabel white" text="rep(pMB1)"></markerlabel>
+                      </trackmarker>
+                      <trackmarker start="315" end="45" markerstyle="fill:rgba(60,60,60,0.9)" arrowendlength="4" arrowstartlength="-4">
+                        <markerlabel type="path" class="mdlabel white" text="Essential part" id="dynamic-part"></markerlabel>
+                      </trackmarker>
+
+                      <!-- draw the region boundaries lines for each marker -->
+                      <trackmarker start="265" markerstyle="stroke:rgba(60,60,60,0.9)" class="boundary" wadjust="20">
+                        <markerlabel class="smlabel" text="Ori" vadjust="32"></markerlabel>
+                      </trackmarker>
+
+                      <!-- draw the marker regions -->
+                      <trackmarker start="53" end="110" markerstyle="fill:rgba(106,148,184,0.3)" wadjust="-5" vadjust="25" id="highlight-1"></trackmarker>
+                      <trackmarker start="113" end="170" markerstyle="fill:rgba(224,167,32,0.3)" wadjust="-5" vadjust="25" id="highlight-2"></trackmarker>
+                      <trackmarker start="173" end="240" markerstyle="fill:rgba(123,166,123,0.3)" wadjust="-5" vadjust="25" id="highlight-3"></trackmarker>
+
+                      <!-- draw the scales -->
+                      <trackscale interval="5" style='stroke:#999' direction="in" ticksize="3"></trackscale>
+                      <trackscale interval="5" style='stroke:#999' ticksize="3"></trackscale>
+                      <trackscale interval="30" style="stroke:#f00" direction="in" showlabels="0" labelstyle="fill:#999;stroke:none;text-anchor:middle;alignment-baseline:middle;font-size:10px"></trackscale>
+                    </plasmidtrack>
+                  </plasmid>
+                </div>
+
+                <div class="ui column ten wide">
+                  <canvas id="myChart-2"></canvas>
+                </div>
+              </div>
+
+              <div class="ui row">
+                <div class="ui column six wide">
+                  <div class="ui equal width grid">
+                    <div class="ui row component">
+                      <div class="ui column">
+                        <img class="ui tiny Rounded image promoter" src="/static/img/promoter-orange.png">
+                        <div class="ui popup component">
+                          <div class="ui one column grid">
+                            <div class="ui row">
+                              <h4 class="ui horizontal divider header">
+                                <i class="tags icon"></i>
+                                Part Infomation
+                              </h4>
+                              <div class="ui column fliud">
+                                <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">promoter</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Learn More infomation:</b>
+                              </div>
+                              <div class="ui column fliud info-btns">
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ui column">
+                        <img class="ui tiny Rounded image RBS" src="/static/img/RBS-orange.png">
+                        <div class="ui popup component">
+                          <div class="ui one column grid">
+                            <div class="ui row">
+                              <h4 class="ui horizontal divider header">
+                                <i class="tags icon"></i>
+                                Part Infomation
+                              </h4>
+                              <div class="ui column fliud">
+                                <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">RBS</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Learn More infomation:</b>
+                              </div>
+                              <div class="ui column fliud info-btns">
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ui column">
+                        <img class="ui tiny Rounded image CDS" src="/static/img/CDS-orange.png">
+                        <div class="ui popup component">
+                          <div class="ui one column grid">
+                            <div class="ui row">
+                              <h4 class="ui horizontal divider header">
+                                <i class="tags icon"></i>
+                                Part Infomation
+                              </h4>
+                              <div class="ui column fliud">
+                                <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">CDS</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Learn More infomation:</b>
+                              </div>
+                              <div class="ui column fliud info-btns">
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="ui column">
+                        <img class="ui tiny Rounded image teminator" src="/static/img/teminator-orange.png">
+                        <div class="ui popup component">
+                          <div class="ui one column grid">
+                            <div class="ui row">
+                              <h4 class="ui horizontal divider header">
+                                <i class="tags icon"></i>
+                                Part Infomation
+                              </h4>
+                              <div class="ui column fliud">
+                                <b>Part name: &nbsp;&nbsp;&nbsp;</b><span class="name">cl</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Part type: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><span class="type">teminator</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>BBa Name:  &nbsp;&nbsp;</b><span class="BBa"></span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Intoduction: <br></b><span class="intro">No intoduction yet.</span>
+                              </div>
+                              <div class="ui column fliud">
+                                <b>Learn More infomation:</b>
+                              </div>
+                              <div class="ui column fliud info-btns">
+                                <a class="ui button gray mini NCBI" target="_blank">NCBI</a>
+                                <a class="ui button gray mini FASTA" target="_blank">FASTA</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ui column ten wide">
+                  <div class="ui two column grid">
+                    <div class="ui row">
+                      <div class="ui column">
+                        Promoter strength: <span class="promoter num"></span>
+                        <div class="ui range promoter"></div>
+                      </div>
+                      <div class="ui column">
+                        RBS strength: <span class="RBS num"></span>
+                        <div class="ui range RBS"></div>
+                      </div>
+                    </div>
+                    <div class="ui row">
+                      <div class="ui column">
+                        Decomposition rate of mRNA: <span class="mRNA num"></span>
+                        <div class="ui range mRNA"></div>
+                      </div>
+                      <div class="ui column">
+                        decomposition rate of protein: <span class="protein num"></span>
+                        <div class="ui range protein"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ui row">
+                <div class="ui column right aligned">
+                  <button class="ui orange button big redraw2">Draw</button>
+                </div>
+              </div>
+            </div>
+          </p> {# step 2 #}
+        </div>
+        <div class="title step-3">
+          <i class="dropdown icon"></i>
+          Simulation
+        </div>
+        <div class="content step-3">
+          <p class="transition hidden">
+            <div class="ui column grid state">
+              <div class="ui four wide column">
+                <div class="ui inverted vertical menu fluid" id="state-3-menu">
+                  <!-- <div class="item title"><b>Substance(s)</b></div> -->
+                </div>
+              </div>
+              <div class="twelve wide column fluid">
+                <div class="ui segment" id="state-3-content">
+                  <div class="ui grid">
+
+                    <div class="ui row equal width">
+                      <div class="ui column center aligned">
+                        <canvas id="myChart-3"></canvas>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- state grid -->
+          </p>
+        </div>
+        <div class="title step-4">
+          <i class="dropdown icon"></i>
+          Protocol
+        </div>
+        <div class="content step-4">
+          <p class="transition hidden">
+            <a class="ui blue button" href="/static/pdf/{{design.id}}.pdf" target="_blank"><i class="download icon"></i>Download PDF</a>
+            <div class="ui row">
+              <div class="ui column fluid pdf">
+                <!-- PDF viewer -->
+                <div class="media pdf" style="background-color: rgb(255, 255, 255); height: 500px">
+                  <iframe width="100%" height="100%" src="/static/pdf/{{design.id}}.pdf"></iframe>
+                </div>
+              </div>
+            </div>
+          </p>
+        </div>
+        <div class="title step-5">
+          <i class="dropdown icon"></i>
+          Experimental results
+        </div>
+        <div class="content step-5">
+          <p class="transition hidden">
+
+            <span id="design-file-5" style="display: none;">{{ design.state5_upload_file }}</span>
+            <div class="ui grid upload-5">
+              <div class="ui row">
+                <div class="column fluid center aligned">
+                  <h2 class="ui icon header">
+                    <i class="file icon"></i>
+                    <div class="content">
+                      <a href="/static/upload/design-{{design.id}}-state-5.xls" target="_blank">Using file!</a>
+                    </div>
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="ui column grid state non-upload-5">
+              <div class="ui row make-row">
+                <div class="ui column fluid">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="six wide"> Compound </th>
+                      <th class="five wide"> Time (Mins)</th>
+                      <th class="five wide"> Concentrations (mol/L) </th>
+                    </tr> </thead>
+                    <tbody id="co-culture"> <tr class="compund">
+                      <td class="center aligned">
+                        <div class="ui search name fluid standard">
+                          <div class="ui icon input fluid">
+                            <div class="state5_compund">Search matters...</div>
+                          </div>
+                          <div class="results"></div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_compund">Search matters...</div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_compund">Search matters...</div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="ui row make-row">
+                <div class="ui column eight wide">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="seven wide"> Time (Mins)</th>
+                      <th class="seven wide"> ABS600 </th>
+                    </tr> </thead>
+                    <tbody id="abs600"> <tr class="abs600">
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_abs600">0</div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_abs600">0</div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
+
+                <div class="ui column eight wide">
+                  <table class="ui very basic table">
+                    <thead> <tr>
+                      <th class="seven wide"> Time (Mins)</th>
+                      <th class="seven wide"> Fluorescence Intensity </th>
+                    </tr> </thead>
+                    <tbody id="fl"> <tr class="fl">
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_fl">0</div>
+                        </div>
+                      </td>
+                      <td class="center aligned">
+                        <div class="ui right labeled input fluid">
+                          <div class="state5_fl">0</div>
+                        </div>
+                      </td>
+                    </tr> </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+
+
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/angularplasmid.complete.min.js"></script>
+<script type="text/javascript" src="/static/js/Chart.min.js"></script>
+<script type="text/javascript" src="/static/js/range.js"></script>
+<script type="text/javascript" src="/static/js/state_2.js"></script>
+<script type="text/javascript" src="/static/js/state_3.js"></script>
+<script type="text/javascript" src="/static/js/detail.js"></script>
+{% endblock %}

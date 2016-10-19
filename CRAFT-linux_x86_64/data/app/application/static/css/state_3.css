@@ -1,0 +1,74 @@
+body {
+    background-color: #2f2f2f;
+}
+
+#main-container {
+    margin-top: 54px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-radius: 5px;
+    /*radius: 5px;*/
+    min-height: 100%;
+    background-color: rgba(255,255,255,1);
+    position: relative;
+}
+
+#main-container > .ui.steps {
+    z-index: 99;
+    /*float: left;*/
+    /*position: fixed;*/
+    /*top: 0;*/
+}
+
+.ui.column.grid.state {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-bottom: 5vh;
+    padding-top: 2vh;
+}
+
+.ui.search > .prompt {
+    border-radius: .28571429rem;
+}
+
+.field > label {
+    padding-top: -5px;
+}
+
+#state-3-menu {
+    height: 80vh;
+    overflow-x: visible;
+    overflow-y: auto;
+    z-index: 3;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#state-3-content {
+    /*border: 3px solid black;*/
+    height: 80vh;
+    /*padding-left: 3vw;*/
+    /*padding-right: 3vw;*/
+    margin-left: calc(-2rem);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    z-index: 2;
+}
+
+.ui.row.equal.width > .ui.column {
+    height: 65vh;
+    /*border: 3px solid black;*/
+}
+
+.ui.vertical.inverted.menu .active.item {
+    border-left: 3px solid #bfbfbf;
+}
+
+.ui.vertical.inverted.menu .item {
+    border-left: 3px solid grey;
+}
+
+.ui.column.right.aligned > button {
+    margin-left: 20px;
+}

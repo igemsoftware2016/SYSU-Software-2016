@@ -1,6 +1,0 @@
-1. Ethyl acetate extracts from bacterial cultures were subjected to HPLC-MS analyses
-2. which was performed with an Alliance chromatographic module coupled to a 2996 photo- diode array detector and a ZQ4000 mass spectrometer (Waters, Mi- cromass, Milford, MA)
-3. A Symmetry C18 column (2.1*150 mm, Waters) was used with acetonitrile and formic acid (1%) in water as solvents
-4. Elution started at 10% acetonitrile for 4 min, followed by a linear gradient up to 88% at 30 min, and a final isocratic hold at 100% for 5 min, at a flow rate of 0.25 mL/min
-5. Mass analysis was done by electrospray ionization in the positive mode, with a capillary voltage of 3 kV and cone voltages of 20, 60 and 100 V
-6. Compounds were identified based on their HPLC elution time, UV- visible absorption characteristics and mass spectra, compared to previously published data.

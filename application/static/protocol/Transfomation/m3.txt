@@ -1,7 +1,0 @@
-Thaw a tube of NEB Stable Competent E. coli cells on ice for 10 minutes.
-Add 1 -2 l containing 100 pg-100 ng of plasmid DNA to the cell mixture. Carefully flick the tube 4-5 times to mix cells and DNA. Do not vortex.
-Place the mixture on ice for 30 minutes. Do not mix.
-Heat shock at exactly 42 for exactly 30 seconds. Do not mix. Place on ice for 5 minutes. Do not mix.
-Pipette 950l of room temperature SOC into the mixture and place at 30 for 60 minutes. Shake the tube horizontally at 250 rpm or rotate.
-Warm selection plates to 30.
-Mix the cells thoroughly by flicking the tube and inverting. Then spread 50-100 l of cells or diluted cells onto a selection plate. Incubate plates 24 hrs at 30 or overnight at 37.

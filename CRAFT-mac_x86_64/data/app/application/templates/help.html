@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/help.css">
+{% endblock %}
+
+{% block container %}
+<div class="ui grid">
+  <div class="ui row">
+    <div class="ui column one wide">
+    </div>
+    <div class="ui column fourteen wide">
+      <h1 class="ui huge header" id="qna" style="margin: 20px 0 50px 0; font-size: 6em; text-align: right;"> Help </h1>
+      <div class="ui list">
+        <div class="item">
+          <div class="ui huge header">User guide</div>
+          <div class="ui list animated">
+            <div class="ui item small header"> <a href="#sign-up-and-log-in">Sign up and Log in</a> </div>
+            <div class="ui item small header"> <a href="#profile">My Profile page</a> </div>
+            <div class="ui item small header"> <a href="#square">Square page</a> </div>
+            <div class="ui item small header"> <a href="#search-box">Search Box on top menu</a> </div>
+            <div class="ui item small header"> <a href="#design-detail">Design details</a> </div>
+            <div class="ui item small header"> <a href="#others-profile">Others' profile pages</a> </div>
+            <div class="ui item small header"> <a href="#settings">Settings</a> </div>
+            <div class="ui item small header"> <a href="#feedback-quest">Feedback</a></div>
+            <div class="ui item small header"> <a href="#new-a-design">Create A New Design</a></div>
+            <div class="ui item small header"> <a href="#input-template">Input template</a></div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="ui huge header">FAQ</div>
+          <div class="ui list animated">
+            <div class="ui item small header"> <a href="#quest1">What can CRAFT do?</a> </div>
+            <div class="ui item small header"> <a href="#quest2">How should I use CRAFT's automatically designed function?</a> </div>
+            <div class="ui item small header"> <a href="#quest3">What else we should pay attention when using CRAFT?</a> </div>
+            <div class="ui item small header"> <a href="#quest4">Why CRAFT use distributed computing?</a> </div>
+            <div class="ui item small header"> <a href="#quest5">Do CRAFT have any restrictions for data usage and spread?</a> </div>
+            <div class="ui item small header"> <a href="#quest6">What should I do if CRAFT fails to find my targets?</a> </div>
+            <div class="ui item small header"> <a href="#quest7">How can I install CRAFT’s plugin —— satellite?</a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui column one wide"> </div>
+    <div class="ui column fourteen wide">
+      <div class="ui huge header">User guide</div>
+      <div class="ui medium header"><a class="quest" id="sign-up-and-log-in" name="sign-up-and-log-in">Sign up and Log in</a></div>
+      <div class="ui">
+        <p>If you have registered CRAFT before, click LOG IN tab on main page to sign in.<br />
+          If you are new to CRAFT, register a new CARFT account on <a href="http://craft.sysusoftware.info">main page</a> with your e-mail address and then you can use CRAFT Designer to design your own biological system and share it with other researchers on CRAFT Square. <br />
+          Also you can scan other designs on CRAFT Square in guest mode, but CRAFT Designer is not available in this mode.<br />
+          <img src="/static/img/help/index.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="profile" name="profile">Profile page</a></div>
+      <div class="ui">
+        <p>In this page, all your designs are listed, including your marked designs.<br />
+          <img src="/static/img/help/profile.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="square" name="square">Square page</a></div>
+      <div class="ui">
+        <p>You can view all open designs in this page, and “like” them or “mark” them. If you find someone try to use CRAFT design systems that have safety problems, you can report them on Square.<br />
+          We will receive your report and deal with it.<br />
+          <img src="/static/img/help/square.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="search-box" name="search-box">Search Box on top menu</a></div>
+      <div class="ui">
+        <p>The search box provides you with related users and open designs.<br />
+          <img src="/static/img/help/searchbox.png">
+        </p>
+      </div>
+      <div class="ui medium header"><a class="quest" id="design-detail" name="design-detail">Design details</a></div>
+      <div class="ui">
+        <p>Open the design detail page by clicking design name on Square page or Profile page, where you can check every single step of a design.<br />
+          <img src="/static/img/help/detail.png"><br />
+          If it is your design, you can modify its design details, share or withdraw your share, and even delete your design.<br />
+          <img src="/static/img/help/detail2.png"></p>
+        </div>
+        <div class="ui medium header"><a class="quest" id="settings" name="settings">Settings</a></div>
+        <div class="ui">
+          <p>You can enter the Settings page through the drop-down bar from top menu. In this page you can change your photo, nickname or passcode.</p>
+        </div>
+        <div class="ui medium header"><a class="quest" id="others-profile" name="others-profile">Others' profile pages</a></div>
+        <div class="ui">
+          <p>You can click other users' nicknames to enter their profiles on Square or profile page, and visit their own and marked designs.</p>
+        </div>
+        <div class="ui medium header"><a class="quest" id="feedback-quest" name="feedback-quest">Feedback</a></div>
+        <div class="ui">
+          <p>You can give us feedback with e-mail by clicking the mail-box-like botton on the right side of any page.</p>
+        </div>
+        <div class="ui medium header"><a class="quest" id="new-a-design" name="new-a-design">Create A New Design</a></div>
+        <div class="ui">
+          <p> Click the <b>New Design</b> button in the top banner.</p>
+          <img src="/static/img/help/new-design-1.png">
+          <p> Here is a new design, as you see. Give it a name and choose mode. </p>
+          <img src="/static/img/help/new-design-2.png">
+          <p> Now you can fill the chart on the website. Just type part of targets' name, there will be options to choose.
+            Compounds that don't exist in the search result are currently not supported.</p>
+            <img src="/static/img/help/new-design-3.png">
+            <p> You can also upload exactly one xls file (click the upload button below) when the data are massive. 
+              <a href="/static/upload/state_1_template.xls">Here is a sample</a>, files with different format will be rejected.
+              Uploading file while filling forms is currently not supported.
+            </p>
+            <img src="/static/img/help/new-design-4.png">
+            <p>Remember to save before the next step.</p>
+            <p>Here is the pending page, your submited design needs to be calculated. Install the plugin or share it.</p>
+            <img src="/static/img/help/new-design-5.png">
+            <p>Now, the result is here. You can view different chassises and thier plasmids.</p>
+            <img src="/static/img/help/new-design-6.png">
+            <p>Try to modify the Promoter strength or Decomposition rate of mRNA, and draw the graph of protein expression by a click on the draw bottun.</p>
+            <img src="/static/img/help/new-design-7.png">
+            <p>Remember to save before the next step.</p>
+            <p>Here is the pending page, your submited design needs to be calculated. Install the plugin or share it.</p>
+            <img src="/static/img/help/new-design-5.png">
+            <p>Finally, here is the simulation result of targets' concentration, the concentration-time graph.</p>
+            <img src="/static/img/help/new-design-8.png">
+            <p>click the next step, there will be a preview page of downloadabled protocol pdf.</p>
+            <img src="/static/img/help/new-design-9.png">
+            <p> Click the next step, here is the feedback page. Please upload file or fill the charts to give us your feed back, help us improve the model with your exp data. </p>
+            <img src="/static/img/help/new-design-10.png">
+            <p> After that, your browser will be redirected to your design detail page.</p>
+            <img src="/static/img/help/new-design-11.png">
+            <p> Your can edit the design again, just click the pencil button. Or you can share this design by clicking share button, too.</p>
+            <img src="/static/img/help/new-design-12.png">
+          </div>
+          <div class="ui medium header"><a class="quest" id="input-template" name="input-template">Input template</a></div>
+          <div class="ui">
+            <p>You can download templates by clicking this links: <a href="/static/upload/settings_template.xls">Settings step</a>, <a href="/static/upload/result_template.xls">Experimental results step.</a></p>
+          </div>
+          <div class="ui huge header">FAQ</div>
+          <div class="ui medium header"><a class="quest" id="quest1" name="quest1">What can CRAFT do?</a></div>
+          <div class="ui">
+            <p>It can automatically design biological systems and generate supporting experiments at the same time. Also, by using CRAFT, users can share their own protocols designed by our software with others online and help them solve their problems.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest2" name="quest3">How should I use CRAFT's automatically designed function?</a></div>
+          <div class="ui">
+            <p>Enter CRAFT Designer, upload your constraints or enter them manually. Our software will automatically compute and generate designs together with experiment protocols.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest3" name="quest4">What else we should pay attention when using CRAFT?</a></div>
+          <div class="ui">
+            <p>Obey local laws and regulations and strictly follow standard experiment procedures.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest4" name="quest4">Why CRAFT use distributed computing?</a></div>
+          <div class="ui">
+            <p>To satisfy the huge demand for computing work.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest5" name="quest5">Do CRAFT have any restrictions for data usage and spread?</a></div>
+          <div class="ui">
+            <p>We don't impose any additional constraints on data. However, owing to the regulations from databases, CRAFT's data could 
+only be used by individual users. Please do not change data or distribute them outside CRAFT.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest6" name="quest6">What should I do if CRAFT fails to find my targets?</a></div>
+          <div class="ui">
+            <p>Please check if your targets are labeled with “toxic” in China Catalog of Hazardous Chemicals first, because these chemicals with this label had been deleted in CRAFT. If you confirm all your targets are safe, please contact with us and provide related messages of your targets including reactions and chassis species, then we will add your targets into our database.</p>
+          </div>
+          <div class="ui medium header"><a class="quest" id="quest7" name="quest7">How can I install CRAFT’s plugin —— satellite?</a></div>
+          <div class="ui">
+            <p>You can visit our <a href="https://github.com/igemsoftware2016/SYSU-Software-2016#satellite-plugin-installation">github page</a> of Plugin installation :)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+
+
+    {% block javascript %}
+    {% endblock %}

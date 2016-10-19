@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" type="image/png" href="/static/img/favicon.png"/>
+  <title>{% if title %}{{title}} - CRAFT{% else %}CRAFT{% endif %}</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/semantic/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/semantic/components/dropdown.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/sweetalert2.min.css">
+  <!-- put css stylesheet down here -->
+  <link rel="stylesheet" type="text/css" href="/static/css/base.css">
+  {% block stylesheet %}{% endblock %}
+</head>
+<body>
+  <!-- <div class="container ui"> </div>  -->
+  <div class="ui borderless main menu inverted fixed" id="top-menu">
+    <div class="ui container">
+      <a class="header item menu-title" href="/"><i class="rocket icon"></i> CRAFT</a>
+      <div class="item">
+        <div class="ui category search item">
+          <div class="ui transparent icon input inverted small">
+            <input class="prompt inverted" type="text" placeholder="Search...">
+            <i class="search link icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+      <div class="right menu">
+        <a class="item" href="/square">Square</a>
+        <a class="item" href="http://2016.igem.org/Team:SYSU-Software" target="_blank">Wiki</a>
+        <a class="item" href="/help">Help</a>
+        {% if session.get("nickname") %}
+        <div class="ui dropdown item">
+        {{ session.get("nickname") }} <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item" href="/profile">My Profile</a>
+            <a class="item" href="/setting">Setting</a>
+            <div class="divider"></div>
+            <a class="item" href="/logout">Log Out</a>
+          </div>
+        </div>
+        {% else %}
+        <a class="item" href="/">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <button class="ui grey button icon compact" id="to-top">
+    <i class="arrow up icon"></i>
+  </button>
+  <a class="ui white button icon compact" id="feedback" href="mailto:craftfeedback@outlook.com?subject=CRAFT FEEDBACK" target="_blank" title="Feedback">
+    <i class="mail icon"></i>
+  </a>
+
+
+  <div class="ui column fluid" id="top-bg">
+    {% block topbg %}{% endblock %} {# just for 404 page #}
+    <div class="container ui" id="main-container">
+      <!-- put code here with-->
+      {% block container %}{% endblock %}
+    </div> <!-- main-container -->
+  </div>
+
+  <!-- put code here, without background image -->
+
+  <!-- footer -->
+  <div class="ui vertical footer segment column fliud">
+    <div class="ui center aligned container">
+      SYSU-Software 2016
+    </div>
+  </div>
+
+
+  <script type="text/javascript" src="/static/js/jquery-3.1.0.min.js"></script>
+  <script type="text/javascript" src="/static/css/semantic/semantic.min.js"></script>
+  <script type="text/javascript" src="/static/css/semantic/components/dropdown.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.backstretch.min.js"></script>
+  <script type="text/javascript" src="/static/js/sweetalert2.min.js"></script>
+  <script type="text/javascript" src="/static/js/plax.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.md5.js"></script>
+  <script type="text/javascript" src="/static/js/base.js"></script>
+  <!-- put javascript down here -->
+  {% block javascript %}{% endblock %}
+  <script>
+    if(window.location.hostname === "127.0.0.1") {
+      document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
+    }
+  </script>
+</body>
+</html>

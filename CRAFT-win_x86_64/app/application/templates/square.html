@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/square.css">
+{% endblock %}
+
+
+{% block container %}
+<span id="bg-img" style="display: none;">square_banner1.1.jpg</span>
+<div class="ui column grid centered">
+  <div class="ui banner one column fluid centered">
+  </div>
+</div> <!-- top banner -->
+
+<div class="ui column grid">
+  <!-- designs -->
+  <div class="ui column twelve wide profile-menu" id="square-context">
+    <div class="ui segment empty">
+      {% for design in designs %}
+      <div class="design card">
+        <div class="ui column grid design" design-id="{{design.id}}">
+          <div class="ui row">
+            <div class="eleven wide column">
+              <h3 class="ui header">
+                <img src="/static/img/icon/{{info[design.id]['icon']}}.jpg" class="ui rounded image mini">&nbsp;
+                <a href="/user/{{design.owner_id}}" class="user">{{design.owner.nickname}}</a> - <a href="/design/{{design.id}}" class="design-name">{{design.design_name}}</a>
+                [{% if design.design_mode == "make" %}Synthesis{% elif design.design_mode == "resolve" %}Decomposition{% endif %}]
+                {% if not design.shared %}<span title="Private design"><i class="ui icon lock"></i></span>{% endif %}
+                {% if design.needHelp %}<span title="Help wanted"><i class="ui icon users"></i></span>{% endif %}
+              </h3>
+            </div>
+
+            <div class="five wide column right aligned">
+              <div class="ui labeled button mini like">
+                <div class="ui red button">
+                  <i class="{% if not info[design.id]['liked'] %}empty{% endif %} heart icon"></i>
+                </div>
+                <a class="ui basic red left pointing label">
+                  {{ info[design.id]['like_num'] }}
+                </a>
+
+              </div>
+              <button class="ui icon button tiny basic orange mark">
+                <i class="{% if not info[design.id]['marked'] %}empty{% else %}BBB{% endif %} star icon"></i>
+              </button>
+              <button class="ui icon button tiny basic black tip-off">
+                <i class="warning sign icon"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="ui divider"></div>
+        <div class="description">
+          <p class="design description">
+            {% if design.description %}{{ design.description }}{% else %}No Description{% endif %}
+          </p>
+          <p class="time">{{ info[design.id].datetime }}</p>
+        </div>
+        <div class="ui tiny progress indicating" data-value="{{ design.state }}" data-total="5">
+          <div class="bar"></div>
+          <div class="label">
+            {% if design.state == 1 %}
+            Setttings
+            {% elif design.state == 2 %}
+            Solution
+            {% elif design.state == 3 %}
+            Simulation
+            {% elif design.state == 4 %}
+            Promoter
+            {% elif design.state == 5 %}
+            Experimental results
+            {% endif %}
+          </div>
+        </div>
+      </div> <!-- design card -->
+      {% endfor %}
+
+    </div>
+  </div>
+  <!-- personal info & help wanted -->
+  <div class="ui column four wide">
+    <div class="ui row sticky">
+      <div class="ui segment center aligned">
+        <div class="ui tiny circular image">
+          <img src="/static/img/icon/{% if session.get('user') %}{{session.get('icon')}}{% else %}guest{% endif %}.jpg">
+        </div>
+        <div class="ui column fuild center aligned nickname">{% if session.get('nickname') %}{{ session.get('nickname') }}{% else %}Guest{% endif %}</div>
+        <div class="ui divider"></div>
+        <div class="ui row equal width">
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.design }}{% else %}-{% endif %}
+            </div>
+            <div class="label">
+              Design
+            </div>
+          </div>
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.mark }}{% else %}-{% endif %}
+            </div>
+            <div class="label">
+              Marked
+            </div>
+          </div>
+          <div class="ui mini statistic column">
+            <div class="value">
+              {% if session.get("user") %}{{ num.share }}{% else %}-{% endif %}
+            </div>
+            <div class="label">
+              Share
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- help wanted -->
+      <div class="ui segment">
+        <h4 class="ui horizontal divider header">
+          ASK FOR HELP
+        </h4>
+
+        <div class="ui row">
+          {% for h in help %}
+          <!-- one asking -->
+          <div class="ui column fluid popup-bro">
+            <a href="/design/{{h.id}}"><span>{{ h.owner.nickname }}</span> asks for help about {% if h.state == 2 %}Solution search{% else %}Simulation{% endif %}!</a>
+          </div>
+          <div class="ui popup">
+            <h4>{{ h.design_name }}</h4>
+            {{ h.description }}
+          </div>
+          {% endfor %}
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/square.js"></script>
+{% endblock %}

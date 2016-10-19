@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/state_5.css">
+{% endblock %}
+
+
+{% block container %}
+<!-- put code here with-->
+<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<span id="design-file-5" style="display: none;">{{ design.state5_upload_file }}</span>
+<div class="ui five steps sticky">
+  <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Settings
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 2 %}/state/{{design.id}}/2{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+    <div class="title">
+        Solution
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 3 %}/state/{{design.id}}/3{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Simulation
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 4 %}/state/{{design.id}}/4{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Protocol
+      </div>
+    </div>
+  </a>
+  <a class="active step" href="{% if design.state >= 5 %}/state/{{design.id}}/5{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Experimental results
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="ui column grid state">
+  <!--div class="ui grid"--><!--i class="certificate icon"></i-->
+
+    <div class="ui row make-row">
+      <div class="ui column fifteen wide">
+        <h3 class="ui green header">
+          <i class="lab icon default black"></i>
+          <div class="content">Co-Culture
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-compund">
+          <i class="plus icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="ui row make-row">
+      <div class="ui column fluid">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="six wide"> Compound </th>
+            <th class="four wide"> Time </th>
+            <th class="five wide"> Concentrations </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="co-culture"> <tr class="compund">
+            <td class="center aligned">
+              <div class="ui search name fluid standard">
+                <div class="ui icon input fluid">
+                  <input class="prompt" type="text" placeholder="Search matters...">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Enter time">
+                <div class="ui basic label">Mins </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">mol/L </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-compund">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ui row make-row">
+      <div class="ui column seven wide">
+        <h3 class="ui green header">
+          <i class="certificate icon default black"></i>
+          <div class="content">ABS600
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-abs600">
+          <i class="plus icon"></i>
+        </button>
+      </div>
+      <div class="ui column seven wide">
+        <h3 class="ui green header">
+          <i class="certificate icon default black"></i>
+          <div class="content">Fluorescence Intensity
+            <div class="sub header"></div>
+          </div>
+        </h3>
+      </div>
+      <div class="ui column one wide">
+        <button class="ui circular plus icon button small green" id="add-fl">
+          <i class="plus icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="ui row make-row">
+      <div class="ui column eight wide">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="seven wide"> Time </th>
+            <th class="seven wide"> ABS600 </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="abs600"> <tr class="abs600">
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Enter time">
+                <div class="ui basic label">Mins </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">AU </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-abs600">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
+
+      <div class="ui column eight wide">
+        <table class="ui very basic table">
+          <thead> <tr>
+            <th class="seven wide"> Time </th>
+            <th class="seven wide"> Fluorescence Intensity </th>
+            <th class="one wide right aligned">Delete</th>
+          </tr> </thead>
+          <tbody id="fl"> <tr class="fl">
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Enter time">
+                <div class="ui basic label">Mins </div>
+              </div>
+            </td>
+            <td class="center aligned">
+              <div class="ui right labeled input fluid">
+                <input type="number" placeholder="Weight..">
+                <div class="ui basic label">AU </div>
+              </div>
+            </td>
+            <td class="right aligned">
+              <button class="ui circular minus icon button tiny remove-fl">
+                <i class="minus icon"></i>
+              </button>
+            </td>
+          </tr> </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ui dimmer blurring upload">
+      <div class="content">
+        <div class="center">
+          <h2 class="ui inverted icon header">
+            <i class="file icon"></i>
+            <span id="dimmer-content">Using file!</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ui grid">
+    <div class="ui row">
+      <div class="ui column grid centered">
+        <div class="ui five wide column center aligned fluid">
+          <input type="file" name="all-file" class="hidden" id="upload-all-file">
+          <button class="ui black button big all-file" id="upload-btn">Upload File</button>
+        </div>
+        <div class="ui five wide column center aligned fluid ">
+          <button class="ui green button big" id="submit">Submit Result</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div> <!-- state grid -->
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/plupload/js/moxie.min.js"></script>
+<script type="text/javascript" src="/static/plupload/js/plupload.min.js"></script>
+<script type="text/javascript" src="/static/js/state_5.js"></script>
+{% endblock %}

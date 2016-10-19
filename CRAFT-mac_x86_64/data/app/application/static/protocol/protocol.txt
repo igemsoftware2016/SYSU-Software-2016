@@ -1,0 +1,11 @@
+Exp1
+ Plasmid construction
+ Transfomation
+ Coculture
+ Concentration measurement
+ DNA Sequences
+Exp2
+ Plasmid construction
+ Transfomation
+ Fluorescence measurement
+ DNA Sequences

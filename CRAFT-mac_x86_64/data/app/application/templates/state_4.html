@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/state_4.css">
+{% endblock %}
+
+
+{% block container %}
+
+<!-- put code here with-->
+<span id="design-id" style="display: none;">{{design.id}}</span> <!-- given by jinja2 -->
+<div class="ui five steps sticky">
+  <a class="step" href="{% if design.state >= 1 %}/state/{{design.id}}/1{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Settings
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 2 %}/state/{{design.id}}/2{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+    <div class="title">
+        Solution
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 3 %}/state/{{design.id}}/3{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Simulation
+      </div>
+    </div>
+  </a>
+  <a class="active step" href="{% if design.state >= 4 %}/state/{{design.id}}/4{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Protocol
+      </div>
+    </div>
+  </a>
+  <a class="step" href="{% if design.state >= 5 %}/state/{{design.id}}/5{% endif %}">
+    <i class="circle icon"></i>
+    <div class="content">
+      <div class="title">
+        Experimental results
+      </div>
+    </div>
+  </a>
+</div>
+<div class="ui column grid state">
+  <div class="ui row">
+    <div class="ui column three wide"></div> <!-- offset -->
+    <div class="ui column five wide">
+          <a class="ui blue button fluid" href="/static/pdf/{{design.id}}.pdf" target="_blank"><i class="download icon"></i>Download PDF</a>
+    </div>
+    <div class="ui column three wide"></div> <!-- offset -->
+    <div class="ui column two wide">
+      <!-- <button class="ui blue button fluid">Save</button> -->
+    </div>
+    <div class="ui column three wide">
+      <button class="ui green button fluid next">Next Step</button>
+    </div>
+  </div>
+
+  <div class="ui row">
+    <div class="ui column fluid pdf">
+      <!-- PDF viewer -->
+      <div class="media pdf" style="background-color: rgb(255, 255, 255); height: 100%">
+        <iframe width="100%" height="100%" src="/static/pdf/{{design.id}}.pdf"></iframe>
+      </div>
+    </div>
+  </div>
+</div> <!-- state grid -->
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/state_4.js"></script>
+{% endblock %}

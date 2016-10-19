@@ -1,0 +1,12 @@
+click==6.6
+Flask==0.11.1
+Flask-SQLAlchemy==2.1
+itsdangerous==0.24
+Jinja2==2.8
+MarkupSafe==0.23
+pdfkit==0.5.0
+pytz==2016.7
+SQLAlchemy==1.1.2
+Werkzeug==0.11.11
+wkhtmltopdf==0.2
+xlrd==1.0.0

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="/static/css/setting.css">
+{% endblock %}
+
+
+{% block container %}
+<div class="ui column grid centered">
+  <div class="ui banner one column fliud centered">
+  </div>
+</div> <!-- top banner -->
+
+<div class="ui column grid">
+  <div class="ui column fliud profile-menu">
+    <div class="ui column grid main">
+
+      <div class="ui row top">
+        <div class="two wide column"></div>
+        <div class="four wide column">
+          <p class="title">ICON</p>
+        </div>
+      </div>
+      <div class="ui row buttom">
+        <div class="six wide column"></div>
+        <div class="five wide column">
+          <div class="ui blurring rounded small dimmable image icon">
+            <div class="ui dimmer">
+              <div class="content">
+                <div class="center">
+                  <div class="ui inverted button tiny new-icon">New one</div>
+                </div>
+              </div>
+            </div>
+            <img src="/static/img/icon/{{session.get('icon')}}.jpg" class="icon" pic_num="{{session.get('icon')}}" new_num="{{session.get('icon')}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row top">
+        <div class="two wide column"></div>
+        <div class="four wide column">
+          <p class="title">NICKNAME
+            <i class="square outline icon nickname"></i>
+          </p>
+        </div>
+      </div>
+
+      <div class="ui row buttom">
+        <div class="six wide column"></div>
+        <div class="five wide column">
+          <div class="ui input fluid disabled nickname">
+            <input type="text" value="{{session.get('nickname')}}" name="nickname">
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row top">
+        <div class="two wide column"></div>
+        <div class="four wide column">
+          <p class="title">PASSWORD
+            <i class="square outline icon password"></i>
+          </p>
+        </div>
+      </div>
+
+      <div class="ui row buttom">
+        <div class="six wide column"></div>
+        <div class="five wide column">
+          <div class="ui input fluid disabled password">
+            <input type="password" placeholder="Old password" name="old_password">
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row buttom">
+        <div class="six wide column"></div>
+        <div class="five wide column">
+          <div class="ui input fluid disabled password">
+            <input type="password" placeholder="New password" name="new_password">
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row top">
+        <div class="two wide column"></div>
+        <div class="four wide column">
+          <p class="title"></p>
+        </div>
+      </div>
+
+      <div class="ui row buttom">
+        <div class="six wide column"></div>
+        <div class="five wide column">
+          <button class="ui secondary basic button reset">Reset</button>
+          <button class="ui positive basic button commit">Commit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="/static/js/setting.js"></script>
+{% endblock %}

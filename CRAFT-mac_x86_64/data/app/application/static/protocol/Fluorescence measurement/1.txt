@@ -1,0 +1,14 @@
+Day 1:transform Escherichia coli DH5 or TOP10 with plasmid
+Day 2: Pick 2 colonies from each of plate and inoculate it on 5-10 mL LB medium + Chloramphenicol.
+Grow the cells overnight (16-18 hours) at 37C and 220 rpm.
+Day 3: Cell growth, sampling, and assay
+Note the differences, depending on whether you are making your readings in a plate reader or 1 ml cuvettes:
+ Set your instrument to read OD600
+ Measure OD600 of the overnight cultures
+ Record data in your notebook
+ Dilute the cultures to a target OD600 of 0.02 in 10ml 0.5x TB medium + Chloramphenicol in 50 mL falcon tube (if using cuvettes, you can use 100 ml in a 500ml shake flask).
+ Incubate the cultures at 37C and 220 rpm.
+ Take 100 L (1% of total volume) samples of the cultures at 0, 1, 2, 3, 4, 5, and 6 hours of incubation(if using cuvettes, remove 1 ml from 100 ml culture).
+ Place samples on ice.
+ At the end of sampling point you need to measure your samples (OD and Fl measurement)
+ Record data in your notebook
