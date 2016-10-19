@@ -556,7 +556,7 @@ def get_state_saved(state_id):
                                         }
         ret["CDS_Info"] =   {
                                 "1": {
-                                    "name": "Specified CDS for enzyme"
+                                    #"name": "Specified CDS for enzyme"
                                 }
                             }
         ret["term_Info"] =  {
