@@ -13,16 +13,16 @@ cd "`dirname $0`"
 
 echo "installing pip"
 pushd data
-python2 get-pip.py
+python2.7 get-pip.py
 
 echo "installing dependencies"
 pushd app
-python2 -m pip install flask
-python2 -m pip install wkhtmltopdf
-python2 -m pip install flask-sqlalchemy
-python2 -m pip install xlrd
-python2 -m pip install pytz
-python2 -m pip install pdfkit
+python2.7 -m pip install flask
+python2.7 -m pip install wkhtmltopdf
+python2.7 -m pip install flask-sqlalchemy
+python2.7 -m pip install xlrd
+python2.7 -m pip install pytz
+python2.7 -m pip install pdfkit
 
 popd
 popd

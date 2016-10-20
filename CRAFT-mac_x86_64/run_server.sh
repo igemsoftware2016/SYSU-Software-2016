@@ -15,5 +15,5 @@ cd "`dirname $0`"
 echo "Starting CRAFT server..."
 echo "Please open a browser and navigate to http://127.0.0.1:5000 :-)"
 
-python data/app/run.py
+python2.7 data/app/run.py
 
