@@ -39,7 +39,7 @@ It provides concise and convenient user interface, where you can customize your 
 ## Installation
 Please check our [release](https://github.com/igemsoftware2016/SYSU-Software-2016/releases).
 ## Documentation
-Please visit our online help page：[CRAFT HELP](http://craft.sysusoftware.info/help)
+Please visit our online help page:[CRAFT HELP](http://craft.sysusoftware.info/help)
 ## About
 Developed by SYSU-Software team.
 Base on GPL-3.0 licence.
