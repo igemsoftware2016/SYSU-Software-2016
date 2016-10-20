@@ -37,7 +37,7 @@ It provides concise and convenient user interface, where you can customize your 
 - nginx
 
 ## Installation
-Please check our release.
+Please check our [release](https://github.com/igemsoftware2016/SYSU-Software-2016/releases).
 ## Documentation
 Please visit our online help page：[CRAFT HELP](http://craft.sysusoftware.info/help)
 ## About
